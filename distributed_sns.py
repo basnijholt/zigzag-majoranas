@@ -1,6 +1,8 @@
 import itertools
+import copy
+import collections
 
-def calc_pfaffian_for_params(syst_dimension, params):
+def calc_pfaffian_for_system(syst_dimension):
     """ 
     Wrapper for get_pfaffian and build system for use in disctributed computing
     
@@ -18,14 +20,16 @@ def calc_pfaffian_for_params(syst_dimension, params):
     invariant : float
         Returns sign of pfaffians (topological invariant) of the system
     """
-    
-    import sns_system
-    import topology
+    def func(params):
+        import sns_system
+        import topology
 
-    syst = sns_system.make_sns_system(**syst_dimension)
-    invariant = topology.get_pfaffian(syst, params)
+        syst = sns_system.make_sns_system(**syst_dimension)
+        invariant = topology.get_pfaffian(syst, params)
+
+        return invariant
     
-    return invariant
+    return func
 
 def get_list_of_parameter_dictionaries(params_mutable):
     """ 

@@ -1,5 +1,4 @@
 import numpy as np
-import pfaffian
 
 def is_phs(ham):
 	""" 
@@ -14,10 +13,10 @@ def is_phs(ham):
 	--------
 		ham == - ham(holes <-> electrons) : bool
 	"""
-
-    sym_mat = np.kron(np.eye(ham.shape[0]//4), np.kron(sigma_y, sigma_y)) 
-    ham_phhp = sym_mat @ ham.conj() @ sym_mat
-    return (np.abs(ham + ham_phhp) < 1e-12).all()
+	
+	sym_mat = np.kron(np.eye(ham.shape[0]//4), np.kron(sigma_y, sigma_y)) 
+	ham_phhp = sym_mat @ ham.conj() @ sym_mat
+	return (np.abs(ham + ham_phhp) < 1e-12).all()
 
 def is_antisymmetric(ham):
 	""" Checks whether matrix is antisymmetric.
