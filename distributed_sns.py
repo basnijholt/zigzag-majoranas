@@ -31,12 +31,15 @@ def calc_pfaffian_for_system(syst_dimension):
     
     return func
 
-def f_adaptive(xy, keys, params, syst_pars):
+def f_adaptive(xy, keys, params, syst_pars, transverse_soi=False):
     import sns_system, topology
+
+    params.update(dict(**sns_system.constants))
+    
     for k, val in zip(keys, xy):
         params[k] = val
     params[keys[0]], params[keys[1]] = xy
-    syst = sns_system.make_sns_system(**syst_pars)
+    syst = sns_system.make_sns_system(**syst_pars, transverse_soi = transverse_soi)
     return topology.get_pfaffian(syst, params)
 
 

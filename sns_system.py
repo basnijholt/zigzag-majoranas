@@ -3,6 +3,14 @@ import topology
 import cmath
 import scipy.constants
 
+constants = dict(
+    m_eff=0.023 * scipy.constants.m_e / (scipy.constants.eV * 1e-3) / 1e18,  # effective mass in kg, 
+    hbar=scipy.constants.hbar / (scipy.constants.eV * 1e-3),
+    mu_B=scipy.constants.physical_constants['Bohr magneton'][0] / (scipy.constants.eV * 1e-3),
+    exp=cmath.exp,
+    cos=cmath.cos,
+    sin=cmath.sin)
+
 def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = False):
     """ 
     Builds and returns finalized 2dim sns system
@@ -33,7 +41,7 @@ def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = False):
     #     HAMILTONIAN DEFINITIONS
     if transverse_soi:
         ham_str = """
-            (hbar^2 / (2*m_eff) * k_y^2 - mu) * kron(sigma_z, sigma_0) + 
+            (hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) + 
             g_factor*mu_B*B * kron(sigma_0, sigma_y)"""
     else:
         ham_str = """
@@ -47,18 +55,10 @@ def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = False):
     """
 
 
-    constants = dict(
-        m_eff=0.023 * scipy.constants.m_e / (scipy.constants.eV * 1e-3) / 1e18,  # effective mass in kg, 
-        hbar=scipy.constants.hbar / (scipy.constants.eV * 1e-3),
-        mu_B=scipy.constants.physical_constants['Bohr magneton'][0] / (scipy.constants.eV * 1e-3),
-        exp=cmath.exp,
-        cos=cmath.cos,
-        sin=cmath.sin)
-
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
-    template_normal = kwant.continuum.discretize(ham_str, grid_spacing=a, locals=constants)
-    template_sc_left = kwant.continuum.discretize(ham_sc_left, grid_spacing=a, locals=constants)
-    template_sc_right = kwant.continuum.discretize(ham_sc_right, grid_spacing=a, locals=constants)
+    template_normal = kwant.continuum.discretize(ham_str, grid_spacing=a)
+    template_sc_left = kwant.continuum.discretize(ham_sc_left, grid_spacing=a)
+    template_sc_right = kwant.continuum.discretize(ham_sc_right, grid_spacing=a)
     
     # SHAPE FUNCTIONS
     def shape_normal(site):
