@@ -40,7 +40,7 @@ def f_adaptive(xy, keys, params, syst_pars, transverse_soi=False):
         params[k] = val
     params[keys[0]], params[keys[1]] = xy
     syst = sns_system.make_sns_system(**syst_pars, transverse_soi = transverse_soi)
-    return topology.get_pfaffian(syst, params)
+    return topology.get_pfaffian(syst, params, transverse_soi = transverse_soi)
 
 
 def get_list_of_parameter_dictionaries(params_mutable):

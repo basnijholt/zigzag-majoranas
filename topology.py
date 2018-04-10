@@ -2,6 +2,7 @@ import kwant
 import numpy as np
 import symmetry
 import dependencies.pfaffian as pfaffian
+import cmath
 
 def get_bulk_hamiltonian(syst, params):
 	""" 
@@ -28,7 +29,7 @@ def get_bulk_hamiltonian(syst, params):
 	return lambda k: h + t*np.exp(1j*k) + t.T.conj()*np.exp(-1j*k)
 
 
-def get_pfaffian(syst, params):
+def get_pfaffian(syst, params, transverse_soi = False):
 	""" 
 	Returns pfaffian of a system
 	
@@ -46,12 +47,18 @@ def get_pfaffian(syst, params):
 	"""
 	h_k = get_bulk_hamiltonian(syst, params)
 
-	h_0  = h_k(0)
-	h_pi = h_k(np.pi)
+	if transverse_soi:
+		h_0  = h_k(0)
 
-	skew_pf_0 = symmetry.make_skew_symmetric(h_0)
-	skew_pf_pi = symmetry.make_skew_symmetric(h_pi)
-	
-	pf_0  = pfaffian.pfaffian(1j*skew_pf_0, sign_only=True).real
-	pf_pi = pfaffian.pfaffian(1j*skew_pf_pi, sign_only=True).real
-	return pf_0*pf_pi
+		skew_pf_0 = symmetry.make_skew_symmetric(h_0)
+		return pfaffian.pfaffian(1j*skew_pf_0, sign_only=True).real
+	else:
+		h_0  = h_k(0)
+		h_pi = h_k(np.pi)
+
+		skew_pf_0 = symmetry.make_skew_symmetric(h_0)
+		skew_pf_pi = symmetry.make_skew_symmetric(h_pi)
+		
+		pf_0  = pfaffian.pfaffian(1j*skew_pf_0, sign_only=True).real
+		pf_pi = pfaffian.pfaffian(1j*skew_pf_pi, sign_only=True).real
+		return pf_0*pf_pi
