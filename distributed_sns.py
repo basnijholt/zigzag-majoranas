@@ -31,6 +31,15 @@ def calc_pfaffian_for_system(syst_dimension):
     
     return func
 
+def f_adaptive(xy, keys, params, syst_pars):
+    import sns_system, topology
+    for k, val in zip(keys, xy):
+        params[k] = val
+    params[keys[0]], params[keys[1]] = xy
+    syst = sns_system.make_sns_system(**syst_pars)
+    return topology.get_pfaffian(syst, params)
+
+
 def get_list_of_parameter_dictionaries(params_mutable):
     """ 
     Turn dictionary containing parameters -- where some of the parameters 
