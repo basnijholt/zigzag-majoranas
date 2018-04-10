@@ -1,6 +1,7 @@
 import kwant
 import topology
 import cmath
+import scipy.constants
 
 def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = False):
     """ 
