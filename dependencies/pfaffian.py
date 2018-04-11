@@ -90,7 +90,7 @@ def skew_tridiagonalize(A, overwrite_a=False, calc_q=True):
     # Check if matrix is square
     assert A.shape[0] == A.shape[1] > 0
     # Check if it's skew-symmetric
-    assert abs((A+A.T).max()) < 1e-14
+    assert abs((A+A.T).max()) < 1e-12
 
     n = A.shape[0]
     A = np.asarray(A)  # the slice views work only properly for arrays
@@ -150,7 +150,7 @@ def skew_LTL(A, overwrite_a=False, calc_L=True, calc_P=True):
     # Check if matrix is square
     assert A.shape[0] == A.shape[1] > 0
     # Check if it's skew-symmetric
-    assert abs((A+A.T).max()) < 1e-14
+    assert abs((A+A.T).max()) < 1e-12
 
     n = A.shape[0]
     A = np.asarray(A)  # the slice views work only properly for arrays
@@ -237,7 +237,7 @@ def pfaffian(A, overwrite_a=False, method='P', sign_only=False):
     # Check if matrix is square
     assert A.shape[0] == A.shape[1] > 0
     # Check if it's skew-symmetric
-    assert abs((A+A.T).max()) < 1e-14, abs((A+A.T).max())
+    assert abs((A+A.T).max()) < 1e-12, abs((A+A.T).max())
     # Check that the method variable is appropriately set
     assert method == 'P' or method == 'H'
     if method == 'H' and sign_only:
@@ -259,7 +259,7 @@ def pfaffian_LTL(A, overwrite_a=False, sign_only=False):
     # Check if matrix is square
     assert A.shape[0] == A.shape[1] > 0
     # Check if it's skew-symmetric
-    assert abs((A+A.T).max()) < 1e-14
+    assert abs((A+A.T).max()) < 1e-12
 
     n = A.shape[0]
     A = np.asarray(A)  # the slice views work only properly for arrays
@@ -331,7 +331,7 @@ def pfaffian_householder(A, overwrite_a=False):
     # Check if matrix is square
     assert A.shape[0] == A.shape[1] > 0
     # Check if it's skew-symmetric
-    assert abs((A+A.T).max()) < 1e-14
+    assert abs((A+A.T).max()) < 1e-12
 
     n = A.shape[0]
 
@@ -392,7 +392,7 @@ def pfaffian_schur(A, overwrite_a=False):
 
     assert A.shape[0] == A.shape[1] > 0
 
-    assert abs(A + A.T).max() < 1e-14
+    assert abs(A + A.T).max() < 1e-12
 
     # Quick return if possible
     if A.shape[0] % 2 == 1:
@@ -415,7 +415,7 @@ def pfaffian_sign(A, overwrite_a=False):
     # Check if matrix is square
     assert A.shape[0] == A.shape[1] > 0
     # Check if it's skew-symmetric
-    assert abs((A+A.T).max()) < 1e-14, abs((A+A.T).max())
+    assert abs((A+A.T).max()) < 1e-12, abs((A+A.T).max())
 
     return pfaffian_LTL_sign(A, overwrite_a)
 
@@ -431,7 +431,7 @@ def pfaffian_LTL_sign(A, overwrite_a=False):
     # Check if matrix is square
     assert A.shape[0] == A.shape[1] > 0
     # Check if it's skew-symmetric
-    assert abs((A+A.T).max()) < 1e-14
+    assert abs((A+A.T).max()) < 1e-12
 
     n = A.shape[0]
     A = np.asarray(A)  # the slice views work only properly for arrays
