@@ -2,35 +2,6 @@ import itertools
 import copy
 import collections
 
-def calc_pfaffian_for_system(syst_dimension):
-    """ 
-    Wrapper for get_pfaffian and build system for use in disctributed computing
-    
-    Parameters:
-    -----------
-    syst_dim : dict
-        dictionary containing dimensional parameters for make_sns_system
-
-    params : dict
-        Set of constants and parameters for the system such as chemical potential, 
-        SOC strength, etc.
-
-    Returns:
-    --------
-    invariant : float
-        Returns sign of pfaffians (topological invariant) of the system
-    """
-    def func(params):
-        import sns_system
-        import topology
-
-        syst = sns_system.make_sns_system(**syst_dimension)
-        invariant = topology.get_pfaffian(syst, params)
-
-        return invariant
-    
-    return func
-
 def f_adaptive(xy, keys, params, syst_pars, transverse_soi=False):
     import sns_system, topology
 
@@ -40,7 +11,7 @@ def f_adaptive(xy, keys, params, syst_pars, transverse_soi=False):
         params[k] = val
     params[keys[0]], params[keys[1]] = xy
     syst = sns_system.make_sns_system(**syst_pars, transverse_soi = transverse_soi)
-    return topology.get_pfaffian(syst, params, transverse_soi = transverse_soi)
+    return topology.get_pfaffian(syst, params)
 
 
 def get_list_of_parameter_dictionaries(params_mutable):

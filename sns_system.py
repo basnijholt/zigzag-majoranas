@@ -41,8 +41,9 @@ def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = False):
     #     HAMILTONIAN DEFINITIONS
     if transverse_soi:
         ham_str = """
-            (hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) + 
-            g_factor*mu_B*B * kron(sigma_0, sigma_y)"""
+        (hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) + 
+        alpha * kron(sigma_z, sigma_x) * k_y + 
+        g_factor*mu_B*B * kron(sigma_0, sigma_y)"""
     else:
         ham_str = """
         (hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) + 
@@ -95,4 +96,3 @@ def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = False):
     syst.attach_lead(lead)
     
     return syst.finalized()
-
