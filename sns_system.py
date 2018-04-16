@@ -11,7 +11,7 @@ constants = dict(
     cos=cmath.cos,
     sin=cmath.sin)
 
-def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = False):
+def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = True):
     """ 
     Builds and returns finalized 2dim sns system
     
@@ -42,12 +42,12 @@ def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = False):
     if transverse_soi:
         ham_str = """
         (hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) + 
-        alpha * kron(sigma_z, sigma_x) * k_y + 
+        alpha * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x) + 
         g_factor*mu_B*B * kron(sigma_0, sigma_y)"""
     else:
         ham_str = """
         (hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) + 
-        alpha * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x) + 
+        alpha * kron(sigma_z, sigma_x) * k_y + 
         g_factor*mu_B*B * kron(sigma_0, sigma_y)"""
 
     ham_sc_left = ham_str + " + Delta * kron(sigma_y, sigma_0)"

@@ -2,7 +2,7 @@ import itertools
 import copy
 import collections
 
-def f_adaptive(xy, keys, params, syst_pars, transverse_soi=False):
+def f_adaptive(xy, keys, params, syst_pars, transverse_soi=True):
     import sns_system, topology
 
     params.update(dict(**sns_system.constants))
