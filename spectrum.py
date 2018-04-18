@@ -2,6 +2,7 @@ import kwant
 import numpy as np
 import scipy.sparse as sp
 import scipy.sparse.linalg as sla
+import sns_system
 
 def sparse_diag(matrix, k, sigma, **kwargs):
     """Call sla.eigsh with mumps support.
@@ -22,3 +23,34 @@ def sparse_diag(matrix, k, sigma, **kwargs):
 
     opinv = LuInv(matrix - sigma * sp.identity(matrix.shape[0]))
     return sla.eigsh(matrix, k, sigma=sigma, OPinv=opinv, **kwargs)
+
+def calc_spectrum(syst, params, k=20):
+    ham = syst.hamiltonian_submatrix(params=params, sparse=True)
+    (energies, wfs) = sparse_diag(ham, k=k, sigma=0)
+    return (energies, wfs)
+
+def calc_dos_lowest_state(syst, params, syst_pars):
+    """ Calculate density of states for lowest energy
+    Parameters
+    ----------
+    syst : kwant.system.FiniteSystem
+    
+    params : dictionary of parameters for syst
+
+    syst_pars: dictionary of system dimensional parameters
+
+    Returns
+    -------
+    energy : float
+        Energy of lowest eigenmode
+
+    energy_gap : float
+        Energy gap between first and second mode
+
+    dos : numpy.ndarray
+        Density of states in 2d array format
+    """
+    (energies, wfs) = calc_spectrum(syst, params, k=6)
+    energy_gap = abs(energies[2]) - abs(energies[0])
+    wf = sns_system.to_site_ph_spin(syst_pars, wfs[:,0])
+    return (abs(energies[0]), energy_gap, np.sum(np.abs(wf)**2, axis=2))

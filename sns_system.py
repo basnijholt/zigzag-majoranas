@@ -2,6 +2,7 @@ import kwant
 import topology
 import cmath
 import scipy.constants
+import numpy as np
 
 constants = dict(
     m_eff=0.023 * scipy.constants.m_e / (scipy.constants.eV * 1e-3) / 1e18,  # effective mass in kg, 
@@ -96,3 +97,14 @@ def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = True):
     syst.attach_lead(lead)
     
     return syst.finalized()
+
+def to_site_ph_spin(syst_pars, wf):
+    norbs = 4
+    nsites = len(wf) // norbs
+    nsitesL = int(syst_pars['Ly'] / syst_pars['a'])
+    nsitesW = nsites // nsitesL
+
+    wf_eh_sp = np.reshape(wf, (nsites, norbs))
+    wf_eh_sp_grid = np.reshape(wf_eh_sp, (nsitesW, nsitesL, norbs))
+    
+    return wf_eh_sp_grid
