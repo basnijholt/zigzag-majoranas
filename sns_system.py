@@ -98,6 +98,85 @@ def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = True):
     
     return syst.finalized()
 
+def make_junction(a, Lm, Ly, transverse_soi = True, **pars):
+    """ 
+    Builds and returns finalized junction of the sns system
+    
+    Parameters:
+    -----------
+    a : float
+        lattice spacing in nm
+
+    Lm : float
+        width of middle normal strip
+
+    Lr : float
+        width of right superconductor
+
+    Ll : float
+        width of left superconductor
+
+    Ly : float
+        length of finite system
+
+    Returns:
+    --------
+    syst : kwant.system.FiniteSystem
+        Finite system where lead[0] is assumed to be the bulk lead, a slice of the bulk along the y-axis
+    """
+
+    #     HAMILTONIAN DEFINITIONS
+    if transverse_soi:
+        ham_str = """
+        (hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) + 
+        alpha * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x) + 
+        g_factor*mu_B*B * kron(sigma_0, sigma_y)"""
+    else:
+        ham_str = """
+        (hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) + 
+        alpha * kron(sigma_z, sigma_x) * k_y + 
+        g_factor*mu_B*B * kron(sigma_0, sigma_y)"""
+
+    ham_sc_left = ham_str + " + Delta * kron(sigma_y, sigma_0)"
+    ham_sc_right = ham_str + """ + cos(phase) * Delta * kron(sigma_y, sigma_0) + 
+                                    + sin(phase) * Delta * kron(sigma_x, sigma_0)
+    """
+
+
+    # TURN HAMILTONIAN STRINGS INTO TEMPLATES
+    template_normal = kwant.continuum.discretize(ham_str, grid_spacing=a)
+    template_sc_left = kwant.continuum.discretize(ham_sc_left, grid_spacing=a)
+    template_sc_right = kwant.continuum.discretize(ham_sc_right, grid_spacing=a)
+    
+    # SHAPE FUNCTIONS
+    def shape_normal(site):
+        (x, y) = site.pos
+        return 0 <= y < Ly and 0 <= x < Lm
+    
+    def shape_left_sc(site):
+        (x, y) = site.pos
+        return 0 <= y < Ly
+    
+    def shape_right_sc(site):
+        (x, y) = site.pos
+        return 0 <= y < Ly
+    
+    # BUILD FINITE SYSTEM
+    syst = kwant.Builder()
+    syst.fill(template_normal, shape_normal, (0,0))
+
+    lead_left = kwant.Builder(kwant.TranslationalSymmetry([-a, 0]))
+    lead_right = kwant.Builder(kwant.TranslationalSymmetry([a, 0]))
+
+    lead_left.fill(template_sc_left, shape_left_sc, (-a, 0))
+    lead_right.fill(template_sc_right, shape_right_sc, (Lm, 0))
+
+    syst.attach_lead(lead_left)
+    syst.attach_lead(lead_right)
+    
+    return syst.finalized()
+
+
 def to_site_ph_spin(syst_pars, wf):
     norbs = 4
     nsites = len(wf) // norbs
