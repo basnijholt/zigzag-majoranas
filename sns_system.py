@@ -12,6 +12,28 @@ constants = dict(
     cos=cmath.cos,
     sin=cmath.sin)
 
+def get_template_strings(transverse_soi):
+    if transverse_soi:
+        ham_str = """
+        (hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) + 
+        alpha * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x)"""
+    else:
+        ham_str = """
+        (hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) + 
+        alpha * kron(sigma_z, sigma_x) * k_y"""
+
+    ham_sc_left = ham_str + " + Delta * kron(sigma_y, sigma_0)"
+    ham_sc_right = ham_str + """ + cos(phase) * Delta * kron(sigma_y, sigma_0) + 
+                                    + sin(phase) * Delta * kron(sigma_x, sigma_0)
+    """
+    ham_normal = ham_str + """ + 
+                                g_factor*mu_B*B * kron(sigma_0, sigma_y)
+    """
+    template_strings = dict(ham_normal=ham_normal,
+                            ham_sc_right=ham_sc_right,
+                            ham_sc_left=ham_sc_left)
+    return template_strings
+
 def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = True):
     """ 
     Builds and returns finalized 2dim sns system
@@ -40,27 +62,12 @@ def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = True):
     """
 
     #     HAMILTONIAN DEFINITIONS
-    if transverse_soi:
-        ham_str = """
-        (hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) + 
-        alpha * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x) + 
-        g_factor*mu_B*B * kron(sigma_0, sigma_y)"""
-    else:
-        ham_str = """
-        (hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) + 
-        alpha * kron(sigma_z, sigma_x) * k_y + 
-        g_factor*mu_B*B * kron(sigma_0, sigma_y)"""
-
-    ham_sc_left = ham_str + " + Delta * kron(sigma_y, sigma_0)"
-    ham_sc_right = ham_str + """ + cos(phase) * Delta * kron(sigma_y, sigma_0) + 
-                                    + sin(phase) * Delta * kron(sigma_x, sigma_0)
-    """
-
+    template_strings = get_template_strings(transverse_soi)
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
-    template_normal = kwant.continuum.discretize(ham_str, grid_spacing=a)
-    template_sc_left = kwant.continuum.discretize(ham_sc_left, grid_spacing=a)
-    template_sc_right = kwant.continuum.discretize(ham_sc_right, grid_spacing=a)
+    template_normal = kwant.continuum.discretize(template_strings['ham_normal'], grid_spacing=a)
+    template_sc_left = kwant.continuum.discretize(template_strings['ham_sc_left'], grid_spacing=a)
+    template_sc_right = kwant.continuum.discretize(template_strings['ham_sc_right'], grid_spacing=a)
     
     # SHAPE FUNCTIONS
     def shape_normal(site):
@@ -126,27 +133,12 @@ def make_junction(a, Lm, Ly, transverse_soi = True, **pars):
     """
 
     #     HAMILTONIAN DEFINITIONS
-    if transverse_soi:
-        ham_str = """
-        (hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) + 
-        alpha * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x) + 
-        g_factor*mu_B*B * kron(sigma_0, sigma_y)"""
-    else:
-        ham_str = """
-        (hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) + 
-        alpha * kron(sigma_z, sigma_x) * k_y + 
-        g_factor*mu_B*B * kron(sigma_0, sigma_y)"""
-
-    ham_sc_left = ham_str + " + Delta * kron(sigma_y, sigma_0)"
-    ham_sc_right = ham_str + """ + cos(phase) * Delta * kron(sigma_y, sigma_0) + 
-                                    + sin(phase) * Delta * kron(sigma_x, sigma_0)
-    """
-
+    template_strings = get_template_strings(transverse_soi)
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
-    template_normal = kwant.continuum.discretize(ham_str, grid_spacing=a)
-    template_sc_left = kwant.continuum.discretize(ham_sc_left, grid_spacing=a)
-    template_sc_right = kwant.continuum.discretize(ham_sc_right, grid_spacing=a)
+    template_normal = kwant.continuum.discretize(template_strings['ham_normal'], grid_spacing=a)
+    template_sc_left = kwant.continuum.discretize(template_strings['ham_sc_left'], grid_spacing=a)
+    template_sc_right = kwant.continuum.discretize(template_strings['ham_sc_right'], grid_spacing=a)
     
     # SHAPE FUNCTIONS
     def shape_normal(site):
