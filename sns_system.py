@@ -35,7 +35,7 @@ def get_template_strings(transverse_soi):
                             ham_sc_left=ham_sc_left)
     return template_strings
 
-def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = True):
+def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = True, with_hopping = False):
     """ 
     Builds and returns finalized 2dim sns system
     
@@ -99,7 +99,8 @@ def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = True):
 
     lat = template_normal.lattice
     cuts = supercurrent.get_cuts(syst, lat, first_slice=Lm//(2*a), direction=1)
-
+    if with_hopping:
+        syst = add_vlead(syst, lat, *cuts)
     # LEAD: SLICE OF BULK ALONG Y AXIS
     lead = kwant.Builder(kwant.TranslationalSymmetry([0,-a]))
 
@@ -115,7 +116,10 @@ def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = True):
     
     syst = syst.finalized()
     hopping = supercurrent.hopping_between_cuts(syst, *cuts)
-    return syst, hopping
+    if with_hopping:
+        return syst, hopping
+    else:
+        return syst
 
 def make_junction(a, Lm, Ly, transverse_soi = True, **pars):
     """ 
@@ -191,3 +195,11 @@ def to_site_ph_spin(syst_pars, wf):
     wf_eh_sp_grid = np.reshape(wf_eh_sp, (nsitesW, nsitesL, norbs))
     
     return wf_eh_sp_grid
+
+def add_vlead(syst, lat, l_cut, r_cut):
+    dim = lat.norbs * (len(l_cut) + len(r_cut))
+    vlead = kwant.builder.SelfEnergyLead(
+        lambda energy, args: np.zeros((dim, dim)), l_cut + r_cut)
+    syst.leads.append(vlead)
+    return syst
+    
