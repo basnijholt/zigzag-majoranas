@@ -1,8 +1,28 @@
 import distributed_sns
+import sns_system
+
+import kwant
+
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy as np
 import holoviews as hv
+
+def plot_syst(syst_pars, params, a_new=None, num_lead_cells=4):
+    a = syst_pars['a'] if a_new==None else a_new
+    Ll = syst_pars['Ll']
+    Lm = syst_pars['Lm']
+    Lr = syst_pars['Lr']
+    Ly = syst_pars['Ly']
+    
+    syst = sns_system.make_sns_system(a=a, Ll=Ll, Lm=Lm, Lr=Lr, Ly=Ly)
+    
+    def delta(sites):
+        return [np.abs(syst.hamiltonian(i, i, params=params)[1, 0])
+                    for i, site in enumerate(sites)]
+
+    return kwant.plot(syst, num_lead_cells=num_lead_cells, site_color=delta(syst.sites),
+                 fig_size=(5, 5), show=False)
 
 def plot_pfaffian(params, results, figsize = (5,5)):
     # Plots pfaffian for range of parameters, for a list of parameters

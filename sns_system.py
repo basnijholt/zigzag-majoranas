@@ -3,6 +3,7 @@ import topology
 import cmath
 import scipy.constants
 import numpy as np
+import supercurrent
 
 constants = dict(
     m_eff=0.023 * scipy.constants.m_e / (scipy.constants.eV * 1e-3) / 1e18,  # effective mass in kg, 
@@ -91,19 +92,30 @@ def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = True):
     syst = kwant.Builder()
 
     syst.fill(template_normal, shape_normal, (0,0))
-    syst.fill(template_sc_left, shape_left_sc, (-Ll,0))
-    syst.fill(template_sc_right, shape_right_sc, (Lm,0))
+    if Ll>=a:
+    	syst.fill(template_sc_left, shape_left_sc, (-Ll,0))
+    if Lr>=a:
+    	syst.fill(template_sc_right, shape_right_sc, (Lm,0))
+
+    lat = template_normal.lattice
+    cuts = supercurrent.get_cuts(syst, lat, first_slice=Lm//(2*a), direction=1)
 
     # LEAD: SLICE OF BULK ALONG Y AXIS
     lead = kwant.Builder(kwant.TranslationalSymmetry([0,-a]))
 
-    lead.fill(template_sc_left, shape_lead(-Ll,0), (-Ll, -a))
     lead.fill(template_normal, shape_lead(0,Lm), (0,-a))
-    lead.fill(template_sc_right, shape_lead(Lm,Lm + Lr), (Lm,-a))
+    if Ll>=a:
+        lead.fill(template_sc_left, shape_lead(-Ll,0), (-Ll, -a))
+    if Lr>=a:
+        lead.fill(template_sc_right, shape_lead(Lm,Lm + Lr), (Lm,-a))
 
     syst.attach_lead(lead)
+    syst.attach_lead(lead.reversed())
+
     
-    return syst.finalized()
+    syst = syst.finalized()
+    hopping = supercurrent.hopping_between_cuts(syst, *cuts)
+    return syst, hopping
 
 def make_junction(a, Lm, Ly, transverse_soi = True, **pars):
     """ 
