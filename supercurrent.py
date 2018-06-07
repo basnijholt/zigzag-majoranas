@@ -179,7 +179,7 @@ def current_kpm_exact(syst_pars, params, k, energy_resolution, cut_tag=0, direct
     
     return params['e']/ params['hbar'] * sum(I)
 
-def distributed_current_kpm_exact(syst_pars, params, k, energy_resolution, lview, cut_tag=0, direction=0):
+def distributed_current_kpm_exact(syst_pars, params, k, energy_resolution, lview, chunk_size, cut_tag=0, direction=0):
     I = 0
     
     params.update(dict(**sns_system.constants))
@@ -208,10 +208,12 @@ def distributed_current_kpm_exact(syst_pars, params, k, energy_resolution, lview
                                         params=params,
                                         cut_tag=cut_tag, 
                                         direction=direction,
-                                        evs=evs)
+                                        evs=evs,
+                                        energy_resolution=energy_resolution)
     
     lview.block = True
     I_kpm = lview.map(filled_in_kpm_calculation, chunks)
+    # I_kpm = list(map(filled_in_kpm_calculation, chunks))
     I += np.sum(I_kpm, axis=0)
 
     return params['e']/ params['hbar'] * sum(I)
@@ -221,7 +223,7 @@ def divide_sites_into_chunks(vector, chunk_size):
     vector_length = len(vector)
     return [vector[start:start+chunk_size] for start in range(0, vector_length, chunk_size)]
 
-def calc_kpm_current(chunk_indices, syst_pars, params, cut_tag, direction, evs):
+def calc_kpm_current(chunk_indices, syst_pars, params, cut_tag, direction, evs, energy_resolution):
     params.update(dict(**sns_system.constants))
     syst = sns_system.make_sns_system(**syst_pars)
 
@@ -231,7 +233,8 @@ def calc_kpm_current(chunk_indices, syst_pars, params, cut_tag, direction, evs):
 
     kpm_current_operator = make_projected_current(syst, params, evs, cut=cut_sites)
 
-    factory = make_local_factory(site_indices=cut_indices, index=chunk_indices[0])
+
+    factory = make_local_factory(site_indices=cut_indices, idx=chunk_indices[0]-cut_indices[0])
 
     sd = kwant.kpm.SpectralDensity(syst,
                                        params=params,
