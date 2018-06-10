@@ -3,6 +3,7 @@ import kwant
 import sns_system
 import spectrum
 import numbers
+import warnings
 from functools import partial
 
 sigz = kwant.continuum.discretizer.ta.array([[1,0,0,0],
@@ -83,9 +84,12 @@ def make_local_factory(site_indices=None, eigenvecs=None, rng=0, idx=0):
             bounds of the spectrum. Using the same seed ensures reproducibility.
             """
             rng = ensure_rng(rng)
+            if eigenvecs is not None:
+                pass
+#                 other_vecs = np.zeros((eigenvecs.shape[0], len(site_indices)), dtype=complex)
             
             def vector_factory(n):
-                nonlocal idx, rng, eigenvecs, site_indices
+                nonlocal idx, rng, eigenvecs, site_indices#, other_vecs
                 
                 if site_indices is None:
                     site_indices = np.arange(n)
@@ -98,6 +102,9 @@ def make_local_factory(site_indices=None, eigenvecs=None, rng=0, idx=0):
 
                     if eigenvecs is not None:
                         vec = vec - eigenvecs @ eigenvecs[site_indices[idx],:].conj()
+                        vec /= np.sqrt(vec.T.conj() @ vec)
+                        if abs(vec[site_indices[idx]])<0.95:
+                            warnings.warn('Basis is too non-orthogonal with respect to itself', Warning)
                     idx += 1
                     return vec
             return vector_factory
@@ -119,7 +126,7 @@ def make_local_factory(site_indices=None, eigenvecs=None, rng=0, idx=0):
              vi. Integrate over spectral density
 6. Add both exact and kpm current contributions and sum over cut
 """
-def current_kpm_exact(syst_pars, params, k, energy_resolution, cut_tag=0, direction=0, chunk_size=None):
+def current_kpm_exact(syst_pars, params, k, energy_resolution, cut_tag=0, direction=0, chunk_size=None, operator_ev=True):
     I = 0
     
 # 1. Make system
@@ -133,7 +140,9 @@ def current_kpm_exact(syst_pars, params, k, energy_resolution, cut_tag=0, direct
     ham = syst.hamiltonian_submatrix(params=params, sparse=True)
 
     (en, evs) = spectrum.sparse_diag(ham, k=k, sigma=0)
-    
+    if max(en)<params['Delta']:
+        warnings.warn('max(en)<params[\'Delta\']', Warning)
+        
 # 4. Calculate current from exact spectrum
 #  i. Create current operator, bind parameters
     exact_current_operator = kwant.operator.Current(syst, 
@@ -148,10 +157,16 @@ def current_kpm_exact(syst_pars, params, k, energy_resolution, cut_tag=0, direct
     
 # 5. Calculate current from kpm part
 #  i. Create current operator w/ projected out states
-    kpm_current_operator = make_projected_current(syst, params, evs, cut=cut_sites)
+    if operator_ev:
+        kpm_current_operator = make_projected_current(syst, params, evs, cut=cut_sites)
+    else:
+        kpm_current_operator = exact_current_operator
 
 # ii. Create eigenvector factory 
-    factory = make_local_factory(site_indices=cut_indices)
+    if operator_ev:
+        factory = make_local_factory(site_indices=cut_indices)
+    else:
+        factory = make_local_factory(site_indices=cut_indices, eigenvecs=evs)
     
 #iii. Loop over chunks of the vectors:
     if chunk_size==None:
@@ -173,13 +188,14 @@ def current_kpm_exact(syst_pars, params, k, energy_resolution, cut_tag=0, direct
         sd.add_moments(energy_resolution=energy_resolution)
         
 #     vi. Integrate over spectral density
+        
         I += sd.integrate(distribution_function=_fermi_dirac)*chunk_size
         
         vectors_left-=chunk_size
     
     return params['e']/ params['hbar'] * sum(I)
 
-def distributed_current_kpm_exact(syst_pars, params, k, energy_resolution, lview, chunk_size, cut_tag=0, direction=0):
+def distributed_current_kpm_exact(syst_pars, params, k, energy_resolution, lview, chunk_size, cut_tag=0, direction=0, operator_projection=True):
     I = 0
     
     params.update(dict(**sns_system.constants))
@@ -190,7 +206,7 @@ def distributed_current_kpm_exact(syst_pars, params, k, energy_resolution, lview
     ham = syst.hamiltonian_submatrix(params=params, sparse=True)
 
     (en, evs) = spectrum.sparse_diag(ham, k=k, sigma=0)
-    
+
     exact_current_operator = kwant.operator.Current(syst, 
                                                     onsite=sigz,
                                                     where=cut_sites
@@ -200,7 +216,7 @@ def distributed_current_kpm_exact(syst_pars, params, k, energy_resolution, lview
 
     for (e, ev) in zip(en, evs.T):        
         I += _fermi_dirac(e.real) * exact_current_operator(ev)
-    
+
     chunks = divide_sites_into_chunks(cut_indices, chunk_size)
 
     filled_in_kpm_calculation = partial(calc_kpm_current,
@@ -209,11 +225,12 @@ def distributed_current_kpm_exact(syst_pars, params, k, energy_resolution, lview
                                         cut_tag=cut_tag, 
                                         direction=direction,
                                         evs=evs,
-                                        energy_resolution=energy_resolution)
+                                        energy_resolution=energy_resolution,
+                                        operator_projection=operator_projection)
     
     lview.block = True
     I_kpm = lview.map(filled_in_kpm_calculation, chunks)
-    # I_kpm = list(map(filled_in_kpm_calculation, chunks))
+#     I_kpm = list(map(filled_in_kpm_calculation, chunks))
     I += np.sum(I_kpm, axis=0)
 
     return params['e']/ params['hbar'] * sum(I)
@@ -223,7 +240,7 @@ def divide_sites_into_chunks(vector, chunk_size):
     vector_length = len(vector)
     return [vector[start:start+chunk_size] for start in range(0, vector_length, chunk_size)]
 
-def calc_kpm_current(chunk_indices, syst_pars, params, cut_tag, direction, evs, energy_resolution):
+def calc_kpm_current(chunk_indices, syst_pars, params, cut_tag, direction, evs, energy_resolution, operator_projection):
     params.update(dict(**sns_system.constants))
     syst = sns_system.make_sns_system(**syst_pars)
 
@@ -231,10 +248,17 @@ def calc_kpm_current(chunk_indices, syst_pars, params, cut_tag, direction, evs, 
     
     _fermi_dirac = partial(fermi_dirac, params=params)
 
-    kpm_current_operator = make_projected_current(syst, params, evs, cut=cut_sites)
-
-
-    factory = make_local_factory(site_indices=cut_indices, idx=chunk_indices[0]-cut_indices[0])
+    if(operator_projection):
+        kpm_current_operator = make_projected_current(syst, params, evs, cut=cut_sites)
+    else:
+        kpm_current_operator = kwant.operator.Current(syst, 
+                                                    onsite=sigz,
+                                                    where=cut_sites
+                                                   ).bind(params=params)
+    if(operator_projection):
+        factory = make_local_factory(site_indices=cut_indices, idx=chunk_indices[0]-cut_indices[0])
+    else:
+        factory = make_local_factory(site_indices=cut_indices, idx=chunk_indices[0]-cut_indices[0], eigenvecs=evs)
 
     sd = kwant.kpm.SpectralDensity(syst,
                                        params=params,
