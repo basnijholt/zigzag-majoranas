@@ -73,7 +73,7 @@ def make_projected_current(syst, params, eigvecs, cut=None):
         return kwant_operator(bra, ket)
     return projected_current
 
-def make_local_factory(site_indices=None, eigenvecs=None, rng=0, idx=0):
+def make_local_factory(site_indices=None, eigenvecs=None, rng=0):
             """Return a `vector_factory` that outputs local vectors.
 
             If `sites` is provided, the local vectors belong only to
@@ -87,7 +87,7 @@ def make_local_factory(site_indices=None, eigenvecs=None, rng=0, idx=0):
             if eigenvecs is not None:
                 pass
 #                 other_vecs = np.zeros((eigenvecs.shape[0], len(site_indices)), dtype=complex)
-            
+            idx = -1
             def vector_factory(n):
                 nonlocal idx, rng, eigenvecs, site_indices#, other_vecs
                 
@@ -162,25 +162,26 @@ def current_kpm_exact(syst_pars, params, k, energy_resolution, cut_tag=0, direct
     else:
         kpm_current_operator = exact_current_operator
 
-# ii. Create eigenvector factory 
-    if operator_ev:
-        factory = make_local_factory(site_indices=cut_indices)
-    else:
-        factory = make_local_factory(site_indices=cut_indices, eigenvecs=evs)
     
 #iii. Loop over chunks of the vectors:
-    if chunk_size==None:
+    if chunk_size is None:
         chunk_size = len(cut_indices)
     
     vectors_left = len(cut_indices)
-    while vectors_left>0:
-        chunk_size = min(vectors_left, chunk_size)
+    chunks_inidices = divide_sites_into_chunks(cut_indices, chunk_size)
+    for chunk in chunks_inidices:
+        chunk_size = len(chunk)
         
+    # ii. Create eigenvector factory 
+        if operator_ev:
+            factory = make_local_factory(site_indices=chunk)
+        else:
+            factory = make_local_factory(site_indices=chunk, eigenvecs=evs)
 #     iv. Create SpectralDensity object
         sd = kwant.kpm.SpectralDensity(syst,
                                        params=params,
                                        operator=kpm_current_operator,
-                                       num_vectors=chunk_size-1,
+                                       num_vectors=chunk_size,
                                        num_moments=2,
                                        vector_factory=factory)
 
@@ -190,8 +191,6 @@ def current_kpm_exact(syst_pars, params, k, energy_resolution, cut_tag=0, direct
 #     vi. Integrate over spectral density
         
         I += sd.integrate(distribution_function=_fermi_dirac)*chunk_size
-        
-        vectors_left-=chunk_size
     
     return params['e']/ params['hbar'] * sum(I)
 
@@ -230,11 +229,12 @@ def distributed_current_kpm_exact(syst_pars, params, k, energy_resolution, dview
                                         energy_resolution=energy_resolution,
                                         operator_projection=operator_projection)
     
-    dview.push(dict(evs= evs))
-    
     lview.block = True
-    I_kpm = lview.map(filled_in_kpm_calculation, chunks)
+    dview.block = True
+    dview['evs']= evs
+    
 #     I_kpm = list(map(filled_in_kpm_calculation, chunks))
+    I_kpm = lview.map(filled_in_kpm_calculation, chunks)
     I += np.sum(I_kpm, axis=0)
 
     return params['e']/ params['hbar'] * sum(I)
@@ -245,6 +245,7 @@ def divide_sites_into_chunks(vector, chunk_size):
     return [vector[start:start+chunk_size] for start in range(0, vector_length, chunk_size)]
 
 def calc_kpm_current(chunk_indices, syst_pars, params, cut_tag, direction, energy_resolution, operator_projection):
+    global evs
     params.update(dict(**sns_system.constants))
     syst = sns_system.make_sns_system(**syst_pars)
 
@@ -260,14 +261,14 @@ def calc_kpm_current(chunk_indices, syst_pars, params, cut_tag, direction, energ
                                                     where=cut_sites
                                                    ).bind(params=params)
     if(operator_projection):
-        factory = make_local_factory(site_indices=cut_indices, idx=chunk_indices[0]-cut_indices[0])
+        factory = make_local_factory(site_indices=chunk_indices)
     else:
-        factory = make_local_factory(site_indices=cut_indices, idx=chunk_indices[0]-cut_indices[0], eigenvecs=evs)
+        factory = make_local_factory(site_indices=chunk_indices, eigenvecs=evs)
 
     sd = kwant.kpm.SpectralDensity(syst,
                                        params=params,
                                        operator=kpm_current_operator,
-                                       num_vectors=len(chunk_indices)-1,
+                                       num_vectors=len(chunk_indices),
                                        num_moments=2,
                                        vector_factory=factory)
     sd.add_moments(energy_resolution=energy_resolution)
