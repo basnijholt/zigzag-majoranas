@@ -195,7 +195,7 @@ def current_kpm_exact(syst_pars, params, k, energy_resolution, cut_tag=0, direct
     
     return params['e']/ params['hbar'] * sum(I)
 
-def distributed_current_kpm_exact(syst_pars, params, k, energy_resolution, lview, chunk_size, cut_tag=0, direction=0, operator_projection=True):
+def distributed_current_kpm_exact(syst_pars, params, k, energy_resolution, dview, lview, chunk_size, cut_tag=0, direction=0, operator_projection=True):
     I = 0
     
     params.update(dict(**sns_system.constants))
@@ -206,7 +206,9 @@ def distributed_current_kpm_exact(syst_pars, params, k, energy_resolution, lview
     ham = syst.hamiltonian_submatrix(params=params, sparse=True)
 
     (en, evs) = spectrum.sparse_diag(ham, k=k, sigma=0)
-
+    if max(en)<params['Delta']:
+        warnings.warn('max(en)<params[\'Delta\']', Warning)
+        
     exact_current_operator = kwant.operator.Current(syst, 
                                                     onsite=sigz,
                                                     where=cut_sites
@@ -224,9 +226,11 @@ def distributed_current_kpm_exact(syst_pars, params, k, energy_resolution, lview
                                         params=params,
                                         cut_tag=cut_tag, 
                                         direction=direction,
-                                        evs=evs,
+#                                         evs=evs,
                                         energy_resolution=energy_resolution,
                                         operator_projection=operator_projection)
+    
+    dview.push(dict(evs= evs))
     
     lview.block = True
     I_kpm = lview.map(filled_in_kpm_calculation, chunks)
@@ -240,7 +244,7 @@ def divide_sites_into_chunks(vector, chunk_size):
     vector_length = len(vector)
     return [vector[start:start+chunk_size] for start in range(0, vector_length, chunk_size)]
 
-def calc_kpm_current(chunk_indices, syst_pars, params, cut_tag, direction, evs, energy_resolution, operator_projection):
+def calc_kpm_current(chunk_indices, syst_pars, params, cut_tag, direction, energy_resolution, operator_projection):
     params.update(dict(**sns_system.constants))
     syst = sns_system.make_sns_system(**syst_pars)
 
