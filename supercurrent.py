@@ -195,8 +195,11 @@ def current_kpm_exact(syst_pars, params, k, energy_resolution, cut_tag=0, direct
     return params['e']/ params['hbar'] * sum(I)
 
 def distributed_current_kpm_exact(syst_pars, params, k, energy_resolution, dview, lview, chunk_size, cut_tag=0, direction=0, operator_projection=True):
-    
+    from time import time
     I = 0
+    
+    lview.block = True
+    dview.block = True
     
     params.update(dict(**sns_system.constants))
     syst = sns_system.make_sns_system(**syst_pars)
@@ -205,7 +208,17 @@ def distributed_current_kpm_exact(syst_pars, params, k, energy_resolution, dview
 
     ham = syst.hamiltonian_submatrix(params=params, sparse=True)
 
+    t=time()
+    dview.apply(calc_spectrum, syst_pars, params, k)
+    t2=time()
+    print('Spectrum calculation on nodes',t2-t)
+
+    t=time()
     (en, evs) = spectrum.sparse_diag(ham, k=k, sigma=0)
+    t2=time()
+    print('Spectrum calculation on io', t2-t)
+
+    
     if max(en)<params['Delta']:
         warnings.warn('max(en)<params[\'Delta\']', Warning)
         
@@ -221,11 +234,21 @@ def distributed_current_kpm_exact(syst_pars, params, k, energy_resolution, dview
 
     chunks = divide_sites_into_chunks(cut_indices, chunk_size)
 
-    lview.block = True
-    dview.block = True
+    filled_in_current = partial(calc_kpm_current,
+                              syst_pars=syst_pars,
+                              params=params,
+                              cut_tag=cut_tag,
+                              direction=direction,
+                              energy_resolution=energy_resolution,
+                              operator_projection=operator_projection)
+    
 #     I_kpm = list(map(filled_in_kpm_calculation, chunks))
-    dview.apply(calc_spectrum, syst_pars, params, k)
-    I_kpm = lview.map(filled_in_kpm_calculation, chunks)
+    t=time()
+    I_kpm = lview.map(filled_in_current, chunks)
+    t2=time()
+    print('KPM calculation', t2-t)
+
+
     I += np.sum(I_kpm, axis=0)
 
     return params['e']/ params['hbar'] * sum(I)
@@ -235,8 +258,11 @@ def divide_sites_into_chunks(vector, chunk_size):
     vector_length = len(vector)
     return [vector[start:start+chunk_size] for start in range(0, vector_length, chunk_size)]
 
+def get_spectrum():
+    global evs, en
+    return (en, evs)
 def calc_spectrum(syst_pars, params, k):
-    global evs
+    global evs, en
     
     params.update(dict(**sns_system.constants))
     syst = sns_system.make_sns_system(**syst_pars)
@@ -265,7 +291,8 @@ def calc_kpm_current(chunk_indices, syst_pars, params, cut_tag, direction, energ
     if(operator_projection):
         factory = make_local_factory(site_indices=chunk_indices)
     else:
-        factory = make_local_factory(site_indices=chunk_indices, eigenvecs=evs)
+        factory = make_local_factory(site_indices=chunk_indices)
+        # factory = make_local_factory(site_indices=chunk_indices, eigenvecs=evs)
 
     sd = kwant.kpm.SpectralDensity(syst,
                                        params=params,
