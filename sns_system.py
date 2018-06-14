@@ -98,7 +98,7 @@ def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = True, with_hopping = Fal
     	syst.fill(template_sc_right, shape_right_sc, (Lm,0))
 
     lat = template_normal.lattice
-    cuts = supercurrent.get_cuts(syst, lat, first_slice=Lm//(2*a), direction=1)
+    cuts = supercurrent.get_cuts(syst, lat, first_slice=Lm//(2*a), direction=0)
     if with_hopping:
         syst = add_vlead(syst, lat, *cuts)
     # LEAD: SLICE OF BULK ALONG Y AXIS
@@ -115,8 +115,8 @@ def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = True, with_hopping = Fal
 
     
     syst = syst.finalized()
-    hopping = supercurrent.hopping_between_cuts(syst, *cuts)
     if with_hopping:
+        hopping = supercurrent.hopping_between_cuts(syst, *cuts)
         return syst, hopping
     else:
         return syst

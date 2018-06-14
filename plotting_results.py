@@ -8,17 +8,18 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy as np
 import holoviews as hv
 
-def plot_syst(syst_pars, params, a_new=None, num_lead_cells=4):
-    a = syst_pars['a'] if a_new==None else a_new
-    Ll = syst_pars['Ll']
-    Lm = syst_pars['Lm']
-    Lr = syst_pars['Lr']
-    Ly = syst_pars['Ly']
-    
-    syst = sns_system.make_sns_system(a=a, Ll=Ll, Lm=Lm, Lr=Lr, Ly=Ly)
-    
+def plot_syst(syst_pars=None, params=None, a_new=None, num_lead_cells=4, syst=None):
+    if syst==None:
+	    a = syst_pars['a'] if a_new==None else a_new
+	    Ll = syst_pars['Ll']
+	    Lm = syst_pars['Lm']
+	    Lr = syst_pars['Lr']
+	    Ly = syst_pars['Ly']
+	    
+	    syst = sns_system.make_sns_system(a=a, Ll=Ll, Lm=Lm, Lr=Lr, Ly=Ly)
+	    
     def delta(sites):
-        return [np.abs(syst.hamiltonian(i, i, params=params)[1, 0])
+        return [np.abs(syst.hamiltonian(i, i, params=params)[2, 0])
                     for i, site in enumerate(sites)]
 
     return kwant.plot(syst, num_lead_cells=num_lead_cells, site_color=delta(syst.sites),
