@@ -328,7 +328,33 @@ def calc_kpm_current_evs(evs, syst_pars, params, cut_tag, direction, energy_reso
 
     return sd.integrate(distribution_function=_fermi_dirac)*evs.shape[1]
 
+def make_ev_factory(eigenvecs, rng=0):
+            """Return a `vector_factory` that outputs local vectors.
 
+            If `sites` is provided, the local vectors belong only to
+            those sites.
+            If `eigenvecs` is provided, project out those vectors form
+            the local vectors.
+            The parameter `rng` is passed to define a seed for finding the
+            bounds of the spectrum. Using the same seed ensures reproducibility.
+            """
+            rng = ensure_rng(rng)
+            if eigenvecs is not None:
+                pass
+
+            idx = -1
+            def vector_factory(n):
+                nonlocal idx, rng, eigenvecs
+                
+                if idx == -1:
+                    idx += 1
+                    return np.exp(rng.rand(n) * 2j * np.pi)
+                else:
+                    vec = eigenvecs[:,idx]
+                    idx += 1
+                    return vec
+            return vector_factory
+        
 def current_kpm_non_projected(syst_pars, params,
                               k, energy_resolution, lview, chunk_size,
                               cut_tag=0, direction=0):
@@ -368,11 +394,10 @@ def current_kpm_non_projected(syst_pars, params,
                                              params=params,
                                              cut_tag=cut_tag,
                                              direction=direction,
-                                             energy_resolution=energy_resolution,
-                                             operator_projection=True)   
+                                             energy_resolution=energy_resolution)   
     print("filled_in_calc_kpm_current_evs = partial(calc_kpm_current_evs,")
     ev_chunks = tuple(evs[:,i:i+2] for i in range(evs.shape[1]))
-#     ar_ABS_kpm = lview.map(filled_in_calc_kpm_current_evs, ev_chunks)
+    ar_ABS_kpm = lview.map(filled_in_calc_kpm_current_evs, ev_chunks)
     print("ar_ABS_kpm = lview.map(filled_in_calc_kpm_current_evs, ev_chunks)")
 #############################################################
 #  Calc exact current contribution
@@ -389,10 +414,10 @@ def current_kpm_non_projected(syst_pars, params,
 #######################################################
 # Wait until all done
 #######################################################
-#     ar_ABS_kpm.wait()
+    ar_ABS_kpm.wait()
     ar_current_all_kpm.wait() 
 
-    I_AB_kpm = I_AB_exact #ar_ABS_kpm.get()
+    I_AB_kpm = ar_ABS_kpm.get()
     I_all_kpm  = ar_current_all_kpm.get() 
     print(I_AB_exact.shape)
     return params['e']/ params['hbar'] * sum(I_AB_exact + (I_all_kpm - I_AB_kpm))
