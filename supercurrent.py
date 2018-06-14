@@ -335,7 +335,7 @@ def calc_kpm_current_evs(evs, syst_pars, params, cut_tag, direction, energy_reso
 
 
 def current_kpm_non_projected(syst_pars, params,
-                              k, energy_resolution, lview,
+                              k, energy_resolution, lview, chunk_size,
                               cut_tag=0, direction=0):
     lview.block = False
 
@@ -343,7 +343,7 @@ def current_kpm_non_projected(syst_pars, params,
     syst = sns_system.make_sns_system(**syst_pars)
     
     (cut_indices, cut_sites) = get_cut_sites_and_indices(syst, cut_tag, direction)
-
+    _fermi_dirac = partial(fermi_dirac, params=params)
 ######################################################
     #ar_current_all_kpm   = lview.map(calc_all_kpm, chunks_kpm) #non blocking
 #####################################################
@@ -355,7 +355,7 @@ def current_kpm_non_projected(syst_pars, params,
                                          cut_tag=cut_tag,
                                          direction=direction,
                                          energy_resolution=energy_resolution,
-                                         operator_projection=operator_projection)
+                                         operator_projection=True)
     
     ar_current_all_kpm = lview.map(filled_in_calc_kpm_current, chunks)
 
@@ -373,14 +373,20 @@ def current_kpm_non_projected(syst_pars, params,
                                              params=params,
                                              cut_tag=cut_tag,
                                              direction=direction,
-                                             energy_resolution=energy_resolution)   
+                                             energy_resolution=energy_resolution,
+                                             operator_projection=True)   
 
-    ev_chunks = tuple(a[:,i:i+2] for i in range(a.shape[1]))
+    ev_chunks = tuple(evs[:,i:i+2] for i in range(evs.shape[1]))
     ar_ABS_kpm = lview.map(filled_in_calc_kpm_current_evs, ev_chunks)
 
 #############################################################
 #  Calc exact current contribution
 #############################################################
+    exact_current_operator = kwant.operator.Current(syst, 
+                                                onsite=sigz,
+                                                where=cut_sites
+                                               ).bind(params=params)
+
     I_AB_exact = 0
     for (e, ev) in zip(en, evs.T):        
         I_AB_exact += _fermi_dirac(e.real) * exact_current_operator(ev)
@@ -395,3 +401,6 @@ def current_kpm_non_projected(syst_pars, params,
     I_all_kpm  = ar_current_all_kpm.get() 
 
     return params['e']/ params['hbar'] * sum(I_AB_exact + (I_all_kpm - I_AB_kpm))
+
+def get_cuts(*a, **_):
+    pass
