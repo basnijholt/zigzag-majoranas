@@ -258,20 +258,6 @@ def divide_sites_into_chunks(vector, chunk_size):
     vector_length = len(vector)
     return [vector[start:start+chunk_size] for start in range(0, vector_length, chunk_size)]
 
-def get_spectrum():
-    global evs, en
-    return (en, evs)
-
-def calc_spectrum(syst_pars, params, k):
-    global evs, en
-    
-    params.update(dict(**sns_system.constants))
-    syst = sns_system.make_sns_system(**syst_pars)
-
-    ham = syst.hamiltonian_submatrix(params=params, sparse=True)
-
-    (en, evs) = spectrum.sparse_diag(ham, k=k, sigma=0)
-    
 def calc_kpm_current(chunk_indices, syst_pars, params, cut_tag, direction, energy_resolution):
     
     
@@ -364,12 +350,10 @@ def current_kpm_non_projected(syst_pars, params,
     params.update(dict(**sns_system.constants))
     syst = sns_system.make_sns_system(**syst_pars)
     
-    (cut_indices, cut_sites) = get_cut_sites_and_indices(syst, cut_tag, direction)
     _fermi_dirac = partial(fermi_dirac, params=params)
-    
-######################################################
-    #ar_current_all_kpm   = lview.map(calc_all_kpm, chunks_kpm) #non blocking
-#####################################################
+
+    (cut_indices, cut_sites) = get_cut_sites_and_indices(syst, cut_tag, direction)
+
     chunks = divide_sites_into_chunks(cut_indices, chunk_size)
 
     filled_in_calc_kpm_current = partial(calc_kpm_current,
@@ -380,28 +364,28 @@ def current_kpm_non_projected(syst_pars, params,
                                          energy_resolution=energy_resolution)
     
     ar_current_all_kpm = lview.map(filled_in_calc_kpm_current, chunks)
-    print("ar_current_all_kpm = lview.map(filled_in_calc_kpm_current, chunks)")
-################################################
-    # ar_current_ABS_exact = calc_current_ABS_exact() #Blocking
-################################################
+
+
     ham = syst.hamiltonian_submatrix(params=params, sparse=True)
     (en, evs) = spectrum.sparse_diag(ham, k=k, sigma=0)
-    print("(en, evs) = spectrum.sparse_diag(ham, k=k, sigma=0)")
-    
-######################################################################
-    # ar_ABS_kpm = lview.map(calc_AB_kpm, chunks_ABS) #non blocking
-#####################################################################
+
+    if max(en)<params['Delta']:
+        delta = params['Delta']
+        warnings.warn(f'max(en)<params[\'Delta\'] ({max(en)}<{delta})', Warning)
+        
+
     filled_in_calc_kpm_current_evs = partial(calc_kpm_current_evs,
                                              syst_pars=syst_pars,
                                              params=params,
                                              cut_tag=cut_tag,
                                              direction=direction,
-                                             energy_resolution=energy_resolution)   
-    print("filled_in_calc_kpm_current_evs = partial(calc_kpm_current_evs,")
-    ev_chunks = tuple(evs[:,i:(i+1)] for i in range(0, evs.shape[1], 2))
+                                             energy_resolution=energy_resolution) 
 
+    ev_chunk_indices = divide_sites_into_chunks(np.arange(evs.shape[1]), chunk_size)
+    ev_chunks = tuple(evs[:,chunk_ind].copy() for chunk_ind in ev_chunk_indices)
+ 
     ar_ABS_kpm = lview.map(filled_in_calc_kpm_current_evs, ev_chunks)
-    print("ar_ABS_kpm = lview.map(filled_in_calc_kpm_current_evs, ev_chunks)")
+
 #############################################################
 #  Calc exact current contribution
 #############################################################
@@ -417,15 +401,11 @@ def current_kpm_non_projected(syst_pars, params,
 #######################################################
 # Wait until all done
 #######################################################
-    ar_ABS_kpm.wait()
-    ar_current_all_kpm.wait() 
 
-    I_AB_kpm = sum(ar_ABS_kpm.get())
     I_all_kpm  = sum(ar_current_all_kpm.get())
-    print((I_all_kpm), params['e']/ params['hbar'] *sum(I_all_kpm))
-    print((I_AB_kpm), params['e']/ params['hbar'] *sum(I_AB_kpm))
-    print((I_AB_exact), params['e']/ params['hbar'] *sum(I_AB_exact))
-    return params['e']/ params['hbar'] * sum(I_AB_exact + (I_all_kpm - I_AB_kpm))
+    I_AB_kpm = sum(ar_ABS_kpm.get())
+
+    return params['e']/ params['hbar'] * ((I_AB_exact) + (I_all_kpm - (I_AB_kpm)))
 
 def get_cuts(*a, **_):
     pass
