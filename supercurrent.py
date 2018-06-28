@@ -15,7 +15,7 @@ def fermi_dirac(e, params):
             if params['T']>0:
                 beta = 1/(params['k']*params['T'])
                 res= np.exp(-beta*e)/(1+np.exp(-beta*e))
-                if np.isnan(res):
+                if np.any(np.isnan(res)):
                     res = np.double(e<=0)
                 return res
             else:
