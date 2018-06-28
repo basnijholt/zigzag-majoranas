@@ -14,7 +14,10 @@ sigz = kwant.continuum.discretizer.ta.array([[1,0,0,0],
 def fermi_dirac(e, params):
             if params['T']>0:
                 beta = 1/(params['k']*params['T'])
-                return np.exp(-beta*e)/(1+np.exp(-beta*e))
+                res= np.exp(-beta*e)/(1+np.exp(-beta*e))
+                if np.isnan(res):
+                    res = np.double(e<=0)
+                return res
             else:
                 return np.double(e<=0)
             
