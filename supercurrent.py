@@ -12,7 +12,10 @@ sigz = kwant.continuum.discretizer.ta.array([[1,0,0,0],
                                              [0,0,0,-1]])
 
 def fermi_dirac(e, params):
-    beta = 1/(params['k']*params['T'])
+    if params['T']>0:
+        beta = 1/(params['k']*params['T'])
+    else:
+        return np.double(e<=0)
     minbetae = np.minimum(100, -beta*e)
     return np.exp(minbetae)/(1+np.exp(minbetae))
 
