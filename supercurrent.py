@@ -12,14 +12,10 @@ sigz = kwant.continuum.discretizer.ta.array([[1,0,0,0],
                                              [0,0,0,-1]])
 
 def fermi_dirac(e, params):
-            if params['T']>0:
-                beta = 1/(params['k']*params['T'])
-                res= np.exp(-beta*e)/(1+np.exp(-beta*e))
-                if np.any(np.isnan(res)):
-                    res = np.double(e<=0)
-                return res
-            else:
-                return np.double(e<=0)
+    beta = 1/(params['k']*params['T'])
+    minbetae = np.minimum(100, -beta*e)
+    return np.exp(minbetae)/(1+np.exp(minbetae))
+
             
 def get_cut_sites_and_indices(syst, cut_tag, direction):
     l_cut = []
