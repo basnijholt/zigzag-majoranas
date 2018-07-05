@@ -54,3 +54,22 @@ def calc_dos_lowest_state(syst, params, syst_pars):
     energy_gap = abs(energies[2]) - abs(energies[0])
     wf = sns_system.to_site_ph_spin(syst_pars, wfs[:,0])
     return (abs(energies[0]), energy_gap, np.sum(np.abs(wf)**2, axis=2))
+
+def find_gap(lead, params, energy_precision):
+    def has_bands(energy):
+        smds = lead.modes(energy=energy, params=params)[1]
+        return smds.nmodes>0
+    
+    energy_ub = params['Delta']
+    energy_lb = 0
+    
+    ub_has_bands = has_bands(energy_ub)
+    lb_has_bands = has_bands(energy_lb)
+
+    while(energy_ub - energy_lb > energy_precision):
+        energy_middle = (energy_ub + energy_lb) / 2
+        if has_bands(energy_middle):
+            energy_ub = energy_middle
+        else:
+            energy_lb = energy_middle
+    return energy_lb
