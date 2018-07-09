@@ -1,0 +1,15 @@
+
+H = H_kinetic - chem_potential +
+	spin_orbit + zeeman + superconductivity
+	
+Calculate whether topological by pfaffian:
+	show plot
+calculate gap:
+	using diagonalization
+	using band
+calculate bands
+calculate current by kpm, or full spectrum
+	- wraparound
+
+idea of anton:
+	Zeeman in plane effect on 3d lattice
