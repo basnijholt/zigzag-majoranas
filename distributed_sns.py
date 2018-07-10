@@ -2,7 +2,9 @@ import itertools
 import copy
 import collections
 
-def f_adaptive(xy, keys, params, syst_pars, transverse_soi=True):
+def f_adaptive(xy, keys, params, syst_pars,
+                     transverse_soi=True,
+                     zeeman_in_superconductor=False):
     import sns_system, topology
 
     params.update(dict(**sns_system.constants))
@@ -10,7 +12,7 @@ def f_adaptive(xy, keys, params, syst_pars, transverse_soi=True):
     for k, val in zip(keys, xy):
         params[k] = val
     params[keys[0]], params[keys[1]] = xy
-    syst = sns_system.make_sns_system(**syst_pars, transverse_soi = transverse_soi)
+    syst = sns_system.make_sns_system(**syst_pars, transverse_soi=transverse_soi, zeeman_in_superconductor=zeeman_in_superconductor)
     return topology.get_pfaffian(syst, params)
 
 

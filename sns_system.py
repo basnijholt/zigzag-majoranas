@@ -13,7 +13,7 @@ constants = dict(
     cos=cmath.cos,
     sin=cmath.sin)
 
-def get_template_strings(transverse_soi):
+def get_template_strings(transverse_soi, zeeman_in_superconductor=False):
     if transverse_soi:
         ham_str = """
         (hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) + 
@@ -24,18 +24,26 @@ def get_template_strings(transverse_soi):
         alpha * kron(sigma_z, sigma_x) * k_y"""
 
     ham_sc_left = ham_str + " + Delta * kron(sigma_y, sigma_0)"
+
+
     ham_sc_right = ham_str + """ + cos(phase) * Delta * kron(sigma_y, sigma_0) + 
                                     + sin(phase) * Delta * kron(sigma_x, sigma_0)
     """
     ham_normal = ham_str + """ + 
                                 g_factor*mu_B*B * kron(sigma_0, sigma_y)
     """
+    if zeeman_in_superconductor:
+        ham_sc_left  += "+ g_factor*mu_B*B * kron(sigma_0, sigma_y)"
+        ham_sc_right += "+ g_factor*mu_B*B * kron(sigma_0, sigma_y)"
+        
     template_strings = dict(ham_normal=ham_normal,
                             ham_sc_right=ham_sc_right,
                             ham_sc_left=ham_sc_left)
     return template_strings
 
-def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = True, with_hopping = False):
+def make_sns_system(a, Lm, Lr, Ll, Ly,
+                    transverse_soi = True,
+                    zeeman_in_superconductor = False):
     """ 
     Builds and returns finalized 2dim sns system
     
@@ -63,7 +71,7 @@ def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = True, with_hopping = Fal
     """
 
     #     HAMILTONIAN DEFINITIONS
-    template_strings = get_template_strings(transverse_soi)
+    template_strings = get_template_strings(transverse_soi, zeeman_in_superconductor)
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
     template_normal = kwant.continuum.discretize(template_strings['ham_normal'], grid_spacing=a)
@@ -97,10 +105,6 @@ def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = True, with_hopping = Fal
     if Lr>=a:
     	syst.fill(template_sc_right, shape_right_sc, (Lm,0))
 
-    lat = template_normal.lattice
-    cuts = supercurrent.get_cuts(syst, lat, first_slice=Lm//(2*a), direction=0)
-    if with_hopping:
-        syst = add_vlead(syst, lat, *cuts)
     # LEAD: SLICE OF BULK ALONG Y AXIS
     lead = kwant.Builder(kwant.TranslationalSymmetry([0,-a]))
 
@@ -115,11 +119,8 @@ def make_sns_system(a, Lm, Lr, Ll, Ly, transverse_soi = True, with_hopping = Fal
 
     
     syst = syst.finalized()
-    if with_hopping:
-        hopping = supercurrent.hopping_between_cuts(syst, *cuts)
-        return syst, hopping
-    else:
-        return syst
+
+    return syst
 
 def make_junction(a, Lm, Ly, transverse_soi = True, **pars):
     """ 
