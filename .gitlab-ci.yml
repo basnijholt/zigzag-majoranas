@@ -1,0 +1,8 @@
+notes:
+  script:
+    - cd two_dim_majoranas_report
+    - pdflatex progress.tex
+
+  artifacts:
+    paths:
+    - two_dim_majoranas_report/*.pdf
