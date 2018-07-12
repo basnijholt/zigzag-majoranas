@@ -35,7 +35,6 @@
 		H_\text{SO} &= \alpha \left( \ky \sigma_x - \kx \sigma_y \right)\\
 		H_\text{SC} &= \Delta \exp \left(i \theta \Theta(x-L_m) \right)
 	\end{align}
-
 	Where: 
 	\begin{equation}
 	\Theta(x) = 
@@ -44,7 +43,8 @@
 	0,& \text{otherwise}
 	\end{cases}
 	\end{equation}
-
+	\subsection{Assumptions and limitations of model}
+		[TODO: LIST ASSUMPTIONS AND LIMITATIONS: SPIN ORBIT DRESSELHAUS, SC MODEL, ETC.]
 	\subsection{System parameters}
 	\begin{table}
 		\begin{tabular}{|c|c|c|c|}
@@ -75,6 +75,7 @@
 	\caption{Description of system parameters, along with typical valuses, as well as a default value which is the used value when no other value has been specified.}
 	\label{tbl:system_pars}
 	\end{table}
+	Describe parameters provided by experimentalists(electron density 3e15-3e16, effective mass 0.04me)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Topological overview of the system}
 %------------------%
@@ -93,12 +94,14 @@
 		\end{itemize}
 %------------------%
 	\subsection{Varying magnetic field strength and superconducting phase}
-		From the Pientka paper, we would expect an image plot of whether the system is topological or not, with axes superconducting phase and magnetic field, to form diamond structures repeating along the magnetic field axis, spaced apart with a distance equal to the Thouless energy.
+		From the Pientka paper, we would expect an image plot of whether the system is topological or not, with axes superconducting phase and magnetic field, to form diamond structures repeating along the magnetic field axis, spaced apart with a distance equal to the Thouless energy. We indeed find this to be the case(figure \ref{fig:lmZPpfaf}). We however find that beyond a certain magnetic field strength the bands cross, and the model becomes unphysical(and the diamonds are lost). 
 		
-		We indeed find this to be the case(figure \ref{fig:lmZPpfaf}). We however find that beyond a certain magnetic field strength the bands cross, and the model becomes unphysical.
+		If we apply a magnetic field in the superconducting leads as well[SHOW THAT TOPOLOGICAL MAP CONFORMS TO FIG4 OF PIENTKA]
+		
+		
 	%------------------%
 	\subsection{Varying system dimensions}
-	Widening the junction lowers the Thouless energy, which makes the topological regime accesible at lower magnetic fields, but at the same moment lowering the energy gap.
+	 Widening the junction lowers the Thouless energy, which makes the topological regime accesible at lower magnetic fields. Conversely, lowering the Thouless energy has a negative effect on the energy gap: The system is a long to intermediate junction, meaning $E_\text{Th} \gtrapprox \Delta$ or $E_\text{Th} \gg \Delta$[CITE VUIK]. This implies that the induced gap $\Delta_\text{ind} \propto E_\text{Th}$.
 	\begin{table}[H]
 		\centering
 		\begin{tabular}{|c|c|}
@@ -133,19 +136,55 @@
 		\includegraphics[width=0.5\textwidth]{\img/lmgap/lm200.png}
 		\includegraphics[width=0.5\textwidth]{\img/lmgap/lm250.png}
 		%				\includegraphics[width=0.24\textwidth]{\img/lmgap/lm500.png}
-		\caption{Topological regime(blue is topological) vs superconducting phase and magnetic field strength, for different strip widths. The lines indicate integer multiples of the Thouless energy, see table \ref{table:thouless}}
+		\caption{Energy gap vs superconducting phase and magnetic field strength, for different strip widths.}
 		\label{fig:lmZPcurr}
 	\end{figure}
 %------------------%		
 	\subsection{Varying chemical potential and magnetic field strength}
 		From the Pientka paper, we would expect 
-			\begin{figure}[H]
-				\includegraphics[width=0.3\textwidth]{muB0.png}
-				\includegraphics[width=0.3\textwidth]{muB5.png}
-				\includegraphics[width=0.3\textwidth]{muB1.png}
-				\caption{Topological regime(blue is topological) vs chemical potential and magnetic field strength, assuming zeeman field in the superconductor}
+		
+
+			\begin{figure}
+			\begin{tabular}{cc}
+				\includegraphics[width=0.35\textwidth]{\img/pfafmuZ_zinsc/muB0.png}&
+				\includegraphics[width=0.45\textwidth]{\img/gapmuZ_zinsc/00_gap_muZ.png}\\
+				&
+				\includegraphics[width=0.45\textwidth]{\img/gapmuZ_zinsc/25_gap_muZ.png}\\
+				\includegraphics[width=0.35\textwidth]{\img/pfafmuZ_zinsc/muB5.png}&
+				\includegraphics[width=0.45\textwidth]{\img/gapmuZ_zinsc/50_gap_muZ.png}\\
+				&
+				\includegraphics[width=0.45\textwidth]{\img/gapmuZ_zinsc/75_gap_muZ.png}\\
+				\includegraphics[width=0.35\textwidth]{\img/pfafmuZ_zinsc/muB1.png}&
+				\includegraphics[width=0.45\textwidth]{\img/gapmuZ_zinsc/1_gap_muZ.png}\\
+			\end{tabular}
+		\caption{Topological regime(blue is topological) and energy gap vs chemical potential and magnetic field strength, assuming zeeman field persists in the superconductor}
 			\end{figure}
-%------------------%	
+
+	
+%			\begin{figure}[H]
+%				\caption{Topological regime(blue is topological) vs chemical potential and magnetic field strength, assuming zeeman field persists in the superconductor}
+%			\end{figure}
+%			\begin{figure}[H]
+%				
+%				\caption{Energy gap vs chemical potential and magnetic field strength, assuming zeeman field persists in the superconductor}
+%			\end{figure}
+\begin{figure}
+	\begin{tabular}{cc}
+				\includegraphics[width=0.4\textwidth]{\img/pfafmuZ_noZinsc/00pfafmuZnoZinSC.png}&
+			\includegraphics[width=0.4\textwidth]{\img/gapmuZ_noZinsc/0gapmuZ.png}\\
+				\includegraphics[width=0.4\textwidth]{\img/pfafmuZ_noZinsc/25pfafmuZnoZinSC.png}&
+			\includegraphics[width=0.4\textwidth]{\img/gapmuZ_noZinsc/25gapmuZ.png}\\
+				\includegraphics[width=0.4\textwidth]{\img/pfafmuZ_noZinsc/50pfafmuZnoZinSC.png}&
+			\includegraphics[width=0.4\textwidth]{\img/gapmuZ_noZinsc/50gapmuZ.png}\\
+				\includegraphics[width=0.4\textwidth]{\img/pfafmuZ_noZinsc/75pfafmuZnoZinSC.png}&
+			\includegraphics[width=0.4\textwidth]{\img/gapmuZ_noZinsc/75gapmuZ.png}\\
+				\includegraphics[width=0.4\textwidth]{\img/pfafmuZ_noZinsc/1pfafmuZnoZinSC.png}&
+			\includegraphics[width=0.4\textwidth]{\img/gapmuZ_noZinsc/1gapmuZ.png}\\
+	\end{tabular}\label{fig:muZnosc}
+		\caption{Topological invariant and energy gap vs chemical potential and magnetic field strength, assuming zeeman field persists in the superconductor}
+\end{figure}
+
+%------------------%
 	\subsection{Varying spin-orbit}
 		\begin{figure}[H]
 			\includegraphics[width=0.192\textwidth]{\img/spinorbitZP/a30.png}
