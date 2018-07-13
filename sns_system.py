@@ -71,7 +71,7 @@ def make_sns_system(a, Lm, Lr, Ll, Ly,
     """
 
     #     HAMILTONIAN DEFINITIONS
-    template_strings = get_template_strings(transverse_soi, zeeman_in_superconductor)
+    template_strings = get_template_strings(transverse_soi, )
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
     template_normal = kwant.continuum.discretize(template_strings['ham_normal'], grid_spacing=a)
@@ -185,6 +185,45 @@ def make_junction(a, Lm, Ly, transverse_soi = True, **pars):
     
     return syst.finalized()
 
+def make_wrapped_system(a, Lm, Lr, Ll, Ly, Lw, transverse_soi=True, zeeman_in_superconductor=False):
+    template_strings = get_template_strings(transverse_soi, zeeman_in_superconductor)
+
+    # TURN HAMILTONIAN STRINGS INTO TEMPLATES
+    template_normal = kwant.continuum.discretize(template_strings['ham_normal'], grid_spacing=a)
+    template_sc_left = kwant.continuum.discretize(template_strings['ham_sc_left'], grid_spacing=a)
+    template_sc_right = kwant.continuum.discretize(template_strings['ham_sc_right'], grid_spacing=a)
+
+    # SHAPE FUNCTIONS
+    def shape_normal(site):
+        (x, y) = site.pos
+        return 0 <= x < Lm
+
+    def shape_left_sc(site):
+        (x, y) = site.pos
+        return -Ll <= x < 0
+
+    def shape_right_sc(site):
+        (x, y) = site.pos
+        return Lm <= x < Lm + Lr
+    
+    def shape_lead(x1, x2):
+        def shape(site):
+            (x, y) = site.pos
+            return  x1 <= x < x2
+        return shape
+
+    # BUILD FINITE SYSTEM
+    sym = kwant.TranslationalSymmetry((0, a))
+    syst = kwant.Builder(symmetry=sym)
+
+    syst.fill(template_normal, shape_normal, (0,0))
+    if Ll>=a:
+        syst.fill(template_sc_left, shape_left_sc, (-Ll,0))
+    if Lr>=a:
+        syst.fill(template_sc_right, shape_right_sc, (Lm,0))
+
+    syst = kwant.wraparound.wraparound(syst)
+    return syst.finalized()
 
 def to_site_ph_spin(syst_pars, wf):
     norbs = 4
@@ -196,11 +235,3 @@ def to_site_ph_spin(syst_pars, wf):
     wf_eh_sp_grid = np.reshape(wf_eh_sp, (nsitesW, nsitesL, norbs))
     
     return wf_eh_sp_grid
-
-def add_vlead(syst, lat, l_cut, r_cut):
-    dim = lat.norbs * (len(l_cut) + len(r_cut))
-    vlead = kwant.builder.SelfEnergyLead(
-        lambda energy, args: np.zeros((dim, dim)), l_cut + r_cut)
-    syst.leads.append(vlead)
-    return syst
-    

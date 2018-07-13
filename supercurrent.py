@@ -5,6 +5,7 @@ import spectrum
 import numbers
 import warnings
 from functools import partial
+import adaptive
 
 sigz = kwant.continuum.discretizer.ta.array([[1,0,0,0],
                                              [0,1,0,0],
@@ -19,7 +20,62 @@ def fermi_dirac(e, params):
     minbetae = np.minimum(100, -beta*e)
     return np.exp(minbetae)/(1+np.exp(minbetae))
 
-            
+def wrapped_current_k(k, syst_pars, params, cut_tag=0, direction=0):
+    syst_wrapped = sns_system.make_wrapped_system(**syst_pars)
+    
+    (cut_indices, cut_sites) = get_cut_sites_and_indices(syst_wrapped, cut_tag, direction)
+    current_operator = kwant.operator.Current(syst_wrapped,
+                                              onsite=sigz,
+                                              where=cut_sites)
+    
+    I = 0
+   
+    p = dict(k_x=k, **params)
+
+    ham = syst_wrapped.hamiltonian_submatrix(params=p)
+    (en, evs) = np.linalg.eigh(ham)
+
+    for (e, ev) in zip(en, evs.T):
+        I += fermi_dirac(e.real, p) * current_operator(ev, params=p)
+
+    return sum(I)*params['e']/params['hbar']
+
+def wrapped_current(syst_pars, params, tol=0.01, max_iterations=1e3):
+    syst_wrapped = sns_system.make_wrapped_system(**syst_pars)
+    cut_tag=0
+    direction=0
+
+    (cut_indices, cut_sites) = get_cut_sites_and_indices(syst_wrapped, cut_tag, direction)
+    current_operator = kwant.operator.Current(syst_wrapped,
+                                              onsite=sigz,
+                                              where=cut_sites)
+
+
+
+    def f(k):
+        I = 0
+        p = dict(k_x=k, **params)
+        ham = syst_wrapped.hamiltonian_submatrix(params=p)
+        (en, evs) = np.linalg.eigh(ham)
+
+        for (e, ev) in zip(en, evs.T):
+            I += fermi_dirac(e.real, p) * current_operator(ev, params=p)
+        return sum(I)*params['e']/params['hbar']
+
+    learner = adaptive.IntegratorLearner(f, [0, np.pi], tol)
+    iterations = 0
+    while (not learner.done()) and (iterations<max_iterations):
+        k = learner.ask(1)[0][0]
+        I = f(k)
+        learner.tell(k, I)
+        iterations += 1
+    
+    if(iterations==max_iterations):
+        warnings.warn('No convergence reached', Warning)
+        
+    I = 2*learner.igral
+    return I
+
 def get_cut_sites_and_indices(syst, cut_tag, direction):
     l_cut = []
     r_cut = []
