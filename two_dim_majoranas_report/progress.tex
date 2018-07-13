@@ -69,7 +69,9 @@
 			\hline
 			$\text{L}_\text{r}$ & Width of middle "normal" strip & 100 - 1000 nm & 250 nm \\
 			\hline
-			$\text{L}_\text{y}$ & Height of system & \textgreater1000 nm & 4000 nm\\
+			$\text{L}_\text{y}$ & Length of system & \textgreater1000 nm & 4000 nm\\
+			\hline
+			$T$ & Temperature of system & 0.25 - 1.2K & 0 K\\
 			\hline
 		\end{tabular} 
 	\caption{Description of system parameters, along with typical valuses, as well as a default value which is the used value when no other value has been specified.}
@@ -77,9 +79,10 @@
 	\end{table}
 	Describe parameters provided by experimentalists(electron density 3e15-3e16, effective mass 0.04me)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Topological overview of the system}
+\section{Parametric overview of the system}
 %------------------%
-	\subsection{important metrics}
+	\subsection{Important metrics}
+	We study the influence of the different parameters on the physics of the system by considering a handful of metrics. We list them below, along with how they are computed and what their physical significance is.
 		\begin{itemize}
 			\item \Gls{Ethouless}
 				\begin{align}\label{eq:thouless}
@@ -88,9 +91,17 @@
 				{2 m_e \left( 2 L_m \right)^2}
 				\end{align}
 			Where $T$ is the transparancy of the junction, and N the number of bands.
-			\item Pfaffian sign
+			\item Topological invariant: Pfaffian sign
+				\subitem The system is extended to infinity and the Pfaffian allows us compute the parity of number of states with positive energy of the system, disregarding the holes. If the resulting topological invariant is -1, we can conclude that if the system were to be made finite, it could potentially support majorana bound states.
+
 			\item Topological energy gap
+				\subitem The system is again extended to infinity, and the energy difference between the majorana bound states(energy 0) and the next lowest lying band is calculated, using the bisection method.
+				
 			\item (critical) current, phase offset in current-phase relationship
+				\subitem The system is extended to infinity, and the current density is calculated at a cut in the non-superconducting section.
+			
+			\item Junction transparency
+				\subitem The transparency is using kwant. It gives an indication of 
 		\end{itemize}
 %------------------%
 	\subsection{Varying magnetic field strength and superconducting phase}
@@ -213,7 +224,38 @@
 			\includegraphics[width=0.24\textwidth]{\img/deltagapZPcurrent/d200.png}
 			\caption{Phase zeeman plot with increasing spin orbit}
 		\end{figure}
-
+%------------------%	
+	\subsection{Varying temperature}
+		\begin{figure}
+			\begin{tabular}{rcc}
+				a, T=0.025K&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm200_T0025.png}&
+				\includegraphics[width=0.4\textwidth]{\img/current/curr_lm200_T0025.png}\\
+				\hline
+				b, T=0.2K&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm200_T02.png}&
+				\includegraphics[width=0.4\textwidth]{\img/current/curr_lm200_T02.png}\\
+				\hline
+				c, T=0.6K&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm200_T06.png}&
+				\includegraphics[width=0.4\textwidth]{\img/current/curr_lm200_T06.png}\\
+				\hline
+			\end{tabular}
+			\caption{Critical current(maximum minus minimum current) and current versus phase and magnetic field strength, assuming zeeman field does not persists in the superconductor. Width of normal strip is 200nm. Temperatures of a, b and c respectively: 0.025 K, 0.2K, 0.6K}
+		\end{figure}
+	
+	\subsection{Varying temperature}
+		\begin{figure}
+			\begin{tabular}{rcc}
+				a, T=0.025K&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm250_T0025.png}&
+				\includegraphics[width=0.4\textwidth]{\img/current/curr_lm250_T0025.png}\\
+				\hline
+				b, T=0.2K&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm250_T02.png}&
+				\includegraphics[width=0.4\textwidth]{\img/current/curr_lm250_T02.png}\\
+				\hline
+				c, T=0.6K&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm250_T06.png}&
+				\includegraphics[width=0.4\textwidth]{\img/current/curr_lm250_T06.png}\\
+				\hline
+			\end{tabular}
+			\caption{Critical current(maximum minus minimum current) and current versus phase and magnetic field strength, assuming zeeman field does not persists in the superconductor. Width of normal strip is 250nm. Temperatures of a, b and c respectively: 0.025 K, 0.2K, 0.6K}
+		\end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \printglossaries
