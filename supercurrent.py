@@ -40,7 +40,7 @@ def wrapped_current_k(k, syst_pars, params, cut_tag=0, direction=0):
 
     return sum(I)*params['e']/params['hbar']
 
-def wrapped_current(syst_pars, params, tol=0.01, max_iterations=1e3, , transverse_soi=True, zeeman_in_superconductor=False):
+def wrapped_current(syst_pars, params, tol=0.01, max_iterations=1e3, transverse_soi=True, zeeman_in_superconductor=False):
     syst_wrapped = sns_system.make_wrapped_system(**syst_pars, transverse_soi, zeeman_in_superconductor)
     cut_tag=0
     direction=0
