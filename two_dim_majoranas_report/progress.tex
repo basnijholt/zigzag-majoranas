@@ -7,6 +7,7 @@
 \usepackage{hyperref}
 \usepackage{glossaries}
 \usepackage{float}
+\usepackage{siunitx}
 
 \newcommand{\kx}{k_x}
 \newcommand{\ky}{k_y}
@@ -59,7 +60,7 @@
 			\hline 
 			$\Delta$ & Superconducting gap & 0.2 - 0.3 meV & 0.18 meV\\ 
 			\hline 
-			$B$ & In-plane magnetic field strength along stripe direction(y) & 0 - 1 T & 0.2 T \\ 
+			$B$ & In-plane magnetic field strength along stripe direction (y) & 0 - 1 T & 0.2 T \\ 
 			\hline 
 			$\phi$ & Relative phase between superconductors &  0 - 2$\pi$ & $\pi$\\ 
 			\hline 
@@ -71,18 +72,19 @@
 			\hline
 			$\text{L}_\text{y}$ & Length of system & \textgreater1000 nm & 4000 nm\\
 			\hline
-			$T$ & Temperature of system & 0.25 - 1.2K & 0 K\\
+			$T$ & Temperature of system & 0.25 - 1.2 K & 0 K\\
 			\hline
 		\end{tabular} 
 	\caption{Description of system parameters, along with typical valuses, as well as a default value which is the used value when no other value has been specified.}
 	\label{tbl:system_pars}
 	\end{table}
-	Describe parameters provided by experimentalists(electron density 3e15-3e16, effective mass 0.04me)
+	Describe parameters provided by experimentalists (electron density $3e15$-$3e16$, effective mass $\SI{0.04}{\electronmass}$)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Parametric overview of the system}
 %------------------%
 	\subsection{Important metrics}
-	We study the influence of the different parameters on the physics of the system by considering a handful of metrics. We list them below, along with how they are computed and what their physical significance is.
+	We study the influence of the different parameters on the physics of the system by considering a handful of metrics.
+	We list them below, along with how they are computed and what their physical significance is.
 		\begin{itemize}
 			\item \Gls{Ethouless}
 				\begin{align}\label{eq:thouless}
@@ -95,7 +97,7 @@
 				\subitem The system is extended to infinity and the Pfaffian allows us compute the parity of number of states with positive energy of the system, disregarding the holes. If the resulting topological invariant is -1, we can conclude that if the system were to be made finite, it could potentially support majorana bound states.
 
 			\item Topological energy gap
-				\subitem The system is again extended to infinity, and the energy difference between the majorana bound states(energy 0) and the next lowest lying band is calculated, using the bisection method.
+				\subitem The system is again extended to infinity, and the energy difference between the majorana bound states (energy 0) and the next lowest lying band is calculated, using the bisection method.
 				
 			\item (critical) current, phase offset in current-phase relationship
 				\subitem The system is extended to infinity, and the current density is calculated at a cut in the non-superconducting section.
@@ -122,7 +124,7 @@
 		\includegraphics[width=0.5\textwidth]{\img/lmZPpfaf/pB500.png}
 		\includegraphics[width=0.5\textwidth]{\img/lmZPpfaf/pB1000.png}
 		\includegraphics[width=0.5\textwidth]{\img/lmZPpfaf/pB2000.png}
-		\caption{Topological regime(blue is topological) vs superconducting phase and magnetic field strength, for different strip widths. The lines indicate integer multiples of the Thouless energy, see table \ref{table:thouless}}
+		\caption{Topological regime (blue is topological) vs superconducting phase and magnetic field strength, for different strip widths. The lines indicate integer multiples of the Thouless energy, see table \ref{table:thouless}}
 		\label{fig:lmZPpfaf}
 	\end{figure}
 
@@ -143,7 +145,7 @@
 		\centering
 		\begin{tabular}{|c|c|}
 			\hline 
-			$L_\text{m} (nm)$ & $E_\text{Th} (meV)$ \\ 
+			$L_\text{m} \; [\si{\nm}]$ & $E_\text{Th} \; [\si{\meV}]$ \\ 
 			\hline 
 			250 & 1.05 \\ 
 			\hline 
@@ -171,17 +173,17 @@
 %------------------%	
 \newpage	
 	\subsection{Varying chemical potential and magnetic field strength}
-		We vary the chemical potential and zeeman field plotting both the topology as well as the energy gap of the system.
-		We do this for two situations; with and without zeeman field in the leads.
+		We vary the chemical potential and Zeeman field plotting both the topology as well as the energy gap of the system.
+		We do this for two situations; with and without Zeeman field in the leads.
 		
-		In figure \ref{fig:muZ_zinsc}, we consider the system with zeeman field in the superconducting part.
+		In figure \ref{fig:muZ_zinsc}, we consider the system with Zeeman field in the superconducting part.
 		We see a chainlike structures as described in the Pientka paper.
 		The first chain opens up as a function of phase, and forms a large strip where the system is topological for a wide range of chemical potential.
 		We see from the energy gap plots that only the first 'chain' has is gapless.
 		
 		In figure \ref{fig:muZnosc}, we plot the system without magnetic field in the leads.
-		With respect to the system with zeeman in the leads, it almost seems like the plot has undergone rescaling.
-		The other diamond chains are not visible in this plot, and only appear when we greatly adjust the axes(not shown).
+		With respect to the system with Zeeman in the leads, it almost seems like the plot has undergone rescaling.
+		The other diamond chains are not visible in this plot, and only appear when we greatly adjust the axes (not shown).
 		We also see that although we can clearly see the gap closing bands (topological borders) in the gap plots, the underlying gap size does not seem greatly affected by being in topological region or not.
 
 			\begin{figure}[H]
@@ -197,7 +199,7 @@
 				\includegraphics[width=0.35\textwidth]{\img/pfafmuZ_zinsc/muB1.png}&
 				\includegraphics[width=0.45\textwidth]{\img/gapmuZ_zinsc/1_gap_muZ.png}\\
 			\end{tabular}
-		\caption{Topological regime(blue is topological) and energy gap vs chemical potential and magnetic field strength, assuming zeeman field persists in the superconductor}\label{fig:muZ_zinsc}
+		\caption{Topological regime (blue is topological) and energy gap vs chemical potential and magnetic field strength, assuming Zeeman field persists in the superconductor}\label{fig:muZ_zinsc}
 			\end{figure}
 
 
@@ -214,7 +216,7 @@
 				\includegraphics[width=0.4\textwidth]{\img/pfafmuZ_noZinsc/1pfafmuZnoZinSC.png}&
 			\includegraphics[width=0.4\textwidth]{\img/gapmuZ_noZinsc/1gapmuZ.png}\\
 	\end{tabular}\label{fig:muZnosc}
-		\caption{Topological invariant and energy gap vs chemical potential and magnetic field strength, assuming zeeman field persists in the superconductor}
+		\caption{Topological invariant and energy gap vs chemical potential and magnetic field strength, assuming Zeeman field persists in the superconductor}
 \end{figure}
 
 %------------------%
@@ -238,7 +240,7 @@
 			\includegraphics[width=0.192\textwidth]{\img/spinorbitZP/a53.png}
 			\includegraphics[width=0.192\textwidth]{\img/spinorbitZP/a56.png}
 			\includegraphics[width=0.192\textwidth]{\img/spinorbitZP/a60.png}
-			\caption{Phase zeeman topology plot with increasing spin orbit. $L_\text{m}=500$nm}
+			\caption{Phase Zeeman topology plot with increasing spin orbit. $L_\text{m}=\SI{500}{\nm}$}
 			\label{fig:pfaf_pB_soi}
 		\end{figure}
 	
@@ -251,13 +253,14 @@
 				\includegraphics[width=0.33\textwidth]{\img/spinorbitGap/gap_pB_alpha50.png}&
 				\includegraphics[width=0.33\textwidth]{\img/spinorbitGap/gap_pB_alpha60.png}\\
 			\end{tabular}
-			\caption{Phase zeeman energy gap plot with increasing spin orbit. $L_\text{m}=500$nm}
+			\caption{Phase Zeeman energy gap plot with increasing spin orbit. $L_\text{m}=\SI{500}{\nm}$}
 			\label{fig:gap_pB_soi}
 		\end{figure}
 %------------------%
 \newpage	
 	\subsection{Varying superconducting gap}
-	Increasing the superconducting gap has the effect of reducing the energy gap somewhat. We also again see the appearance of gapless bands through the regions.
+	Increasing the superconducting gap has the effect of reducing the energy gap somewhat.
+	We also again see the appearance of gapless bands through the regions.
 		\begin{figure}[H]
 			\includegraphics[width=0.24\textwidth]{\img/deltagapZPcurrent/d02.png}
 			\includegraphics[width=0.24\textwidth]{\img/deltagapZPcurrent/d045.png}
@@ -268,7 +271,7 @@
 			\includegraphics[width=0.24\textwidth]{\img/deltagapZPcurrent/d155.png}
 			\includegraphics[width=0.24\textwidth]{\img/deltagapZPcurrent/d178.png}
 			\includegraphics[width=0.24\textwidth]{\img/deltagapZPcurrent/d200.png}
-			\caption{Phase zeeman plot with increasing spin orbit}
+			\caption{Phase Zeeman plot with increasing spin orbit}
 		\end{figure}
 %------------------%	
 \newpage
@@ -276,32 +279,32 @@
 	We 
 		\begin{figure}[H]
 			\begin{tabular}{rcc}
-				a, T=0.025K&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm200_T0025.png}&
+				a, $T=\SI{0.025}{\K}$&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm200_T0025.png}&
 				\includegraphics[width=0.4\textwidth]{\img/current/curr_lm200_T0025.png}\\
 				\hline
-				b, T=0.2K&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm200_T02.png}&
+				b, $T=\SI{0.2}{\K}$&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm200_T02.png}&
 				\includegraphics[width=0.4\textwidth]{\img/current/curr_lm200_T02.png}\\
 				\hline
-				c, T=0.6K&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm200_T06.png}&
+				c, $T=\SI{0.6}{\K}$&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm200_T06.png}&
 				\includegraphics[width=0.4\textwidth]{\img/current/curr_lm200_T06.png}\\
 				\hline
 			\end{tabular}
-			\caption{Critical current(maximum minus minimum current) and current versus phase and magnetic field strength, assuming zeeman field does not persists in the superconductor. Width of normal strip is 200nm. Temperatures of a, b and c respectively: 0.025 K, 0.2K, 0.6K}
+			\caption{Critical current (maximum minus minimum current) and current versus phase and magnetic field strength, assuming Zeeman field does not persists in the superconductor. Width of normal strip is 200 nm. Temperatures of a, b and c respectively: $\SI{0.025}{\K}$, $\SI{0.2}{\K}$, $\SI{0.6}{\K}$}
 		\end{figure}
 	
 		\begin{figure}[H]
 			\begin{tabular}{rcc}
-				a, T=0.025K&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm250_T0025.png}&
+				a, $T=\SI{0.025}{\K}$&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm250_T0025.png}&
 				\includegraphics[width=0.4\textwidth]{\img/current/curr_lm250_T0025.png}\\
 				\hline
-				b, T=0.2K&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm250_T02.png}&
+				b, $T=\SI{0.2}{\K}$&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm250_T02.png}&
 				\includegraphics[width=0.4\textwidth]{\img/current/curr_lm250_T02.png}\\
 				\hline
-				c, T=0.6K&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm250_T06.png}&
+				c, $T=\SI{0.6}{\K}$&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm250_T06.png}&
 				\includegraphics[width=0.4\textwidth]{\img/current/curr_lm250_T06.png}\\
 				\hline
 			\end{tabular}
-			\caption{Critical current(maximum minus minimum current) and current versus phase and magnetic field strength, assuming zeeman field does not persists in the superconductor. Width of normal strip is 250nm. Temperatures of a, b and c respectively: 0.025 K, 0.2K, 0.6K}
+			\caption{Critical current (maximum minus minimum current) and current versus phase and magnetic field strength, assuming Zeeman field does not persists in the superconductor. Width of normal strip is 250 nm. Temperatures of a, b and c respectively: $\SI{0.025}{\K}$, $\SI{0.2}{\K}$, $\SI{0.6}{\K}$}
 		\end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
