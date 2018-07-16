@@ -44,7 +44,7 @@
 	\end{cases}
 	\end{equation}
 	\subsection{Assumptions and limitations of model}
-		[TODO: LIST ASSUMPTIONS AND LIMITATIONS: SPIN ORBIT DRESSELHAUS, SC MODEL, ETC.]
+%		[TODO: LIST ASSUMPTIONS AND LIMITATIONS: SPIN ORBIT DRESSELHAUS, SC MODEL, ETC.]
 	\subsection{System parameters}
 	\begin{table}
 		\begin{tabular}{|c|c|c|c|}
@@ -104,15 +104,31 @@
 				\subitem The transparency is using kwant. It gives an indication of 
 		\end{itemize}
 %------------------%
+\newpage
 	\subsection{Varying magnetic field strength and superconducting phase}
-		From the Pientka paper, we would expect an image plot of whether the system is topological or not, with axes superconducting phase and magnetic field, to form diamond structures repeating along the magnetic field axis, spaced apart with a distance equal to the Thouless energy. We indeed find this to be the case(figure \ref{fig:lmZPpfaf}). We however find that beyond a certain magnetic field strength the bands cross, and the model becomes unphysical(and the diamonds are lost). 
+		In this section, we vary the Zeeman field strength and superconducting phase, calculating the topological invariant. 
+		From the Pientka paper, we would expect diamond like structures to appear along the magnetic field axis, spaced apart with a distance equal to the Thouless energy. We indeed find this to be the case(figure \ref{fig:lmZPpfaf}). By varying the width of the middle strip we adjust the Thouless energy, and we see clearly find the diamonds shaped apart by the Thouless energy.
 		
-		If we apply a magnetic field in the superconducting leads as well[SHOW THAT TOPOLOGICAL MAP CONFORMS TO FIG4 OF PIENTKA]
+		Beyond a certain Zeeman field, we see(although not shown in the figure) that the diamond pattern ceases and turns into stripes independent of phase. At this point, the magnetic field is so strong that bands cross, and our model becomes unphysical. Applying a magnetic field in the superconducting leads as well, lowers the field where this happens.
 		
+		We will use this phase-Zeeman plot throughout the report as both parameters are easily tunable whem compared to the rest, and the diamond structure gives us an analysable feature.
 		
+	\begin{figure}[H]
+		\includegraphics[width=0.5\textwidth]{\img/lmZPpfaf/pB250.png}
+		\includegraphics[width=0.5\textwidth]{\img/lmZPpfaf/pB500.png}
+		\includegraphics[width=0.5\textwidth]{\img/lmZPpfaf/pB1000.png}
+		\includegraphics[width=0.5\textwidth]{\img/lmZPpfaf/pB2000.png}
+		\caption{Topological regime(blue is topological) vs superconducting phase and magnetic field strength, for different strip widths. The lines indicate integer multiples of the Thouless energy, see table \ref{table:thouless}}
+		\label{fig:lmZPpfaf}
+	\end{figure}
+
 	%------------------%
 	\subsection{Varying system dimensions}
-	 Widening the junction lowers the Thouless energy, which makes the topological regime accesible at lower magnetic fields. Conversely, lowering the Thouless energy has a negative effect on the energy gap: The system is a long to intermediate junction, meaning $E_\text{Th} \gtrapprox \Delta$ or $E_\text{Th} \gg \Delta$[CITE VUIK]. This implies that the induced gap $\Delta_\text{ind} \propto E_\text{Th}$.
+	 As mentioned before, widening the junction lowers the Thouless energy, which makes the topological regime accesible at lower magnetic fields. We are however also interested in how big the resulting topological gap is. 
+	 
+	 In figure \ref{fig:lmZPgap}, we plot the energy gap around zero energy. We see that increasing the middle strip width has the effect of lowering the gap in the topological region. The system we are considering is considered an intermediate to long junction: $E_\text{Th} \gtrapprox \Delta$ or $E_\text{Th} \gg \Delta$. This implies that the relation between the induced gap and the Thouless energy and superconducting gap is $\Delta_\text{ind} \propto E_\text{Th}$[VUIK]. It would be interesting to investigate wether the gap indeed varies proportionally to the Thouless energy.
+	 
+	 We see that width of the gapless strips along the topological borders are quite wide, requiring very high magnetic field to reach a gapped topological state of the system.
 	\begin{table}[H]
 		\centering
 		\begin{tabular}{|c|c|}
@@ -132,14 +148,6 @@
 		\label{table:thouless}
 	\end{table}
 	
-	\begin{figure}[H]
-		\includegraphics[width=0.5\textwidth]{\img/lmZPpfaf/pB250.png}
-		\includegraphics[width=0.5\textwidth]{\img/lmZPpfaf/pB500.png}
-		\includegraphics[width=0.5\textwidth]{\img/lmZPpfaf/pB1000.png}
-		\includegraphics[width=0.5\textwidth]{\img/lmZPpfaf/pB2000.png}
-		\caption{Topological regime(blue is topological) vs superconducting phase and magnetic field strength, for different strip widths. The lines indicate integer multiples of the Thouless energy, see table \ref{table:thouless}}
-		\label{fig:lmZPpfaf}
-	\end{figure}
 	
 	\begin{figure}[H]
 		\includegraphics[width=0.5\textwidth]{\img/lmgap/lm100.png}
@@ -148,14 +156,18 @@
 		\includegraphics[width=0.5\textwidth]{\img/lmgap/lm250.png}
 		%				\includegraphics[width=0.24\textwidth]{\img/lmgap/lm500.png}
 		\caption{Energy gap vs superconducting phase and magnetic field strength, for different strip widths.}
-		\label{fig:lmZPcurr}
+		\label{fig:lmZPgap}
 	\end{figure}
-%------------------%		
+%------------------%	
+\newpage	
 	\subsection{Varying chemical potential and magnetic field strength}
-		From the Pientka paper, we would expect 
+		We vary the chemical potential and zeeman field plotting both the topology as well as the energy gap of the system. We do this for two situations; with and without zeeman field in the leads. 
 		
+		In figure \ref{fig:muZ_zinsc}, we consider the system with zeeman field in the superconducting part. We see a chainlike structures as described in the Pientka paper. The first chain opens up as a function of phase, and forms a large strip where the system is topological for a wide range of chemical potential. We see from the energy gap plots that only the first 'chain' has is gapless.
+		
+		In figure \ref{fig:muZnosc}, we plot the system without magnetic field in the leads. With respect to the system with zeeman in the leads, it almost seems like the plot has undergone rescaling. The other diamond chains are not visible in this plot, and only appear when we greatly adjust the axes(not shown). We also see that although we can clearly see the gap closing bands(topological borders) in the gap plots, the underlying gap size does not seem greatly affected by being in topological region or not.
 
-			\begin{figure}
+			\begin{figure}[H]
 			\begin{tabular}{cc}
 				\includegraphics[width=0.35\textwidth]{\img/pfafmuZ_zinsc/muB0.png}&
 				\includegraphics[width=0.45\textwidth]{\img/gapmuZ_zinsc/00_gap_muZ.png}\\
@@ -168,18 +180,11 @@
 				\includegraphics[width=0.35\textwidth]{\img/pfafmuZ_zinsc/muB1.png}&
 				\includegraphics[width=0.45\textwidth]{\img/gapmuZ_zinsc/1_gap_muZ.png}\\
 			\end{tabular}
-		\caption{Topological regime(blue is topological) and energy gap vs chemical potential and magnetic field strength, assuming zeeman field persists in the superconductor}
+		\caption{Topological regime(blue is topological) and energy gap vs chemical potential and magnetic field strength, assuming zeeman field persists in the superconductor}\label{fig:muZ_zinsc}
 			\end{figure}
 
-	
-%			\begin{figure}[H]
-%				\caption{Topological regime(blue is topological) vs chemical potential and magnetic field strength, assuming zeeman field persists in the superconductor}
-%			\end{figure}
-%			\begin{figure}[H]
-%				
-%				\caption{Energy gap vs chemical potential and magnetic field strength, assuming zeeman field persists in the superconductor}
-%			\end{figure}
-\begin{figure}
+
+\begin{figure}[H]
 	\begin{tabular}{cc}
 				\includegraphics[width=0.4\textwidth]{\img/pfafmuZ_noZinsc/00pfafmuZnoZinSC.png}&
 			\includegraphics[width=0.4\textwidth]{\img/gapmuZ_noZinsc/0gapmuZ.png}\\
@@ -196,7 +201,11 @@
 \end{figure}
 
 %------------------%
+\newpage
 	\subsection{Varying spin-orbit}
+	In figure \ref{fig:pfaf_pB_soi} and \ref{fig:gap_pB_soi} we plot topology and energy gap respectively as a function of phase and magnetic field, for different values of the spin orbit coupling. From the topology, wee see that variation of SOI influences both the shape of the diamonds as well as offsets their position. From the Pientka paper, we know that both are also symptoms of non unit junction transparency. It would be interesting to indeed investigate this.
+	
+	The influence of varying spin orbit coupling seems to be limited. Although at lower spin orbit couplings, we see strands of gap-closings, which would be interesting to investigate, the energy gap in the topological region does not vary much.
 		\begin{figure}[H]
 			\includegraphics[width=0.192\textwidth]{\img/spinorbitZP/a30.png}
 			\includegraphics[width=0.192\textwidth]{\img/spinorbitZP/a33.png}
@@ -208,10 +217,26 @@
 			\includegraphics[width=0.192\textwidth]{\img/spinorbitZP/a53.png}
 			\includegraphics[width=0.192\textwidth]{\img/spinorbitZP/a56.png}
 			\includegraphics[width=0.192\textwidth]{\img/spinorbitZP/a60.png}
-			\caption{Phase zeeman plot with increasing spin orbit}
+			\caption{Phase zeeman topology plot with increasing spin orbit. $L_\text{m}=500$nm}
+			\label{fig:pfaf_pB_soi}
 		\end{figure}
-%------------------%	
+	
+		\begin{figure}[H]
+			\begin{tabular}{ccc}
+				\includegraphics[width=0.33\textwidth]{\img/spinorbitGap/gap_pB_alpha10.png}&
+				\includegraphics[width=0.33\textwidth]{\img/spinorbitGap/gap_pB_alpha20.png}&
+				\includegraphics[width=0.33\textwidth]{\img/spinorbitGap/gap_pB_alpha30.png}\\
+				\includegraphics[width=0.33\textwidth]{\img/spinorbitGap/gap_pB_alpha40.png}&
+				\includegraphics[width=0.33\textwidth]{\img/spinorbitGap/gap_pB_alpha50.png}&
+				\includegraphics[width=0.33\textwidth]{\img/spinorbitGap/gap_pB_alpha60.png}\\
+			\end{tabular}
+			\caption{Phase zeeman energy gap plot with increasing spin orbit. $L_\text{m}=500$nm}
+			\label{fig:gap_pB_soi}
+		\end{figure}
+%------------------%
+\newpage	
 	\subsection{Varying superconducting gap}
+	Increasing the superconducting gap has the effect of reducing the energy gap somewhat. We also again see the appearance of gapless bands through the regions.
 		\begin{figure}[H]
 			\includegraphics[width=0.24\textwidth]{\img/deltagapZPcurrent/d02.png}
 			\includegraphics[width=0.24\textwidth]{\img/deltagapZPcurrent/d045.png}
@@ -225,8 +250,10 @@
 			\caption{Phase zeeman plot with increasing spin orbit}
 		\end{figure}
 %------------------%	
+\newpage
 	\subsection{Varying temperature}
-		\begin{figure}
+	We 
+		\begin{figure}[H]
 			\begin{tabular}{rcc}
 				a, T=0.025K&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm200_T0025.png}&
 				\includegraphics[width=0.4\textwidth]{\img/current/curr_lm200_T0025.png}\\
@@ -241,8 +268,7 @@
 			\caption{Critical current(maximum minus minimum current) and current versus phase and magnetic field strength, assuming zeeman field does not persists in the superconductor. Width of normal strip is 200nm. Temperatures of a, b and c respectively: 0.025 K, 0.2K, 0.6K}
 		\end{figure}
 	
-	\subsection{Varying temperature}
-		\begin{figure}
+		\begin{figure}[H]
 			\begin{tabular}{rcc}
 				a, T=0.025K&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm250_T0025.png}&
 				\includegraphics[width=0.4\textwidth]{\img/current/curr_lm250_T0025.png}\\
