@@ -122,7 +122,9 @@ def make_sns_system(a, Lm, Lr, Ll, Ly,
 
     return syst
 
-def make_junction(a, Lm, Ly, transverse_soi = True, **pars):
+def make_junction_system(a, Lm, Lr, Ll, Ly,
+                         transverse_soi = True,
+                         zeeman_in_superconductor = False):
     """ 
     Builds and returns finalized junction of the sns system
     
@@ -185,7 +187,9 @@ def make_junction(a, Lm, Ly, transverse_soi = True, **pars):
     
     return syst.finalized()
 
-def make_wrapped_system(a, Lm, Lr, Ll, Ly, Lw, transverse_soi=True, zeeman_in_superconductor=False):
+def make_wrapped_system(a, Lm, Lr, Ll, Ly,
+                        transverse_soi = True,
+                        zeeman_in_superconductor = False):
     template_strings = get_template_strings(transverse_soi, zeeman_in_superconductor)
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES

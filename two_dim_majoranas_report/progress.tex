@@ -113,6 +113,9 @@
 		
 		We will use this phase-Zeeman plot throughout the report as both parameters are easily tunable whem compared to the rest, and the diamond structure gives us an analysable feature.
 		
+		\subsubsection{Anna\&Bas}
+		Independence of phase should indeed appear beyond a certain magnetic field, when normal reflection becomes very big. When Zeeman is turned on in leads, in a system with infinite sc leads($L_l, L_r \rightarrow \infty$), only a single half diamond appears.
+		
 	\begin{figure}[H]
 		\includegraphics[width=0.5\textwidth]{\img/lmZPpfaf/pB250.png}
 		\includegraphics[width=0.5\textwidth]{\img/lmZPpfaf/pB500.png}
@@ -129,6 +132,8 @@
 	 In figure \ref{fig:lmZPgap}, we plot the energy gap around zero energy. We see that increasing the middle strip width has the effect of lowering the gap in the topological region. The system we are considering is considered an intermediate to long junction: $E_\text{Th} \gtrapprox \Delta$ or $E_\text{Th} \gg \Delta$. This implies that the relation between the induced gap and the Thouless energy and superconducting gap is $\Delta_\text{ind} \propto E_\text{Th}$[VUIK]. It would be interesting to investigate wether the gap indeed varies proportionally to the Thouless energy.
 	 
 	 We see that width of the gapless strips along the topological borders are quite wide, requiring very high magnetic field to reach a gapped topological state of the system.
+ 	\subsubsection{Anna\&Bas}
+ 	Relation between topological gap and thouless is given in the paper. Investigate what regime we are in(short, long intermediate junction). Higher chemical potential would also be a thing
 	\begin{table}[H]
 		\centering
 		\begin{tabular}{|c|c|}
@@ -166,7 +171,9 @@
 		In figure \ref{fig:muZ_zinsc}, we consider the system with zeeman field in the superconducting part. We see a chainlike structures as described in the Pientka paper. The first chain opens up as a function of phase, and forms a large strip where the system is topological for a wide range of chemical potential. We see from the energy gap plots that only the first 'chain' has is gapless.
 		
 		In figure \ref{fig:muZnosc}, we plot the system without magnetic field in the leads. With respect to the system with zeeman in the leads, it almost seems like the plot has undergone rescaling. The other diamond chains are not visible in this plot, and only appear when we greatly adjust the axes(not shown). We also see that although we can clearly see the gap closing bands(topological borders) in the gap plots, the underlying gap size does not seem greatly affected by being in topological region or not.
-
+	\subsubsection{Anna\&Bas}
+	Experiment was run at very small chemical potential, which could cause you to see discretization of the leads. It also matters whether the system is 2d infinite or not. The diamond chains are caused by gap closings of the different bands. If the system is 2d infinite, the gap is always closed.
+	
 			\begin{figure}[H]
 			\begin{tabular}{cc}
 				\includegraphics[width=0.35\textwidth]{\img/pfafmuZ_zinsc/muB0.png}&
@@ -205,7 +212,11 @@
 	\subsection{Varying spin-orbit}
 	In figure \ref{fig:pfaf_pB_soi} and \ref{fig:gap_pB_soi} we plot topology and energy gap respectively as a function of phase and magnetic field, for different values of the spin orbit coupling. From the topology, wee see that variation of SOI influences both the shape of the diamonds as well as offsets their position. From the Pientka paper, we know that both are also symptoms of non unit junction transparency. It would be interesting to indeed investigate this.
 	
-	The influence of varying spin orbit coupling seems to be limited. Although at lower spin orbit couplings, we see strands of gap-closings, which would be interesting to investigate, the energy gap in the topological region does not vary much.
+	The influence of varying spin orbit coupling seems to be limited. Although at lower spin orbit couplings, we see strands of gap-closings, which would be interesting to investigate, the energy gap in the topological region does not vary much.		\subsubsection{Anna\&Bas}
+	Effects seen could be due to not counting chemical potential from the bottom of the band, accounting for the term $\propto m\alpha^2$. Check ifthis is indeed the case. Check if this is indeed the case. 
+	
+	The gap closing might be due to BD1 symmetry. Note that the phase diagram there is $4\pi$ symmetric. Shifting phase by $\pi$ causes overall gauge of -1. Change gap on left and right lead to break symmetry, see if gap closings persist.
+	
 		\begin{figure}[H]
 			\includegraphics[width=0.192\textwidth]{\img/spinorbitZP/a30.png}
 			\includegraphics[width=0.192\textwidth]{\img/spinorbitZP/a33.png}
@@ -237,6 +248,9 @@
 \newpage	
 	\subsection{Varying superconducting gap}
 	Increasing the superconducting gap has the effect of reducing the energy gap somewhat. We also again see the appearance of gapless bands through the regions.
+	
+	\subsubsection{Anna\&Bas}
+	Increase width of leads, and rerun experiments. It is weird that gap would decrease as $\Delta$ is increased. Look at band structure.
 		\begin{figure}[H]
 			\includegraphics[width=0.24\textwidth]{\img/deltagapZPcurrent/d02.png}
 			\includegraphics[width=0.24\textwidth]{\img/deltagapZPcurrent/d045.png}
@@ -252,7 +266,10 @@
 %------------------%	
 \newpage
 	\subsection{Varying temperature}
-	We 
+	\subsubsection{Anna\&Bas}
+	It is normal to see non block wave phase minimizing current. The current can be split into two contributions. 
+	Due to spin orbit coupling, in 2d infinite system, we have two circular fermi surfaces. The values for $\kx,\ky$ which lie on both fermi surfaces, are responsible for the block wave pattern. The region outside of that is responsible for a more sinosoidal pattern.
+	So for low spin orbit coupling, the radii are almost the same, and it is all block wave.
 		\begin{figure}[H]
 			\begin{tabular}{rcc}
 				a, T=0.025K&\includegraphics[width=0.4\textwidth]{\img/current/critcurr_lm200_T0025.png}&
