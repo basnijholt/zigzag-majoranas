@@ -155,7 +155,7 @@ class SimulationSet():
             metric_scale = np.max(ip.values, 0)-np.min(ip.values, 0)
             metric_scale[metric_scale==0] = 1
             
-            dev = np.sum(deviations(ip)/metric_scale, axis=0)
+            dev = np.sum(deviations(ip)/metric_scale[:,np.newaxis], axis=0)
             A = areas(ip)
             losses = dev * np.sqrt(A) + 0.3 * A
             return losses
