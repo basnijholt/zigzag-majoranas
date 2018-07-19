@@ -5,6 +5,7 @@ from functools import partial
 import numpy as np
 import sns_system, topology, spectrum, supercurrent
 import adaptive
+import holoviews as hv
 
 def f_adaptive(xy, keys, params, syst_pars,
                      transverse_soi=True,
@@ -133,8 +134,28 @@ class SimulationSet():
         self.params    = params.copy()
         self.params.update(dict(**sns_system.constants))
 
-        self.metric_index_dict = {metric_key:idx for (idx, metric_key) in enumerate(metric_params_dict.keys())}
         self.metric_params_dict = metric_params_dict
+
+    @property
+    def xscale(self):
+        return abs(self.bounds[0][0]-self.bounds[0][1])
+    
+    @property
+    def yscale(self):
+        return abs(self.bounds[1][0]-self.bounds[1][1])
+
+    @property
+    def xcenter(self):
+        return (self.bounds[0][0]+self.bounds[0][1])/2
+   
+    @property
+    def ycenter(self):
+        return (self.bounds[1][0]+self.bounds[1][1])/2
+
+    def unnormalize(self, x, y):
+        x_unscaled = self.xscale * x + self.xcenter
+        y_unscaled = self.yscale * y + self.ycenter
+        return(x_unscaled, y_unscaled)
 
     def get_total_function(self):
         return partial(total_function,
@@ -159,5 +180,38 @@ class SimulationSet():
 
     def get_learner(self):
         f = self.get_total_function()
-        learner = adaptive.Learner2D(f, bounds=self.bounds, loss_per_triangle=self.default_metric())
-        return learner
+        self.learner = adaptive.Learner2D(f, bounds=self.bounds, loss_per_triangle=self.default_metric())
+        return self.learner
+
+    def plot(self, n=200, pfaffian_contour=True):
+        plot_dictionary = self.get_plot_dictionary(n)
+        map_plot = hv.HoloMap(plot_dictionary,
+                              kdims='Metric').opts(norm=dict(framewise=True))
+        if pfaffian_contour:
+            xy = get_pfaffian_contour(plot_dictionary)
+            contour_pfaffian = hv.Path(xy)
+            return map_plot*contour_pfaffian
+        else:
+            return map_plot
+
+    def get_plot_dictionary(self, n):
+        ip = self.learner.ip()
+        normalized_dim = np.linspace(-.5,.5, n)
+        xdim, ydim = self.unnormalize(normalized_dim, normalized_dim)
+
+        gridx, gridy = np.meshgrid(normalized_dim, normalized_dim)
+        gridded_results = ip(gridx, gridy)
+
+
+        plot_dictionary = dict()
+        for idx, metric_key in enumerate(self.metric_params_dict):
+            metric_results = gridded_results[:,:, idx]
+            plot_dictionary[metric_key] = hv.Image((xdim, ydim, metric_results))
+
+        return plot_dictionary
+
+def get_pfaffian_contour(plot_dictionary):
+        contour_pfaffian = hv.operation.contours(plot_dictionary["pfaffian"], levels=0)
+        xdata = contour_pfaffian.data[0]['x']
+        ydata = contour_pfaffian.data[0]['y']
+        return (xdata, ydata)
