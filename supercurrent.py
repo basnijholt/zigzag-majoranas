@@ -61,9 +61,10 @@ def wrapped_current(syst_pars, params, tol=0.01, max_iterations=1e3, syst_wrappe
         p = dict(k_x=k, **params)
         ham = syst_wrapped.hamiltonian_submatrix(params=p)
         (en, evs) = np.linalg.eigh(ham)
-
+        
+        local_current_operator = current_operator.bind(params=p)
         for (e, ev) in zip(en, evs.T):
-            I += fermi_dirac(e.real, p) * current_operator(ev, params=p)
+            I += fermi_dirac(e.real, p) * local_current_operator(ev)
         return sum(I)*params['e']/params['hbar']
 
     learner = adaptive.IntegratorLearner(f, [0, np.pi], tol)
