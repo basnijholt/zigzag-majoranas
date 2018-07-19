@@ -2,6 +2,7 @@ import itertools
 import copy
 import collections
 from functools import partial
+from itertools import product
 import numpy as np
 import sns_system, topology, spectrum, supercurrent
 import adaptive
@@ -187,12 +188,15 @@ class SimulationSet():
         plot_dictionary = self.get_plot_dictionary(n)
         map_plot = hv.HoloMap(plot_dictionary,
                               kdims='Metric').opts(norm=dict(framewise=True))
+
+        keys = list(self.keys_with_bounds.keys())
+
         if pfaffian_contour:
             xy = get_pfaffian_contour(plot_dictionary)
             contour_pfaffian = hv.Path(xy)
-            return map_plot*contour_pfaffian
+            return (map_plot*contour_pfaffian).redim(x=keys[0], y=keys[1])
         else:
-            return map_plot
+            return map_plot.redim(x=keys[0], y=keys[1])
 
     def get_plot_dictionary(self, n):
         ip = self.learner.ip()
@@ -201,7 +205,6 @@ class SimulationSet():
 
         gridx, gridy = np.meshgrid(normalized_dim, normalized_dim)
         gridded_results = ip(gridx, gridy)
-
 
         plot_dictionary = dict()
         for idx, metric_key in enumerate(self.metric_params_dict):
@@ -215,3 +218,58 @@ def get_pfaffian_contour(plot_dictionary):
         xdata = contour_pfaffian.data[0]['x']
         ydata = contour_pfaffian.data[0]['y']
         return (xdata, ydata)
+
+class AggregatesSimulationSet:
+    def __init__(self,
+                 keys_with_bounds,
+                 syst_pars,
+                 params,
+                 metric_params_dict):
+
+        self.syst_pars_dimensions = {}
+        self.params_dimensions = {}
+        
+
+        self.keys_with_bounds = keys_with_bounds.copy()
+        
+        self.bounds = list(keys_with_bounds.values())
+
+        self.syst_pars = syst_pars.copy()
+        self.params    = params.copy()
+        self.params.update(dict(**sns_system.constants))
+
+        self.metric_params_dict = metric_params_dict
+
+    
+    def add_dimension(self, dimension_name, dimension_values):
+        if self.syst_pars.get(dimension_name):
+            self.syst_pars_dimensions[dimension_name] = dimension_values
+        elif self.params.get(dimension_name):
+            self.params_dimensions[dimension_name] = dimension_values
+        else:
+            raise KeyError(dimension_name + " is not a parameter in syst_pars or params")
+
+    def make_simulation_sets(self):
+        simulation_set_list = []
+        for parameter_values in product(*self.syst_pars_dimensions.values()):
+            update_dict = zip(self.syst_pars_dimensions.keys(), parameter_values)
+            syst_pars = self.syst_pars.update(update_dict)
+            for parameter_values in product(*self.params_dimensions.values()):
+                update_dict = zip(self.params_dimensions.keys(), parameter_values)
+                params = self.params.update(update_dict)
+                ss = SimulationSet(self.keys_with_bounds,
+                                   self.syst_pars,
+                                   self.params,
+                                   self.metric_params_dict)
+                simulation_set_list.append(ss)
+
+        self.simulation_set_list = simulation_set_list
+
+    def make_learners(self):
+        self.make_simulation_sets()
+        self.learners = [ss.get_learner() for ss in self.simulation_set_list]
+
+    def get_balancing_learner(self):
+        self.make_learners()
+        return adaptive.BalancingLearner(self.learners)
+
