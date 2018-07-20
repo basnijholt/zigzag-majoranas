@@ -219,6 +219,14 @@ def get_pfaffian_contour(plot_dictionary):
         ydata = contour_pfaffian.data[0]['y']
         return (xdata, ydata)
 
+def loss_enough_points(loss_function, enough_points):
+    def loss_f(ip):
+        from adaptive.learner.learner2D import areas
+        loss = loss_function(ip)
+        dim = areas(ip).shape[0]
+        return 1e8 * loss / dim if dim < enough_points else loss
+    return loss_f
+
 class AggregatesSimulationSet:
     def __init__(self,
                  keys_with_bounds,
@@ -231,17 +239,18 @@ class AggregatesSimulationSet:
         
 
         self.keys_with_bounds = keys_with_bounds.copy()
-        
-        self.bounds = list(keys_with_bounds.values())
+        self.keys = tuple(keys_with_bounds.keys())
+        self.bounds = tuple(keys_with_bounds.values())
 
         self.syst_pars = syst_pars.copy()
         self.params    = params.copy()
         self.params.update(dict(**sns_system.constants))
 
         self.metric_params_dict = metric_params_dict
-
     
     def add_dimension(self, dimension_name, dimension_values):
+        assert dimension_name != self.keys[0] and dimension_name != self.keys[1]
+
         if self.syst_pars.get(dimension_name):
             self.syst_pars_dimensions[dimension_name] = dimension_values
         elif self.params.get(dimension_name):
@@ -265,11 +274,34 @@ class AggregatesSimulationSet:
 
         self.simulation_set_list = simulation_set_list
 
-    def make_learners(self):
+    def make_learners(self, enough_points):
         self.make_simulation_sets()
         self.learners = [ss.get_learner() for ss in self.simulation_set_list]
+        for learner in self.learners:
+            loss_function = learner.loss_per_triangle
+            learner.loss_per_triangle = loss_enough_points(loss_function, enough_points)
 
-    def get_balancing_learner(self):
-        self.make_learners()
+    def get_balancing_learner(self, enough_points=1):
+        self.make_learners(enough_points)
         return adaptive.BalancingLearner(self.learners)
 
+    def get_plot_dict(self, n, contour_pfaffian=False):
+        plot_dict = dict()
+        kdims = list(self.params_dimensions.keys())+ list(self.syst_pars_dimensions.keys()) + ['Metric']
+
+        for ss in self.simulation_set_list:
+            local_plot_dict = ss.get_plot_dictionary(n)
+            if contour_pfaffian is not False:
+                xy = get_pfaffian_contour(local_plot_dict)
+                contour_plot = hv.Path(xy).opts(style={'color':'white'})
+            for metric_name, metric_plot in local_plot_dict.items():
+                local_plot = metric_plot.opts(style={'cmap':'Viridis'})
+                if contour_pfaffian is not False:
+                    local_plot = local_plot*contour_plot
+
+                plot_key = tuple([ss.params[k] for k in self.params_dimensions] + 
+                                 [ss.syst_pars[k] for k in self.syst_pars_dimensions] +
+                                 [metric_name])
+
+                plot_dict[plot_key] = local_plot            
+        return (kdims, plot_dict)
