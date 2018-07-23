@@ -179,11 +179,13 @@ class SimulationSet():
 
         return default_loss_scaled
 
-    def get_learner(self):
+    def make_learner(self):
         f = self.get_total_function()
         self.learner = adaptive.Learner2D(f, bounds=self.bounds, loss_per_triangle=self.default_metric())
-        return self.learner
 
+    def get_learner(self):
+        return self.learner
+    
     def plot(self, n=200, pfaffian_contour=True):
         plot_dictionary = self.get_plot_dictionary(n)
         map_plot = hv.HoloMap(plot_dictionary,
@@ -211,7 +213,8 @@ class SimulationSet():
             metric_results = gridded_results[:,:, idx]
             plot_dictionary[metric_key] = hv.Image((xdim, ydim, metric_results))
 
-        return plot_dictionary
+        return plot_dictionary       
+        
 
 def get_pfaffian_contour(plot_dictionary):
         contour_pfaffian = hv.operation.contours(plot_dictionary["pfaffian"], levels=0)
@@ -276,15 +279,22 @@ class AggregatesSimulationSet:
 
     def make_learners(self, enough_points):
         self.make_simulation_sets()
+        for ss in self.simulation_set_list:
+            ss.make_learner()
+            
         self.learners = [ss.get_learner() for ss in self.simulation_set_list]
+        
         for learner in self.learners:
             loss_function = learner.loss_per_triangle
             learner.loss_per_triangle = loss_enough_points(loss_function, enough_points)
 
-    def get_balancing_learner(self, enough_points=1):
+    def make_balancing_learner(self, enough_points=1):
         self.make_learners(enough_points)
-        return adaptive.BalancingLearner(self.learners)
-
+        self.learner = adaptive.BalancingLearner(self.learners)
+    
+    def get_balancing_learner(self):
+        return self.learner
+    
     def get_plot_dict(self, n, contour_pfaffian=False):
         plot_dict = dict()
         kdims = list(self.params_dimensions.keys())+ list(self.syst_pars_dimensions.keys()) + ['Metric']
