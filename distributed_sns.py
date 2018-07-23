@@ -6,7 +6,10 @@ from itertools import product
 import numpy as np
 import sns_system, topology, spectrum, supercurrent
 import adaptive
+import dependencies.adaptive_tools as adaptive_tools
 import holoviews as hv
+import os
+import pickle
 
 def f_adaptive(xy, keys, params, syst_pars,
                      transverse_soi=True,
@@ -121,22 +124,43 @@ def total_function(xy, syst_pars, params, keys_with_bounds, metric_params_dict):
     return results
 
 class SimulationSet():
+    learner_file_prefix = 'learner_data_'
+    simulation_set_file_prefix = 'simulation_set_data_'
+
     def __init__(self,
                  keys_with_bounds,
                  syst_pars,
                  params,
                  metric_params_dict):
 
-        self.keys_with_bounds = keys_with_bounds.copy()
         
-        self.bounds = list(keys_with_bounds.values())
-
+        self.keys_with_bounds = keys_with_bounds.copy()
         self.syst_pars = syst_pars.copy()
         self.params    = params.copy()
-        self.params.update(dict(**sns_system.constants))
-
         self.metric_params_dict = metric_params_dict
+        
+        
+        self.bounds = list(self.keys_with_bounds.values())
+        self.params.update(dict(**sns_system.constants))
+        self.make_learner()
 
+    @property
+    def input_params(self):
+        return (self.keys_with_bounds,
+                self.syst_pars,
+                self.params,
+                self.metric_params_dict)
+    @property
+    def hash_str(self):
+        n_digits=6
+        hash_dict = {}
+        hash_func = lambda dictionary: hex(hash(tuple(dictionary)) % 2**(4*n_digits))[2:]
+        hash_str = '<KB_' + hash_func(self.keys_with_bounds) + '_>'
+        hash_str += '<PRMS_' + hash_func([(k, v) for k,v in self.params.items() if type(v) is float or type(v) is int]) + '_>'
+        hash_str += '<PARS_' + hash_func([(k, v) for k,v in self.syst_pars.items() if type(v) is float or type(v) is int]) + '_>'
+        hash_str += '<METR_' + hash_func([(k, tuple(v.items())) for k,v in self.metric_params_dict.items()]) + '_>'
+        return hash_str
+    
     @property
     def xscale(self):
         return abs(self.bounds[0][0]-self.bounds[0][1])
@@ -181,7 +205,7 @@ class SimulationSet():
 
     def make_learner(self):
         f = self.get_total_function()
-        self.learner = adaptive.Learner2D(f, bounds=self.bounds, loss_per_triangle=self.default_metric())
+        self.learner = adaptive_tools.Learner2D(f, bounds=self.bounds, loss_per_triangle=self.default_metric())
 
     def get_learner(self):
         return self.learner
@@ -214,7 +238,29 @@ class SimulationSet():
             plot_dictionary[metric_key] = hv.Image((xdim, ydim, metric_results))
 
         return plot_dictionary       
+    
+    def save(self, folder):
+        fname=self.hash_str
+
+        self.learner.save(folder, self.learner_file_prefix + fname)
         
+        os.makedirs(folder, exist_ok=True)
+        fname = os.path.join(folder, self.simulation_set_file_prefix + fname)
+        with open(fname, 'wb') as f:
+            pickle.dump(self.input_params, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+    def load(self, folder=''):
+        self.learner.load(folder, self.learner_file_prefix + self.hash_str)
+
+    def load_from_file(fname, folder=''):
+        fname = os.path.join(folder, SimulationSet.simulation_set_file_prefix + fname)
+
+        with open(fname, 'rb') as f:
+                input_params = pickle.load(f)
+
+        ss = SimulationSet(*input_params)
+        ss.load(folder)
+        return ss
 
 def get_pfaffian_contour(plot_dictionary):
         contour_pfaffian = hv.operation.contours(plot_dictionary["pfaffian"], levels=0)
@@ -230,12 +276,16 @@ def loss_enough_points(loss_function, enough_points):
         return 1e8 * loss / dim if dim < enough_points else loss
     return loss_f
 
-class AggregatesSimulationSet:
+class AggregatesSimulationSet():
+    learner_file_prefix = 'learner_data_'
+    aggregate_simulation_set_file_prefix = 'aggregate_simulation_set_data_'
+
     def __init__(self,
                  keys_with_bounds,
                  syst_pars,
                  params,
                  metric_params_dict):
+
 
         self.syst_pars_dimensions = {}
         self.params_dimensions = {}
@@ -250,7 +300,27 @@ class AggregatesSimulationSet:
         self.params.update(dict(**sns_system.constants))
 
         self.metric_params_dict = metric_params_dict
-    
+
+    @property
+    def input_params(self):
+        return (self.keys_with_bounds,
+                self.syst_pars,
+                self.params,
+                self.metric_params_dict)   
+
+    @property
+    def hash_str(self):
+        n_digits=6
+        hash_dict = {}
+        hash_func = lambda dictionary: hex(hash(tuple(dictionary)) % 2**(4*n_digits))[2:]
+        hash_str = '<KB_' + hash_func(self.keys_with_bounds) + '_>'
+        hash_str += '<PRMS_' + hash_func([(k, v) for k,v in self.params.items() if type(v) is float or type(v) is int]) + '_>'
+        hash_str += '<PARS_' + hash_func([(k, v) for k,v in self.syst_pars.items() if type(v) is float or type(v) is int]) + '_>'
+        hash_str += '<METR_' + hash_func([(k, tuple(v.items())) for k,v in self.metric_params_dict.items()]) + '_>'
+        hash_str += '<SPDIM_' + hash_func(self.syst_pars_dimensions) + '_>'
+        hash_str += '<PRMSDIM_' + hash_func(self.params_dimensions) + '_>'
+        return hash_str
+
     def add_dimension(self, dimension_name, dimension_values):
         assert dimension_name != self.keys[0] and dimension_name != self.keys[1]
 
@@ -290,7 +360,7 @@ class AggregatesSimulationSet:
 
     def make_balancing_learner(self, enough_points=1):
         self.make_learners(enough_points)
-        self.learner = adaptive.BalancingLearner(self.learners)
+        self.learner = adaptive_tools.BalancingLearner(self.learners)
     
     def get_balancing_learner(self):
         return self.learner
@@ -315,3 +385,17 @@ class AggregatesSimulationSet:
 
                 plot_dict[plot_key] = local_plot            
         return (kdims, plot_dict)
+
+    def save(self, folder):
+        self.learner.save(folder, fname_pattern='data_learner_' + self.hash_str + '{}')
+        (self.input_params, self.syst_pars_dimensions, self.params_dimensions)
+
+        os.makedirs(folder, exist_ok=True)
+        fname = os.path.join(folder, self.aggregate_simulation_set_file_prefix + self.hash_str)
+        with open(fname, 'wb') as f:
+            pickle.dump((self.input_params, self.syst_pars_dimensions, self.params_dimensions)
+                        , f, protocol=pickle.HIGHEST_PROTOCOL)
+
+    def load(self, folder):
+        self.make_balancing_learner()
+        self.learner.load(folder, fname_pattern='data_learner_' + self.hash_str + '{}')
