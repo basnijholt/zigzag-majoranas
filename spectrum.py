@@ -55,34 +55,109 @@ def calc_dos_lowest_state(syst, params, syst_pars):
     wf = sns_system.to_site_ph_spin(syst_pars, wfs[:,0])
     return (abs(energies[0]), energy_gap, np.sum(np.abs(wf)**2, axis=2))
 
-def find_gap_of_lead(lead, params, energy_precision, energy_ub=None, energy_prediction=None):
-    if energy_prediction is not None:
-        assert 0 < energy_prediction < energy_ub
 
-    def has_bands(energy):
-        smds = lead.modes(energy=energy, params=params)[1]
-        return smds.nmodes>0
-    
-    if energy_ub is None:
-        energy_ub = params['Delta']
-    energy_lb = 0
-    
-    if energy_prediction is None:
-        ub_has_bands = has_bands(energy_ub)
-        lb_has_bands = has_bands(energy_lb)
+def translation_ev(h, t, tol=1e6):
+    """Compute the eigenvalues of the translation operator of a lead.
 
+    Adapted from kwant.physics.leads.modes.
+
+    Parameters
+    ----------
+    h : numpy array, real or complex, shape (N, N) The unit cell
+        Hamiltonian of the lead unit cell.
+    t : numpy array, real or complex, shape (N, M)
+        The hopping matrix from a lead cell to the one on which self-energy
+        has to be calculated (and any other hopping in the same direction).
+    tol : float
+        Numbers and differences are considered zero when they are smaller
+        than `tol` times the machine precision.
+
+    Returns
+    -------
+    ev : numpy array
+        Eigenvalues of the translation operator in the form lambda=r*exp(i*k),
+        for |r|=1 they are propagating modes.
+    """
+    a, b = kwant.physics.leads.setup_linsys(h, t, tol, None).eigenproblem
+    ev = kwant.physics.leads.unified_eigenproblem(a, b, tol=tol)[0]
+    return ev
+
+
+def cell_mats(lead, params, bias=0):
+    h = lead.cell_hamiltonian(params=params)
+    h -= bias * np.identity(len(h))
+    t = lead.inter_cell_hopping(params=params)
+    return h, t
+
+def gap_minimizer(lead, params, energy):
+    """Function that minimizes a function to find the band gap.
+    This objective function checks if there are progagating modes at a
+    certain energy. Returns zero if there is a propagating mode.
+
+    Parameters
+    ----------
+    lead : kwant.builder.InfiniteSystem object
+        The finalized infinite system.
+    params : dict
+        A dict that is used to store Hamiltonian parameters.
+    energy : float
+        Energy at which this function checks for propagating modes.
+
+    Returns
+    -------
+    minimized_scalar : float
+        Value that is zero when there is a propagating mode.
+    """
+    h, t = cell_mats(lead, params, bias=energy)
+    ev = translation_ev(h, t)
+    norm = (ev * ev.conj()).real
+    return np.min(np.abs(norm - 1))
+
+
+def bands(lead, params, ks=None):
+    if ks is None:
+        ks = np.linspace(-3, 3)
+
+    bands = kwant.physics.Bands(lead, params=params)
+
+    if isinstance(ks, (float, int)):
+        return bands(ks)
     else:
-        energy_prediction_has_bands = has_bands(energy_prediction)
-        if energy_prediction_has_bands:
-            energy_ub = energy_prediction_has_bands
-        else:
-            energy_lb = energy_prediction_has_bands
+        return np.array([bands(k) for k in ks])
 
+def find_gap_of_lead(lead, params, tol=1e-6):
+    """Finds the gapsize by peforming a binary search of the modes with a
+    tolarance of tol.
 
-    while(energy_ub - energy_lb > energy_precision):
-        energy_middle = (energy_ub + energy_lb) / 2
-        if has_bands(energy_middle):
-            energy_ub = energy_middle
-        else:
-            energy_lb = energy_middle
-    return energy_lb
+    Parameters
+    ----------
+    lead : kwant.builder.InfiniteSystem object
+        The finalized infinite system.
+    params : dict
+        A dict that is used to store Hamiltonian parameters.
+    tol : float
+        The precision of the binary search.
+
+    Returns
+    -------
+    gap : float
+        Size of the gap.
+
+    Notes
+    -----
+    For use with `lead = funcs.make_lead()`.
+    """
+    lim = [0, np.abs(bands(lead, params, ks=0)).min()]
+    if gap_minimizer(lead, params, energy=0) < 1e-15:
+        # No band gap
+        gap = 0
+    else:
+        while lim[1] - lim[0] > tol:
+            energy = sum(lim) / 2
+            par = gap_minimizer(lead, params, energy)
+            if par < 1e-10:
+                lim[1] = energy
+            else:
+                lim[0] = energy
+        gap = sum(lim) / 2
+    return gap
