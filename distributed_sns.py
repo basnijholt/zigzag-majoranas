@@ -387,7 +387,7 @@ class AggregatesSimulationSet():
         return (kdims, plot_dict)
 
     def save(self, folder):
-        self.learner.save(folder, fname_pattern='data_learner_' + self.hash_str + '{}')
+        self.learner.save(folder, fname_pattern=self.learner_file_prefix + self.hash_str + '{}')
         (self.input_params, self.syst_pars_dimensions, self.params_dimensions)
 
         os.makedirs(folder, exist_ok=True)
@@ -396,6 +396,31 @@ class AggregatesSimulationSet():
             pickle.dump((self.input_params, self.syst_pars_dimensions, self.params_dimensions)
                         , f, protocol=pickle.HIGHEST_PROTOCOL)
 
+    def start_periodic_saver(self, runner, folder, interval=3600):
+        self.save(folder)
+        return self.learner.start_periodic_saver(runner,
+                                                 folder,
+                                                 fname_pattern=self.learner_file_prefix + self.hash_str + '{}',
+                                                 interval=interval)
+
     def load(self, folder):
         self.make_balancing_learner()
-        self.learner.load(folder, fname_pattern='data_learner_' + self.hash_str + '{}')
+        self.learner.load(folder, fname_pattern=self.learner_file_prefix + self.hash_str + '{}')
+
+    def load_from_file(fname, folder=''):
+        fname = os.path.join(folder, AggregatesSimulationSet.aggregate_simulation_set_file_prefix + fname)
+
+        with open(fname, 'rb') as f:
+            input_params, syst_pars_dimensions, params_dimensions = pickle.load(f)
+
+        ass = AggregatesSimulationSet(*input_params)
+
+        for k,v in syst_pars_dimensions.items():
+            ass.add_dimension(k, v)
+        for k,v in params_dimensions.items():
+            ass.add_dimension(k, v)
+        
+        ass.load(folder)
+        return ass
+
+
