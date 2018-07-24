@@ -273,7 +273,7 @@ def loss_enough_points(loss_function, enough_points):
         from adaptive.learner.learner2D import areas
         loss = loss_function(ip)
         dim = areas(ip).shape[0]
-        return 1e8 * loss / dim if dim < enough_points else loss
+        return 1e30 * loss / dim if dim < enough_points else loss
     return loss_f
 
 class AggregatesSimulationSet():
@@ -308,6 +308,10 @@ class AggregatesSimulationSet():
                 self.params,
                 self.metric_params_dict)   
 
+    @property
+    def learners(self):
+        return self.learner.learners
+    
     @property
     def hash_str(self):
         n_digits=6
@@ -352,15 +356,16 @@ class AggregatesSimulationSet():
         for ss in self.simulation_set_list:
             ss.make_learner()
             
-        self.learners = [ss.get_learner() for ss in self.simulation_set_list]
+        learners = [ss.get_learner() for ss in self.simulation_set_list]
         
-        for learner in self.learners:
+        for learner in learners:
             loss_function = learner.loss_per_triangle
             learner.loss_per_triangle = loss_enough_points(loss_function, enough_points)
+        return learners
 
     def make_balancing_learner(self, enough_points=1):
-        self.make_learners(enough_points)
-        self.learner = adaptive_tools.BalancingLearner(self.learners)
+        learners = self.make_learners(enough_points)
+        self.learner = adaptive_tools.BalancingLearner(learners)
     
     def get_balancing_learner(self):
         return self.learner

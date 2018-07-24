@@ -13,28 +13,49 @@ constants = dict(
     cos=cmath.cos,
     sin=cmath.sin)
 
-def get_template_strings(transverse_soi, zeeman_in_superconductor=False):
-    if transverse_soi:
-        ham_str = """
-        (hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) + 
-        alpha * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x)"""
+dummy_params = dict(**constants,
+                    g_factor=1,
+                    g_factor_left=2,
+                    g_factor_right=3,
+                    mu=4,
+                    alpha=5,
+                    alpha_left=6,
+                    alpha_right=7,
+                    Delta_left=8,
+                    Delta_right=9,
+                    B=10,
+                    phase=11,
+                    T=12)
+
+def get_template_strings(transverse_soi, mu_from_bottom_of_spin_orbit_bands=True):
+    if mu_from_bottom_of_spin_orbit_bands:
+        ham_str = "(hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu + m_eff*alpha^2 / (2 * hbar^2)) * kron(sigma_z, sigma_0) "
     else:
-        ham_str = """
-        (hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) + 
-        alpha * kron(sigma_z, sigma_x) * k_y"""
+        ham_str = "(hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) "
 
-    ham_sc_left = ham_str + " + Delta * kron(sigma_y, sigma_0)"
+    if transverse_soi:
+        ham_normal = ham_str + """ +
+        alpha * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x)"""
+        ham_sc_left = ham_str + """
+        + alpha_left * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x)"""
+        ham_sc_right = ham_str + """
+        + alpha_right * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x)"""
+    else:
+        ham_normal += """
+        + alpha * kron(sigma_z, sigma_x) * k_y"""
+        ham_sc_left = ham_str + """
+        + alpha_left * kron(sigma_z, sigma_x) * k_y"""
+        ham_sc_right = ham_str + """
+        + alpha_right * kron(sigma_z, sigma_x) * k_y"""
 
-
-    ham_sc_right = ham_str + """ + cos(phase) * Delta * kron(sigma_y, sigma_0) + 
-                                    + sin(phase) * Delta * kron(sigma_x, sigma_0)
+    ham_sc_left += " + Delta_left * kron(sigma_y, sigma_0)"
+    ham_sc_right += """ + cos(phase) * Delta_right * kron(sigma_y, sigma_0) + 
+                                    + sin(phase) * Delta_right * kron(sigma_x, sigma_0)
     """
-    ham_normal = ham_str + """ + 
-                                g_factor*mu_B*B * kron(sigma_0, sigma_y)
-    """
-    if zeeman_in_superconductor:
-        ham_sc_left  += "+ g_factor*mu_B*B * kron(sigma_0, sigma_y)"
-        ham_sc_right += "+ g_factor*mu_B*B * kron(sigma_0, sigma_y)"
+    ham_normal += "+ g_factor*mu_B*B * kron(sigma_0, sigma_y)"
+
+    ham_sc_left  += "+ g_factor_left * mu_B * B * kron(sigma_0, sigma_y)"
+    ham_sc_right += "+ g_factor_right * mu_B * B * kron(sigma_0, sigma_y)"
         
     template_strings = dict(ham_normal=ham_normal,
                             ham_sc_right=ham_sc_right,
@@ -43,7 +64,7 @@ def get_template_strings(transverse_soi, zeeman_in_superconductor=False):
 
 def make_sns_system(a, Lm, Lr, Ll, Ly,
                     transverse_soi = True,
-                    zeeman_in_superconductor = False):
+                    mu_from_bottom_of_spin_orbit_bands = True):
     """ 
     Builds and returns finalized 2dim sns system
     
@@ -71,7 +92,7 @@ def make_sns_system(a, Lm, Lr, Ll, Ly,
     """
 
     #     HAMILTONIAN DEFINITIONS
-    template_strings = get_template_strings(transverse_soi, )
+    template_strings = get_template_strings(transverse_soi, mu_from_bottom_of_spin_orbit_bands)
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
     template_normal = kwant.continuum.discretize(template_strings['ham_normal'], grid_spacing=a)
@@ -124,7 +145,7 @@ def make_sns_system(a, Lm, Lr, Ll, Ly,
 
 def make_junction_system(a, Lm, Lr, Ll, Ly,
                          transverse_soi = True,
-                         zeeman_in_superconductor = False):
+                         mu_from_bottom_of_spin_orbit_bands = True):
     """ 
     Builds and returns finalized junction of the sns system
     
@@ -152,7 +173,7 @@ def make_junction_system(a, Lm, Lr, Ll, Ly,
     """
 
     #     HAMILTONIAN DEFINITIONS
-    template_strings = get_template_strings(transverse_soi)
+    template_strings = get_template_strings(transverse_soi, mu_from_bottom_of_spin_orbit_bands)
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
     template_normal = kwant.continuum.discretize(template_strings['ham_normal'], grid_spacing=a)
@@ -189,8 +210,8 @@ def make_junction_system(a, Lm, Lr, Ll, Ly,
 
 def make_wrapped_system(a, Lm, Lr, Ll, Ly,
                         transverse_soi = True,
-                        zeeman_in_superconductor = False):
-    template_strings = get_template_strings(transverse_soi, zeeman_in_superconductor)
+                        mu_from_bottom_of_spin_orbit_bands = True):
+    template_strings = get_template_strings(transverse_soi, mu_from_bottom_of_spin_orbit_bands)
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
     template_normal = kwant.continuum.discretize(template_strings['ham_normal'], grid_spacing=a)
