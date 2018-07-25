@@ -287,8 +287,7 @@ class AggregatesSimulationSet():
                  metric_params_dict):
 
 
-        self.syst_pars_dimensions = {}
-        self.params_dimensions = {}
+        self.dimension_dict = {}
         
 
         self.keys_with_bounds = keys_with_bounds.copy()
@@ -321,33 +320,29 @@ class AggregatesSimulationSet():
         hash_str += '<PRMS_' + hash_func([(k, v) for k,v in self.params.items() if type(v) is float or type(v) is int]) + '_>'
         hash_str += '<PARS_' + hash_func([(k, v) for k,v in self.syst_pars.items() if type(v) is float or type(v) is int]) + '_>'
         hash_str += '<METR_' + hash_func([(k, tuple(v.items())) for k,v in self.metric_params_dict.items()]) + '_>'
-        hash_str += '<SPDIM_' + hash_func(self.syst_pars_dimensions) + '_>'
-        hash_str += '<PRMSDIM_' + hash_func(self.params_dimensions) + '_>'
+        hash_str += '<DIM_' + hash_func(self.dimension_dict.keys()) + '_>'
         return hash_str
 
-    def add_dimension(self, dimension_name, dimension_values):
-        assert dimension_name != self.keys[0] and dimension_name != self.keys[1]
-
-        if self.syst_pars.get(dimension_name):
-            self.syst_pars_dimensions[dimension_name] = dimension_values
-        elif self.params.get(dimension_name):
-            self.params_dimensions[dimension_name] = dimension_values
-        else:
-            raise KeyError(dimension_name + " is not a parameter in syst_pars or params")
+    def add_dimension(self, dimension_name, dimension_functions):
+        self.dimension_dict[dimension_name] = dimension_functions
 
     def make_simulation_sets(self):
         simulation_set_list = []
-        for parameter_values in product(*self.syst_pars_dimensions.values()):
-            update_dict = zip(self.syst_pars_dimensions.keys(), parameter_values)
-            syst_pars = self.syst_pars.update(update_dict)
-            for parameter_values in product(*self.params_dimensions.values()):
-                update_dict = zip(self.params_dimensions.keys(), parameter_values)
-                params = self.params.update(update_dict)
-                ss = SimulationSet(self.keys_with_bounds,
-                                   self.syst_pars,
-                                   self.params,
-                                   self.metric_params_dict)
-                simulation_set_list.append(ss)
+
+        for parameter_altering_functions in product(*self.dimension_dict.values()):
+            syst_pars = self.syst_pars.copy()
+            params = self.params.copy()
+            dimension_values = []
+
+            for function in parameter_altering_functions:
+                dimension_values.append(function(syst_pars, params))
+
+            ss = SimulationSet(self.keys_with_bounds,
+                               syst_pars,
+                               params,
+                               self.metric_params_dict)
+            ss.dimension_values = dimension_values
+            simulation_set_list.append(ss)
 
         self.simulation_set_list = simulation_set_list
 
@@ -372,7 +367,7 @@ class AggregatesSimulationSet():
     
     def get_plot_dict(self, n, contour_pfaffian=False):
         plot_dict = dict()
-        kdims = list(self.params_dimensions.keys())+ list(self.syst_pars_dimensions.keys()) + ['Metric']
+        kdims = list(self.dimension_dict.keys()) + ['Metric']
 
         for ss in self.simulation_set_list:
             local_plot_dict = ss.get_plot_dictionary(n)
@@ -384,8 +379,7 @@ class AggregatesSimulationSet():
                 if contour_pfaffian is not False:
                     local_plot = local_plot*contour_plot
 
-                plot_key = tuple([ss.params[k] for k in self.params_dimensions] + 
-                                 [ss.syst_pars[k] for k in self.syst_pars_dimensions] +
+                plot_key = tuple([*ss.dimension_values] + 
                                  [metric_name])
 
                 plot_dict[plot_key] = local_plot            
@@ -393,13 +387,6 @@ class AggregatesSimulationSet():
 
     def save(self, folder):
         self.learner.save(folder, fname_pattern=self.learner_file_prefix + self.hash_str + '{}')
-        (self.input_params, self.syst_pars_dimensions, self.params_dimensions)
-
-        os.makedirs(folder, exist_ok=True)
-        fname = os.path.join(folder, self.aggregate_simulation_set_file_prefix + self.hash_str)
-        with open(fname, 'wb') as f:
-            pickle.dump((self.input_params, self.syst_pars_dimensions, self.params_dimensions)
-                        , f, protocol=pickle.HIGHEST_PROTOCOL)
 
     def start_periodic_saver(self, runner, folder, interval=3600):
         self.save(folder)
@@ -411,21 +398,3 @@ class AggregatesSimulationSet():
     def load(self, folder):
         self.make_balancing_learner()
         self.learner.load(folder, fname_pattern=self.learner_file_prefix + self.hash_str + '{}')
-
-    def load_from_file(fname, folder=''):
-        fname = os.path.join(folder, AggregatesSimulationSet.aggregate_simulation_set_file_prefix + fname)
-
-        with open(fname, 'rb') as f:
-            input_params, syst_pars_dimensions, params_dimensions = pickle.load(f)
-
-        ass = AggregatesSimulationSet(*input_params)
-
-        for k,v in syst_pars_dimensions.items():
-            ass.add_dimension(k, v)
-        for k,v in params_dimensions.items():
-            ass.add_dimension(k, v)
-        
-        ass.load(folder)
-        return ass
-
-

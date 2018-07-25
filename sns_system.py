@@ -14,11 +14,11 @@ constants = dict(
     sin=cmath.sin)
 
 dummy_params = dict(**constants,
-                    g_factor=1,
+                    g_factor_middle=1,
                     g_factor_left=2,
                     g_factor_right=3,
                     mu=4,
-                    alpha=5,
+                    alpha_middle=5,
                     alpha_left=6,
                     alpha_right=7,
                     Delta_left=8,
@@ -29,20 +29,20 @@ dummy_params = dict(**constants,
 
 def get_template_strings(transverse_soi, mu_from_bottom_of_spin_orbit_bands=True):
     if mu_from_bottom_of_spin_orbit_bands:
-        ham_str = "(hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu + m_eff*alpha^2 / (2 * hbar^2)) * kron(sigma_z, sigma_0) "
+        ham_str = "(hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu + m_eff*alpha_middle^2 / (2 * hbar^2)) * kron(sigma_z, sigma_0) "
     else:
         ham_str = "(hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu) * kron(sigma_z, sigma_0) "
 
     if transverse_soi:
         ham_normal = ham_str + """ +
-        alpha * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x)"""
+        alpha_middle * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x)"""
         ham_sc_left = ham_str + """
         + alpha_left * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x)"""
         ham_sc_right = ham_str + """
         + alpha_right * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x)"""
     else:
         ham_normal += """
-        + alpha * kron(sigma_z, sigma_x) * k_y"""
+        + alpha_middle * kron(sigma_z, sigma_x) * k_y"""
         ham_sc_left = ham_str + """
         + alpha_left * kron(sigma_z, sigma_x) * k_y"""
         ham_sc_right = ham_str + """
@@ -52,7 +52,7 @@ def get_template_strings(transverse_soi, mu_from_bottom_of_spin_orbit_bands=True
     ham_sc_right += """ + cos(phase) * Delta_right * kron(sigma_y, sigma_0) + 
                                     + sin(phase) * Delta_right * kron(sigma_x, sigma_0)
     """
-    ham_normal += "+ g_factor*mu_B*B * kron(sigma_0, sigma_y)"
+    ham_normal += "+ g_factor_middle*mu_B*B * kron(sigma_0, sigma_y)"
 
     ham_sc_left  += "+ g_factor_left * mu_B * B * kron(sigma_0, sigma_y)"
     ham_sc_right += "+ g_factor_right * mu_B * B * kron(sigma_0, sigma_y)"
