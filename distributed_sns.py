@@ -319,10 +319,10 @@ class AggregatesSimulationSet():
         hash_dict = {}
         hash_func = lambda dictionary: hex(consistent_hash(dictionary) % 2**(4*n_digits))[2:]
         hash_str = '<KB_' + hash_func(self.keys_with_bounds) + '_>'
-        hash_str += '<PRMS_' + hash_func([(k, v) for k,v in self.params.items() if type(v) is float or type(v) is int]) + '_>'
-        hash_str += '<PARS_' + hash_func([(k, v) for k,v in self.syst_pars.items() if type(v) is float or type(v) is int]) + '_>'
-        hash_str += '<METR_' + hash_func([(k, tuple(v.items())) for k,v in self.metric_params_dict.items()]) + '_>'
-        hash_str += '<DIM_' + hash_func(self.dimension_dict.keys()) + '_>'
+        hash_str += '<PRMS_' + hash_func(self.params) + '_>'
+        hash_str += '<PARS_' + hash_func(self.syst_pars) + '_>'
+        hash_str += '<METR_' + hash_func(self.metric_params_dict) + '_>'
+        hash_str += '<DIM_' + hash_func(self.dimension_dict) + '_>'
         return hash_str
 
     def add_dimension(self, dimension_name, dimension_functions):
@@ -411,14 +411,14 @@ class AggregatesSimulationSet():
         self.make_balancing_learner(enough_points)
         self.learner.load(folder, fname_pattern=self.learner_file_prefix + self.hash_str + '{}')
 
-    def load_from_file(fname, folder=''):
+    def load_from_file(fname, folder, enough_points):
         fname = os.path.join(folder, AggregatesSimulationSet.aggregate_simulation_set_file_prefix + fname)
 
         with open(fname, 'rb') as f:
-                (self.input_params, self.dimension_dict) = dill.load(f)
+                (input_params, dimension_dict) = dill.load(f)
 
-        ass = SimulationSet(*input_params)
+        ass = AggregatesSimulationSet(*input_params)
         for k,v in dimension_dict.items():
             ass.add_dimension(k, v)
-        ass.load(folder)
-        return ss
+        ass.load(folder, enough_points)
+        return ass

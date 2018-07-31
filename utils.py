@@ -3,6 +3,7 @@ import dill
 import hashlib
 import types
 import inspect
+import functools
 
 def hash_dict(dictionary):
     temp_dict = dict()
@@ -45,6 +46,12 @@ def hash_str(obj):
 def hash_function(obj):
     return consistent_hash(inspect.getsource(obj))
 
+def hash_builtin_function(obj):
+	return consistent_hash(obj.__name__)
+
+def hash_partial_function(obj):
+	return consistent_hash(obj.func)
+
 def consistent_hash(obj):
     hash_funcs = {
         dict:hash_dict,
@@ -53,7 +60,10 @@ def consistent_hash(obj):
         int:hash_int,
         float:hash_float,
         str:hash_str,
-        types.FunctionType:hash_function
+        types.FunctionType:hash_function,
+        types.BuiltinFunctionType:hash_builtin_function,
+        bool:hash_int,
+        functools.partial:hash_partial_function
     }
     return hash_funcs[type(obj)](obj)
 
@@ -61,4 +71,3 @@ def consistent_hash(obj):
 
 
 
-    
