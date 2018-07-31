@@ -10,6 +10,8 @@ import dependencies.adaptive_tools as adaptive_tools
 import holoviews as hv
 import os
 import pickle
+import dill
+from utils import consistent_hash
 
 def f_adaptive(xy, keys, params, syst_pars,
                      transverse_soi=True,
@@ -154,7 +156,7 @@ class SimulationSet():
     def hash_str(self):
         n_digits=6
         hash_dict = {}
-        hash_func = lambda dictionary: hex(hash(tuple(dictionary)) % 2**(4*n_digits))[2:]
+        hash_func = lambda dictionary: hex(consistent_hash(dictionary) % 2**(4*n_digits))[2:]
         hash_str = '<KB_' + hash_func(self.keys_with_bounds) + '_>'
         hash_str += '<PRMS_' + hash_func([(k, v) for k,v in self.params.items() if type(v) is float or type(v) is int]) + '_>'
         hash_str += '<PARS_' + hash_func([(k, v) for k,v in self.syst_pars.items() if type(v) is float or type(v) is int]) + '_>'
@@ -315,7 +317,7 @@ class AggregatesSimulationSet():
     def hash_str(self):
         n_digits=6
         hash_dict = {}
-        hash_func = lambda dictionary: hex(hash(tuple(dictionary)) % 2**(4*n_digits))[2:]
+        hash_func = lambda dictionary: hex(consistent_hash(dictionary) % 2**(4*n_digits))[2:]
         hash_str = '<KB_' + hash_func(self.keys_with_bounds) + '_>'
         hash_str += '<PRMS_' + hash_func([(k, v) for k,v in self.params.items() if type(v) is float or type(v) is int]) + '_>'
         hash_str += '<PARS_' + hash_func([(k, v) for k,v in self.syst_pars.items() if type(v) is float or type(v) is int]) + '_>'
@@ -386,8 +388,18 @@ class AggregatesSimulationSet():
         return (kdims, plot_dict)
 
     def save(self, folder):
-        self.learner.save(folder, fname_pattern=self.learner_file_prefix + self.hash_str + '{}')
+        fname=self.hash_str
 
+        self.learner.save(folder, self.learner_file_prefix + fname)
+        
+        os.makedirs(folder, exist_ok=True)
+        fname = os.path.join(folder, self.aggregate_simulation_set_file_prefix + fname)
+        with open(fname, 'wb') as f:
+            dill.dump((self.input_params, self.dimension_dict), f)
+
+        
+        self.learner.save(folder, fname_pattern=self.learner_file_prefix + self.hash_str + '{}')
+        
     def start_periodic_saver(self, runner, folder, interval=3600):
         self.save(folder)
         return self.learner.start_periodic_saver(runner,
@@ -395,6 +407,18 @@ class AggregatesSimulationSet():
                                                  fname_pattern=self.learner_file_prefix + self.hash_str + '{}',
                                                  interval=interval)
 
-    def load(self, folder):
-        self.make_balancing_learner()
+    def load(self, folder, enough_points):
+        self.make_balancing_learner(enough_points)
         self.learner.load(folder, fname_pattern=self.learner_file_prefix + self.hash_str + '{}')
+
+    def load_from_file(fname, folder=''):
+        fname = os.path.join(folder, AggregatesSimulationSet.aggregate_simulation_set_file_prefix + fname)
+
+        with open(fname, 'rb') as f:
+                (self.input_params, self.dimension_dict) = dill.load(f)
+
+        ass = SimulationSet(*input_params)
+        for k,v in dimension_dict.items():
+            ass.add_dimension(k, v)
+        ass.load(folder)
+        return ss
