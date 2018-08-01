@@ -322,7 +322,7 @@ class AggregatesSimulationSet():
         hash_str += '<PRMS_' + hash_func(self.params) + '_>'
         hash_str += '<PARS_' + hash_func(self.syst_pars) + '_>'
         hash_str += '<METR_' + hash_func(self.metric_params_dict) + '_>'
-        hash_str += '<DIM_' + hash_func(self.dimension_dict) + '_>'
+        hash_str += '<DIM_' + hash_func({k:len(v) for k,v in self.dimension_dict.items()}) + '_>'
         return hash_str
 
     def add_dimension(self, dimension_name, dimension_functions):
