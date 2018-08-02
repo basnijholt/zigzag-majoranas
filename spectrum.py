@@ -4,6 +4,11 @@ import scipy.sparse as sp
 import scipy.sparse.linalg as sla
 import sns_system
 
+def dispersion(kx, ky, params):
+    Ekin  = params['hbar']**2/(2*params['m_eff']) * (kx**2 + ky**2) - params['mu'] + params['m_eff'] * params['alpha_middle']**2 / (2 * params['hbar']**2)
+    Erest = np.sqrt(params['alpha_middle']**2 * ky**2 + (params['alpha_middle']*kx - params['g_factor_middle'] * params['mu_B'] * params['B'])**2)
+    return (Ekin + Erest, Ekin - Erest)
+    
 def sparse_diag(matrix, k, sigma, **kwargs):
     """Call sla.eigsh with mumps support.
 

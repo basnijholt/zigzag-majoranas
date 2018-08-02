@@ -13,19 +13,21 @@ constants = dict(
     cos=cmath.cos,
     sin=cmath.sin)
 
+dummy_params_raw = dict(g_factor_middle=1,
+                        g_factor_left=2,
+                        g_factor_right=3,
+                        mu=4,
+                        alpha_middle=5,
+                        alpha_left=6,
+                        alpha_right=7,
+                        Delta_left=8,
+                        Delta_right=9,
+                        B=10,
+                        phase=11,
+                        T=12)
+
 dummy_params = dict(**constants,
-                    g_factor_middle=1,
-                    g_factor_left=2,
-                    g_factor_right=3,
-                    mu=4,
-                    alpha_middle=5,
-                    alpha_left=6,
-                    alpha_right=7,
-                    Delta_left=8,
-                    Delta_right=9,
-                    B=10,
-                    phase=11,
-                    T=12)
+                    **dummy_params_raw)
 
 def get_template_strings(transverse_soi, mu_from_bottom_of_spin_orbit_bands=True):
     if mu_from_bottom_of_spin_orbit_bands:

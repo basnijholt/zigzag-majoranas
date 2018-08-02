@@ -103,6 +103,7 @@ def get_correct_metric_function(metric_key, metric_params):
     }
     return partial(options[metric_key], metric_params)
 
+
 def total_function(xy, syst_pars, params, keys_with_bounds, metric_params_dict):
     syst_total    = sns_system.make_sns_system(**syst_pars)
     syst_wrapped  = sns_system.make_wrapped_system(**syst_pars)
@@ -152,6 +153,12 @@ class SimulationSet():
                 self.syst_pars,
                 self.params,
                 self.metric_params_dict)
+    
+    @property
+    def table_dicts(self):
+        params = {k:v for k,v in self.params.items() if ((k in sns_system.dummy_params_raw) and (k not in self.keys_with_bounds))}
+        return (self.syst_pars, params)
+
     @property
     def hash_str(self):
         n_digits=6
@@ -278,6 +285,11 @@ def loss_enough_points(loss_function, enough_points):
         return 1e30 * loss / dim if dim < enough_points else loss
     return loss_f
 
+def ptable(dictionary):
+    return hv.Table({'Parameter name':list(dictionary.keys()),
+          'Value':list(dictionary.values())},['Parameter name', 'Value'])
+
+
 class AggregatesSimulationSet():
     learner_file_prefix = 'learner_data_'
     aggregate_simulation_set_file_prefix = 'aggregate_simulation_set_data_'
@@ -313,6 +325,10 @@ class AggregatesSimulationSet():
     def learners(self):
         return self.learner.learners
     
+    @property
+    def simulation_set_dict(self):
+            return {tuple(ss.dimension_values):ss for ss in self.simulation_set_list}
+
     @property
     def hash_str(self):
         n_digits=6
@@ -366,10 +382,22 @@ class AggregatesSimulationSet():
     
     def get_balancing_learner(self):
         return self.learner
-    
-    def get_plot_dict(self, n, contour_pfaffian=False):
+
+    def get_parameter_table_dicts(self):
+        table_dict_params = {}
+        table_dict_syst_pars = {}
+        for ss_key, ss in self.simulation_set_dict.items():
+            for metric_key in self.metric_params_dict:
+                syst_pars, params_raw = ss.table_dicts
+                table_dict_params[(*ss_key, metric_key)] = ptable(params_raw)
+                table_dict_syst_pars[(*ss_key, metric_key)] = ptable(syst_pars)
+        return (table_dict_syst_pars, table_dict_params)
+
+    def get_plot_dict(self, n, contour_pfaffian=False, tables=False):
         plot_dict = dict()
         kdims = list(self.dimension_dict.keys()) + ['Metric']
+        if tables is not False:
+            syst_tables, parameter_tables = self.get_parameter_table_dicts()
 
         for ss in self.simulation_set_list:
             local_plot_dict = ss.get_plot_dictionary(n)
@@ -378,11 +406,14 @@ class AggregatesSimulationSet():
                 contour_plot = hv.Path(xy).opts(style={'color':'white'})
             for metric_name, metric_plot in local_plot_dict.items():
                 local_plot = metric_plot.opts(style={'cmap':'Viridis'})
-                if contour_pfaffian is not False:
-                    local_plot = local_plot*contour_plot
-
                 plot_key = tuple([*ss.dimension_values] + 
                                  [metric_name])
+                
+                if contour_pfaffian is not False:
+                    local_plot = local_plot*contour_plot
+                if tables is not False:
+                    local_plot = local_plot + syst_tables[plot_key] + parameter_tables[plot_key]
+
 
                 plot_dict[plot_key] = local_plot            
         return (kdims, plot_dict)
