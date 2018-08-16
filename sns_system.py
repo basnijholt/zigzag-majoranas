@@ -205,7 +205,7 @@ def make_ns_junction(a, Lm, Lr, Ll, Ly,
         return y == 0
 
     # BUILD SYSTEM
-    conservation_matrix = -supercurrent.tau_z # Allows seperate bookkeeping of eh in normal lead
+    conservation_matrix = -supercurrent.sigz # Allows seperate bookkeeping of eh in normal lead
 
     # Make left normal lead
     normal_lead_symmetry = kwant.TranslationalSymmetry((-a,0), (0, a))
@@ -220,16 +220,16 @@ def make_ns_junction(a, Lm, Lr, Ll, Ly,
     # Make barrier/middle site
     wraparound_symmetry = kwant.TranslationalSymmetry((0, a))
     barrier = kwant.Builder(symmetry=wraparound_symmetry, conservation_law=conservation_matrix)
-    barrier.fill(template_barrier, shape_normal, (0,0))
+    barrier.fill(template_barrier, shape_barrier, (0,0))
 
     # Wraparound systems
     barrier = kwant.wraparound.wraparound(barrier, coordinate_names='y') # Specify coordinate name as it otherwise assumes x
-    left_lead = kwant.wraparound.wraparound(left_lead, keep=0) # Keep lead in x-direction
-    right_lead = kwant.wraparound.wraparound(right_lead, keep=0) # Keep lead in x-direction
+    normal_lead = kwant.wraparound.wraparound(normal_lead, keep=0) # Keep lead in x-direction
+    sc_lead = kwant.wraparound.wraparound(sc_lead, keep=0) # Keep lead in x-direction
 
     # Attach leads
-    barrier.attach_lead(left_lead)
-    barrier.attach_lead(right_lead)
+    barrier.attach_lead(normal_lead)
+    barrier.attach_lead(sc_lead)
     
     return barrier.finalized()
 
