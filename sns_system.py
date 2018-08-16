@@ -24,7 +24,8 @@ dummy_params_raw = dict(g_factor_middle=1,
                         Delta_right=9,
                         B=10,
                         phase=11,
-                        T=12)
+                        T=12,
+                        V=13)
 
 dummy_params = dict(**constants,
                     **dummy_params_raw)
@@ -43,7 +44,7 @@ def get_template_strings(transverse_soi, mu_from_bottom_of_spin_orbit_bands=True
         ham_sc_right = ham_str + """
         + alpha_right * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x)"""
     else:
-        ham_normal += """
+        ham_normal = ham_normal + """
         + alpha_middle * kron(sigma_z, sigma_x) * k_y"""
         ham_sc_left = ham_str + """
         + alpha_left * kron(sigma_z, sigma_x) * k_y"""
@@ -56,10 +57,12 @@ def get_template_strings(transverse_soi, mu_from_bottom_of_spin_orbit_bands=True
     """
     ham_normal += "+ g_factor_middle*mu_B*B * kron(sigma_0, sigma_y)"
 
+    ham_barrier = ham_normal + "+ V * kron(sigma_z, sigma_0)"
     ham_sc_left  += "+ g_factor_left * mu_B * B * kron(sigma_0, sigma_y)"
     ham_sc_right += "+ g_factor_right * mu_B * B * kron(sigma_0, sigma_y)"
-        
-    template_strings = dict(ham_normal=ham_normal,
+    
+    template_strings = dict(ham_barrier=ham_barrier,
+                            ham_normal=ham_normal,
                             ham_sc_right=ham_sc_right,
                             ham_sc_left=ham_sc_left)
     return template_strings
@@ -97,14 +100,19 @@ def make_sns_system(a, Lm, Lr, Ll, Ly,
     template_strings = get_template_strings(transverse_soi, mu_from_bottom_of_spin_orbit_bands)
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
+    template_barrier = kwant.continuum.discretize(template_strings['ham_barrier'], grid_spacing=a)
     template_normal = kwant.continuum.discretize(template_strings['ham_normal'], grid_spacing=a)
     template_sc_left = kwant.continuum.discretize(template_strings['ham_sc_left'], grid_spacing=a)
     template_sc_right = kwant.continuum.discretize(template_strings['ham_sc_right'], grid_spacing=a)
     
     # SHAPE FUNCTIONS
+    def shape_barrier(site):
+        (x, y) = site.pos
+        return (0 <= y < Ly) and (x == 0 or x== Lm - a)
+
     def shape_normal(site):
         (x, y) = site.pos
-        return 0 <= y < Ly and 0 <= x < Lm
+        return 0 <= y < Ly and a <= x < Lm - a
     
     def shape_left_sc(site):
         (x, y) = site.pos
@@ -113,6 +121,7 @@ def make_sns_system(a, Lm, Lr, Ll, Ly,
     def shape_right_sc(site):
         (x, y) = site.pos
         return 0 <= y < Ly and Lm <= x < Lm + Lr
+
     def shape_lead(x1, x2):
         def shape(site):
             (x, y) = site.pos
@@ -122,20 +131,24 @@ def make_sns_system(a, Lm, Lr, Ll, Ly,
     # BUILD FINITE SYSTEM
     syst = kwant.Builder()
 
-    syst.fill(template_normal, shape_normal, (0,0))
+    syst.fill(template_normal, shape_normal, (a,0))
+    syst.fill(template_barrier, shape_barrier, (0,0))
+    syst.fill(template_barrier, shape_barrier, (Lm-a,0))
     if Ll>=a:
     	syst.fill(template_sc_left, shape_left_sc, (-Ll,0))
     if Lr>=a:
     	syst.fill(template_sc_right, shape_right_sc, (Lm,0))
 
-    # LEAD: SLICE OF BULK ALONG Y AXIS
+    # LEAD: SLICE OF BULK ALONG X AXIS
     lead = kwant.Builder(kwant.TranslationalSymmetry([0,-a]))
 
-    lead.fill(template_normal, shape_lead(0,Lm), (0,-a))
+    lead.fill(template_normal, shape_lead(a,Lm-a), (a,0))
+    lead.fill(template_barrier, shape_lead(0,a), (0,0))
+    lead.fill(template_barrier, shape_lead(Lm-a,Lm), (Lm-a,0))
     if Ll>=a:
-        lead.fill(template_sc_left, shape_lead(-Ll,0), (-Ll, -a))
+        lead.fill(template_sc_left, shape_lead(-Ll,0), (-Ll, 0))
     if Lr>=a:
-        lead.fill(template_sc_right, shape_lead(Lm,Lm + Lr), (Lm,-a))
+        lead.fill(template_sc_right, shape_lead(Lm,Lm + Lr), (Lm,0))
 
     syst.attach_lead(lead)
     syst.attach_lead(lead.reversed())
@@ -145,11 +158,11 @@ def make_sns_system(a, Lm, Lr, Ll, Ly,
 
     return syst
 
-def make_junction_system(a, Lm, Lr, Ll, Ly,
-                         transverse_soi = True,
-                         mu_from_bottom_of_spin_orbit_bands = True):
+def make_ns_junction(a, Lm, Lr, Ll, Ly,
+                        transverse_soi = True,
+                        mu_from_bottom_of_spin_orbit_bands = True):
     """ 
-    Builds and returns finalized junction of the sns system
+    Builds and returns finalized NS junction system, for calculating transmission
     
     Parameters:
     -----------
@@ -178,76 +191,96 @@ def make_junction_system(a, Lm, Lr, Ll, Ly,
     template_strings = get_template_strings(transverse_soi, mu_from_bottom_of_spin_orbit_bands)
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
+    template_barrier = kwant.continuum.discretize(template_strings['ham_barrier'], grid_spacing=a)
     template_normal = kwant.continuum.discretize(template_strings['ham_normal'], grid_spacing=a)
     template_sc_left = kwant.continuum.discretize(template_strings['ham_sc_left'], grid_spacing=a)
     template_sc_right = kwant.continuum.discretize(template_strings['ham_sc_right'], grid_spacing=a)
     
-    # SHAPE FUNCTIONS
-    def shape_normal(site):
+    def shape_barrier(site):
         (x, y) = site.pos
-        return 0 <= y < Ly and 0 <= x < Lm
-    
-    def shape_left_sc(site):
+        return x==0 and y == 0
+
+    def shape_lead(site):
         (x, y) = site.pos
-        return 0 <= y < Ly
-    
-    def shape_right_sc(site):
-        (x, y) = site.pos
-        return 0 <= y < Ly
-    
-    # BUILD FINITE SYSTEM
-    syst = kwant.Builder()
-    syst.fill(template_normal, shape_normal, (0,0))
+        return y == 0
 
-    lead_left = kwant.Builder(kwant.TranslationalSymmetry([-a, 0]))
-    lead_right = kwant.Builder(kwant.TranslationalSymmetry([a, 0]))
+    # BUILD SYSTEM
+    conservation_matrix = -supercurrent.tau_z # Allows seperate bookkeeping of eh in normal lead
 
-    lead_left.fill(template_sc_left, shape_left_sc, (-a, 0))
-    lead_right.fill(template_sc_right, shape_right_sc, (Lm, 0))
+    # Make left normal lead
+    normal_lead_symmetry = kwant.TranslationalSymmetry((-a,0), (0, a))
+    normal_lead = kwant.Builder(normal_lead_symmetry, conservation_law=conservation_matrix)
+    normal_lead.fill(template_normal, shape_lead, (0,0))
 
-    syst.attach_lead(lead_left)
-    syst.attach_lead(lead_right)
+    # Make right superconducting lead
+    sc_lead_symmetry = kwant.TranslationalSymmetry((a,0), (0, a))
+    sc_lead = kwant.Builder(sc_lead_symmetry)
+    sc_lead.fill(template_sc_right, shape_lead, (a,0))
+
+    # Make barrier/middle site
+    wraparound_symmetry = kwant.TranslationalSymmetry((0, a))
+    barrier = kwant.Builder(symmetry=wraparound_symmetry, conservation_law=conservation_matrix)
+    barrier.fill(template_barrier, shape_normal, (0,0))
+
+    # Wraparound systems
+    barrier = kwant.wraparound.wraparound(barrier, coordinate_names='y') # Specify coordinate name as it otherwise assumes x
+    left_lead = kwant.wraparound.wraparound(left_lead, keep=0) # Keep lead in x-direction
+    right_lead = kwant.wraparound.wraparound(right_lead, keep=0) # Keep lead in x-direction
+
+    # Attach leads
+    barrier.attach_lead(left_lead)
+    barrier.attach_lead(right_lead)
     
-    return syst.finalized()
+    return barrier.finalized()
 
 def make_wrapped_system(a, Lm, Lr, Ll, Ly,
                         transverse_soi = True,
                         mu_from_bottom_of_spin_orbit_bands = True):
+
     template_strings = get_template_strings(transverse_soi, mu_from_bottom_of_spin_orbit_bands)
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
+    template_barrier = kwant.continuum.discretize(template_strings['ham_barrier'], grid_spacing=a)
     template_normal = kwant.continuum.discretize(template_strings['ham_normal'], grid_spacing=a)
     template_sc_left = kwant.continuum.discretize(template_strings['ham_sc_left'], grid_spacing=a)
     template_sc_right = kwant.continuum.discretize(template_strings['ham_sc_right'], grid_spacing=a)
-
+    
     # SHAPE FUNCTIONS
+    def shape_barrier(site):
+        (x, y) = site.pos
+        return (0 <= y < Ly) and (x == 0 or x== Lm - a)
+
     def shape_normal(site):
         (x, y) = site.pos
-        return 0 <= x < Lm
-
+        return 0 <= y < Ly and a <= x < Lm - a
+    
     def shape_left_sc(site):
         (x, y) = site.pos
-        return -Ll <= x < 0
-
+        return 0 <= y < Ly and -Ll <= x < 0
+    
     def shape_right_sc(site):
         (x, y) = site.pos
-        return Lm <= x < Lm + Lr
-    
+        return 0 <= y < Ly and Lm <= x < Lm + Lr
+
     def shape_lead(x1, x2):
         def shape(site):
             (x, y) = site.pos
             return  x1 <= x < x2
         return shape
-
+    
     # BUILD FINITE SYSTEM
     sym = kwant.TranslationalSymmetry((0, a))
     syst = kwant.Builder(symmetry=sym)
 
-    syst.fill(template_normal, shape_normal, (0,0))
+    syst.fill(template_normal, shape_normal, (a,0))
+    syst.fill(template_barrier, shape_barrier, (0,0))
+    syst.fill(template_barrier, shape_barrier, (Lm-a,0))
     if Ll>=a:
         syst.fill(template_sc_left, shape_left_sc, (-Ll,0))
     if Lr>=a:
         syst.fill(template_sc_right, shape_right_sc, (Lm,0))
+
+    lead = kwant.Builder(kwant.TranslationalSymmetry([0,-a]))
 
     syst = kwant.wraparound.wraparound(syst)
     return syst.finalized()
