@@ -30,7 +30,7 @@ def wrapped_current_k(k, syst_pars, params, cut_tag=0, direction=0):
     
     I = 0
    
-    p = dict(k_x=k, **params)
+    p = dict(k_y=k, **params)
 
     ham = syst_wrapped.hamiltonian_submatrix(params=p)
     (en, evs) = np.linalg.eigh(ham)
@@ -58,7 +58,7 @@ def wrapped_current(syst_pars, params, tol=0.01, max_iterations=1e3, syst_wrappe
 
     def f(k):
         I = 0
-        p = dict(k_x=k, **params)
+        p = dict(k_y=k, **params)
         ham = syst_wrapped.hamiltonian_submatrix(params=p)
         (en, evs) = np.linalg.eigh(ham)
         

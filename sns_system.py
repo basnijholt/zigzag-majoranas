@@ -282,7 +282,7 @@ def make_wrapped_system(a, Lm, Lr, Ll, Ly,
 
     lead = kwant.Builder(kwant.TranslationalSymmetry([0,-a]))
 
-    syst = kwant.wraparound.wraparound(syst)
+    syst = kwant.wraparound.wraparound(syst, coordinate_names='y')
     return syst.finalized()
 
 def to_site_ph_spin(syst_pars, wf):
