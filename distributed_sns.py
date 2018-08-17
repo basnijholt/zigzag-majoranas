@@ -4,7 +4,7 @@ import collections
 from functools import partial
 from itertools import product
 import numpy as np
-import sns_system, topology, spectrum, supercurrent
+import sns_system, topology, spectrum, supercurrent, scattering
 import adaptive
 import dependencies.adaptive_tools as adaptive_tools
 import holoviews as hv
@@ -87,10 +87,10 @@ def energy_gap_function(energy_gap_params, syst_total, syst_wrapped, syst_juncti
                               **energy_gap_params)
 
 
-def transparency_function(self, transparency_params):
-    return None
+def transparency_function(transparency_params, syst_total, syst_wrapped, syst_junction, syst_pars, params):
+    return scattering.transparency(syst_junction, params, **transparency_params)
 
-def bandstructure_function(self, bandstructure_params):
+def bandstructure_function(bandstructure_params, syst_total, syst_wrapped, syst_junction, syst_pars, params):
     return None
 
 def get_correct_metric_function(metric_key, metric_params):
@@ -107,7 +107,7 @@ def get_correct_metric_function(metric_key, metric_params):
 def total_function(xy, syst_pars, params, keys_with_bounds, metric_params_dict):
     syst_total    = sns_system.make_sns_system(**syst_pars)
     syst_wrapped  = sns_system.make_wrapped_system(**syst_pars)
-    syst_junction = sns_system.make_junction_system(**syst_pars)
+    syst_junction = sns_system.make_ns_junction(**syst_pars)
 
     results = np.zeros(len(metric_params_dict))
 
