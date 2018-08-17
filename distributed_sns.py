@@ -409,8 +409,8 @@ class AggregatesSimulationSet():
                 plot_key = tuple([*ss.dimension_values] + 
                                  [metric_name])
                 
-                dimension_names = self.keys_with_bounds.keys()
-                local_plot.redim(x=dimension_names[0], y=dimension_names[1])
+                dimension_names = list(self.keys_with_bounds.keys())
+                local_plot = local_plot.redim(x=dimension_names[0], y=dimension_names[1])
                 if contour_pfaffian is not False:
                     local_plot = local_plot*contour_plot
                 if tables is not False:
