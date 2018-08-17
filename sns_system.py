@@ -4,6 +4,7 @@ import cmath
 import scipy.constants
 import numpy as np
 import supercurrent
+from functools import lru_cache
 
 constants = dict(
     m_eff=0.023 * scipy.constants.m_e / (scipy.constants.eV * 1e-3) / 1e18,  # effective mass in kg, 
@@ -30,6 +31,7 @@ dummy_params_raw = dict(g_factor_middle=1,
 dummy_params = dict(**constants,
                     **dummy_params_raw)
 
+@lru_cache()
 def get_template_strings(transverse_soi, mu_from_bottom_of_spin_orbit_bands=True):
     if mu_from_bottom_of_spin_orbit_bands:
         ham_str = "(hbar^2 / (2*m_eff) * (k_x^2 + k_y^2) - mu + m_eff*alpha_middle^2 / (2 * hbar^2)) * kron(sigma_z, sigma_0) "
@@ -67,6 +69,7 @@ def get_template_strings(transverse_soi, mu_from_bottom_of_spin_orbit_bands=True
                             ham_sc_left=ham_sc_left)
     return template_strings
 
+@lru_cache()
 def make_sns_system(a, Lm, Lr, Ll, Ly,
                     transverse_soi = True,
                     mu_from_bottom_of_spin_orbit_bands = True):
@@ -158,6 +161,7 @@ def make_sns_system(a, Lm, Lr, Ll, Ly,
 
     return syst
 
+@lru_cache()
 def make_ns_junction(a, Lm, Lr, Ll, Ly,
                         transverse_soi = True,
                         mu_from_bottom_of_spin_orbit_bands = True):
@@ -233,6 +237,7 @@ def make_ns_junction(a, Lm, Lr, Ll, Ly,
     
     return barrier.finalized()
 
+@lru_cache()
 def make_wrapped_system(a, Lm, Lr, Ll, Ly,
                         transverse_soi = True,
                         mu_from_bottom_of_spin_orbit_bands = True):
