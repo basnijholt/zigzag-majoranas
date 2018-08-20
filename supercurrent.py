@@ -46,7 +46,11 @@ def wrapped_current(syst_pars, params, tol=0.01, syst_wrapped=None, transverse_s
             for (e, ev) in zip(en, evs.T))
         return sum(I)*params['e']/params['hbar']
 
-    learner = adaptive.IntegratorLearner(f, [0, np.pi], tol)
+    ef_max = params['mu'] + params['m_eff']*params['alpha_middle']**2/2/params['hbar']**2
+    kf = np.sqrt(ef_max*2*params['m_eff'])/params['hbar']*syst_pars['a']
+    kmax = min(1.5*kf, np.pi)
+
+    learner = adaptive.IntegratorLearner(f, [0, kmax], tol)
     runner = adaptive.runner.simple(learner, lambda l: l.done())    
         
     I = 2*learner.igral/syst_pars['a']
