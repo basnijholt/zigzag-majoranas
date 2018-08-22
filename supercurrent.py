@@ -20,7 +20,7 @@ def fermi_dirac(e, params):
     minbetae = np.minimum(100, -beta*e)
     return np.exp(minbetae)/(1+np.exp(minbetae))
 
-def wrapped_current(syst_pars, params, tol=0.01, syst_wrapped=None, transverse_soi=True, mu_from_bottom_of_spin_orbit_bands=True):
+def wrapped_current(syst_pars, params, tol=0.01, syst_wrapped=None, transverse_soi=True, mu_from_bottom_of_spin_orbit_bands=True, zero_current=1e-15):
     if syst_wrapped is None:
         syst_wrapped = sns_system.make_wrapped_system(**syst_pars,
                                                       transverse_soi=transverse_soi,
@@ -51,7 +51,7 @@ def wrapped_current(syst_pars, params, tol=0.01, syst_wrapped=None, transverse_s
     kmax = min(1.5*kf, np.pi)
 
     learner = adaptive.IntegratorLearner(f, [0, kmax], tol)
-    runner = adaptive.runner.simple(learner, lambda l: l.done())    
+    runner = adaptive.runner.simple(learner, lambda l: l.done() or (l.npoints>20 and l.igral<zero_current))    
         
     I = 2*learner.igral/syst_pars['a']
     return I
