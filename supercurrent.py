@@ -51,7 +51,7 @@ def wrapped_current(syst_pars, params, tol=0.01, syst_wrapped=None, transverse_s
     kmax = min(1.5*kf, np.pi)
 
     learner = adaptive.IntegratorLearner(f, [0, kmax], tol)
-    runner = adaptive.runner.simple(learner, lambda l: l.done() or (l.npoints>20 and l.igral<zero_current))    
+    runner = adaptive.runner.simple(learner, lambda l: l.done() or (l.npoints>20 and abs(l.igral)<zero_current))    
         
     I = 2*learner.igral/syst_pars['a']
     return I
