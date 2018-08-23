@@ -62,10 +62,10 @@ def get_template_strings(
         ham_sc_right = ham_str + """
         + alpha_right * kron(sigma_z, sigma_x) * k_y"""
 
-    ham_sc_left += " + Delta_left * kron(sigma_y, sigma_0)"
-    ham_sc_right += """ + cos(phase) * Delta_right * kron(sigma_y, sigma_0) +
-                                    + sin(phase) * Delta_right * kron(sigma_x, sigma_0)
-    """
+    ham_sc_left += """+ Delta_left * (cos(-phase / 2) * kron(sigma_x, sigma_0)
+                                      + sin(-phase / 2) * kron(sigma_y, sigma_0))"""
+    ham_sc_left += """+ Delta_right * (cos(phase / 2) * kron(sigma_x, sigma_0)
+                                       + sin(phase / 2) * kron(sigma_y, sigma_0))"""
     ham_normal += "+ g_factor_middle*mu_B*B * kron(sigma_0, sigma_x)"
 
     ham_barrier = ham_normal + "+ V * kron(sigma_z, sigma_0)"
