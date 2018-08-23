@@ -16,9 +16,9 @@ def plot_syst(syst_pars=None, params=None, a_new=None,
         Ll = syst_pars['Ll']
         Lm = syst_pars['Lm']
         Lr = syst_pars['Lr']
-        Ly = syst_pars['Ly']
+        Lx = syst_pars['Lx']
 
-        syst = sns_system.make_sns_system(a=a, Ll=Ll, Lm=Lm, Lr=Lr, Ly=Ly)
+        syst = sns_system.make_sns_system(a=a, Ll=Ll, Lm=Lm, Lr=Lr, Lx=Lx)
 
     def delta(sites):
         return [np.abs(syst.hamiltonian(i, i, params=params)[2, 0])

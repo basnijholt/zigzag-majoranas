@@ -75,7 +75,7 @@ def get_template_strings(
 
 
 @lru_cache()
-def make_sns_system(a, Lm, Lr, Ll, Ly,
+def make_sns_system(a, Lm, Lr, Ll, Lx,
                     transverse_soi=True,
                     mu_from_bottom_of_spin_orbit_bands=True):
     """
@@ -95,7 +95,7 @@ def make_sns_system(a, Lm, Lr, Ll, Ly,
     Ll : float
         width of left superconductor
 
-    Ly : float
+    Lx : float
         length of finite system
 
     Returns:
@@ -121,24 +121,24 @@ def make_sns_system(a, Lm, Lr, Ll, Ly,
     # SHAPE FUNCTIONS
     def shape_barrier(site):
         (x, y) = site.pos
-        return (0 <= y < Ly) and (x == 0 or x == Lm - a)
+        return (0 <= x < Lx) and (y == 0 or y == Lm - a)
 
     def shape_normal(site):
         (x, y) = site.pos
-        return 0 <= y < Ly and a <= x < Lm - a
+        return 0 <= x < Lx and a <= y < Lm - a
 
     def shape_left_sc(site):
         (x, y) = site.pos
-        return 0 <= y < Ly and -Ll <= x < 0
+        return 0 <= x < Lx and -Ll <= y < 0
 
     def shape_right_sc(site):
         (x, y) = site.pos
-        return 0 <= y < Ly and Lm <= x < Lm + Lr
+        return 0 <= x < Lx and Lm <= y < Lm + Lr
 
-    def shape_lead(x1, x2):
+    def shape_lead(y1, y2):
         def shape(site):
             (x, y) = site.pos
-            return x1 <= x < x2
+            return y1 <= y < y2
         return shape
 
     # BUILD FINITE SYSTEM
@@ -172,7 +172,7 @@ def make_sns_system(a, Lm, Lr, Ll, Ly,
 
 
 @lru_cache()
-def make_ns_junction(a, Lm, Lr, Ll, Ly,
+def make_ns_junction(a, Lm, Lr, Ll, Lx,
                      transverse_soi=True,
                      mu_from_bottom_of_spin_orbit_bands=True):
     """
@@ -192,7 +192,7 @@ def make_ns_junction(a, Lm, Lr, Ll, Ly,
     Ll : float
         width of left superconductor
 
-    Ly : float
+    Lx : float
         length of finite system
 
     Returns:
@@ -221,7 +221,7 @@ def make_ns_junction(a, Lm, Lr, Ll, Ly,
 
     def shape_lead(site):
         (x, y) = site.pos
-        return y == 0
+        return x == 0
 
     # BUILD SYSTEM
     # Allows seperate bookkeeping of eh in normal lead
@@ -261,7 +261,7 @@ def make_ns_junction(a, Lm, Lr, Ll, Ly,
 
 
 @lru_cache()
-def make_wrapped_system(a, Lm, Lr, Ll, Ly,
+def make_wrapped_system(a, Lm, Lr, Ll, Lx,
                         transverse_soi=True,
                         mu_from_bottom_of_spin_orbit_bands=True):
 
@@ -281,24 +281,24 @@ def make_wrapped_system(a, Lm, Lr, Ll, Ly,
     # SHAPE FUNCTIONS
     def shape_barrier(site):
         (x, y) = site.pos
-        return (0 <= y < Ly) and (x == 0 or x == Lm - a)
+        return (0 <= x < Lx) and (y == 0 or y == Lm - a)
 
     def shape_normal(site):
         (x, y) = site.pos
-        return 0 <= y < Ly and a <= x < Lm - a
+        return 0 <= x < Lx and a <= y < Lm - a
 
     def shape_left_sc(site):
         (x, y) = site.pos
-        return 0 <= y < Ly and -Ll <= x < 0
+        return 0 <= x < Lx and -Ll <= y < 0
 
     def shape_right_sc(site):
         (x, y) = site.pos
-        return 0 <= y < Ly and Lm <= x < Lm + Lr
+        return 0 <= x < Lx and Lm <= y < Lm + Lr
 
     def shape_lead(x1, x2):
         def shape(site):
             (x, y) = site.pos
-            return x1 <= x < x2
+            return x1 <= y < x2
         return shape
 
     # BUILD FINITE SYSTEM
@@ -322,7 +322,7 @@ def make_wrapped_system(a, Lm, Lr, Ll, Ly,
 def to_site_ph_spin(syst_pars, wf):
     norbs = 4
     nsites = len(wf) // norbs
-    nsitesL = int(syst_pars['Ly'] / syst_pars['a'])
+    nsitesL = int(syst_pars['Lx'] / syst_pars['a'])
     nsitesW = nsites // nsitesL
 
     wf_eh_sp = np.reshape(wf, (nsites, norbs))
