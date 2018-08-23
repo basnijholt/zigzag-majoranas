@@ -1,35 +1,38 @@
 import numpy as np
 
+
 def is_phs(ham):
-	""" 
-	Checks wheteher matrix is indeed particle hole symmetric, 
-	assuming we are in the  {Ψ_e↑, Ψ_e↓, Ψ_h↓, -Ψ_h↑} basis.
+    """
+    Checks wheteher matrix is indeed particle hole symmetric,
+    assuming we are in the  {Ψ_e↑, Ψ_e↓, Ψ_h↓, -Ψ_h↑} basis.
 
-	Parameters:
-	-----------
-		ham : numpy.ndarray
+    Parameters:
+    -----------
+            ham : numpy.ndarray
 
-	Returns:
-	--------
-		ham == - ham(holes <-> electrons) : bool
-	"""
-	
-	sym_mat = np.kron(np.eye(ham.shape[0]//4), np.kron(sigma_y, sigma_y)) 
-	ham_phhp = sym_mat @ ham.conj() @ sym_mat
-	return (np.abs(ham + ham_phhp) < 1e-12).all()
+    Returns:
+    --------
+            ham == - ham(holes <-> electrons) : bool
+    """
+
+    sym_mat = np.kron(np.eye(ham.shape[0] // 4), np.kron(sigma_y, sigma_y))
+    ham_phhp = sym_mat @ ham.conj() @ sym_mat
+    return (np.abs(ham + ham_phhp) < 1e-12).all()
+
 
 def is_antisymmetric(ham):
-	""" Checks whether matrix is antisymmetric.
-	
-	Parameters:
-	-----------
-		ham : numpy.ndarray
+    """ Checks whether matrix is antisymmetric.
 
-	Returns:
-	--------
-		ham == - ham.transposed : bool
-	"""
-	return (np.abs(ham + ham.T) < 1e-12).all()
+    Parameters:
+    -----------
+            ham : numpy.ndarray
+
+    Returns:
+    --------
+            ham == - ham.transposed : bool
+    """
+    return (np.abs(ham + ham.T) < 1e-12).all()
+
 
 def make_skew_symmetric(ham):
     """
@@ -61,4 +64,3 @@ def make_skew_symmetric(ham):
     assert is_antisymmetric(skew_ham)
 
     return skew_ham
-

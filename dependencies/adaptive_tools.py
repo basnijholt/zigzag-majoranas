@@ -14,7 +14,6 @@ import holoviews as hv
 import toolz
 
 
-
 class Learner1D(adaptive.Learner1D):
 
     def save(self, folder, fname, compress=True):
@@ -76,7 +75,7 @@ class BalancingLearner(adaptive.BalancingLearner):
             learner.load(folder, fname, compress=compress)
 
     async def _periodic_saver(self, runner, folder,
-                             fname_pattern, interval, compress):
+                              fname_pattern, interval, compress):
         while runner.status() == 'running':
             await asyncio.sleep(interval)
             self.save(folder, fname_pattern, compress)
@@ -85,7 +84,7 @@ class BalancingLearner(adaptive.BalancingLearner):
                              fname_pattern='data_learner_{}.pickle',
                              interval=3600, compress=True):
         saving_coro = self._periodic_saver(runner, folder, fname_pattern,
-                                          interval, compress)
+                                           interval, compress)
         return runner.ioloop.create_task(saving_coro)
 
 
@@ -101,15 +100,18 @@ def run_learner_in_ipyparallel_client(learner, goal, profile, folder,
     import adaptive
     import asyncio
 
-    client = hpc05.Client(profile=profile, context=zmq.Context(), timeout=timeout)
+    client = hpc05.Client(
+        profile=profile,
+        context=zmq.Context(),
+        timeout=timeout)
     client[:].use_cloudpickle()
     loop = asyncio.new_event_loop()
     runner = adaptive.Runner(learner, executor=client, goal=goal, ioloop=loop)
 
     if periodic_save:
         try:
-            save_task = learner.start_periodic_saver(runner, folder, fname_pattern,
-                                                     save_interval)
+            save_task = learner.start_periodic_saver(
+                runner, folder, fname_pattern, save_interval)
         except AttributeError:
             raise Exception(f'Cannot auto-save {type(learner)}.')
 
@@ -117,13 +119,15 @@ def run_learner_in_ipyparallel_client(learner, goal, profile, folder,
     return learner
 
 
-def split_learners_in_executor(learners, executor, profile, ncores, goal=None,
-                               folder='tmp-{}', fname_pattern='data_learner_{}.pickle',
-                               periodic_save=True, timeout=300, save_interval=3600):
+def split_learners_in_executor(
+        learners, executor, profile, ncores, goal=None, folder='tmp-{}',
+        fname_pattern='data_learner_{}.pickle', periodic_save=True,
+        timeout=300, save_interval=3600):
     if goal is None:
         if not periodic_save:
             raise Exception('Turn on periodic saving if there is no goal.')
-        goal = lambda l: False
+
+        def goal(l): return False
 
     futs = []
     for i, _learners in enumerate(split(learners, ncores)):
@@ -164,7 +168,6 @@ def alphanum_key(s):
     for _s in re.split('([0-9]+)', s):
         try:
             keys.append(int(_s))
-        except:
+        except BaseException:
             keys.append(_s)
     return keys
-

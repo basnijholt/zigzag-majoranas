@@ -4,11 +4,17 @@ import scipy.sparse as sp
 import scipy.sparse.linalg as sla
 import sns_system
 
+
 def dispersion(kx, ky, params):
-    Ekin  = params['hbar']**2/(2*params['m_eff']) * (kx**2 + ky**2) - params['mu'] + params['m_eff'] * params['alpha_middle']**2 / (2 * params['hbar']**2)
-    Erest = np.sqrt(params['alpha_middle']**2 * ky**2 + (params['alpha_middle']*kx - params['g_factor_middle'] * params['mu_B'] * params['B'])**2)
+    Ekin = params['hbar']**2 / (2 * params['m_eff']) * (
+        kx**2 + ky**2) - params['mu'] + params['m_eff'] * params['alpha_middle']**2 / (2 * params['hbar']**2)
+    Erest = np.sqrt(
+        params['alpha_middle'] ** 2 * ky ** 2 +
+        (params['alpha_middle'] * kx - params['g_factor_middle'] *
+         params['mu_B'] * params['B']) ** 2)
     return (Ekin + Erest, Ekin - Erest)
-    
+
+
 def sparse_diag(matrix, k, sigma, **kwargs):
     """Call sla.eigsh with mumps support.
 
@@ -29,17 +35,19 @@ def sparse_diag(matrix, k, sigma, **kwargs):
     opinv = LuInv(matrix - sigma * sp.identity(matrix.shape[0]))
     return sla.eigsh(matrix, k, sigma=sigma, OPinv=opinv, **kwargs)
 
+
 def calc_spectrum(syst, params, k=20):
     ham = syst.hamiltonian_submatrix(params=params, sparse=True)
     (energies, wfs) = sparse_diag(ham, k=k, sigma=0)
     return (energies, wfs)
+
 
 def calc_dos_lowest_state(syst, params, syst_pars):
     """ Calculate density of states for lowest energy
     Parameters
     ----------
     syst : kwant.system.FiniteSystem
-    
+
     params : dictionary of parameters for syst
 
     syst_pars: dictionary of system dimensional parameters
@@ -57,7 +65,7 @@ def calc_dos_lowest_state(syst, params, syst_pars):
     """
     (energies, wfs) = calc_spectrum(syst, params, k=6)
     energy_gap = abs(energies[2]) - abs(energies[0])
-    wf = sns_system.to_site_ph_spin(syst_pars, wfs[:,0])
+    wf = sns_system.to_site_ph_spin(syst_pars, wfs[:, 0])
     return (abs(energies[0]), energy_gap, np.sum(np.abs(wf)**2, axis=2))
 
 
@@ -94,6 +102,7 @@ def cell_mats(lead, params, bias=0):
     t = lead.inter_cell_hopping(params=params)
     return h, t
 
+
 def gap_minimizer(lead, params, energy):
     """Function that minimizes a function to find the band gap.
     This objective function checks if there are progagating modes at a
@@ -129,6 +138,7 @@ def bands(lead, params, ks=None):
         return bands(ks)
     else:
         return np.array([bands(k) for k in ks])
+
 
 def find_gap_of_lead(lead, params, tol=1e-6):
     """Finds the gapsize by peforming a binary search of the modes with a

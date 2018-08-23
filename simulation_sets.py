@@ -6,17 +6,20 @@ import numpy as np
 import adaptive
 import dependencies.adaptive_tools as adaptive_tools
 
-def aggregate_function(xy, point_function, parameters, setup_function, metric_functions):
+
+def aggregate_function(xy, point_function, parameters,
+                       setup_function, metric_functions):
     setup_data = setup_function(point, parameters, metric_functions)
 
     metric_results = np.zeros(len(metric_functions))
 
     parameters_at_point = point(parameters)
-    
+
     for idx, metric_function in enumerate(metric_functions):
         metric_results[idx] = metric_function(setup_data, parameters)
-        
+
     return metric_results
+
 
 class SimulationSet():
     learner_file_prefix = 'learner_data_'
@@ -41,9 +44,10 @@ class SimulationSet():
 
     """
 
-        self.continuous_parameter_functions = deepcopy(continuous_parameter_functions)
+        self.continuous_parameter_functions = deepcopy(
+            continuous_parameter_functions)
         self.default_parameters = deepcopy(default_parameters)
-        self.metric_functions_dict = deepcopy(metric_functions_dict)     
+        self.metric_functions_dict = deepcopy(metric_functions_dict)
         self.setup_function = setup_function
 
     def get_total_function(self):
@@ -53,10 +57,10 @@ class SimulationSet():
                        setup_function=setup_function,
                        metric_functions=metric_functions)
 
-
     def make_learner(self, loss_function=adaptive.Learner2D.default_learner):
         f = self.get_total_function()
-        self.learner = adaptive_tools.Learner2D(f, bounds=self.bounds, loss_per_triangle=loss_function)
+        self.learner = adaptive_tools.Learner2D(
+            f, bounds=self.bounds, loss_per_triangle=loss_function)
 
     def get_learner(self):
         return self.learner
@@ -64,22 +68,22 @@ class SimulationSet():
     @property
     def bounds(self):
         return self.continuous_parameter_functions[2]
-    
+
     @property
     def xscale(self):
-        return abs(self.bounds[0][0]-self.bounds[0][1])
-    
+        return abs(self.bounds[0][0] - self.bounds[0][1])
+
     @property
     def yscale(self):
-        return abs(self.bounds[1][0]-self.bounds[1][1])
+        return abs(self.bounds[1][0] - self.bounds[1][1])
 
     @property
     def xcenter(self):
-        return (self.bounds[0][0]+self.bounds[0][1])/2
-   
+        return (self.bounds[0][0] + self.bounds[0][1]) / 2
+
     @property
     def ycenter(self):
-        return (self.bounds[1][0]+self.bounds[1][1])/2
+        return (self.bounds[1][0] + self.bounds[1][1]) / 2
 
     def unnormalize(self, x, y):
         x_unscaled = self.xscale * x + self.xcenter
@@ -88,7 +92,7 @@ class SimulationSet():
 
     def get_data_dictionary(self, n):
         ip = self.learner.ip()
-        normalized_dim = np.linspace(-.5,.5, n)
+        normalized_dim = np.linspace(-.5, .5, n)
         xdim, ydim = self.unnormalize(normalized_dim, normalized_dim)
 
         gridx, gridy = np.meshgrid(normalized_dim, normalized_dim)
@@ -96,7 +100,7 @@ class SimulationSet():
 
         data_dictionary = dict()
         for idx, metric_key in enumerate(self.metric_functions):
-            metric_results = gridded_results[:,:, idx]
+            metric_results = gridded_results[:, :, idx]
             data_dictionary[metric_key] = (xdim, ydim, metric_results)
 
         return data_dictionary
@@ -127,12 +131,11 @@ class AggregatesSimulationSet():
 
         self.dimension_dict = {}
 
-        self.continuous_parameter_functions = deepcopy(continuous_parameter_functions)
+        self.continuous_parameter_functions = deepcopy(
+            continuous_parameter_functions)
         self.default_parameters = deepcopy(default_parameters)
         self.metric_functions_dict = deepcopy(metric_functions_dict)
         self.setup_function = setup_function
-
-
 
     @property
     def learners(self):
@@ -144,7 +147,8 @@ class AggregatesSimulationSet():
     def make_simulation_sets(self):
         simulation_set_list = []
 
-        for parameter_altering_functions in product(*self.dimension_dict.values()):
+        for parameter_altering_functions in product(
+                *self.dimension_dict.values()):
             local_parameters = deepcopy(self.default_parameters)
             dimension_values = []
 
@@ -165,14 +169,14 @@ class AggregatesSimulationSet():
         self.make_simulation_sets()
         for ss in self.simulation_set_list:
             ss.make_learner()
-            
+
         learners = [ss.get_learner() for ss in self.simulation_set_list]
         return learners
 
     def make_balancing_learner(self):
         learners = self.make_learners(enough_points)
         self.learner = adaptive_tools.BalancingLearner(learners)
-    
+
     def get_balancing_learner(self):
         return self.learner
 
@@ -182,10 +186,10 @@ class AggregatesSimulationSet():
 
         for ss in self.simulation_set_list:
             local_data_dict = ss.get_data_dictionary(n)
-            
+
             for metric_name, metric_data in local_data_dict.items():
-                data_key = tuple([*ss.dimension_values] + 
+                data_key = tuple([*ss.dimension_values] +
                                  [metric_name])
 
-                data_dictionary[data_key] = metric_data            
+                data_dictionary[data_key] = metric_data
         return (kdims, data_dictionary)
