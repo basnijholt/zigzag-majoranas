@@ -224,7 +224,8 @@ def current_at_phase(syst, hopping, params, H_0_cache, phase,
     dict
         Dictionary with the critical phase, critical current, and `currents`
         evaluated at `phases`."""
-    assert params.get('phase', 0) == 0  # because the phase is added in the algo
+    if params.get('phase', 0) != 0:
+        raise Exception('Set the phase in params to 0!')
     H12 = hopping(syst, params)
     I = 0
     for n in range(max_frequencies):

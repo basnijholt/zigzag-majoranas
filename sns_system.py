@@ -2,14 +2,13 @@ import cmath
 from functools import partial, lru_cache
 
 import kwant
-import topology
-import scipy.constants
 import numpy as np
-
-from functools import lru_cache
+import scipy.constants
+import topology
 
 import supercurrent
 import supercurrent_matsubara
+
 
 constants = dict(
     # effective mass in kg,

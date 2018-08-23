@@ -2,12 +2,12 @@ from functools import partial
 import numbers
 import warnings
 
-import adaptive
 import numpy as np
 import kwant
-
 import sns_system
 import spectrum
+
+import adaptive
 
 
 sigma_0 = np.eye(2)
