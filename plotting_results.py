@@ -21,7 +21,7 @@ def plot_syst(syst_pars=None, params=None, a_new=None,
         syst, _ = sns_system.make_sns_system(a=a, L_down=L_down, L_m=L_m, L_up=L_up, L_x=L_x)
 
     def delta(sites):
-        return [np.abs(syst.hamiltonian(i, i, params=params)[2, 0])
+        return [np.abs(syst.hamiltonian(i, i, params=params)[1, 0])
                 for i, site in enumerate(sites)]
 
     return kwant.plot(syst, num_lead_cells=num_lead_cells,

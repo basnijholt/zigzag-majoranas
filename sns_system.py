@@ -64,7 +64,7 @@ def get_template_strings(
 
     ham_sc_left += """+ Delta_left * (cos(-phase / 2) * kron(sigma_0, sigma_x)
                                       + sin(-phase / 2) * kron(sigma_0, sigma_y))"""
-    ham_sc_left += """+ Delta_right * (cos(phase / 2) * kron(sigma_0, sigma_x)
+    ham_sc_right += """+ Delta_right * (cos(phase / 2) * kron(sigma_0, sigma_x)
                                        + sin(phase / 2) * kron(sigma_0, sigma_y))"""
     ham_normal += "+ g_factor_middle*mu_B*B * kron(sigma_x, sigma_0)"
 
@@ -277,7 +277,7 @@ def make_ns_junction(a, L_m, L_up, L_down, L_x,
 @lru_cache()
 def make_wrapped_system(a, L_m, L_up, L_down, L_x,
                         transverse_soi=True,
-                        mu_from_bottom_of_spin_orbit_bands=True):
+                        mu_from_bottom_of_spin_orbit_bands=True, **_):
 
     template_strings = get_template_strings(
         transverse_soi, mu_from_bottom_of_spin_orbit_bands)

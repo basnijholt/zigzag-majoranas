@@ -21,15 +21,15 @@ def is_phs(ham):
 
 
 def is_antisymmetric(ham):
-    """ Checks whether matrix is antisymmetric.
+    """Checks whether matrix is antisymmetric.
 
     Parameters
     ----------
-            ham : numpy.ndarray
+        ham : numpy.ndarray
 
     Returns
     -------
-            ham == - ham.transposed : bool
+        ham == - ham.transposed : bool
     """
     return (np.abs(ham + ham.T) < 1e-12).all()
 

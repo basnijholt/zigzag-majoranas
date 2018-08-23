@@ -224,7 +224,7 @@ def current_at_phase(syst, hopping, params, H_0_cache, phase,
     dict
         Dictionary with the critical phase, critical current, and `currents`
         evaluated at `phases`."""
-
+    assert params.get('phase', 0) == 0  # because the phase is added in the algo
     H12 = hopping(syst, params)
     I = 0
     for n in range(max_frequencies):
@@ -243,7 +243,7 @@ def current_at_phase(syst, hopping, params, H_0_cache, phase,
 
 
 def I_c(syst, hopping, params, electron_blocks, tol=1e-2,
-        max_frequencies=500, N_brute=30):
+        max_frequencies=500, N_brute=31):
     """Find the critical current by optimizing the current-phase
     relation.
 
