@@ -14,11 +14,11 @@ def plot_syst(syst_pars=None, params=None, a_new=None,
     if syst is None:
         a = syst_pars['a'] if a_new is None else a_new
         L_down = syst_pars['L_down']
-        Lm = syst_pars['Lm']
+        L_m = syst_pars['L_m']
         L_up = syst_pars['L_up']
-        Lx = syst_pars['Lx']
+        L_x = syst_pars['L_x']
 
-        syst, _ = sns_system.make_sns_system(a=a, L_down=L_down, Lm=Lm, L_up=L_up, Lx=Lx)
+        syst, _ = sns_system.make_sns_system(a=a, L_down=L_down, L_m=L_m, L_up=L_up, L_x=L_x)
 
     def delta(sites):
         return [np.abs(syst.hamiltonian(i, i, params=params)[2, 0])
