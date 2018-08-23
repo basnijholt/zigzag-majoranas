@@ -7,10 +7,10 @@ import warnings
 from functools import partial
 import adaptive
 
-sigz = kwant.continuum.discretizer.ta.array([[1, 0, 0, 0],
-                                             [0, 1, 0, 0],
-                                             [0, 0, -1, 0],
-                                             [0, 0, 0, -1]])
+
+sigma_0 = np.eye(2)
+sigma_z = np.array([[1, 0], [0, -1]])
+sigz = np.kron(sigma_0, sigma_z)
 
 
 def fermi_dirac(e, params):

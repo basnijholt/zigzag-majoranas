@@ -43,34 +43,34 @@ dummy_params = dict(**constants,
 def get_template_strings(
         transverse_soi, mu_from_bottom_of_spin_orbit_bands=True):
     if mu_from_bottom_of_spin_orbit_bands:
-        ham_str = "(hbar^2 / (2*m_eff) * (k_y^2 + k_x^2) - mu + m_eff*alpha_middle^2 / (2 * hbar^2)) * kron(sigma_z, sigma_0) "
+        ham_str = "(hbar^2 / (2*m_eff) * (k_y^2 + k_x^2) - mu + m_eff*alpha_middle^2 / (2 * hbar^2)) * kron(sigma_0, sigma_z) "
     else:
-        ham_str = "(hbar^2 / (2*m_eff) * (k_y^2 + k_x^2) - mu) * kron(sigma_z, sigma_0) "
+        ham_str = "(hbar^2 / (2*m_eff) * (k_y^2 + k_x^2) - mu) * kron(sigma_0, sigma_z) "
 
     if transverse_soi:
         ham_normal = ham_str + """ +
-        alpha_middle * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x)"""
+        alpha_middle * (kron(sigma_x, sigma_z) * k_y - kron(sigma_y, sigma_z) * k_x)"""
         ham_sc_left = ham_str + """
-        + alpha_left * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x)"""
+        + alpha_left * (kron(sigma_x, sigma_z) * k_y - kron(sigma_y, sigma_z) * k_x)"""
         ham_sc_right = ham_str + """
-        + alpha_right * (kron(sigma_z, sigma_x) * k_y - kron(sigma_z, sigma_y) * k_x)"""
+        + alpha_right * (kron(sigma_x, sigma_z) * k_y - kron(sigma_y, sigma_z) * k_x)"""
     else:
         ham_normal = ham_normal + """
-        + alpha_middle * kron(sigma_z, sigma_x) * k_y"""
+        + alpha_middle * kron(sigma_x, sigma_z) * k_y"""
         ham_sc_left = ham_str + """
-        + alpha_left * kron(sigma_z, sigma_x) * k_y"""
+        + alpha_left * kron(sigma_x, sigma_z) * k_y"""
         ham_sc_right = ham_str + """
-        + alpha_right * kron(sigma_z, sigma_x) * k_y"""
+        + alpha_right * kron(sigma_x, sigma_z) * k_y"""
 
-    ham_sc_left += """+ Delta_left * (cos(-phase / 2) * kron(sigma_x, sigma_0)
-                                      + sin(-phase / 2) * kron(sigma_y, sigma_0))"""
-    ham_sc_left += """+ Delta_right * (cos(phase / 2) * kron(sigma_x, sigma_0)
-                                       + sin(phase / 2) * kron(sigma_y, sigma_0))"""
-    ham_normal += "+ g_factor_middle*mu_B*B * kron(sigma_0, sigma_x)"
+    ham_sc_left += """+ Delta_left * (cos(-phase / 2) * kron(sigma_0, sigma_x)
+                                      + sin(-phase / 2) * kron(sigma_0, sigma_y))"""
+    ham_sc_left += """+ Delta_right * (cos(phase / 2) * kron(sigma_0, sigma_x)
+                                       + sin(phase / 2) * kron(sigma_0, sigma_y))"""
+    ham_normal += "+ g_factor_middle*mu_B*B * kron(sigma_x, sigma_0)"
 
-    ham_barrier = ham_normal + "+ V * kron(sigma_z, sigma_0)"
-    ham_sc_left += "+ g_factor_left * mu_B * B * kron(sigma_0, sigma_x)"
-    ham_sc_right += "+ g_factor_right * mu_B * B * kron(sigma_0, sigma_x)"
+    ham_barrier = ham_normal + "+ V * kron(sigma_0, sigma_z)"
+    ham_sc_left += "+ g_factor_left * mu_B * B * kron(sigma_x, sigma_0)"
+    ham_sc_right += "+ g_factor_right * mu_B * B * kron(sigma_x, sigma_0)"
 
     template_strings = dict(ham_barrier=ham_barrier,
                             ham_normal=ham_normal,
@@ -83,7 +83,7 @@ def get_template_strings(
 def make_sns_system(a, L_m, L_up, L_down, L_x,
                     transverse_soi=True,
                     mu_from_bottom_of_spin_orbit_bands=True,
-                    with_vlead=True):
+                    with_vlead=False):
     """
     Builds and returns finalized 2dim sns system
 
@@ -185,26 +185,8 @@ def make_sns_system(a, L_m, L_up, L_down, L_x,
     return syst, hopping
 
 
-def view_as_blocks(arr_in, block_shape):
-    """Taken from skimage.util.shape.view_as_blocks."""
-    from numpy.lib.stride_tricks import as_strided
-    block_shape = np.array(block_shape)
-    arr_shape = np.array(arr_in.shape)
-    arr_in = np.ascontiguousarray(arr_in)
-
-    new_shape = tuple(arr_shape // block_shape) + tuple(block_shape)
-    new_strides = tuple(arr_in.strides * block_shape) + arr_in.strides
-
-    arr_out = as_strided(arr_in, shape=new_shape, strides=new_strides)
-
-    return arr_out
-
-
 def take_electron_blocks(H, norbs):
-    as_blocks = view_as_blocks(H, (norbs, norbs))
-    electron_blocks = as_blocks[:, :, :norbs//2, :norbs//2]
-    return electron_blocks.transpose([0, 2, 1, 3]).reshape(H.shape[0]//2,
-                                                           H.shape[1]//2)
+    return H[::2, ::2]
 
 
 @lru_cache()
