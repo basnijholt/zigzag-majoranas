@@ -13,12 +13,12 @@ def plot_syst(syst_pars=None, params=None, a_new=None,
               num_lead_cells=4, syst=None):
     if syst is None:
         a = syst_pars['a'] if a_new is None else a_new
-        Ll = syst_pars['Ll']
+        L_down = syst_pars['L_down']
         Lm = syst_pars['Lm']
-        Lr = syst_pars['Lr']
+        L_up = syst_pars['L_up']
         Lx = syst_pars['Lx']
 
-        syst = sns_system.make_sns_system(a=a, Ll=Ll, Lm=Lm, Lr=Lr, Lx=Lx)
+        syst, _ = sns_system.make_sns_system(a=a, L_down=L_down, Lm=Lm, L_up=L_up, Lx=Lx)
 
     def delta(sites):
         return [np.abs(syst.hamiltonian(i, i, params=params)[2, 0])
