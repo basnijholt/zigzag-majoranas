@@ -41,7 +41,7 @@ def wrapped_current(
                                               where=cut_sites)
 
     def f(k):
-        p = dict(k_y=k, **params)
+        p = dict(k_x=k, **params)
         ham = syst_wrapped.hamiltonian_submatrix(params=p)
         local_current_operator = current_operator.bind(params=p)
 

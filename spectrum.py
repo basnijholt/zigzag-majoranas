@@ -5,12 +5,12 @@ import scipy.sparse.linalg as sla
 import sns_system
 
 
-def dispersion(kx, ky, params):
+def dispersion(k_x, k_y, params):
     Ekin = params['hbar']**2 / (2 * params['m_eff']) * (
-        kx**2 + ky**2) - params['mu'] + params['m_eff'] * params['alpha_middle']**2 / (2 * params['hbar']**2)
+        k_x**2 + k_y**2) - params['mu'] + params['m_eff'] * params['alpha_middle']**2 / (2 * params['hbar']**2)
     Erest = np.sqrt(
-        params['alpha_middle'] ** 2 * ky ** 2 +
-        (params['alpha_middle'] * kx - params['g_factor_middle'] *
+        params['alpha_middle'] ** 2 * k_x ** 2 +
+        (params['alpha_middle'] * k_y - params['g_factor_middle'] *
          params['mu_B'] * params['B']) ** 2)
     return (Ekin + Erest, Ekin - Erest)
 

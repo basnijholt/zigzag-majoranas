@@ -20,7 +20,7 @@ def get_bulk_hamiltonian(syst, params):
     Returns:
     --------
     H(k) : function returning np.ndarray
-            Returns a function which returns the Hamiltonian H(k_y)
+            Returns a function which returns the Hamiltonian H(k_x)
     """
     bulk_system = syst.leads[0]
 
