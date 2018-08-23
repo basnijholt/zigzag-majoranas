@@ -6,19 +6,18 @@ import cmath
 
 
 def get_bulk_hamiltonian(syst, params):
-    """
-    Returns H(k, y) of infinitely extended system in x direction.
+    """Returns H(k, y) of infinitely extended system in x direction.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     syst : kwant.system.FiniteSystem
             Finite system where lead[0] is assumed to be the bulk lead, a slice of the bulk along the y-axis
 
     params : dict
             Set of parameters for the system
 
-    Returns:
-    --------
+    Returns
+    -------
     H(k) : function returning np.ndarray
             Returns a function which returns the Hamiltonian H(k_x)
     """
@@ -31,19 +30,18 @@ def get_bulk_hamiltonian(syst, params):
 
 
 def get_pfaffian(syst, params):
-    """
-    Returns pfaffian of a system
+    """Returns pfaffian of a system.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     syst : kwant.system.FiniteSystem
             Finite system where lead[0] is assumed to be the bulk lead, a slice of the bulk along the y-axis
 
     params : dict
             Set of parameters for the system
 
-    Returns:
-    --------
+    Returns
+    -------
             sign(Pf(H(0))) * sign(Pf(H(pi))) : float {-1, +1}
     """
     h_k = get_bulk_hamiltonian(syst, params)

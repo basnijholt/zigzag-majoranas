@@ -81,8 +81,8 @@ def make_sns_system(a, Lm, Lr, Ll, Lx,
     """
     Builds and returns finalized 2dim sns system
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     a : float
         lattice spacing in nm
 
@@ -98,8 +98,8 @@ def make_sns_system(a, Lm, Lr, Ll, Lx,
     Lx : float
         length of finite system
 
-    Returns:
-    --------
+    Returns
+    -------
     syst : kwant.system.FiniteSystem
         Finite system where lead[0] is assumed to be the bulk lead, a slice of the bulk along the y-axis
     """
@@ -178,8 +178,8 @@ def make_ns_junction(a, Lm, Lr, Ll, Lx,
     """
     Builds and returns finalized NS junction system, for calculating transmission
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     a : float
         lattice spacing in nm
 
@@ -195,8 +195,8 @@ def make_ns_junction(a, Lm, Lr, Ll, Lx,
     Lx : float
         length of finite system
 
-    Returns:
-    --------
+    Returns
+    -------
     syst : kwant.system.FiniteSystem
         Finite system where lead[0] is assumed to be the bulk lead, a slice of the bulk along the y-axis
     """

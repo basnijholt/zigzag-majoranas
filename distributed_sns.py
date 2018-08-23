@@ -41,16 +41,15 @@ def get_list_of_parameter_dictionaries(params_mutable):
     are arrays of parameters -- into a list of dictionaries, containing single
     element parameters.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     params_mutable : dict
         dictionary containing parameter (-ranges)
 
-    Returns:
-    --------
+    Returns
+    -------
     iterable_keys : list
         List of keys of parameters that contained multiple entries
-
     param_list : list
         List of parameter dictionaries
     """

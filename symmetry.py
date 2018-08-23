@@ -6,12 +6,12 @@ def is_phs(ham):
     Checks wheteher matrix is indeed particle hole symmetric,
     assuming we are in the  {Ψ_e↑, Ψ_e↓, Ψ_h↓, -Ψ_h↑} basis.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
             ham : numpy.ndarray
 
-    Returns:
-    --------
+    Returns
+    -------
             ham == - ham(holes <-> electrons) : bool
     """
 
@@ -23,12 +23,12 @@ def is_phs(ham):
 def is_antisymmetric(ham):
     """ Checks whether matrix is antisymmetric.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
             ham : numpy.ndarray
 
-    Returns:
-    --------
+    Returns
+    -------
             ham == - ham.transposed : bool
     """
     return (np.abs(ham + ham.T) < 1e-12).all()
@@ -42,13 +42,13 @@ def make_skew_symmetric(ham):
     that is in a different basis. To get to the right basis one multiplies
     by [[np.eye(2), 0], [0, sigma_y]].
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     ham : numpy.ndarray
         Hamiltonian matrix gotten from sys.cell_hamiltonian()
 
-    Returns:
-    --------
+    Returns
+    -------
     skew_ham : numpy.ndarray
         Skew symmetrized Hamiltonian
     """
