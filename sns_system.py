@@ -165,21 +165,21 @@ def make_sns_system(a, Lm, L_up, L_down, Lx,
         lead.fill(template_sc_right, shape_lead(Lm, Lm + L_up), (Lm, 0)[::-1])
 
     # Define left and right cut in the middle of the superconducting part
-    cuts = supercurrent_matsubara.get_cuts(syst, a, direction='y')
+    cuts = supercurrent_matsubara.get_cuts(syst, 0, direction='y')
 
     # Sort the sites in the `cuts` list.
     cuts = [sorted(cut, key=lambda s: s.pos[0] + s.pos[1]*1e6) for cut in cuts]
+    assert len(cuts[0]) == len(cuts[1]) and len(cuts[0]) > 0, cuts
     norbs = 4
     if with_vlead:
         syst = supercurrent_matsubara.add_vlead(syst, norbs, *cuts)
 
-    electron_blocks = partial(take_electron_blocks, norbs=norbs)
-    
     syst.attach_lead(lead)
     syst.attach_lead(lead.reversed())
     
     syst = syst.finalized()
 
+    electron_blocks = partial(take_electron_blocks, norbs=norbs)
     hopping = supercurrent_matsubara.hopping_between_cuts(syst, *cuts, electron_blocks)
 
     return syst, hopping
