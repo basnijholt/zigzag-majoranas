@@ -1,10 +1,15 @@
+import cmath
+from functools import partial, lru_cache
+
 import kwant
 import topology
-import cmath
 import scipy.constants
 import numpy as np
-import supercurrent
+
 from functools import lru_cache
+
+import supercurrent
+import supercurrent_matsubara
 
 constants = dict(
     # effective mass in kg,
@@ -77,27 +82,23 @@ def get_template_strings(
 @lru_cache()
 def make_sns_system(a, Lm, Lr, Ll, Lx,
                     transverse_soi=True,
-                    mu_from_bottom_of_spin_orbit_bands=True):
+                    mu_from_bottom_of_spin_orbit_bands=True,
+                    with_vlead=True):
     """
     Builds and returns finalized 2dim sns system
 
     Parameters
     ----------
     a : float
-        lattice spacing in nm
-
+        lattice spacing in nm.
     Lm : float
-        width of middle normal strip
-
+        width of middle normal strip.
     Lr : float
-        width of right superconductor
-
+        width of right superconductor.
     Ll : float
-        width of left superconductor
-
+        width of left superconductor.
     Lx : float
-        length of finite system
-
+        length of finite system.
     Returns
     -------
     syst : kwant.system.FiniteSystem
@@ -163,12 +164,47 @@ def make_sns_system(a, Lm, Lr, Ll, Lx,
     if Lr >= a:
         lead.fill(template_sc_right, shape_lead(Lm, Lm + Lr), (Lm, 0)[::-1])
 
+    # Define left and right cut in the middle of the superconducting part
+    cuts = supercurrent_matsubara.get_cuts(syst, a, direction='y')
+
+    # Sort the sites in the `cuts` list.
+    cuts = [sorted(cut, key=lambda s: s.pos[0] + s.pos[1]*1e6) for cut in cuts]
+    norbs = 4
+    if with_vlead:
+        syst = supercurrent_matsubara.add_vlead(syst, norbs, *cuts)
+
+    electron_blocks = partial(take_electron_blocks, norbs=norbs)
+    
     syst.attach_lead(lead)
     syst.attach_lead(lead.reversed())
-
+    
     syst = syst.finalized()
 
-    return syst
+    hopping = supercurrent_matsubara.hopping_between_cuts(syst, *cuts, electron_blocks)
+
+    return syst, hopping
+
+
+def view_as_blocks(arr_in, block_shape):
+    """Taken from skimage.util.shape.view_as_blocks."""
+    from numpy.lib.stride_tricks import as_strided
+    block_shape = np.array(block_shape)
+    arr_shape = np.array(arr_in.shape)
+    arr_in = np.ascontiguousarray(arr_in)
+
+    new_shape = tuple(arr_shape // block_shape) + tuple(block_shape)
+    new_strides = tuple(arr_in.strides * block_shape) + arr_in.strides
+
+    arr_out = as_strided(arr_in, shape=new_shape, strides=new_strides)
+
+    return arr_out
+
+
+def take_electron_blocks(H, norbs):
+    as_blocks = view_as_blocks(H, (norbs, norbs))
+    electron_blocks = as_blocks[:, :, :norbs//2, :norbs//2]
+    return electron_blocks.transpose([0, 2, 1, 3]).reshape(H.shape[0]//2,
+                                                           H.shape[1]//2)
 
 
 @lru_cache()
@@ -181,24 +217,20 @@ def make_ns_junction(a, Lm, Lr, Ll, Lx,
     Parameters
     ----------
     a : float
-        lattice spacing in nm
-
+        lattice spacing in nm.
     Lm : float
-        width of middle normal strip
-
+        width of middle normal strip.
     Lr : float
-        width of right superconductor
-
+        width of right superconductor.
     Ll : float
-        width of left superconductor
-
+        width of left superconductor.
     Lx : float
-        length of finite system
-
+        length of finite system.
     Returns
     -------
     syst : kwant.system.FiniteSystem
-        Finite system where lead[0] is assumed to be the bulk lead, a slice of the bulk along the y-axis
+        Finite system where lead[0] is assumed to be the bulk lead,
+        a slice of the bulk along the y-axis.
     """
 
     #     HAMILTONIAN DEFINITIONS

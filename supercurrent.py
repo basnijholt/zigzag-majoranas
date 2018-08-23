@@ -32,7 +32,7 @@ def wrapped_current(
             mu_from_bottom_of_spin_orbit_bands=mu_from_bottom_of_spin_orbit_bands)
 
     cut_tag = 0
-    direction = 0
+    direction = 1
 
     (cut_indices, cut_sites) = get_cut_sites_and_indices(
         syst_wrapped, cut_tag, direction)
@@ -47,11 +47,11 @@ def wrapped_current(
 
         (en, evs) = np.linalg.eigh(ham)
         I = sum(fermi_dirac(e.real, p) * local_current_operator(ev)
-                for (e, ev) in zip(en, evs.T))
+                for e, ev in zip(en, evs.T))
         return sum(I) * params['e'] / params['hbar']
 
-    ef_max = params['mu'] + params['m_eff'] * \
-        params['alpha_middle']**2 / 2 / params['hbar']**2
+    ef_max = (params['mu'] + params['m_eff'] 
+        * params['alpha_middle']**2 / 2 / params['hbar']**2)
     kf = np.sqrt(ef_max * 2 * params['m_eff']
                  ) / params['hbar'] * syst_pars['a']
     kmax = min(1.5 * kf, np.pi)
