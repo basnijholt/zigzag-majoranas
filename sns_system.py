@@ -78,6 +78,100 @@ def get_template_strings(
     return template_strings
 
 
+
+@lru_cache()
+def make_sns_leaded_system(a, L_m, L_x,
+                    transverse_soi=True,
+                    mu_from_bottom_of_spin_orbit_bands=True,
+                    with_vlead=False, **_):
+    """
+    Builds and returns finalized 2dim sns system
+
+    Parameters
+    ----------
+    a : float
+        lattice spacing in nm.
+    L_m : float
+        width of middle normal strip.
+    L_up : float
+        width of right superconductor.
+    L_down : float
+        width of left superconductor.
+    L_x : float
+        length of finite system.
+    Returns
+    -------
+    syst : kwant.system.FiniteSystem
+        Finite system where lead[0] is assumed to be the bulk lead, a slice of the bulk along the y-axis
+    """
+
+    #     HAMILTONIAN DEFINITIONS
+    template_strings = get_template_strings(
+        transverse_soi, mu_from_bottom_of_spin_orbit_bands)
+
+    # TURN HAMILTONIAN STRINGS INTO TEMPLATES
+    template_barrier = kwant.continuum.discretize(
+        template_strings['ham_barrier'], grid_spacing=a)
+    template_normal = kwant.continuum.discretize(
+        template_strings['ham_normal'], grid_spacing=a)
+    template_sc_left = kwant.continuum.discretize(
+        template_strings['ham_sc_left'], grid_spacing=a)
+    template_sc_right = kwant.continuum.discretize(
+        template_strings['ham_sc_right'], grid_spacing=a)
+
+    # SHAPE FUNCTIONS
+    def shape_barrier(site):
+        (x, y) = site.pos
+        return (0 <= x < L_x) and (y == 0 or y == L_m)
+
+    def shape_normal(site):
+        (x, y) = site.pos
+        return 0 <= x < L_x and a <= y < L_m
+
+    def shape_left_sc(site):
+        (x, y) = site.pos
+        return 0 <= x < L_x 
+
+    def shape_right_sc(site):
+        (x, y) = site.pos
+        return 0 <= x < L_x
+
+
+    # BUILD FINITE SYSTEM
+    syst = kwant.Builder()
+
+    syst.fill(template_normal, shape_normal, (a, 0)[::-1])
+    syst.fill(template_barrier, shape_barrier, (0, 0)[::-1])
+    syst.fill(template_barrier, shape_barrier, (L_m, 0)[::-1])
+
+    lead_up = kwant.Builder(kwant.TranslationalSymmetry([0, a]))
+    lead_up.fill(template_sc_right, shape_right_sc, (0,0))
+ 
+    lead_down = kwant.Builder(kwant.TranslationalSymmetry([0, -a]))
+    lead_down.fill(template_sc_left, shape_left_sc, (0,0))
+
+    # Define left and right cut in the middle of the superconducting part
+    cuts = supercurrent_matsubara.get_cuts(syst, 0, direction='y')
+
+    # Sort the sites in the `cuts` list.
+    cuts = [sorted(cut, key=lambda s: s.pos[0] + s.pos[1]*1e6) for cut in cuts]
+    assert len(cuts[0]) == len(cuts[1]) and len(cuts[0]) > 0, cuts
+    norbs = 4
+    if with_vlead:
+        syst = supercurrent_matsubara.add_vlead(syst, norbs, *cuts)
+
+    syst.attach_lead(lead_down)
+    syst.attach_lead(lead_up)
+    
+    syst = syst.finalized()
+
+    electron_blocks = partial(take_electron_blocks, norbs=norbs)
+    hopping = supercurrent_matsubara.hopping_between_cuts(syst, *cuts, electron_blocks)
+
+    return syst, hopping
+
+
+
 @lru_cache()
 def make_sns_system(a, L_m, L_up, L_down, L_x,
                     transverse_soi=True,
@@ -121,19 +215,19 @@ def make_sns_system(a, L_m, L_up, L_down, L_x,
     # SHAPE FUNCTIONS
     def shape_barrier(site):
         (x, y) = site.pos
-        return (0 <= x < L_x) and (y == 0 or y == L_m - a)
+        return (0 <= x < L_x) and (y == 0 or y == L_m)
 
     def shape_normal(site):
         (x, y) = site.pos
-        return 0 <= x < L_x and a <= y < L_m - a
+        return 0 <= x < L_x and 0 < y < L_m
 
     def shape_left_sc(site):
         (x, y) = site.pos
-        return 0 <= x < L_x and -L_down <= y < 0
+        return 0 <= x < L_x and -L_down - a <= y < 0
 
     def shape_right_sc(site):
         (x, y) = site.pos
-        return 0 <= x < L_x and L_m <= y < L_m + L_up
+        return 0 <= x < L_x and L_m < y < L_m + L_up + 2*a
 
     def shape_lead(y1, y2):
         def shape(site):
@@ -146,22 +240,22 @@ def make_sns_system(a, L_m, L_up, L_down, L_x,
 
     syst.fill(template_normal, shape_normal, (a, 0)[::-1])
     syst.fill(template_barrier, shape_barrier, (0, 0)[::-1])
-    syst.fill(template_barrier, shape_barrier, (L_m - a, 0)[::-1])
+    syst.fill(template_barrier, shape_barrier, (L_m, 0)[::-1])
     if L_down >= a:
         syst.fill(template_sc_left, shape_left_sc, (-L_down, 0)[::-1])
     if L_up >= a:
-        syst.fill(template_sc_right, shape_right_sc, (L_m, 0)[::-1])
+        syst.fill(template_sc_right, shape_right_sc, (L_m+a, 0)[::-1])
 
     # LEAD: SLICE OF BULK ALONG X AXIS
     lead = kwant.Builder(kwant.TranslationalSymmetry([-a, 0]))
 
-    lead.fill(template_normal, shape_lead(a, L_m - a), (a, 0)[::-1])
+    lead.fill(template_normal, shape_lead(a, L_m), (a, 0)[::-1])
     lead.fill(template_barrier, shape_lead(0, a), (0, 0)[::-1])
-    lead.fill(template_barrier, shape_lead(L_m - a, L_m), (L_m - a, 0)[::-1])
+    lead.fill(template_barrier, shape_lead(L_m, L_m+a), (L_m, 0)[::-1])
     if L_down >= a:
-        lead.fill(template_sc_left, shape_lead(-L_down, 0), (-L_down, 0)[::-1])
+        lead.fill(template_sc_left, shape_lead(-L_down-a, 0), (-L_down-a, 0)[::-1])
     if L_up >= a:
-        lead.fill(template_sc_right, shape_lead(L_m, L_m + L_up), (L_m, 0)[::-1])
+        lead.fill(template_sc_right, shape_lead(L_m+a, L_m + L_up + 2*a), (L_m+a, 0)[::-1])
 
     # Define left and right cut in the middle of the superconducting part
     cuts = supercurrent_matsubara.get_cuts(syst, 0, direction='y')
@@ -294,19 +388,19 @@ def make_wrapped_system(a, L_m, L_up, L_down, L_x,
     # SHAPE FUNCTIONS
     def shape_barrier(site):
         (x, y) = site.pos
-        return (0 <= x < L_x) and (y == 0 or y == L_m - a)
+        return (0 <= x < L_x) and (y == 0 or y == L_m)
 
     def shape_normal(site):
         (x, y) = site.pos
-        return 0 <= x < L_x and a <= y < L_m - a
+        return 0 <= x < L_x and a <= y < L_m
 
     def shape_left_sc(site):
         (x, y) = site.pos
-        return 0 <= x < L_x and -L_down <= y < 0
+        return 0 <= x < L_x and -L_down - a <= y < 0
 
     def shape_right_sc(site):
         (x, y) = site.pos
-        return 0 <= x < L_x and L_m <= y < L_m + L_up
+        return 0 <= x < L_x and L_m + a <= y < L_m + L_up + 2*a
 
     def shape_lead(x1, x2):
         def shape(site):
@@ -320,13 +414,11 @@ def make_wrapped_system(a, L_m, L_up, L_down, L_x,
 
     syst.fill(template_normal, shape_normal, (a, 0)[::-1])
     syst.fill(template_barrier, shape_barrier, (0, 0)[::-1])
-    syst.fill(template_barrier, shape_barrier, (L_m - a, 0)[::-1])
+    syst.fill(template_barrier, shape_barrier, (L_m, 0)[::-1])
     if L_down >= a:
-        syst.fill(template_sc_left, shape_left_sc, (-L_down, 0)[::-1])
+        syst.fill(template_sc_left, shape_left_sc, (-a, 0)[::-1])
     if L_up >= a:
-        syst.fill(template_sc_right, shape_right_sc, (L_m, 0)[::-1])
-
-    lead = kwant.Builder(kwant.TranslationalSymmetry((-a, 0)))
+        syst.fill(template_sc_right, shape_right_sc, (L_m+a, 0)[::-1])
 
     syst = kwant.wraparound.wraparound(syst)
     return syst.finalized()

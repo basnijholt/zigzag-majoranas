@@ -21,7 +21,7 @@ def get_bulk_hamiltonian(syst, params):
     H(k) : function returning np.ndarray
             Returns a function which returns the Hamiltonian H(k_x)
     """
-    bulk_system = syst.leads[0]
+    bulk_system = syst.leads[1]
 
     h = bulk_system.cell_hamiltonian(params=params)
     t = bulk_system.inter_cell_hopping(params=params)

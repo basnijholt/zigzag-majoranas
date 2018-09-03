@@ -92,7 +92,7 @@ def current_function(current_params, syst_total,
 
 def energy_gap_function(energy_gap_params, syst_total,
                         syst_wrapped, syst_junction, syst_pars, params):
-    return spectrum.find_gap_of_lead(lead=syst_total.leads[0],
+    return spectrum.find_gap_of_lead(lead=syst_total.leads[1],
                                      params=params,
                                      **energy_gap_params)
 
@@ -123,7 +123,7 @@ def get_correct_metric_function(metric_key, metric_params):
 
 def total_function(xy, syst_pars, params, keys_with_bounds,
                    metric_params_dict):
-    syst_total = sns_system.make_sns_system(**syst_pars)
+    syst_total, hopping = sns_system.make_sns_system(**syst_pars)
     syst_wrapped = sns_system.make_wrapped_system(**syst_pars)
     syst_junction = sns_system.make_ns_junction(**syst_pars)
 

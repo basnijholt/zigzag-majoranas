@@ -33,11 +33,10 @@ def wrapped_current(
             **syst_pars, transverse_soi=transverse_soi,
             mu_from_bottom_of_spin_orbit_bands=mu_from_bottom_of_spin_orbit_bands)
 
-    cut_tag = 0
-    direction = 1
+    cut_tag = 1
+    direction = 'y'
 
-    (cut_indices, cut_sites) = get_cut_sites_and_indices(
-        syst_wrapped, cut_tag, direction)
+    cut_sites = get_cuts(syst_wrapped, cut_tag, direction)
     current_operator = kwant.operator.Current(syst_wrapped,
                                               onsite=sigz,
                                               where=cut_sites)
@@ -50,7 +49,7 @@ def wrapped_current(
         (en, evs) = np.linalg.eigh(ham)
         I = sum(fermi_dirac(e.real, p) * local_current_operator(ev)
                 for e, ev in zip(en, evs.T))
-        return sum(I) * params['e'] / params['hbar']
+        return sum(I) * params['e'] / params['hbar'] / syst_pars['a']
 
     ef_max = (params['mu'] + params['m_eff'] 
         * params['alpha_middle']**2 / 2 / params['hbar']**2)
@@ -66,34 +65,23 @@ def wrapped_current(
                     list(
                         learner.done_points.values()))) < zero_current))
 
-    I = 2 * learner.igral / syst_pars['a']
+    I = 2 * learner.igral
     return I
 
+def get_cuts(syst, ind=0, direction='x'):
+    """Get the sites at two postions of the specified cut coordinates.
 
-def get_cut_sites_and_indices(syst, cut_tag, direction):
-    l_cut = []
-    r_cut = []
-    cut_indices = []
-
-    for site_idx, site in enumerate(syst.sites):
-        if site.tag[direction] == cut_tag:
-            l_cut.append(site)
-            temp = [
-                4 * site_idx,
-                4 * site_idx + 1,
-                4 * site_idx + 2,
-                4 * site_idx + 3]
-            cut_indices.append(temp)
-        if site.tag[direction] == cut_tag + 1:
-            r_cut.append(site)
-            temp = [
-                4 * site_idx,
-                4 * site_idx + 1,
-                4 * site_idx + 2,
-                4 * site_idx + 3]
-            cut_indices.append(temp)
-
-    cut_indices = np.hstack(cut_indices)
-    cut_sites = list(zip(l_cut, r_cut))
-
-    return (cut_indices, cut_sites)
+    Parameters
+    ----------
+    syst : kwant.builder.FiniteSystem
+        The finilized kwant system.
+    ind : int
+        index of slice to cut, cuts will be returned at ind, and ind+1.
+    direction : str
+        Cut direction, 'x', 'y', or 'z'.
+    """
+    direction = 'xyz'.index(direction)
+    l_cut = [site for site in syst.sites if site.tag[direction] == ind]
+    r_cut = [site for site in syst.sites if site.tag[direction] == ind+1]
+    assert len(l_cut) == len(r_cut), "x_left and x_right use site.tag not site.pos!"
+    return list(zip(l_cut, r_cut))
