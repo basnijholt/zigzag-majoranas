@@ -1,0 +1,52 @@
+\documentclass{tudelft-report}
+\usepackage{natbib}
+\usepackage{changes}
+\begin{document}
+
+%% Use Roman numerals for the page numbers of the title pages and table of
+%% contents.
+\frontmatter
+
+\title[tudelft-white]{Supercurrents in SNS junctions}
+\subtitle[tudelft-black]{Optional subtitle}
+\author[tudelft-white]{J.\ Random Author}
+\affiliation{Technische Universiteit Delft}
+\coverimage{tank.jpg}
+
+\covertext[tudelft-white]{
+    \textbf{Cover Text} \\
+    possibly \\
+    spanning 
+    multiple 
+    lines
+    \vfill
+    ISBN 000-00-0000-000-0
+}
+\setpagecolor{tudelft-cyan}
+\makecover[split]
+
+
+%% Include an optional title page.
+\input{title}
+
+\input{preface}
+
+\tableofcontents
+
+%% Use Arabic numerals for the page numbers of the chapters.
+\mainmatter
+
+\input{introduction}
+\input{theory}
+\input{methods}
+\input{results}
+\input{discussion}
+%% Use letters for the chapter numbers of the appendices.
+\appendix
+
+%\input{appendix-a}
+
+\bibliography{report}
+
+\end{document}
+
