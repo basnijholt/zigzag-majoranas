@@ -40,7 +40,7 @@ dummy_params = dict(**constants,
 
 @lru_cache()
 def get_template_strings(
-        transverse_soi, mu_from_bottom_of_spin_orbit_bands=True):
+        transverse_soi, mu_from_bottom_of_spin_orbit_bands=True, k_x_in_sc=False):
     if mu_from_bottom_of_spin_orbit_bands:
         ham_str = "(hbar^2 / (2*m_eff) * (k_y^2 + k_x^2) - mu + m_eff*alpha_middle^2 / (2 * hbar^2)) * kron(sigma_0, sigma_z) "
     else:
@@ -71,6 +71,10 @@ def get_template_strings(
     ham_sc_left += "+ g_factor_left * mu_B * B * kron(sigma_x, sigma_0)"
     ham_sc_right += "+ g_factor_right * mu_B * B * kron(sigma_x, sigma_0)"
 
+    if not k_x_in_sc:
+        ham_sc_right = ham_sc_right.replace('k_x', '0')
+        ham_sc_left = ham_sc_left.replace('k_x', '0')
+
     template_strings = dict(ham_barrier=ham_barrier,
                             ham_normal=ham_normal,
                             ham_sc_right=ham_sc_right,
@@ -83,7 +87,8 @@ def get_template_strings(
 def make_sns_leaded_system(a, L_m, L_x,
                     transverse_soi=True,
                     mu_from_bottom_of_spin_orbit_bands=True,
-                    with_vlead=False, **_):
+                    k_x_in_sc=False,
+                    with_vlead=False, k_x_in_sc=False, **_):
     """
     Builds and returns finalized 2dim sns system
 
@@ -110,14 +115,15 @@ def make_sns_leaded_system(a, L_m, L_x,
         transverse_soi, mu_from_bottom_of_spin_orbit_bands)
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
+    kwargs = dict(coords=('x', 'y'), grid_spacing=a)
     template_barrier = kwant.continuum.discretize(
-        template_strings['ham_barrier'], grid_spacing=a)
+        template_strings['ham_barrier'], **kwargs)
     template_normal = kwant.continuum.discretize(
-        template_strings['ham_normal'], grid_spacing=a)
+        template_strings['ham_normal'], **kwargs)
     template_sc_left = kwant.continuum.discretize(
-        template_strings['ham_sc_left'], grid_spacing=a)
+        template_strings['ham_sc_left'], **kwargs)
     template_sc_right = kwant.continuum.discretize(
-        template_strings['ham_sc_right'], grid_spacing=a)
+        template_strings['ham_sc_right'], **kwargs)
 
     # SHAPE FUNCTIONS
     def shape_barrier(site):
@@ -176,6 +182,7 @@ def make_sns_leaded_system(a, L_m, L_x,
 def make_sns_system(a, L_m, L_up, L_down, L_x,
                     transverse_soi=True,
                     mu_from_bottom_of_spin_orbit_bands=True,
+                    k_x_in_sc=False,
                     with_vlead=False):
     """
     Builds and returns finalized 2dim sns system
@@ -203,14 +210,15 @@ def make_sns_system(a, L_m, L_up, L_down, L_x,
         transverse_soi, mu_from_bottom_of_spin_orbit_bands)
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
+    kwargs = dict(coords=('x', 'y'), grid_spacing=a)
     template_barrier = kwant.continuum.discretize(
-        template_strings['ham_barrier'], grid_spacing=a)
+        template_strings['ham_barrier'], **kwargs)
     template_normal = kwant.continuum.discretize(
-        template_strings['ham_normal'], grid_spacing=a)
+        template_strings['ham_normal'], **kwargs)
     template_sc_left = kwant.continuum.discretize(
-        template_strings['ham_sc_left'], grid_spacing=a)
+        template_strings['ham_sc_left'], **kwargs)
     template_sc_right = kwant.continuum.discretize(
-        template_strings['ham_sc_right'], grid_spacing=a)
+        template_strings['ham_sc_right'], **kwargs)
 
     # SHAPE FUNCTIONS
     def shape_barrier(site):
@@ -285,7 +293,7 @@ def take_electron_blocks(H, norbs):
 @lru_cache()
 def make_ns_junction(a, L_m, L_up, L_down, L_x,
                      transverse_soi=True,
-                     mu_from_bottom_of_spin_orbit_bands=True):
+                     mu_from_bottom_of_spin_orbit_bands=True, k_x_in_sc=False):
     """
     Builds and returns finalized NS junction system, for calculating transmission
 
@@ -370,7 +378,8 @@ def make_ns_junction(a, L_m, L_up, L_down, L_x,
 @lru_cache()
 def make_wrapped_system(a, L_m, L_up, L_down, L_x,
                         transverse_soi=True,
-                        mu_from_bottom_of_spin_orbit_bands=True, **_):
+                        mu_from_bottom_of_spin_orbit_bands=True,
+                        k_x_in_sc=False, **_):
 
     template_strings = get_template_strings(
         transverse_soi, mu_from_bottom_of_spin_orbit_bands)
