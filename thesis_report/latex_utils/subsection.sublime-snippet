@@ -1,0 +1,10 @@
+<snippet>
+    <content><![CDATA[
+%%--------------------------------------------------------------------------
+%%  ${1:TITLE}
+    \subsection{${1}}
+    $0
+]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>\sub</tabTrigger>
+</snippet>
