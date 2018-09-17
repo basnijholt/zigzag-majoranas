@@ -87,7 +87,6 @@ def get_template_strings(
 def make_sns_leaded_system(a, L_m, L_x,
                     transverse_soi=True,
                     mu_from_bottom_of_spin_orbit_bands=True,
-                    k_x_in_sc=False,
                     with_vlead=False, k_x_in_sc=False, **_):
     """
     Builds and returns finalized 2dim sns system
@@ -112,7 +111,7 @@ def make_sns_leaded_system(a, L_m, L_x,
 
     #     HAMILTONIAN DEFINITIONS
     template_strings = get_template_strings(
-        transverse_soi, mu_from_bottom_of_spin_orbit_bands)
+        transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
     kwargs = dict(coords=('x', 'y'), grid_spacing=a)
@@ -183,7 +182,7 @@ def make_sns_system(a, L_m, L_up, L_down, L_x,
                     transverse_soi=True,
                     mu_from_bottom_of_spin_orbit_bands=True,
                     k_x_in_sc=False,
-                    with_vlead=False):
+                    with_vlead=False, **_):
     """
     Builds and returns finalized 2dim sns system
 
@@ -207,7 +206,7 @@ def make_sns_system(a, L_m, L_up, L_down, L_x,
 
     #     HAMILTONIAN DEFINITIONS
     template_strings = get_template_strings(
-        transverse_soi, mu_from_bottom_of_spin_orbit_bands)
+        transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
     kwargs = dict(coords=('x', 'y'), grid_spacing=a)
@@ -318,7 +317,7 @@ def make_ns_junction(a, L_m, L_up, L_down, L_x,
 
     #     HAMILTONIAN DEFINITIONS
     template_strings = get_template_strings(
-        transverse_soi, mu_from_bottom_of_spin_orbit_bands)
+        transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
     template_barrier = kwant.continuum.discretize(
@@ -382,7 +381,7 @@ def make_wrapped_system(a, L_m, L_up, L_down, L_x,
                         k_x_in_sc=False, **_):
 
     template_strings = get_template_strings(
-        transverse_soi, mu_from_bottom_of_spin_orbit_bands)
+        transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
     template_barrier = kwant.continuum.discretize(
