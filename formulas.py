@@ -15,3 +15,6 @@ def fermi_wavenumber(mu, m_eff):
 def fermi_velocity(mu, m_eff):
 	kf = fermi_wavenumber(mu, m_eff)
 	return HBAR_MEV * kf / (m_eff*M_EV_NM)
+
+def density_to_mu(density, m_eff):
+	return HBAR_MEV**2 * PI * density/ (m_eff*M_EV_NM)
