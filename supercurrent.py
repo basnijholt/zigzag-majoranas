@@ -49,6 +49,46 @@ def wrapped_current(
         (en, evs) = np.linalg.eigh(ham)
         I = sum(fermi_dirac(e.real, p) * local_current_operator(ev)
                 for e, ev in zip(en, evs.T))
+        return sum(I) * params['e'] / params['hbar'] / syst_pars['a'] / (2*np.pi)
+
+    ef_max = (params['mu'] + params['m_eff'] 
+        * params['alpha_middle']**2 / 2 / params['hbar']**2)
+    kf = np.sqrt(ef_max * 2 * params['m_eff']
+                 ) / params['hbar'] * syst_pars['a']
+    kmax = min(1.5 * kf, np.pi)
+
+    learner = adaptive.IntegratorLearner(f, [0, kmax], tol)
+    runner = adaptive.runner.simple(
+        learner, lambda l: l.done() or l.npoints > max_points or (
+            l.npoints > 20 and np.max(
+                np.abs(
+                    list(
+                        learner.done_points.values()))) < zero_current))
+
+    I = 2 * learner.igral
+    return I
+
+def wrapped_current_3d(
+        syst_pars, params, tol=0.01, syst_wrapped=None, transverse_soi=True,
+        mu_from_bottom_of_spin_orbit_bands=True, zero_current=1e-15,
+        max_points=1e20):
+
+    cut_tag = 1
+    direction = 'y'
+
+    cut_sites = get_cuts(syst_wrapped, cut_tag, direction)
+    current_operator = kwant.operator.Current(syst_wrapped,
+                                              onsite=sigz,
+                                              where=cut_sites)
+
+    def f(k):
+        p = dict(k_x=k, **params)
+        ham = syst_wrapped.hamiltonian_submatrix(params=p)
+        local_current_operator = current_operator.bind(params=p)
+
+        (en, evs) = np.linalg.eigh(ham)
+        I = sum(fermi_dirac(e.real, p) * local_current_operator(ev)
+                for e, ev in zip(en, evs.T))
         return sum(I) * params['e'] / params['hbar'] / syst_pars['a']
 
     ef_max = (params['mu'] + params['m_eff'] 

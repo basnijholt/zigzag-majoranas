@@ -21,8 +21,7 @@ def plot_syst(syst_pars=None, params=None, a_new=None,
         syst, _ = sns_system.make_sns_system(a=a, L_down=L_down, L_m=L_m, L_up=L_up, L_x=L_x)
 
     def delta(sites):
-        return [np.sum(np.abs(syst.hamiltonian(i, i, params=params)))
-                for i, site in enumerate(sites)]
+        return [np.sum(np.abs(syst.hamiltonian(i, i, params=params)) + np.real(syst.hamiltonian(i, i, params=params)) * np.imag(syst.hamiltonian(i, i, params=params))) for i, site in enumerate(sites)]
 
     return kwant.plot(syst, num_lead_cells=num_lead_cells,
                       site_color=delta(syst.sites),
@@ -51,7 +50,7 @@ def plot_pfaffian(params, results, figsize=(5, 5)):
         plt.ylabel(iterable_keys[1])
 
         if(iterable_keys[1] == 'phase'):
-            plt.yticks([0, 2 * np.pi], ['$0$', '$2 \pi$'])
+            plt.yticks([0, 2 * np.pi], ['$0$', '$2 \\pi$'])
 
         im = plt.imshow(
             M,

@@ -6,6 +6,7 @@ import numpy as np
 import scipy.constants
 import topology
 
+import peierls
 import supercurrent
 import supercurrent_matsubara
 
@@ -40,11 +41,14 @@ dummy_params = dict(**constants,
 
 @lru_cache()
 def get_template_strings(
-        transverse_soi, mu_from_bottom_of_spin_orbit_bands=True, k_x_in_sc=False):
+        transverse_soi, mu_from_bottom_of_spin_orbit_bands=True, k_x_in_sc=False, with_k_z=False):
     if mu_from_bottom_of_spin_orbit_bands:
         ham_str = "(hbar^2 / (2*m_eff) * (k_y^2 + k_x^2) - mu + m_eff*alpha_middle^2 / (2 * hbar^2)) * kron(sigma_0, sigma_z) "
     else:
         ham_str = "(hbar^2 / (2*m_eff) * (k_y^2 + k_x^2) - mu) * kron(sigma_0, sigma_z) "
+
+    if with_k_z:
+        ham_str += "+ hbar^2 / (2*m_eff) * (k_z^2) * kron(sigma_0, sigma_z)"
 
     if transverse_soi:
         ham_normal = ham_str + """ +
@@ -431,6 +435,88 @@ def make_wrapped_system(a, L_m, L_up, L_down, L_x,
     syst = kwant.wraparound.wraparound(syst)
     return syst.finalized()
 
+@lru_cache()
+def make_3d_wrapped_system(a, L_m, L_up, L_down, L_x, L_z,
+                           transverse_soi=True,
+                           mu_from_bottom_of_spin_orbit_bands=True,
+                           k_x_in_sc=True, with_vlead=False, **_):
+
+    template_strings = get_template_strings(
+        transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc, with_k_z=True)
+
+    # TURN HAMILTONIAN STRINGS INTO TEMPLATES
+
+    def apply_peierls_to_template_string(string, a, dim=3, with_holes=True):
+        tb_ham, coords = kwant.continuum.discretize_symbolic(string)
+        if dim == 2:
+            vector_potential = '[0, 0]'
+        elif dim == 3:
+            vector_potential = '[0, 0, B * y]'
+        # tb_ham = peierls.apply(tb_ham, coords,
+        #                        A=vector_potential,
+        #                        signs=[1, -1, 1, -1] if with_holes else None)
+        template = kwant.continuum.build_discretized(
+            (tb_ham), grid_spacing=a, coords=coords)
+        return template
+
+    template_barrier = apply_peierls_to_template_string(template_strings['ham_barrier'], a)
+    template_normal = apply_peierls_to_template_string(template_strings['ham_normal'], a)
+    template_sc_left = kwant.continuum.discretize(
+        template_strings['ham_sc_left'], grid_spacing=a)
+    template_sc_right = kwant.continuum.discretize(
+        template_strings['ham_sc_right'], grid_spacing=a)
+
+    # SHAPE FUNCTIONS
+    def shape_barrier(site):
+        (x, y, z) = site.pos
+        return (0 <= x < L_x) and (y == 0 or y == L_m) and (0 <= z < L_z)
+
+    def shape_normal(site):
+        (x, y, z) = site.pos
+        return (0 <= x < L_x) and (a <= y < L_m) and (0 <= z < L_z)
+
+    def shape_left_sc(site):
+        (x, y, z) = site.pos
+        return (0 <= x < L_x) and (-L_down - a <= y < 0) and (0 <= z < L_z)
+
+    def shape_right_sc(site):
+        (x, y, z) = site.pos
+        return (0 <= x < L_x) and (L_m + a <= y < L_m + L_up + 2*a) and (0 <= z < L_z)
+
+    def shape_lead(x1, x2):
+        def shape(site):
+            (x, y, z) = site.pos
+            return (x1 <= y < x2) and (0 <= z < L_z)
+        return shape
+
+    # BUILD FINITE SYSTEM
+    sym = kwant.TranslationalSymmetry((a, 0, 0))
+    syst = kwant.Builder(symmetry=sym)
+
+    syst.fill(template_normal, shape_normal, (0, a, 0))
+    syst.fill(template_barrier, shape_barrier, (0, 0, 0))
+    syst.fill(template_barrier, shape_barrier, (0, L_m, 0))
+    if L_down >= a:
+        syst.fill(template_sc_left, shape_left_sc, (0, -a, 0))
+    if L_up >= a:
+        syst.fill(template_sc_right, shape_right_sc, (0, L_m+a, 0))
+
+    syst = kwant.wraparound.wraparound(syst)
+    # Define left and right cut in the middle of the superconducting part
+    cuts = supercurrent_matsubara.get_cuts(syst, 0, direction='y')
+
+    # Sort the sites in the `cuts` list.
+    cuts = [sorted(cut, key=lambda s: s.pos[0] + s.pos[1]*1e6) for cut in cuts]
+    assert len(cuts[0]) == len(cuts[1]) and len(cuts[0]) > 0, cuts
+    norbs = 4
+    if with_vlead:
+        syst = supercurrent_matsubara.add_vlead(syst, norbs, *cuts)
+
+    syst = syst.finalized()
+    electron_blocks = partial(take_electron_blocks, norbs=norbs)
+    hopping = supercurrent_matsubara.hopping_between_cuts(syst, *cuts, electron_blocks)
+
+    return syst, hopping
 
 def to_site_ph_spin(syst_pars, wf):
     norbs = 4
