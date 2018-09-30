@@ -296,7 +296,7 @@ def take_electron_blocks(H, norbs):
 @lru_cache()
 def make_ns_junction(a, L_m, L_up, L_down, L_x,
                      transverse_soi=True,
-                     mu_from_bottom_of_spin_orbit_bands=True, k_x_in_sc=False):
+                     mu_from_bottom_of_spin_orbit_bands=True, k_x_in_sc=False,**_):
     """
     Builds and returns finalized NS junction system, for calculating transmission
 
@@ -335,7 +335,7 @@ def make_ns_junction(a, L_m, L_up, L_down, L_x,
 
     def shape_barrier(site):
         (x, y) = site.pos
-        return x == 0 and y == 0
+        return x == 0 and 0 <= y < L_m
 
     def shape_lead(site):
         (x, y) = site.pos
@@ -346,7 +346,7 @@ def make_ns_junction(a, L_m, L_up, L_down, L_x,
     conservation_matrix = -supercurrent.sigz
 
     # Make left normal lead
-    normal_lead_symmetry = kwant.TranslationalSymmetry((-a, 0), (0, a))
+    normal_lead_symmetry = kwant.TranslationalSymmetry((a, 0), (0, -a))
     normal_lead = kwant.Builder(
         normal_lead_symmetry,
         conservation_law=conservation_matrix)
@@ -612,7 +612,7 @@ def make_zigzag_system(a, L_m, L_x, z_x, z_y, W_up, W_down, edge_thickness=1,
     if edge_thickness ==0:
         pass
     
-    elif edge_thickness == 1:
+    else:
         for x in np.arange(0, L_x, a):
             y_up = ((z_y* np.sin(np.pi*2 * x / z_x)+L_m)//a - 1)*a
             y_down = ((z_y* np.sin(np.pi*2 * x / z_x))//a)*a
@@ -620,11 +620,7 @@ def make_zigzag_system(a, L_m, L_x, z_x, z_y, W_up, W_down, edge_thickness=1,
 #                 y = z_y - y
             syst.fill(template_barrier, edge_shape, (x, y_up))
             syst.fill(template_barrier, edge_shape, (x, y_down))
-    
-    else:  
-        syst.fill(template_barrier, edge_shape, (0, 0))
-        syst.fill(template_barrier, edge_shape, (0, L_m-a))
-    
+       
     if W_up is not 0:
         syst.fill(template_sc_left, top_shape, (0, L_m))
     syst.fill(template_sc_right, down_shape, (0, -a))
