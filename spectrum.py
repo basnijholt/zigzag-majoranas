@@ -18,7 +18,7 @@ def dispersion(k_x, k_y, params):
 def calc_lowest_state(syst_pars_params, syst=None):
     syst_pars, params = syst_pars_params
     if syst is None:
-        syst = sns_system.zigzag_system_lead(**syst_pars)
+        syst = sns_system.make_zigzag_system(**syst_pars)
         
     ham = syst.hamiltonian_submatrix(sparse=True, params=params)
     e, ev = sparse_diag(ham, 4, 0)

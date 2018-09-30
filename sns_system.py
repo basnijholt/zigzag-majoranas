@@ -519,7 +519,7 @@ def make_3d_wrapped_system(a, L_m, L_up, L_down, L_x, L_z,
     return syst, hopping
 
 @lru_cache()
-def zigzag_system_lead(a, L_m, L_x, z_x, z_y, W_up, W_down, edge_thickness=1,
+def make_zigzag_system(a, L_m, L_x, z_x, z_y, W_up, W_down, edge_thickness=1,
                     transverse_soi=True,
                     mu_from_bottom_of_spin_orbit_bands=True,
                     k_x_in_sc=False, leaded=True, **_):
@@ -601,17 +601,12 @@ def zigzag_system_lead(a, L_m, L_x, z_x, z_y, W_up, W_down, edge_thickness=1,
     down_shape_with_some_top = intersection_shape(down_shape_block, middle_shape_with_edge)
     
     top_shape = top_shape_with_some_down
+#     intersection_shape(top_shape_with_some_down, down_shape_with_some_top)
     down_shape = down_shape_with_some_top
-    
-    def shape_dummy(site):
-        x, y = site.pos
-        return x==0 and -W_down - z_y <= y < L_m
+#     intersection_shape(down_shape_with_some_top, top_shape)
     
     # BUILD FINITE SYSTEM
-    syst = kwant.Builder(kwant.TranslationalSymmetry([L_x, 0]))
-    dummy = kwant.Builder()
-    dummy.fill(template_normal, shape_dummy, (0, L_m//2))
-    
+    syst = kwant.Builder()
     syst.fill(template_normal, middle_shape, (0, L_m//2))
     
     if edge_thickness ==0:
@@ -621,7 +616,8 @@ def zigzag_system_lead(a, L_m, L_x, z_x, z_y, W_up, W_down, edge_thickness=1,
         for x in np.arange(0, L_x, a):
             y_up = ((z_y* np.sin(np.pi*2 * x / z_x)+L_m)//a - 1)*a
             y_down = ((z_y* np.sin(np.pi*2 * x / z_x))//a)*a
-
+#             if (x//z_x)%2 == 1:
+#                 y = z_y - y
             syst.fill(template_barrier, edge_shape, (x, y_up))
             syst.fill(template_barrier, edge_shape, (x, y_down))
     
@@ -632,9 +628,10 @@ def zigzag_system_lead(a, L_m, L_x, z_x, z_y, W_up, W_down, edge_thickness=1,
     if W_up is not 0:
         syst.fill(template_sc_left, top_shape, (0, L_m))
     syst.fill(template_sc_right, down_shape, (0, -a))
+    
+    syst = syst.finalized()
 
-    return kwant.wraparound.wraparound(syst).finalized()
-
+    return syst
 
 def to_site_ph_spin(syst_pars, wf):
     norbs = 4
