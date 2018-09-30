@@ -518,6 +518,124 @@ def make_3d_wrapped_system(a, L_m, L_up, L_down, L_x, L_z,
 
     return syst, hopping
 
+@lru_cache()
+def zigzag_system_lead(a, L_m, L_x, z_x, z_y, W_up, W_down, edge_thickness=1,
+                    transverse_soi=True,
+                    mu_from_bottom_of_spin_orbit_bands=True,
+                    k_x_in_sc=False, leaded=True, **_):
+
+    #     HAMILTONIAN DEFINITIONS
+    template_strings = get_template_strings(
+        transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
+    
+    conservation_matrix = -supercurrent.sigz
+    
+    # TURN HAMILTONIAN STRINGS INTO TEMPLATES
+    kwargs = dict(coords=('x', 'y'), grid_spacing=a)
+    template_barrier = kwant.continuum.discretize(
+        template_strings['ham_barrier'], **kwargs)
+    template_normal = kwant.continuum.discretize(
+        template_strings['ham_normal'], **kwargs)
+    template_sc_left = kwant.continuum.discretize(
+        template_strings['ham_sc_left'], **kwargs)
+    template_sc_right = kwant.continuum.discretize(
+        template_strings['ham_sc_right'], **kwargs)
+
+    def union_shape(shapes):
+        def _shape(pos):
+            res = False
+            for shape in shapes:
+                res |= shape(pos)
+            return res
+        return _shape
+        
+    def intersection_shape(shape_A, shape_B):
+        def _shape(pos):
+            return shape_A(pos) and not shape_B(pos)
+        return _shape
+    
+    def below_zigzag(z_x, z_y, offset):
+        def shape(site):
+            x, y = site.pos - offset
+            if 0 <= x < 2*z_x:
+                return y <  a * ((z_y* np.sin(np.pi*2 * x / z_x))//a)
+            else:
+                return False
+        return shape
+    
+    def above_zigzag(z_x, z_y, offset):
+        def shape(pos):
+            return not below_zigzag(z_x, z_y, offset)(pos)
+        return shape
+    
+    def within_zigzag(z_x, z_y, offset):
+        def shape(pos):
+            x, y = pos.pos
+            return below_zigzag(z_x, z_y, (offset[0], offset[1] + L_m))(pos) and above_zigzag(z_x, z_y, offset)(pos) and 0<=x<L_x
+        return shape
+    
+    def edge_zigzag(z_x, z_y, offset):
+        def shape(pos):
+            x, y = pos.pos
+            return ((below_zigzag(z_x, z_y, (offset[0], offset[1] + L_m))(pos) and above_zigzag(z_x, z_y, (offset[0], offset[1] + L_m-a*edge_thickness))(pos) and 0<=x<L_x)
+                    or
+                   (below_zigzag(z_x, z_y, (offset[0], offset[1] +edge_thickness*a))(pos) and above_zigzag(z_x, z_y, (offset[0], offset[1]))(pos) and 0<=x<L_x))
+        return shape
+    
+    number_of_zigzags = int(L_x // (2*z_x))+1
+    within_zigzag_shapes = [within_zigzag(z_x, z_y, (2*z_x*i, 0)) for i in range(number_of_zigzags)]
+    edge_zigzag_shapes = [edge_zigzag(z_x, z_y, (2*z_x*i, 0)) for i in range(number_of_zigzags)]
+    edge_shape =union_shape(edge_zigzag_shapes)
+    
+    middle_shape_with_edge = union_shape(within_zigzag_shapes)
+    middle_shape = intersection_shape(middle_shape_with_edge, edge_shape)
+    
+    def top_shape_block(site):
+        x, y = site.pos
+        return 0 <= x < L_x and -z_y <= y < L_m + z_y + W_up
+    top_shape_with_some_down = intersection_shape(top_shape_block, middle_shape_with_edge)
+    
+    def down_shape_block(site):
+        x, y = site.pos
+        return 0 <= x < L_x and -W_down - z_y <= y < z_y
+    down_shape_with_some_top = intersection_shape(down_shape_block, middle_shape_with_edge)
+    
+    top_shape = top_shape_with_some_down
+    down_shape = down_shape_with_some_top
+    
+    def shape_dummy(site):
+        x, y = site.pos
+        return x==0 and -W_down - z_y <= y < L_m
+    
+    # BUILD FINITE SYSTEM
+    syst = kwant.Builder(kwant.TranslationalSymmetry([L_x, 0]))
+    dummy = kwant.Builder()
+    dummy.fill(template_normal, shape_dummy, (0, L_m//2))
+    
+    syst.fill(template_normal, middle_shape, (0, L_m//2))
+    
+    if edge_thickness ==0:
+        pass
+    
+    elif edge_thickness == 1:
+        for x in np.arange(0, L_x, a):
+            y_up = ((z_y* np.sin(np.pi*2 * x / z_x)+L_m)//a - 1)*a
+            y_down = ((z_y* np.sin(np.pi*2 * x / z_x))//a)*a
+
+            syst.fill(template_barrier, edge_shape, (x, y_up))
+            syst.fill(template_barrier, edge_shape, (x, y_down))
+    
+    else:  
+        syst.fill(template_barrier, edge_shape, (0, 0))
+        syst.fill(template_barrier, edge_shape, (0, L_m-a))
+    
+    if W_up is not 0:
+        syst.fill(template_sc_left, top_shape, (0, L_m))
+    syst.fill(template_sc_right, down_shape, (0, -a))
+
+    return kwant.wraparound.wraparound(syst).finalized()
+
+
 def to_site_ph_spin(syst_pars, wf):
     norbs = 4
     nsites = len(wf) // norbs

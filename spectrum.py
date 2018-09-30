@@ -15,6 +15,13 @@ def dispersion(k_x, k_y, params):
          params['mu_B'] * params['B']) ** 2)
     return (Ekin + Erest, Ekin - Erest)
 
+def calc_lowest_state(syst_pars, params, syst=None):
+    if syst is None:
+        syst = sns_system.zigzag_system_lead(**syst_pars)
+        
+    ham = syst.hamiltonian_submatrix(sparse=True, params=params)
+    e, ev = sparse_diag(ham, 4, 0)
+    return np.sort(np.abs(e))[::2]
 
 def sparse_diag(matrix, k, sigma, **kwargs):
     """Call sla.eigsh with mumps support.
