@@ -15,7 +15,8 @@ def dispersion(k_x, k_y, params):
          params['mu_B'] * params['B']) ** 2)
     return (Ekin + Erest, Ekin - Erest)
 
-def calc_lowest_state(syst_pars, params, syst=None):
+def calc_lowest_state(syst_pars_params, syst=None):
+    syst_pars, params = syst_pars_params
     if syst is None:
         syst = sns_system.zigzag_system_lead(**syst_pars)
         
