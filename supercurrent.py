@@ -89,7 +89,7 @@ def wrapped_current_3d(
         (en, evs) = np.linalg.eigh(ham)
         I = sum(fermi_dirac(e.real, p) * local_current_operator(ev)
                 for e, ev in zip(en, evs.T))
-        return sum(I) * params['e'] / params['hbar'] / syst_pars['a']
+        return sum(I) * params['e'] / params['hbar'] / syst_pars['a'] / (2*np.pi) / syst_pars['L_z']
 
     ef_max = (params['mu'] + params['m_eff'] 
         * params['alpha_middle']**2 / 2 / params['hbar']**2)
