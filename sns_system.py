@@ -452,9 +452,9 @@ def make_3d_wrapped_system(a, L_m, L_up, L_down, L_x, L_z,
             vector_potential = '[0, 0]'
         elif dim == 3:
             vector_potential = '[0, 0, B * y]'
-        # tb_ham = peierls.apply(tb_ham, coords,
-        #                        A=vector_potential,
-        #                        signs=[1, -1, 1, -1] if with_holes else None)
+        tb_ham = peierls.apply(tb_ham, coords,
+                               A=vector_potential,
+                               signs=[1, -1, 1, -1] if with_holes else None)
         template = kwant.continuum.build_discretized(
             (tb_ham), grid_spacing=a, coords=coords)
         return template
