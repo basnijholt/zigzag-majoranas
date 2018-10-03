@@ -442,7 +442,7 @@ def make_3d_wrapped_system(a, L_m, L_up, L_down, L_x, L_z,
                            k_x_in_sc=True, with_vlead=False, **_):
 
     template_strings = get_template_strings(
-        transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc, with_k_z=True)
+        transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc, with_orbital, with_k_z=True)
 
     # TURN HAMILTONIAN STRINGS INTO TEMPLATES
 
@@ -452,9 +452,10 @@ def make_3d_wrapped_system(a, L_m, L_up, L_down, L_x, L_z,
             vector_potential = '[0, 0]'
         elif dim == 3:
             vector_potential = '[0, 0, B * y]'
-        tb_ham = peierls.apply(tb_ham, coords,
-                               A=vector_potential,
-                               signs=[1, -1, 1, -1] if with_holes else None)
+        if with_orbital:
+            tb_ham = peierls.apply(tb_ham, coords,
+                                   A=vector_potential,
+                                   signs=[1, -1, 1, -1] if with_holes else None)
         template = kwant.continuum.build_discretized(
             (tb_ham), grid_spacing=a, coords=coords)
         return template
