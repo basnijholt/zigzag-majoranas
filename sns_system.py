@@ -520,10 +520,10 @@ def make_3d_wrapped_system(a, L_m, L_up, L_down, L_x, L_z, with_orbital,
     return syst, hopping
 
 @lru_cache()
-def make_zigzag_system(a, L_m, L_x, z_x, z_y, W_up, W_down, edge_thickness=1,
+def make_zigzag_system(a, L_m, L_x, L_up, L_down, z_x, z_y, c_x, c_y, edge_thickness=0,
                     transverse_soi=True,
                     mu_from_bottom_of_spin_orbit_bands=True,
-                    k_x_in_sc=False, leaded=True, **_):
+                    k_x_in_sc=True, with_vlead=True,**_):
 
     #     HAMILTONIAN DEFINITIONS
     template_strings = get_template_strings(
@@ -549,8 +549,16 @@ def make_zigzag_system(a, L_m, L_x, z_x, z_y, W_up, W_down, edge_thickness=1,
                 res |= shape(pos)
             return res
         return _shape
+    
+    def intersection_shape(shapes):
+        def _shape(pos):
+            res = False
+            for shape in shapes:
+                res &= shape(pos)
+            return res
+        return _shape
         
-    def intersection_shape(shape_A, shape_B):
+    def difference_shape(shape_A, shape_B):
         def _shape(pos):
             return shape_A(pos) and not shape_B(pos)
         return _shape
@@ -583,33 +591,60 @@ def make_zigzag_system(a, L_m, L_x, z_x, z_y, W_up, W_down, edge_thickness=1,
                    (below_zigzag(z_x, z_y, (offset[0], offset[1] +edge_thickness*a))(pos) and above_zigzag(z_x, z_y, (offset[0], offset[1]))(pos) and 0<=x<L_x))
         return shape
     
+    def cut_zigzag(z_x, z_y, offset):
+        def shape(pos):
+            x, y = pos.pos
+            return (below_zigzag(z_x, z_y, (offset[0], offset[1]))(pos) and above_zigzag(z_x, z_y, (offset[0], offset[1] -a))(pos) and 0<=x<L_x)
+        return shape
+    
     number_of_zigzags = int(L_x // (2*z_x))+1
     within_zigzag_shapes = [within_zigzag(z_x, z_y, (2*z_x*i, 0)) for i in range(number_of_zigzags)]
     edge_zigzag_shapes = [edge_zigzag(z_x, z_y, (2*z_x*i, 0)) for i in range(number_of_zigzags)]
     edge_shape =union_shape(edge_zigzag_shapes)
     
+    cut_zigzag_shapes_up = [cut_zigzag(c_x, c_y, (2*z_x*i, L_m//2)) for i in range(number_of_zigzags)]
+    cut_shape_up =union_shape(cut_zigzag_shapes_up)
+    cut_zigzag_shapes_down = [cut_zigzag(c_x, c_y, (2*z_x*i, L_m//2-a)) for i in range(number_of_zigzags)]
+    cut_shape_down =union_shape(cut_zigzag_shapes_down)
+    
     middle_shape_with_edge = union_shape(within_zigzag_shapes)
-    middle_shape = intersection_shape(middle_shape_with_edge, edge_shape)
+    middle_shape = difference_shape(middle_shape_with_edge, edge_shape)
     
     def top_shape_block(site):
         x, y = site.pos
-        return 0 <= x < L_x and -z_y <= y < L_m + z_y + W_up
-    top_shape_with_some_down = intersection_shape(top_shape_block, middle_shape_with_edge)
+        return 0 <= x < L_x and -z_y <= y < L_m + z_y + L_up
+    top_shape_with_some_down = difference_shape(top_shape_block, middle_shape_with_edge)
     
     def down_shape_block(site):
         x, y = site.pos
-        return 0 <= x < L_x and -W_down - z_y <= y < z_y
-    down_shape_with_some_top = intersection_shape(down_shape_block, middle_shape_with_edge)
+        return 0 <= x < L_x and -L_down - z_y <= y < z_y
+    down_shape_with_some_top = difference_shape(down_shape_block, middle_shape_with_edge)
     
     top_shape = top_shape_with_some_down
-#     intersection_shape(top_shape_with_some_down, down_shape_with_some_top)
     down_shape = down_shape_with_some_top
-#     intersection_shape(down_shape_with_some_top, top_shape)
     
     # BUILD FINITE SYSTEM
     syst = kwant.Builder()
-    syst.fill(template_normal, middle_shape, (0, L_m//2))
+    site_colors = {}
     
+    syst.fill(template_normal, middle_shape, (0, L_m//2))
+    site_colors.update({site: ('black') for site in syst.sites()})
+    
+    # CREATE CUT FOR VLEAD
+    cut_up = [site for site in syst.sites() if cut_shape_up(site)]
+    site_colors.update({site: 'blue' for site in cut_up})
+    cut_down = [site for site in syst.sites() if cut_shape_down(site)]
+    site_colors.update({site: 'teal' for site in cut_down})
+    cuts = [cut_down, cut_up]
+    
+    cuts = [sorted(cut, key=lambda s: s.pos[0]) for cut in cuts]
+    assert len(cuts[0]) == len(cuts[1]) and len(cuts[0]) > 0, cuts
+    
+    norbs = 4
+    if with_vlead:
+        syst = supercurrent_matsubara.add_vlead(syst, norbs, *cuts)
+    
+    # ADD EDGE FOR NON TRANSPARANCY
     if edge_thickness ==0:
         pass
     
@@ -617,19 +652,36 @@ def make_zigzag_system(a, L_m, L_x, z_x, z_y, W_up, W_down, edge_thickness=1,
         for x in np.arange(0, L_x, a):
             y_up = ((z_y* np.sin(np.pi*2 * x / z_x)+L_m)//a - 1)*a
             y_down = ((z_y* np.sin(np.pi*2 * x / z_x))//a)*a
-#             if (x//z_x)%2 == 1:
-#                 y = z_y - y
+
             syst.fill(template_barrier, edge_shape, (x, y_up))
             syst.fill(template_barrier, edge_shape, (x, y_down))
-       
-    if W_up is not 0:
+    
+        edge_sites = get_sites_in_shape(syst, edge_shape)
+        site_colors.update({site: 'white' for site in edge_sites})
+    
+    if L_up is not 0:
         syst.fill(template_sc_left, top_shape, (0, L_m))
     syst.fill(template_sc_right, down_shape, (0, -a))
     
+    sc_sites = get_sites_in_shape(syst, top_shape)
+    site_colors.update({site: 'gold' for site in sc_sites})
+    
+    sc_sites = get_sites_in_shape(syst, down_shape)
+    site_colors.update({site: 'gold' for site in sc_sites})
     syst = syst.finalized()
 
-    return syst
+    electron_blocks = partial(take_electron_blocks, norbs=norbs)
+    hopping = supercurrent_matsubara.hopping_between_cuts(syst, *cuts, electron_blocks)
+    
+    return syst, site_colors, hopping
 
+def get_sites_in_shape(syst, shape):
+    sites = []
+    for site in syst.sites():
+        if shape(site):
+            sites.append(site)
+    return sites
+    
 def to_site_ph_spin(syst_pars, wf):
     norbs = 4
     nsites = len(wf) // norbs
