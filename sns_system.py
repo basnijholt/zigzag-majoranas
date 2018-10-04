@@ -59,7 +59,7 @@ def get_template_strings(
         ham_sc_right = ham_str + spin_orbit.format('right')
     else:
         spin_orbit = """+ alpha_{} * kron(sigma_x, sigma_z) * k_y"""
-        ham_normal = ham_normal + spin_orbit.format('middle')
+        ham_normal = ham_str + spin_orbit.format('middle')
         ham_sc_left = ham_str + spin_orbit.format('left')
         ham_sc_right = ham_str + spin_orbit.format('right')
 
