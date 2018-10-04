@@ -148,9 +148,9 @@ def make_sns_leaded_system(a, L_m, L_x,
     # BUILD FINITE SYSTEM
     syst = kwant.Builder()
 
-    syst.fill(template_normal, shape_normal, (a, 0)[::-1])
-    syst.fill(template_barrier, shape_barrier, (0, 0)[::-1])
-    syst.fill(template_barrier, shape_barrier, (L_m, 0)[::-1])
+    syst.fill(template_normal, shape_normal, (0, a))
+    syst.fill(template_barrier, shape_barrier, (0, 0))
+    syst.fill(template_barrier, shape_barrier, (0, L_m))
 
     lead_up = kwant.Builder(kwant.TranslationalSymmetry([0, a]))
     lead_up.fill(template_sc_right, shape_right_sc, (0,0))
@@ -248,24 +248,24 @@ def make_sns_system(a, L_m, L_up, L_down, L_x,
     # BUILD FINITE SYSTEM
     syst = kwant.Builder()
 
-    syst.fill(template_normal, shape_normal, (a, 0)[::-1])
-    syst.fill(template_barrier, shape_barrier, (0, 0)[::-1])
-    syst.fill(template_barrier, shape_barrier, (L_m, 0)[::-1])
+    syst.fill(template_normal, shape_normal, (0, a))
+    syst.fill(template_barrier, shape_barrier, (0, 0))
+    syst.fill(template_barrier, shape_barrier, (0, L_m))
     if L_down >= a:
-        syst.fill(template_sc_left, shape_left_sc, (-L_down, 0)[::-1])
+        syst.fill(template_sc_left, shape_left_sc, (0, -L_down))
     if L_up >= a:
-        syst.fill(template_sc_right, shape_right_sc, (L_m+a, 0)[::-1])
+        syst.fill(template_sc_right, shape_right_sc, (0, L_m+a))
 
     # LEAD: SLICE OF BULK ALONG X AXIS
     lead = kwant.Builder(kwant.TranslationalSymmetry([-a, 0]))
 
-    lead.fill(template_normal, shape_lead(a, L_m), (a, 0)[::-1])
-    lead.fill(template_barrier, shape_lead(0, a), (0, 0)[::-1])
-    lead.fill(template_barrier, shape_lead(L_m, L_m+a), (L_m, 0)[::-1])
+    lead.fill(template_normal, shape_lead(a, L_m), (0, a))
+    lead.fill(template_barrier, shape_lead(0, a), (0, 0))
+    lead.fill(template_barrier, shape_lead(L_m, L_m+a), (0, L_m))
     if L_down >= a:
-        lead.fill(template_sc_left, shape_lead(-L_down-a, 0), (-L_down-a, 0)[::-1])
+        lead.fill(template_sc_left, shape_lead(-L_down-a, 0), (0, -L_down-a))
     if L_up >= a:
-        lead.fill(template_sc_right, shape_lead(L_m+a, L_m + L_up + 2*a), (L_m+a, 0)[::-1])
+        lead.fill(template_sc_right, shape_lead(L_m+a, L_m + L_up + 2*a), (0, L_m+a))
 
     # Define left and right cut in the middle of the superconducting part
     cuts = supercurrent_matsubara.get_cuts(syst, 0, direction='y')
@@ -349,19 +349,19 @@ def make_ns_junction(a, L_m, L_up, L_down, L_x,
     normal_lead = kwant.Builder(
         normal_lead_symmetry,
         conservation_law=conservation_matrix)
-    normal_lead.fill(template_normal, shape_lead, (0, 0)[::-1])
+    normal_lead.fill(template_normal, shape_lead, (0, 0))
 
     # Make right superconducting lead
     sc_lead_symmetry = kwant.TranslationalSymmetry((a, 0), (0, a))
     sc_lead = kwant.Builder(sc_lead_symmetry)
-    sc_lead.fill(template_sc_right, shape_lead, (a, 0)[::-1])
+    sc_lead.fill(template_sc_right, shape_lead, (0, a))
 
     # Make barrier/middle site
     wraparound_symmetry = kwant.TranslationalSymmetry((a, 0))
     barrier = kwant.Builder(
         symmetry=wraparound_symmetry,
         conservation_law=conservation_matrix)
-    barrier.fill(template_barrier, shape_barrier, (0, 0)[::-1])
+    barrier.fill(template_barrier, shape_barrier, (0, 0))
 
     # Wraparound systems
     barrier = kwant.wraparound.wraparound(barrier)
@@ -423,13 +423,13 @@ def make_wrapped_system(a, L_m, L_up, L_down, L_x,
     sym = kwant.TranslationalSymmetry((a, 0))
     syst = kwant.Builder(symmetry=sym)
 
-    syst.fill(template_normal, shape_normal, (a, 0)[::-1])
-    syst.fill(template_barrier, shape_barrier, (0, 0)[::-1])
-    syst.fill(template_barrier, shape_barrier, (L_m, 0)[::-1])
+    syst.fill(template_normal, shape_normal, (0, a))
+    syst.fill(template_barrier, shape_barrier, (0, 0))
+    syst.fill(template_barrier, shape_barrier, (0, L_m))
     if L_down >= a:
-        syst.fill(template_sc_left, shape_left_sc, (-a, 0)[::-1])
+        syst.fill(template_sc_left, shape_left_sc, (0, -a))
     if L_up >= a:
-        syst.fill(template_sc_right, shape_right_sc, (L_m+a, 0)[::-1])
+        syst.fill(template_sc_right, shape_right_sc, (0, L_m+a))
 
     syst = kwant.wraparound.wraparound(syst)
     return syst.finalized()
