@@ -186,21 +186,18 @@ class SimulationSet():
         n_digits = 6
         hash_dict = {}
 
-        def hash_func(dictionary): return hex(
-            consistent_hash(dictionary) % 2**(4 * n_digits))[2:]
+        def hash_func(dictionary):
+            _hash = consistent_hash(dictionary) % 2**(4 * n_digits)
+            return hex(_hash)[2:]
+
         hash_str = '<KB_' + hash_func(self.keys_with_bounds) + '_>'
-        hash_str += '<PRMS_' + hash_func([(k,
-                                           v) for k,
-                                          v in self.params.items() if isinstance(v,
-                                                                                 float) or isinstance(v,
-                                                                                                      int)]) + '_>'
-        hash_str += '<PARS_' + hash_func([(k,
-                                           v) for k,
-                                          v in self.syst_pars.items() if isinstance(v,
-                                                                                    float) or isinstance(v,
-                                                                                                         int)]) + '_>'
+        params, syst_pars = [
+            [(k, v) for k, v in d.items() if isinstance(v, (float, int))]
+            for d in [self.params, self.syst_pars]]
+        hash_str += '<PRMS_' + hash_func(params) + '_>'
+        hash_str += '<PARS_' + hash_func(syst_pars) + '_>'
         hash_str += '<METR_' + hash_func([(k, tuple(v.items()))
-                                          for k, v in self.metric_params_dict.items()]) + '_>'
+            for k, v in self.metric_params_dict.items()]) + '_>'
         return hash_str
 
     @property
