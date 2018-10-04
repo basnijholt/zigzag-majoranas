@@ -24,7 +24,7 @@ def f_adaptive(xy, keys, params, syst_pars,
     import sns_system
     import topology
 
-    params.update(dict(**sns_system.constants))
+    params.update(sns_system.constants)
 
     for k, val in zip(keys, xy):
         params[k] = val
@@ -163,7 +163,7 @@ class SimulationSet():
         self.metric_params_dict = metric_params_dict
 
         self.bounds = list(self.keys_with_bounds.values())
-        self.params.update(dict(**sns_system.constants))
+        self.params.update(sns_system.constants)
         self.make_learner()
 
     @property
@@ -349,7 +349,7 @@ class AggregatesSimulationSet():
 
         self.syst_pars = syst_pars.copy()
         self.params = params.copy()
-        self.params.update(dict(**sns_system.constants))
+        self.params.update(sns_system.constants)
 
         self.metric_params_dict = metric_params_dict
 
