@@ -86,6 +86,22 @@ def get_template_strings(
     return template_strings
 
 
+def get_templates(a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc):
+    template_strings = get_template_strings(
+        transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
+    kwargs = dict(coords=('x', 'y'), grid_spacing=a)
+    template_barrier = kwant.continuum.discretize(
+        template_strings['ham_barrier'], **kwargs)
+    template_normal = kwant.continuum.discretize(
+        template_strings['ham_normal'], **kwargs)
+    template_sc_left = kwant.continuum.discretize(
+        template_strings['ham_sc_left'], **kwargs)
+    template_sc_right = kwant.continuum.discretize(
+        template_strings['ham_sc_right'], **kwargs)
+    return (template_barrier, template_normal,
+            template_sc_left, template_sc_right)
+
+
 @lru_cache()
 def make_sns_leaded_system(a, L_m, L_x,
                            transverse_soi=True,
@@ -112,20 +128,9 @@ def make_sns_leaded_system(a, L_m, L_x,
         Finite system where lead[0] is assumed to be the bulk lead, a slice of the bulk along the y-axis
     """
 
-    #     HAMILTONIAN DEFINITIONS
-    template_strings = get_template_strings(
-        transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
-
-    # TURN HAMILTONIAN STRINGS INTO TEMPLATES
-    kwargs = dict(coords=('x', 'y'), grid_spacing=a)
-    template_barrier = kwant.continuum.discretize(
-        template_strings['ham_barrier'], **kwargs)
-    template_normal = kwant.continuum.discretize(
-        template_strings['ham_normal'], **kwargs)
-    template_sc_left = kwant.continuum.discretize(
-        template_strings['ham_sc_left'], **kwargs)
-    template_sc_right = kwant.continuum.discretize(
-        template_strings['ham_sc_right'], **kwargs)
+    # GET TEMPLATES
+    template_barrier, template_normal, template_sc_left, template_sc_right = get_templates(
+        a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
 
     # SHAPE FUNCTIONS
     def shape_barrier(site):
@@ -207,20 +212,9 @@ def make_sns_system(a, L_m, L_up, L_down, L_x,
         Finite system where lead[0] is assumed to be the bulk lead, a slice of the bulk along the y-axis
     """
 
-    #     HAMILTONIAN DEFINITIONS
-    template_strings = get_template_strings(
-        transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
-
-    # TURN HAMILTONIAN STRINGS INTO TEMPLATES
-    kwargs = dict(coords=('x', 'y'), grid_spacing=a)
-    template_barrier = kwant.continuum.discretize(
-        template_strings['ham_barrier'], **kwargs)
-    template_normal = kwant.continuum.discretize(
-        template_strings['ham_normal'], **kwargs)
-    template_sc_left = kwant.continuum.discretize(
-        template_strings['ham_sc_left'], **kwargs)
-    template_sc_right = kwant.continuum.discretize(
-        template_strings['ham_sc_right'], **kwargs)
+    # GET TEMPLATES
+    template_barrier, template_normal, template_sc_left, template_sc_right = get_templates(
+        a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
 
     # SHAPE FUNCTIONS
     def shape_barrier(site):
@@ -322,20 +316,9 @@ def make_ns_junction(
         Finite system where lead[0] is assumed to be the bulk lead,
         a slice of the bulk along the y-axis.
     """
-
-    #     HAMILTONIAN DEFINITIONS
-    template_strings = get_template_strings(
-        transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
-
-    # TURN HAMILTONIAN STRINGS INTO TEMPLATES
-    template_barrier = kwant.continuum.discretize(
-        template_strings['ham_barrier'], grid_spacing=a)
-    template_normal = kwant.continuum.discretize(
-        template_strings['ham_normal'], grid_spacing=a)
-    template_sc_left = kwant.continuum.discretize(
-        template_strings['ham_sc_left'], grid_spacing=a)
-    template_sc_right = kwant.continuum.discretize(
-        template_strings['ham_sc_right'], grid_spacing=a)
+    # GET TEMPLATES
+    template_barrier, template_normal, template_sc_left, template_sc_right = get_templates(
+        a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
 
     def shape_barrier(site):
         (x, y) = site.pos
@@ -387,19 +370,9 @@ def make_wrapped_system(a, L_m, L_up, L_down, L_x,
                         transverse_soi=True,
                         mu_from_bottom_of_spin_orbit_bands=True,
                         k_x_in_sc=False, **_):
-
-    template_strings = get_template_strings(
-        transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
-
-    # TURN HAMILTONIAN STRINGS INTO TEMPLATES
-    template_barrier = kwant.continuum.discretize(
-        template_strings['ham_barrier'], grid_spacing=a)
-    template_normal = kwant.continuum.discretize(
-        template_strings['ham_normal'], grid_spacing=a)
-    template_sc_left = kwant.continuum.discretize(
-        template_strings['ham_sc_left'], grid_spacing=a)
-    template_sc_right = kwant.continuum.discretize(
-        template_strings['ham_sc_right'], grid_spacing=a)
+    # GET TEMPLATES
+    template_barrier, template_normal, template_sc_left, template_sc_right = get_templates(
+        a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
 
     # SHAPE FUNCTIONS
     def shape_barrier(site):
@@ -539,22 +512,9 @@ def make_zigzag_system(
         transverse_soi=True, mu_from_bottom_of_spin_orbit_bands=True,
         k_x_in_sc=True, with_vlead=True, **_):
 
-    #     HAMILTONIAN DEFINITIONS
-    template_strings = get_template_strings(
-        transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
-
-    conservation_matrix = -supercurrent.sigz
-
-    # TURN HAMILTONIAN STRINGS INTO TEMPLATES
-    kwargs = dict(coords=('x', 'y'), grid_spacing=a)
-    template_barrier = kwant.continuum.discretize(
-        template_strings['ham_barrier'], **kwargs)
-    template_normal = kwant.continuum.discretize(
-        template_strings['ham_normal'], **kwargs)
-    template_sc_left = kwant.continuum.discretize(
-        template_strings['ham_sc_left'], **kwargs)
-    template_sc_right = kwant.continuum.discretize(
-        template_strings['ham_sc_right'], **kwargs)
+    # GET TEMPLATES
+    template_barrier, template_normal, template_sc_left, template_sc_right = get_templates(
+        a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
 
     def union_shape(shapes):
         def _shape(pos):
