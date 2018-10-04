@@ -1,3 +1,5 @@
+from types import SimpleNamespace
+
 import kwant
 import numpy as np
 import scipy.sparse as sp
@@ -7,13 +9,12 @@ import sns_system
 
 
 def dispersion(k_x, k_y, params):
-    Ekin = params['hbar']**2 / (2 * params['m_eff']) * (
-        k_x**2 + k_y**2) - params['mu'] + params['m_eff'] * params['alpha_middle']**2 / (2 * params['hbar']**2)
-    Erest = np.sqrt(
-        params['alpha_middle'] ** 2 * k_x ** 2 +
-        (params['alpha_middle'] * k_y - params['g_factor_middle'] *
-         params['mu_B'] * params['B']) ** 2)
-    return (Ekin + Erest, Ekin - Erest)
+    p = SimpleNamespace(**params)
+    Ekin = (p.hbar**2 / (2 * p.m_eff) * (k_x**2 + k_y**2)
+            - p.mu + p.m_eff * p.alpha_middle**2 / (2 * p.hbar**2))
+    Erest = np.sqrt(p.alpha_middle ** 2 * k_x ** 2 +
+        (p.alpha_middle * k_y - p.g_factor_middle * p.mu_B * p.B) ** 2)
+    return Ekin + Erest, Ekin - Erest
 
 
 def calc_lowest_state(syst_pars_params, syst=None):
@@ -74,10 +75,10 @@ def calc_dos_lowest_state(syst, params, syst_pars):
     dos : numpy.ndarray
         Density of states in 2d array format
     """
-    (energies, wfs) = calc_spectrum(syst, params, k=6)
+    energies, wfs = calc_spectrum(syst, params, k=6)
     energy_gap = abs(energies[2]) - abs(energies[0])
     wf = sns_system.to_site_ph_spin(syst_pars, wfs[:, 0])
-    return (abs(energies[0]), energy_gap, np.sum(np.abs(wf)**2, axis=2))
+    return abs(energies[0]), energy_gap, np.sum(np.abs(wf)**2, axis=2)
 
 
 def translation_ev(h, t, tol=1e6):
