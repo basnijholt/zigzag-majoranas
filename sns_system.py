@@ -42,38 +42,37 @@ dummy_params = dict(**constants,
 @lru_cache()
 def get_template_strings(
         transverse_soi, mu_from_bottom_of_spin_orbit_bands=True, k_x_in_sc=False, with_k_z=False):
+    kinetic = "(hbar^2 / (2*m_eff) * (k_y^2 + k_x^2 + k_z^2) - mu {}) * kron(sigma_0, sigma_z)"
     if mu_from_bottom_of_spin_orbit_bands:
-        ham_str = "(hbar^2 / (2*m_eff) * (k_y^2 + k_x^2) - mu + m_eff*alpha_middle^2 / (2 * hbar^2)) * kron(sigma_0, sigma_z) "
+        ham_str = kinetic.format("+ m_eff*alpha_middle^2 / (2 * hbar^2)")
     else:
-        ham_str = "(hbar^2 / (2*m_eff) * (k_y^2 + k_x^2) - mu) * kron(sigma_0, sigma_z) "
+        ham_str = kinetic.format("")
 
-    if with_k_z:
-        ham_str += "+ hbar^2 / (2*m_eff) * (k_z^2) * kron(sigma_0, sigma_z)"
+    if not with_k_z:
+        ham_str = ham_str.replace('k_z', '0')
 
     if transverse_soi:
-        ham_normal = ham_str + """ +
-        alpha_middle * (kron(sigma_x, sigma_z) * k_y - kron(sigma_y, sigma_z) * k_x)"""
-        ham_sc_left = ham_str + """
-        + alpha_left * (kron(sigma_x, sigma_z) * k_y - kron(sigma_y, sigma_z) * k_x)"""
-        ham_sc_right = ham_str + """
-        + alpha_right * (kron(sigma_x, sigma_z) * k_y - kron(sigma_y, sigma_z) * k_x)"""
+        spin_orbit = "+ alpha_{} * (kron(sigma_x, sigma_z) * k_y - kron(sigma_y, sigma_z) * k_x)"
+        ham_normal = ham_str + spin_orbit.format('middle')
+        ham_sc_left = ham_str + spin_orbit.format('left')
+        ham_sc_right = ham_str + spin_orbit.format('right')
     else:
-        ham_normal = ham_normal + """
-        + alpha_middle * kron(sigma_x, sigma_z) * k_y"""
-        ham_sc_left = ham_str + """
-        + alpha_left * kron(sigma_x, sigma_z) * k_y"""
-        ham_sc_right = ham_str + """
-        + alpha_right * kron(sigma_x, sigma_z) * k_y"""
+        spin_orbit = """+ alpha_{} * kron(sigma_x, sigma_z) * k_y"""
+        ham_normal = ham_normal + spin_orbit.format('middle')
+        ham_sc_left = ham_str + spin_orbit.format('left')
+        ham_sc_right = ham_str + spin_orbit.format('right')
 
-    ham_sc_left += """+ Delta_left * (cos(-phase / 2) * kron(sigma_0, sigma_x)
-                                      + sin(-phase / 2) * kron(sigma_0, sigma_y))"""
-    ham_sc_right += """+ Delta_right * (cos(phase / 2) * kron(sigma_0, sigma_x)
-                                       + sin(phase / 2) * kron(sigma_0, sigma_y))"""
-    ham_normal += "+ g_factor_middle*mu_B*B * kron(sigma_x, sigma_0)"
+    superconductivity = """+ Delta_{0} * (cos({1}phase / 2) * kron(sigma_0, sigma_x)
+                                          + sin({1}phase / 2) * kron(sigma_0, sigma_y))"""
+    ham_sc_left += superconductivity.format('left', '-')
+    ham_sc_right += superconductivity.format('right', '+')
+
+    zeeman = "+ g_factor_{} * mu_B * B * kron(sigma_x, sigma_0)"
+    ham_normal += zeeman.format('middle')
+    ham_sc_left += zeeman.format('left')
+    ham_sc_right += zeeman.format('right')
 
     ham_barrier = ham_normal + "+ V * kron(sigma_0, sigma_z)"
-    ham_sc_left += "+ g_factor_left * mu_B * B * kron(sigma_x, sigma_0)"
-    ham_sc_right += "+ g_factor_right * mu_B * B * kron(sigma_x, sigma_0)"
 
     if not k_x_in_sc:
         ham_sc_right = ham_sc_right.replace('k_x', '0')
