@@ -112,6 +112,10 @@ def get_sorted_cuts(syst):
     return cuts
 
 
+def electron_blocks(H):
+    return H[::2, ::2]
+
+
 @lru_cache()
 def make_sns_leaded_system(a, L_m, L_x,
                            transverse_soi=True,
@@ -183,10 +187,8 @@ def make_sns_leaded_system(a, L_m, L_x,
 
     syst = syst.finalized()
 
-    electron_blocks = partial(take_electron_blocks, norbs=norbs)
     hopping = supercurrent_matsubara.hopping_between_cuts(
         syst, *cuts, electron_blocks)
-
     return syst, hopping
 
 
@@ -280,15 +282,9 @@ def make_sns_system(a, L_m, L_up, L_down, L_x,
 
     syst = syst.finalized()
 
-    electron_blocks = partial(take_electron_blocks, norbs=norbs)
     hopping = supercurrent_matsubara.hopping_between_cuts(
         syst, *cuts, electron_blocks)
-
     return syst, hopping
-
-
-def take_electron_blocks(H, norbs):
-    return H[::2, ::2]
 
 
 @lru_cache()
@@ -494,10 +490,8 @@ def make_3d_wrapped_system(a, L_m, L_up, L_down, L_x, L_z, with_orbital,
         syst = supercurrent_matsubara.add_vlead(syst, norbs, *cuts)
 
     syst = syst.finalized()
-    electron_blocks = partial(take_electron_blocks, norbs=norbs)
     hopping = supercurrent_matsubara.hopping_between_cuts(
         syst, *cuts, electron_blocks)
-
     return syst, hopping
 
 
@@ -652,10 +646,8 @@ def make_zigzag_system(
     site_colors.update({site: 'gold' for site in sc_sites})
     syst = syst.finalized()
 
-    electron_blocks = partial(take_electron_blocks, norbs=norbs)
     hopping = supercurrent_matsubara.hopping_between_cuts(
         syst, *cuts, electron_blocks)
-
     return syst, site_colors, hopping
 
 
