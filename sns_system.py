@@ -52,16 +52,16 @@ def get_template_strings(
     if not with_k_z:
         ham_str = ham_str.replace('k_z', '0')
 
+    spin_orbit = """+ alpha_{} * kron(sigma_x, sigma_z) * k_y"""
+    ham_normal = ham_str + spin_orbit.format('middle')
+    ham_sc_left = ham_str + spin_orbit.format('left')
+    ham_sc_right = ham_str + spin_orbit.format('right')
+
     if transverse_soi:
-        spin_orbit = "+ alpha_{} * (kron(sigma_x, sigma_z) * k_y - kron(sigma_y, sigma_z) * k_x)"
-        ham_normal = ham_str + spin_orbit.format('middle')
-        ham_sc_left = ham_str + spin_orbit.format('left')
-        ham_sc_right = ham_str + spin_orbit.format('right')
-    else:
-        spin_orbit = """+ alpha_{} * kron(sigma_x, sigma_z) * k_y"""
-        ham_normal = ham_str + spin_orbit.format('middle')
-        ham_sc_left = ham_str + spin_orbit.format('left')
-        ham_sc_right = ham_str + spin_orbit.format('right')
+        tr_spin_orbit = "- alpha_{} * kron(sigma_y, sigma_z) * k_x"
+        ham_normal = ham_str + tr_spin_orbit.format('middle')
+        ham_sc_left = ham_str + tr_spin_orbit.format('left')
+        ham_sc_right = ham_str + tr_spin_orbit.format('right')
 
     superconductivity = """+ Delta_{0} * (cos({1}phase / 2) * kron(sigma_0, sigma_x)
                                           + sin({1}phase / 2) * kron(sigma_0, sigma_y))"""
@@ -100,6 +100,16 @@ def get_templates(a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_
         template_strings['ham_sc_right'], **kwargs)
     return (template_barrier, template_normal,
             template_sc_left, template_sc_right)
+
+
+def get_sorted_cuts(syst):
+    cuts = supercurrent_matsubara.get_cuts(syst, 0, direction='y')
+
+    # Sort the sites in the `cuts` list.
+    cuts = [sorted(cut, key=lambda s: s.pos[0] + s.pos[1] * 1e6)
+            for cut in cuts]
+    assert len(cuts[0]) == len(cuts[1]) and len(cuts[0]) > 0, cuts
+    return cuts
 
 
 @lru_cache()
@@ -163,12 +173,7 @@ def make_sns_leaded_system(a, L_m, L_x,
     lead_down.fill(template_sc_left, shape_left_sc, (0, 0))
 
     # Define left and right cut in the middle of the superconducting part
-    cuts = supercurrent_matsubara.get_cuts(syst, 0, direction='y')
-
-    # Sort the sites in the `cuts` list.
-    cuts = [sorted(cut, key=lambda s: s.pos[0] + s.pos[1] * 1e6)
-            for cut in cuts]
-    assert len(cuts[0]) == len(cuts[1]) and len(cuts[0]) > 0, cuts
+    cuts = get_sorted_cuts(syst)
     norbs = 4
     if with_vlead:
         syst = supercurrent_matsubara.add_vlead(syst, norbs, *cuts)
@@ -265,12 +270,7 @@ def make_sns_system(a, L_m, L_up, L_down, L_x,
             L_m + a, L_m + L_up + 2 * a), (0, L_m + a))
 
     # Define left and right cut in the middle of the superconducting part
-    cuts = supercurrent_matsubara.get_cuts(syst, 0, direction='y')
-
-    # Sort the sites in the `cuts` list.
-    cuts = [sorted(cut, key=lambda s: s.pos[0] + s.pos[1] * 1e6)
-            for cut in cuts]
-    assert len(cuts[0]) == len(cuts[1]) and len(cuts[0]) > 0, cuts
+    cuts = get_sorted_cuts(syst)
     norbs = 4
     if with_vlead:
         syst = supercurrent_matsubara.add_vlead(syst, norbs, *cuts)
@@ -488,12 +488,7 @@ def make_3d_wrapped_system(a, L_m, L_up, L_down, L_x, L_z, with_orbital,
 
     syst = kwant.wraparound.wraparound(syst)
     # Define left and right cut in the middle of the superconducting part
-    cuts = supercurrent_matsubara.get_cuts(syst, 0, direction='y')
-
-    # Sort the sites in the `cuts` list.
-    cuts = [sorted(cut, key=lambda s: s.pos[0] + s.pos[1] * 1e6)
-            for cut in cuts]
-    assert len(cuts[0]) == len(cuts[1]) and len(cuts[0]) > 0, cuts
+    cuts = get_sorted_cuts(syst)
     norbs = 4
     if with_vlead:
         syst = supercurrent_matsubara.add_vlead(syst, norbs, *cuts)
