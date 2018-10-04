@@ -10,7 +10,7 @@ import holoviews as hv
 
 
 def plot_syst(syst_pars=None, params=None, a_new=None,
-              num_lead_cells=4, syst=None, **args):
+              num_lead_cells=4, syst=None, site_colors=None, **args):
     if syst is None:
         a = syst_pars['a'] if a_new is None else a_new
         L_down = syst_pars['L_down']
@@ -20,10 +20,19 @@ def plot_syst(syst_pars=None, params=None, a_new=None,
 
         syst, _ = sns_system.make_sns_system(
             a=a, L_down=L_down, L_m=L_m, L_up=L_up, L_x=L_x)
-
+    
+    if site_colors is None:
+        site_colors = {}
+        
     def delta(sites):
-        return [np.sum(np.abs(syst.hamiltonian(i, i, params=params)) + np.real(syst.hamiltonian(i, i, params=params))
-                       * np.imag(syst.hamiltonian(i, i, params=params))) for i, site in enumerate(sites)]
+        colors = []
+        for i, site in enumerate(sites):
+            site_color = site_colors.get(site)
+            if site_color is None:            
+                site_color = (np.sum(np.abs(syst.hamiltonian(i, i, params=params)) + np.real(syst.hamiltonian(i, i, params=params))
+                       * np.imag(syst.hamiltonian(i, i, params=params))) for i, site in enumerate(sites))
+            colors.append(site_color)
+        return colors
 
     return kwant.plot(syst, num_lead_cells=num_lead_cells,
                       site_color=delta(syst.sites),
