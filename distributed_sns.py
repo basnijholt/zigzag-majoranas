@@ -1,20 +1,21 @@
-import itertools
-import copy
 import collections
+import copy
 from functools import partial
-from itertools import product
-import numpy as np
-import sns_system
-import topology
-import spectrum
-import supercurrent
-import scattering
-import adaptive
-import dependencies.adaptive_tools as adaptive_tools
-import holoviews as hv
+import itertools
 import os
 import pickle
+
+import adaptive
 import dill
+import holoviews as hv
+import numpy as np
+
+import dependencies.adaptive_tools as adaptive_tools
+import scattering
+import sns_system
+import spectrum
+import supercurrent
+import topology
 from utils import consistent_hash
 
 
@@ -389,7 +390,7 @@ class AggregatesSimulationSet():
     def make_simulation_sets(self):
         simulation_set_list = []
 
-        for parameter_altering_functions in product(
+        for parameter_altering_functions in itertools.product(
                 *self.dimension_dict.values()):
             syst_pars = self.syst_pars.copy()
             params = self.params.copy()
