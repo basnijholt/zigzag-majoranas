@@ -1,5 +1,6 @@
 import cmath
 from functools import partial, lru_cache
+import re
 
 import kwant
 import numpy as np
@@ -39,10 +40,14 @@ dummy_params = dict(**constants,
                     **dummy_params_raw)
 
 
+def remove_phs(H):
+    return re.sub(r'kron\((sigma_[xyz0]), sigma_[xzy0]\)', r'\1', H)
+
+
 @lru_cache()
 def get_template_strings(
         transverse_soi, mu_from_bottom_of_spin_orbit_bands=True,
-        k_x_in_sc=False, with_k_z=False):
+        k_x_in_sc=False, with_k_z=False, no_phs=False):
     kinetic = "(hbar^2 / (2*m_eff) * (k_y^2 + k_x^2 + k_z^2) - mu {}) * kron(sigma_0, sigma_z)"
     if mu_from_bottom_of_spin_orbit_bands:
         ham_str = kinetic.format("+ m_eff*alpha_middle^2 / (2 * hbar^2)")
@@ -83,6 +88,10 @@ def get_template_strings(
                             ham_normal=ham_normal,
                             ham_sc_right=ham_sc_right,
                             ham_sc_left=ham_sc_left)
+
+    if no_phs:
+        template_strings = {k: remove_phs(v) for k, v in template_strings.items()}
+
     return template_strings
 
 
