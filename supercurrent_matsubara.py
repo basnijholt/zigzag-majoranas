@@ -47,8 +47,9 @@ def get_cuts(syst, ind=0, direction='x'):
     """
     direction = 'xyz'.index(direction)
     l_cut = [site for site in syst.sites() if site.tag[direction] == ind]
-    r_cut = [site for site in syst.sites() if site.tag[direction] == ind+1]
-    assert len(l_cut) == len(r_cut), "x_left and x_right use site.tag not site.pos!"
+    r_cut = [site for site in syst.sites() if site.tag[direction] == ind + 1]
+    assert len(l_cut) == len(
+        r_cut), "x_left and x_right use site.tag not site.pos!"
     return l_cut, r_cut
 
 
@@ -85,7 +86,7 @@ def matsubara_frequency(n, params):
     float
         Imaginary energy.
     """
-    return (2*n + 1) * np.pi * params['k'] * params['T'] * 1j
+    return (2 * n + 1) * np.pi * params['k'] * params['T'] * 1j
 
 
 def null_H(syst, params, n, electron_blocks):
@@ -152,10 +153,13 @@ def current_from_H_0(H_0_cache, H12, phase, params):
     return I
 
 
-def I_c_fixed_n(syst, hopping, params, electron_blocks, matsfreqs=500, N_brute=30):
-    H_0_cache = [null_H(syst, params, n, electron_blocks) for n in range(matsfreqs)]
+def I_c_fixed_n(syst, hopping, params, electron_blocks,
+                matsfreqs=500, N_brute=30):
+    H_0_cache = [null_H(syst, params, n, electron_blocks)
+                 for n in range(matsfreqs)]
     H12 = hopping(syst, params)
-    fun = lambda phase: -current_from_H_0(H_0_cache, H12, phase, params)
+
+    def fun(phase): return -current_from_H_0(H_0_cache, H12, phase, params)
     opt = scipy.optimize.brute(
         fun, ranges=[(-np.pi, np.pi)], Ns=N_brute, full_output=True)
     x0, fval, grid, Jout = opt
@@ -273,8 +277,9 @@ def I_c(syst, hopping, params, electron_blocks, tol=1e-2,
         Dictionary with the critical phase, critical current, and `currents`
         evaluated at `phases`."""
     H_0_cache = []
-    func = lambda phase: -current_at_phase(syst, hopping, params, H_0_cache, phase,
-                                           electron_blocks, tol, max_frequencies)
+
+    def func(phase): return -current_at_phase(syst, hopping, params,
+                                              H_0_cache, phase, electron_blocks, tol, max_frequencies)
     opt = scipy.optimize.brute(
         func, ranges=((-np.pi, np.pi),), Ns=N_brute, full_output=True)
     x0, fval, grid, Jout = opt

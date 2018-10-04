@@ -369,8 +369,8 @@ class AggregatesSimulationSet():
 
     @property
     def simulation_set_dict(self):
-        return {tuple(ss.dimension_values)
-                      : ss for ss in self.simulation_set_list}
+        return {tuple(ss.dimension_values): ss
+            for ss in self.simulation_set_list}
 
     @property
     def hash_str(self):

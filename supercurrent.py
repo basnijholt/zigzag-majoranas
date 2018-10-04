@@ -49,10 +49,10 @@ def wrapped_current(
         (en, evs) = np.linalg.eigh(ham)
         I = sum(fermi_dirac(e.real, p) * local_current_operator(ev)
                 for e, ev in zip(en, evs.T))
-        return sum(I) * params['e'] / params['hbar'] / syst_pars['a'] / (2*np.pi)
+        return sum(I) * params['e'] / params['hbar'] / syst_pars['a'] / (2 * np.pi)
 
-    ef_max = (params['mu'] + params['m_eff'] 
-        * params['alpha_middle']**2 / 2 / params['hbar']**2)
+    ef_max = (params['mu'] + params['m_eff']
+              * params['alpha_middle']**2 / 2 / params['hbar']**2)
     kf = np.sqrt(ef_max * 2 * params['m_eff']
                  ) / params['hbar'] * syst_pars['a']
     kmax = min(1.5 * kf, np.pi)
@@ -67,6 +67,7 @@ def wrapped_current(
 
     I = 2 * learner.igral
     return I
+
 
 def wrapped_current_3d(
         syst_pars, params, tol=0.01, syst_wrapped=None, transverse_soi=True,
@@ -89,10 +90,10 @@ def wrapped_current_3d(
         (en, evs) = np.linalg.eigh(ham)
         I = sum(fermi_dirac(e.real, p) * local_current_operator(ev)
                 for e, ev in zip(en, evs.T))
-        return sum(I) * params['e'] / params['hbar'] / syst_pars['a'] / (2*np.pi) / syst_pars['L_z']
+        return sum(I) * params['e'] / params['hbar'] / syst_pars['a'] / (2 * np.pi) / syst_pars['L_z']
 
-    ef_max = (params['mu'] + params['m_eff'] 
-        * params['alpha_middle']**2 / 2 / params['hbar']**2)
+    ef_max = (params['mu'] + params['m_eff']
+              * params['alpha_middle']**2 / 2 / params['hbar']**2)
     kf = np.sqrt(ef_max * 2 * params['m_eff']
                  ) / params['hbar'] * syst_pars['a']
     kmax = min(1.5 * kf, np.pi)
@@ -108,6 +109,7 @@ def wrapped_current_3d(
     I = 2 * learner.igral
     return I
 
+
 def get_cuts(syst, ind=0, direction='x'):
     """Get the sites at two postions of the specified cut coordinates.
 
@@ -122,6 +124,7 @@ def get_cuts(syst, ind=0, direction='x'):
     """
     direction = 'xyz'.index(direction)
     l_cut = [site for site in syst.sites if site.tag[direction] == ind]
-    r_cut = [site for site in syst.sites if site.tag[direction] == ind+1]
-    assert len(l_cut) == len(r_cut), "x_left and x_right use site.tag not site.pos!"
+    r_cut = [site for site in syst.sites if site.tag[direction] == ind + 1]
+    assert len(l_cut) == len(
+        r_cut), "x_left and x_right use site.tag not site.pos!"
     return list(zip(l_cut, r_cut))
