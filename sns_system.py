@@ -64,9 +64,9 @@ def get_template_strings(
 
     if transverse_soi:
         tr_spin_orbit = "- alpha_{} * kron(sigma_y, sigma_z) * k_x"
-        ham_normal = ham_str + tr_spin_orbit.format('middle')
-        ham_sc_left = ham_str + tr_spin_orbit.format('left')
-        ham_sc_right = ham_str + tr_spin_orbit.format('right')
+        ham_normal += tr_spin_orbit.format('middle')
+        ham_sc_left += tr_spin_orbit.format('left')
+        ham_sc_right += tr_spin_orbit.format('right')
 
     superconductivity = """+ Delta_{0} * (cos({1}phase / 2) * kron(sigma_0, sigma_x)
                                           + sin({1}phase / 2) * kron(sigma_0, sigma_y))"""
@@ -95,6 +95,7 @@ def get_template_strings(
     return template_strings
 
 
+@lru_cache()
 def get_templates(a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc):
     template_strings = get_template_strings(
         transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
