@@ -1,15 +1,19 @@
 import cmath
+import math
 from functools import partial, lru_cache
 import re
 
 import kwant
 import numpy as np
 import scipy.constants
-import topology
+import scipy.interpolate
+from scipy.optimize import fsolve
 
 import peierls
 import supercurrent
 import supercurrent_matsubara
+import topology
+from shape import *
 
 
 constants = dict(
@@ -39,6 +43,25 @@ dummy_params_raw = dict(g_factor_middle=1,
 dummy_params = dict(**constants,
                     **dummy_params_raw)
 
+def create_parallel_sine(distance, z_x, z_y):
+    def _parallel_sine(x, distance, z_x, z_y):
+        g       = lambda t: z_y * math.sin(2*np.pi/z_x*t)
+        g_prime = lambda t: z_y * 2*np.pi/z_x*math.cos(2*np.pi/z_x*t)
+        def _x(t):
+            return t - distance*g_prime(t)/np.sqrt(1 + g_prime(t)**2) - x
+
+        def y(t):
+            return g(t) + distance/np.sqrt(1 + g_prime(t)**2)
+
+        t = fsolve(_x, x)
+        return y(t)
+
+    xdim = np.linspace(0, z_x, 1000)
+    ydim = [_parallel_sine(x, distance, z_x, z_y) for x in xdim]
+    
+    parallel_sine = scipy.interpolate.interp1d(xdim, ydim)
+    
+    return lambda x: parallel_sine(x%z_x)
 
 def remove_phs(H):
     return re.sub(r'kron\((sigma_[xyz0]), sigma_[xzy0]\)', r'\1', H)
@@ -127,299 +150,6 @@ def electron_blocks(H):
 
 
 @lru_cache()
-def make_sns_leaded_system(a, L_m, L_x,
-                           transverse_soi=True,
-                           mu_from_bottom_of_spin_orbit_bands=True,
-                           with_vlead=False, k_x_in_sc=False, **_):
-    """
-    Builds and returns finalized 2dim sns system
-
-    Parameters
-    ----------
-    a : float
-        lattice spacing in nm.
-    L_m : float
-        width of middle normal strip.
-    L_up : float
-        width of right superconductor.
-    L_down : float
-        width of left superconductor.
-    L_x : float
-        length of finite system.
-    Returns
-    -------
-    syst : kwant.system.FiniteSystem
-        Finite system where lead[0] is assumed to be the bulk lead, a slice of the bulk along the y-axis
-    """
-
-    # GET TEMPLATES
-    template_barrier, template_normal, template_sc_left, template_sc_right = get_templates(
-        a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
-
-    # SHAPE FUNCTIONS
-    def shape_barrier(site):
-        (x, y) = site.pos
-        return (0 <= x < L_x) and (y == 0 or y == L_m)
-
-    def shape_normal(site):
-        (x, y) = site.pos
-        return 0 <= x < L_x and a <= y < L_m
-
-    def shape_left_sc(site):
-        (x, y) = site.pos
-        return 0 <= x < L_x
-
-    def shape_right_sc(site):
-        (x, y) = site.pos
-        return 0 <= x < L_x
-
-    # BUILD FINITE SYSTEM
-    syst = kwant.Builder()
-
-    syst.fill(template_normal, shape_normal, (0, a))
-    syst.fill(template_barrier, shape_barrier, (0, 0))
-    syst.fill(template_barrier, shape_barrier, (0, L_m))
-
-    lead_up = kwant.Builder(kwant.TranslationalSymmetry([0, a]))
-    lead_up.fill(template_sc_right, shape_right_sc, (0, 0))
-
-    lead_down = kwant.Builder(kwant.TranslationalSymmetry([0, -a]))
-    lead_down.fill(template_sc_left, shape_left_sc, (0, 0))
-
-    # Define left and right cut in the middle of the superconducting part
-    cuts = get_sorted_cuts(syst)
-    norbs = 4
-    if with_vlead:
-        syst = supercurrent_matsubara.add_vlead(syst, norbs, *cuts)
-
-    syst.attach_lead(lead_down)
-    syst.attach_lead(lead_up)
-
-    syst = syst.finalized()
-
-    hopping = supercurrent_matsubara.hopping_between_cuts(
-        syst, *cuts, electron_blocks)
-    return syst, hopping
-
-
-@lru_cache()
-def make_sns_system(a, L_m, L_up, L_down, L_x,
-                    transverse_soi=True,
-                    mu_from_bottom_of_spin_orbit_bands=True,
-                    k_x_in_sc=False,
-                    with_vlead=False, **_):
-    """
-    Builds and returns finalized 2dim sns system
-
-    Parameters
-    ----------
-    a : float
-        lattice spacing in nm.
-    L_m : float
-        width of middle normal strip.
-    L_up : float
-        width of right superconductor.
-    L_down : float
-        width of left superconductor.
-    L_x : float
-        length of finite system.
-    Returns
-    -------
-    syst : kwant.system.FiniteSystem
-        Finite system where lead[0] is assumed to be the bulk lead, a slice of the bulk along the y-axis
-    """
-
-    # GET TEMPLATES
-    template_barrier, template_normal, template_sc_left, template_sc_right = get_templates(
-        a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
-
-    # SHAPE FUNCTIONS
-    def shape_barrier(site):
-        (x, y) = site.pos
-        return (0 <= x < L_x) and (y == 0 or y == L_m)
-
-    def shape_normal(site):
-        (x, y) = site.pos
-        return 0 <= x < L_x and 0 < y < L_m
-
-    def shape_left_sc(site):
-        (x, y) = site.pos
-        return 0 <= x < L_x and -L_down - a <= y < 0
-
-    def shape_right_sc(site):
-        (x, y) = site.pos
-        return 0 <= x < L_x and L_m < y < L_m + L_up + 2 * a
-
-    def shape_lead(y1, y2):
-        def shape(site):
-            (x, y) = site.pos
-            return y1 <= y < y2
-        return shape
-
-    # BUILD FINITE SYSTEM
-    syst = kwant.Builder()
-
-    syst.fill(template_normal, shape_normal, (0, a))
-    syst.fill(template_barrier, shape_barrier, (0, 0))
-    syst.fill(template_barrier, shape_barrier, (0, L_m))
-    if L_down >= a:
-        syst.fill(template_sc_left, shape_left_sc, (0, -L_down))
-    if L_up >= a:
-        syst.fill(template_sc_right, shape_right_sc, (0, L_m + a))
-
-    # LEAD: SLICE OF BULK ALONG X AXIS
-    lead = kwant.Builder(kwant.TranslationalSymmetry([-a, 0]))
-
-    lead.fill(template_normal, shape_lead(a, L_m), (0, a))
-    lead.fill(template_barrier, shape_lead(0, a), (0, 0))
-    lead.fill(template_barrier, shape_lead(L_m, L_m + a), (0, L_m))
-    if L_down >= a:
-        lead.fill(
-            template_sc_left, shape_lead(-L_down - a, 0),
-            (0, -L_down - a))
-    if L_up >= a:
-        lead.fill(template_sc_right, shape_lead(
-            L_m + a, L_m + L_up + 2 * a), (0, L_m + a))
-
-    # Define left and right cut in the middle of the superconducting part
-    cuts = get_sorted_cuts(syst)
-    norbs = 4
-    if with_vlead:
-        syst = supercurrent_matsubara.add_vlead(syst, norbs, *cuts)
-
-    syst.attach_lead(lead)
-    syst.attach_lead(lead.reversed())
-
-    syst = syst.finalized()
-
-    hopping = supercurrent_matsubara.hopping_between_cuts(
-        syst, *cuts, electron_blocks)
-    return syst, hopping
-
-
-@lru_cache()
-def make_ns_junction(
-        a, L_m, L_up, L_down, L_x, transverse_soi=True,
-        mu_from_bottom_of_spin_orbit_bands=True, k_x_in_sc=False, **_):
-    """
-    Builds and returns finalized NS junction system, for calculating transmission
-
-    Parameters
-    ----------
-    a : float
-        lattice spacing in nm.
-    L_m : float
-        width of middle normal strip.
-    L_up : float
-        width of right superconductor.
-    L_down : float
-        width of left superconductor.
-    L_x : float
-        length of finite system.
-    Returns
-    -------
-    syst : kwant.system.FiniteSystem
-        Finite system where lead[0] is assumed to be the bulk lead,
-        a slice of the bulk along the y-axis.
-    """
-    # GET TEMPLATES
-    template_barrier, template_normal, template_sc_left, template_sc_right = get_templates(
-        a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
-
-    def shape_barrier(site):
-        (x, y) = site.pos
-        return x == 0 and 0 <= y < L_m
-
-    def shape_lead(site):
-        (x, y) = site.pos
-        return x == 0
-
-    # BUILD SYSTEM
-    # Allows seperate bookkeeping of eh in normal lead
-    conservation_matrix = -supercurrent.sigz
-
-    # Make left normal lead
-    normal_lead_symmetry = kwant.TranslationalSymmetry((a, 0), (0, -a))
-    normal_lead = kwant.Builder(
-        normal_lead_symmetry,
-        conservation_law=conservation_matrix)
-    normal_lead.fill(template_normal, shape_lead, (0, 0))
-
-    # Make right superconducting lead
-    sc_lead_symmetry = kwant.TranslationalSymmetry((a, 0), (0, a))
-    sc_lead = kwant.Builder(sc_lead_symmetry)
-    sc_lead.fill(template_sc_right, shape_lead, (0, a))
-
-    # Make barrier/middle site
-    wraparound_symmetry = kwant.TranslationalSymmetry((a, 0))
-    barrier = kwant.Builder(
-        symmetry=wraparound_symmetry,
-        conservation_law=conservation_matrix)
-    barrier.fill(template_barrier, shape_barrier, (0, 0))
-
-    # Wraparound systems
-    barrier = kwant.wraparound.wraparound(barrier)
-    normal_lead = kwant.wraparound.wraparound(
-        normal_lead, keep=1)  # Keep lead in y-direction
-    sc_lead = kwant.wraparound.wraparound(
-        sc_lead, keep=1)  # Keep lead in y-direction
-
-    # Attach leads
-    barrier.attach_lead(normal_lead)
-    barrier.attach_lead(sc_lead)
-
-    return barrier.finalized()
-
-
-@lru_cache()
-def make_wrapped_system(a, L_m, L_up, L_down, L_x,
-                        transverse_soi=True,
-                        mu_from_bottom_of_spin_orbit_bands=True,
-                        k_x_in_sc=False, **_):
-    # GET TEMPLATES
-    template_barrier, template_normal, template_sc_left, template_sc_right = get_templates(
-        a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
-
-    # SHAPE FUNCTIONS
-    def shape_barrier(site):
-        (x, y) = site.pos
-        return (0 <= x < L_x) and (y == 0 or y == L_m)
-
-    def shape_normal(site):
-        (x, y) = site.pos
-        return 0 <= x < L_x and a <= y < L_m
-
-    def shape_left_sc(site):
-        (x, y) = site.pos
-        return 0 <= x < L_x and -L_down - a <= y < 0
-
-    def shape_right_sc(site):
-        (x, y) = site.pos
-        return 0 <= x < L_x and L_m + a <= y < L_m + L_up + 2 * a
-
-    def shape_lead(x1, x2):
-        def shape(site):
-            (x, y) = site.pos
-            return x1 <= y < x2
-        return shape
-
-    # BUILD FINITE SYSTEM
-    sym = kwant.TranslationalSymmetry((a, 0))
-    syst = kwant.Builder(symmetry=sym)
-
-    syst.fill(template_normal, shape_normal, (0, a))
-    syst.fill(template_barrier, shape_barrier, (0, 0))
-    syst.fill(template_barrier, shape_barrier, (0, L_m))
-    if L_down >= a:
-        syst.fill(template_sc_left, shape_left_sc, (0, -a))
-    if L_up >= a:
-        syst.fill(template_sc_right, shape_right_sc, (0, L_m + a))
-
-    syst = kwant.wraparound.wraparound(syst)
-    return syst.finalized()
-
-
-@lru_cache()
 def make_3d_wrapped_system(a, L_m, L_up, L_down, L_x, L_z, with_orbital,
                            transverse_soi=True,
                            mu_from_bottom_of_spin_orbit_bands=True,
@@ -505,161 +235,6 @@ def make_3d_wrapped_system(a, L_m, L_up, L_down, L_x, L_z, with_orbital,
     return syst, hopping
 
 
-@lru_cache()
-def make_zigzag_system(
-        a, L_m, L_x, L_up, L_down, z_x, z_y, c_x, c_y, edge_thickness=0,
-        transverse_soi=True, mu_from_bottom_of_spin_orbit_bands=True,
-        k_x_in_sc=True, with_vlead=True, **_):
-
-    # GET TEMPLATES
-    template_barrier, template_normal, template_sc_left, template_sc_right = get_templates(
-        a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
-
-    def union_shape(shapes):
-        def _shape(pos):
-            res = False
-            for shape in shapes:
-                res |= shape(pos)
-            return res
-        return _shape
-
-    def intersection_shape(shapes):
-        def _shape(pos):
-            res = False
-            for shape in shapes:
-                res &= shape(pos)
-            return res
-        return _shape
-
-    def difference_shape(shape_A, shape_B):
-        def _shape(pos):
-            return shape_A(pos) and not shape_B(pos)
-        return _shape
-
-    def below_zigzag(z_x, z_y, offset):
-        def shape(site):
-            x, y = site.pos - offset
-            if 0 <= x < 2 * z_x:
-                return y < a * ((z_y * np.sin(np.pi * 2 * x / z_x)) // a)
-            else:
-                return False
-        return shape
-
-    def above_zigzag(z_x, z_y, offset):
-        def shape(pos):
-            return not below_zigzag(z_x, z_y, offset)(pos)
-        return shape
-
-    def within_zigzag(z_x, z_y, offset):
-        def shape(pos):
-            x, y = pos.pos
-            return below_zigzag(z_x, z_y, (offset[0], offset[1] + L_m))(
-                pos) and above_zigzag(z_x, z_y, offset)(pos) and 0 <= x < L_x
-        return shape
-
-    def edge_zigzag(z_x, z_y, offset):
-        def shape(pos):
-            x, y = pos.pos
-            return ((below_zigzag(z_x, z_y, (offset[0], offset[1] + L_m))(pos) and above_zigzag(z_x, z_y, (offset[0], offset[1] + L_m - a * edge_thickness))(pos) and 0 <= x < L_x)
-                    or
-                    (below_zigzag(z_x, z_y, (offset[0], offset[1] + edge_thickness * a))(pos) and above_zigzag(z_x, z_y, (offset[0], offset[1]))(pos) and 0 <= x < L_x))
-        return shape
-
-    def cut_zigzag(z_x, z_y, offset):
-        def shape(pos):
-            x, y = pos.pos
-            return (below_zigzag(z_x, z_y, (offset[0], offset[1]))(pos) and above_zigzag(
-                z_x, z_y, (offset[0], offset[1] - a))(pos) and 0 <= x < L_x)
-        return shape
-
-    number_of_zigzags = int(L_x // (2 * z_x)) + 1
-    within_zigzag_shapes = [
-        within_zigzag(z_x, z_y, (2 * z_x * i, 0))
-        for i in range(number_of_zigzags)]
-    edge_zigzag_shapes = [
-        edge_zigzag(z_x, z_y, (2 * z_x * i, 0))
-        for i in range(number_of_zigzags)]
-    edge_shape = union_shape(edge_zigzag_shapes)
-
-    cut_zigzag_shapes_up = [
-        cut_zigzag(c_x, c_y, (2 * z_x * i, L_m // 2))
-        for i in range(number_of_zigzags)]
-    cut_shape_up = union_shape(cut_zigzag_shapes_up)
-    cut_zigzag_shapes_down = [
-        cut_zigzag(
-            c_x, c_y, (2 * z_x * i, L_m // 2 - a))
-        for i in range(number_of_zigzags)]
-    cut_shape_down = union_shape(cut_zigzag_shapes_down)
-
-    middle_shape_with_edge = union_shape(within_zigzag_shapes)
-    middle_shape = difference_shape(middle_shape_with_edge, edge_shape)
-
-    def top_shape_block(site):
-        x, y = site.pos
-        return 0 <= x < L_x and -z_y <= y < L_m + z_y + L_up
-    top_shape_with_some_down = difference_shape(
-        top_shape_block, middle_shape_with_edge)
-
-    def down_shape_block(site):
-        x, y = site.pos
-        return 0 <= x < L_x and -L_down - z_y <= y < z_y
-    down_shape_with_some_top = difference_shape(
-        down_shape_block, middle_shape_with_edge)
-
-    top_shape = top_shape_with_some_down
-    down_shape = down_shape_with_some_top
-
-    # BUILD FINITE SYSTEM
-    syst = kwant.Builder()
-    site_colors = {}
-
-    syst.fill(template_normal, middle_shape, (0, L_m // 2))
-    site_colors.update({site: ('black') for site in syst.sites()})
-
-    # CREATE CUT FOR VLEAD
-    cut_up = [site for site in syst.sites() if cut_shape_up(site)]
-    site_colors.update({site: 'blue' for site in cut_up})
-    cut_down = [site for site in syst.sites() if cut_shape_down(site)]
-    site_colors.update({site: 'teal' for site in cut_down})
-    cuts = [cut_down, cut_up]
-
-    cuts = [sorted(cut, key=lambda s: s.pos[0]) for cut in cuts]
-    assert len(cuts[0]) == len(cuts[1]) and len(cuts[0]) > 0, cuts
-
-    norbs = 4
-    if with_vlead:
-        syst = supercurrent_matsubara.add_vlead(syst, norbs, *cuts)
-
-    # ADD EDGE FOR NON TRANSPARANCY
-    if edge_thickness == 0:
-        pass
-
-    else:
-        for x in np.arange(0, L_x, a):
-            y_up = ((z_y * np.sin(np.pi * 2 * x / z_x) + L_m) // a - 1) * a
-            y_down = ((z_y * np.sin(np.pi * 2 * x / z_x)) // a) * a
-
-            syst.fill(template_barrier, edge_shape, (x, y_up))
-            syst.fill(template_barrier, edge_shape, (x, y_down))
-
-        edge_sites = get_sites_in_shape(syst, edge_shape)
-        site_colors.update({site: 'white' for site in edge_sites})
-
-    if L_up is not 0:
-        syst.fill(template_sc_left, top_shape, (0, L_m))
-    syst.fill(template_sc_right, down_shape, (0, -a))
-
-    sc_sites = get_sites_in_shape(syst, top_shape)
-    site_colors.update({site: 'gold' for site in sc_sites})
-
-    sc_sites = get_sites_in_shape(syst, down_shape)
-    site_colors.update({site: 'gold' for site in sc_sites})
-    syst = syst.finalized()
-
-    hopping = supercurrent_matsubara.hopping_between_cuts(
-        syst, *cuts, electron_blocks)
-    return syst, site_colors, hopping
-
 
 def get_sites_in_shape(syst, shape):
     sites = []
@@ -679,3 +254,182 @@ def to_site_ph_spin(syst_pars, wf):
     wf_eh_sp_grid = np.reshape(wf_eh_sp, (nsitesW, nsitesL, norbs))
 
     return wf_eh_sp_grid
+
+
+def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a, 
+                parallel_curve,
+                transverse_soi,
+                mu_from_bottom_of_spin_orbit_bands,
+                k_x_in_sc,
+                wraparound,
+                current,
+                ns_junction):
+    
+    ######################
+    ## Define templates ##
+    ######################
+
+    template_barrier, template_normal, template_sc_left, template_sc_right = get_templates(
+        a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
+
+    template_interior = template_normal
+    template_edge = template_barrier
+    template_top_superconductor = template_sc_left
+    template_bottom_superconductor = template_sc_right
+
+    
+    if parallel_curve:
+        curve = create_parallel_sine(0, z_x, z_y)
+
+        curve_top = create_parallel_sine(L_m//2, z_x, z_y)
+        below_shape = below_curve(curve_top)
+
+        curve_bottom = create_parallel_sine(-L_m//2, z_x, z_y)
+        above_shape = above_curve(curve_bottom)
+    else:
+        curve = lambda x: z_y*sin(2*np.pi / z_x * x)
+        below_shape = below_curve(lambda x: curve(x) + L_m//2)
+        above_shape = above_curve(lambda x: curve(x) - L_m//2)
+
+
+    #--------------
+    # Define middle
+    middle_shape = (below_shape * above_shape)[0:L_x, :]
+    
+    #------------
+    # Define edge
+    edge_shape = middle_shape.edge()
+    edge_initial_site = (0, 0)
+
+    #------------------------
+    # Remove edge from middle
+    interior_shape = middle_shape.interior()
+    interior_initial_site = (a, a)
+
+    #--------------------------
+    # Define top superconductor
+    top_superconductor_shape = middle_shape.inverse()[0:L_x, :L_sc_up + L_m//2 + z_y]
+    top_superconductor_initial_site = (z_x//4, L_m//2+z_y+a)
+    
+    #-----------------------------
+    # Define bottom superconductor
+    bottom_superconductor_shape = middle_shape.inverse()[0:L_x, -L_sc_down - L_m//2 - z_y:]
+    bottom_superconductor_initial_site = (z_x//4, -L_m//2-z_y-2*a)
+
+    #-----------
+    # Define cut
+    cut_curve_top = above_curve(lambda x: curve(x))
+    cut_curve_bottom = below_curve(lambda x: curve(x))
+
+    top_cut_shape = above_curve(curve).edge()
+    bottom_cut_shape = below_curve(curve).edge()
+
+    #-------------------
+    # NS junction shapes
+    if ns_junction:
+        middle_shape = below_curve(curve).edge()[0:L_x, :]
+        top_superconductor_lead_shape = Shape()[0:L_x, :]
+        bottom_normal_lead_shape = Shape()[0:L_x, :]
+        
+    ############################
+    ## Build junnction system ##
+    ############################
+    site_colors = dict()
+    if ns_junction:
+        conservation_matrix = -supercurrent.sigz
+        
+        barrier_syst = kwant.Builder(conservation_law=conservation_matrix)
+        top_superconductor_lead = kwant.Builder(kwant.TranslationalSymmetry((0, a)))
+        bottom_normal_lead = kwant.Builder(kwant.TranslationalSymmetry((0, -a)),
+                                           conservation_law=conservation_matrix)
+        
+        edge_sites = barrier_syst.fill(template_edge, middle_shape, (0, -a))
+        add_to_site_colors(site_colors, edge_sites, 'middle_barrier')
+        
+        
+        top_superconductor_lead.fill(template_top_superconductor, 
+                                       top_superconductor_lead_shape, 
+                                       (0,0))
+        
+        bottom_normal_lead.fill(template_normal,
+                                 bottom_normal_lead_shape, 
+                                 (0,0))
+        
+        top_superconductor_sites = barrier_syst.attach_lead(top_superconductor_lead)
+        add_to_site_colors(site_colors, top_superconductor_sites, 'top_superconductor')
+
+        
+        normal_sites = barrier_syst.attach_lead(bottom_normal_lead)
+        add_to_site_colors(site_colors, normal_sites, 'middle_interior')
+
+      
+        barrier_syst = barrier_syst.finalized()
+        return barrier_syst, site_colors, None
+    
+    ##################
+    ## Build system ##
+    ##################        
+    else:
+        #---------------
+        # Create builder
+        if wraparound:
+            syst = kwant.Builder(kwant.TranslationalSymmetry([L_x, 0]))
+        else:
+            syst = kwant.Builder()
+
+        #----------
+        # Fill edge
+        edge_sites = syst.fill(template_edge, edge_shape, edge_initial_site)
+        add_to_site_colors(site_colors, edge_sites, 'middle_barrier')
+
+        #--------------
+        # Fill interior
+        interior_sites = syst.fill(template_interior, interior_shape, interior_initial_site)
+        add_to_site_colors(site_colors, interior_sites, 'middle_interior')
+
+        #------------------------
+        # Fill top superconductor
+        if L_sc_up is not 0:
+            top_superconductor_sites = syst.fill(template_top_superconductor, top_superconductor_shape, top_superconductor_initial_site)
+            add_to_site_colors(site_colors, top_superconductor_sites, 'top_superconductor')
+
+        #---------------------------
+        # Fill bottom superconductor
+        if L_sc_down is not 0:
+            bottom_superconductor_sites = syst.fill(template_bottom_superconductor, bottom_superconductor_shape, bottom_superconductor_initial_site)
+            add_to_site_colors(site_colors, bottom_superconductor_sites, 'bottom_superconductor')
+
+
+        ##########################################
+        ## Add features for current calculation ##
+        ##########################################
+
+        #---------------------
+        # Make cut for current
+        if current:
+            top_cut = list(site for site in syst.sites() if top_cut_shape(site))
+            add_to_site_colors(site_colors, top_cut, 'top_cut')
+            bottom_cut = list(site for site in syst.sites() if bottom_cut_shape(site))
+            add_to_site_colors(site_colors, bottom_cut, 'bottom_cut')
+
+            cuts = (top_cut, bottom_cut)
+
+            norbs = 4
+            syst = supercurrent_matsubara.add_vlead(syst, norbs, *cuts)
+
+        #####################
+        ## Finalize system ##
+        #####################
+
+        if wraparound:
+            syst = kwant.wraparound.wraparound(syst)
+
+        syst = syst.finalized()
+
+        #---------------------
+        # Get hopping
+        if current:
+            hopping = supercurrent_matsubara.hopping_between_cuts(syst, *cuts, electron_blocks)
+            return syst, site_colors, hopping
+        else:
+            return syst, site_colors, None
