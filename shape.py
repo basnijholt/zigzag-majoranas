@@ -67,7 +67,7 @@ def UNION(*shapes):
 def INTERSECTION(*shapes):
     """returns shape which is an AND function applied to shapes"""
     return lambda site: all(shape(site) for shape in shapes)
-    
+
 def DIFFERENCE(shape_A, shape_B):
     """returns shape which is true when the site is in the first shape, but not in the second"""
     return lambda site: shape_A(site) and not shape_B(site)

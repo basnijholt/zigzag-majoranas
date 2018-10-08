@@ -93,10 +93,7 @@ def current_function(current_params, syst_total,
 
 def energy_gap_function(energy_gap_params, syst_total,
                         syst_wrapped, syst_junction, syst_pars, params):
-    return spectrum.find_gap_of_lead(lead=syst_total.leads[1],
-                                     params=params,
-                                     **energy_gap_params)
-
+    return np.diff(spectrum.calc_lowest_state((syst_pars, params), syst=syst_total))
 
 def transparency_function(
     transparency_params, syst_total, syst_wrapped, syst_junction,
@@ -124,9 +121,18 @@ def get_correct_metric_function(metric_key, metric_params):
 
 def total_function(xy, syst_pars, params, keys_with_bounds,
                    metric_params_dict):
-    syst_total, hopping = sns_system.make_sns_system(**syst_pars)
-    syst_wrapped = sns_system.make_wrapped_system(**syst_pars)
-    syst_junction = sns_system.make_ns_junction(**syst_pars)
+
+    syst_total, _, hopping = sns_system.make_system(**syst_pars)
+    if metric_params_dict.get('transparency') is not None:
+        _syst_pars_junction = syst_pars.copy()
+        _syst_pars_junction['ns_junction'] = True
+        syst_junction, _, _ = sns_system.make_system(**_syst_pars_junction)
+    else:
+        syst_junction = None
+
+    syst_wrapped = None # Deprecated
+
+            
 
     results = np.zeros(len(metric_params_dict))
 
