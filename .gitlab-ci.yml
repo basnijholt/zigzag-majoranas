@@ -1,9 +1,9 @@
 notes:
   script:
-    - cd two_dim_majoranas_report
+    - cd progress_report
     - pdflatex progress.tex
     - pdflatex progress.tex
 
   artifacts:
     paths:
-    - two_dim_majoranas_report/*.pdf
+    - progress_report/*.pdf
