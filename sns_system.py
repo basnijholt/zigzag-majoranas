@@ -298,7 +298,7 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
             theta = np.arctan(4*z_y/z_x)
             y_offset = L_m/np.cos(theta)
         else:
-            y_offset = 0
+            y_offset = L_m
             
         below_shape = below_curve(lambda x: curve(x) + y_offset//2)
         above_shape = above_curve(lambda x: curve(x) - y_offset//2)        
