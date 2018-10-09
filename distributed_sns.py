@@ -9,6 +9,7 @@ import adaptive
 import dill
 import holoviews as hv
 import numpy as np
+import operator
 
 import dependencies.adaptive_tools as adaptive_tools
 import scattering
@@ -93,7 +94,11 @@ def current_function(current_params, syst_total,
 
 def energy_gap_function(energy_gap_params, syst_total,
                         syst_wrapped, syst_junction, syst_pars, params):
-    return np.diff(spectrum.calc_lowest_state((syst_pars, params), syst=syst_total))
+    return spectrum.calc_lowest_state((syst_pars, params), syst=syst_total)
+
+def lowest_two_energies(energy_gap_params, syst_total,
+                        syst_wrapped, syst_junction, syst_pars, params):
+    return spectrum.calc_lowest_state((syst_pars, params), syst=syst_total)
 
 def transparency_function(
     transparency_params, syst_total, syst_wrapped, syst_junction,
@@ -115,6 +120,7 @@ def get_correct_metric_function(metric_key, metric_params):
         'transparency': transparency_function,
         'bandstructure': bandstructure_function,
         'energy_gap': energy_gap_function,
+        'lowest_two_energies' : lowest_two_energies
     }
     return partial(options[metric_key], metric_params)
 
@@ -134,7 +140,7 @@ def total_function(xy, syst_pars, params, keys_with_bounds,
 
             
 
-    results = np.zeros(len(metric_params_dict))
+    results = {}
 
     keys = keys_with_bounds.keys()
     params_local = params.copy()
@@ -145,7 +151,7 @@ def total_function(xy, syst_pars, params, keys_with_bounds,
             metric_params_dict.items()):
         metric_function = get_correct_metric_function(
             metric_key, metric_params)
-        results[idx] = metric_function(syst_total,
+        results[metric_key] = metric_function(syst_total,
                                        syst_wrapped,
                                        syst_junction,
                                        syst_pars,
@@ -162,12 +168,14 @@ class SimulationSet():
                  keys_with_bounds,
                  syst_pars,
                  params,
-                 metric_params_dict):
+                 metric_params_dict,
+                 metric_to_learn):
 
         self.keys_with_bounds = keys_with_bounds.copy()
         self.syst_pars = syst_pars.copy()
         self.params = params.copy()
         self.metric_params_dict = metric_params_dict
+        self.metric_to_learn = metric_to_learn
 
         self.bounds = list(self.keys_with_bounds.values())
         self.params.update(sns_system.constants)
@@ -235,24 +243,11 @@ class SimulationSet():
                        keys_with_bounds=self.keys_with_bounds,
                        metric_params_dict=self.metric_params_dict)
 
-    def default_metric(self):
-        def default_loss_scaled(ip):
-            from adaptive.learner.learner2D import deviations, areas
-            metric_scale = np.max(ip.values, 0) - np.min(ip.values, 0)
-            metric_scale[metric_scale == 0] = 1
-
-            dev = np.sum(deviations(ip) / metric_scale[:, np.newaxis], axis=0)
-
-            A = areas(ip)
-            losses = dev * np.sqrt(A) + 0.3 * A
-            return losses
-
-        return default_loss_scaled
-
     def make_learner(self):
         f = self.get_total_function()
-        self.learner = adaptive_tools.Learner2D(
-            f, bounds=self.bounds, loss_per_triangle=self.default_metric())
+        l_2D = adaptive_tools.Learner2D(
+            f, bounds=self.bounds)
+        self.learner = adaptive.DataSaver(l_2D, arg_picker=operator.itemgetter(self.metric_to_learn))
 
     def get_learner(self):
         return self.learner
@@ -272,7 +267,7 @@ class SimulationSet():
             return map_plot.redim(x=keys[0], y=keys[1])
 
     def get_plot_dictionary(self, n):
-        ip = self.learner.ip()
+        ip = self.learner.ip_combined()
         normalized_dim = np.linspace(-.5, .5, n)
         xdim, ydim = self.unnormalize(normalized_dim, normalized_dim)
 
@@ -281,9 +276,13 @@ class SimulationSet():
 
         plot_dictionary = dict()
         for idx, metric_key in enumerate(self.metric_params_dict):
-            metric_results = gridded_results[:, :, idx]
-            plot_dictionary[metric_key] = hv.Image(
-                (xdim, ydim, metric_results))
+            if metric_key is 'lowest_two_energies':
+                metric_results_0 = gridded_results[:, :, 0]
+                metric_results_1 = gridded_results[:, :, 1]
+                plot_dictionary[metric_key] = hv.Image((xdim, ydim, metric_results_0)) + hv.Image((xdim, ydim, metric_results_1))
+            else:
+                metric_results = gridded_results[:, :, idx]
+                plot_dictionary[metric_key] = hv.Image((xdim, ydim, metric_results))
 
         return plot_dictionary
 
@@ -346,13 +345,15 @@ class AggregatesSimulationSet():
                  keys_with_bounds,
                  syst_pars,
                  params,
-                 metric_params_dict):
+                 metric_params_dict,
+                 metric_to_learn):
 
         self.dimension_dict = {}
 
         self.keys_with_bounds = keys_with_bounds.copy()
         self.keys = tuple(keys_with_bounds.keys())
         self.bounds = tuple(keys_with_bounds.values())
+        self.metric_to_learn = metric_to_learn
 
         self.syst_pars = syst_pars.copy()
         self.params = params.copy()
@@ -408,7 +409,8 @@ class AggregatesSimulationSet():
             ss = SimulationSet(self.keys_with_bounds,
                                syst_pars,
                                params,
-                               self.metric_params_dict)
+                               self.metric_params_dict,
+                               self.metric_to_learn)
             ss.dimension_values = dimension_values
             simulation_set_list.append(ss)
 
