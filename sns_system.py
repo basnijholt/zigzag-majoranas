@@ -1,4 +1,5 @@
 import cmath
+from math import cos, sin
 import math
 from functools import partial, lru_cache
 import re
@@ -255,8 +256,9 @@ def to_site_ph_spin(syst_pars, wf):
 
     return wf_eh_sp_grid
 
-
-def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a, 
+@lru_cache()
+def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
+                sawtooth,
                 parallel_curve,
                 transverse_soi,
                 mu_from_bottom_of_spin_orbit_bands,
@@ -268,7 +270,8 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
     ######################
     ## Define templates ##
     ######################
-
+    assert((sawtooth and parallel_curve) is not True)
+    
     template_barrier, template_normal, template_sc_left, template_sc_right = get_templates(
         a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
 
@@ -286,6 +289,20 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
 
         curve_bottom = create_parallel_sine(-L_m//2, z_x, z_y)
         above_shape = above_curve(curve_bottom)
+        
+    elif sawtooth:
+        _curve = lambda x: 4*z_y/z_x*(x%(z_x//2)) - z_y if x%z_x < z_x//2 else -4*z_y/z_x*(x%(z_x//2)) + z_y
+        curve = lambda x: _curve(x+z_x/4)
+        
+        if z_y is not 0:
+            theta = np.arctan(4*z_y/z_x)
+            y_offset = L_m/np.cos(theta)
+        else:
+            y_offset = 0
+            
+        below_shape = below_curve(lambda x: curve(x) + y_offset//2)
+        above_shape = above_curve(lambda x: curve(x) - y_offset//2)        
+        
     else:
         curve = lambda x: z_y*sin(2*np.pi / z_x * x)
         below_shape = below_curve(lambda x: curve(x) + L_m//2)
@@ -308,13 +325,21 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
 
     #--------------------------
     # Define top superconductor
-    top_superconductor_shape = middle_shape.inverse()[0:L_x, :L_sc_up + L_m//2 + z_y]
-    top_superconductor_initial_site = (z_x//4, L_m//2+z_y+a)
+    if sawtooth:
+        top_superconductor_initial_site = (0, y_offset//2+a)
+        top_superconductor_shape = middle_shape.inverse()[0:L_x, :L_sc_up + y_offset//2 + z_y]
+    else:
+        top_superconductor_initial_site = (z_x//4, L_m//2+z_y+a)
+        top_superconductor_shape = middle_shape.inverse()[0:L_x, :L_sc_up + L_m//2 + z_y]
     
     #-----------------------------
     # Define bottom superconductor
-    bottom_superconductor_shape = middle_shape.inverse()[0:L_x, -L_sc_down - L_m//2 - z_y:]
-    bottom_superconductor_initial_site = (z_x//4, -L_m//2-z_y-2*a)
+    if sawtooth:
+        bottom_superconductor_initial_site = (0, -y_offset//2-a)
+        bottom_superconductor_shape = middle_shape.inverse()[0:L_x, -L_sc_down - y_offset//2 - z_y:]
+    else:
+        bottom_superconductor_initial_site = (z_x//4, -L_m//2-z_y-2*a)
+        bottom_superconductor_shape = middle_shape.inverse()[0:L_x, -L_sc_down - L_m//2 - z_y:]
 
     #-----------
     # Define cut
