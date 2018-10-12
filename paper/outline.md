@@ -1,3 +1,9 @@
+# Abstract
+We are solving a problem of soft gap in high density SNS Majorana junctions.
+We do this by introducing a zigzag geometry.
+This works because the maximum trajactory length is cut-off due to the geomerty and therefore the minimal energy gap is given by a simple formula, which we also verify using numerics.
+In addition to having a large minimum energy gap, the abscence of long length trajectories means that the localization length is very short as well.
+
 # Introduction
 * Setup
 ** Straight and zigzag (zz) system, with trajectories
