@@ -312,16 +312,6 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
     #--------------
     # Define middle
     middle_shape = (below_shape * above_shape)[0:L_x, :]
-    
-    #------------
-    # Define edge
-    edge_shape = middle_shape.edge()
-    edge_initial_site = (0, 0)
-
-    #------------------------
-    # Remove edge from middle
-    interior_shape = middle_shape.interior()
-    interior_initial_site = (a, a)
 
     #--------------------------
     # Define top superconductor
@@ -340,7 +330,16 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
     else:
         bottom_superconductor_initial_site = (z_x//4, -L_m//2-z_y-2*a)
         bottom_superconductor_shape = middle_shape.inverse()[0:L_x, -L_sc_down - L_m//2 - z_y:]
+    
+    #------------
+    # Define edge
+    edge_shape = middle_shape.edge() * bottom_superconductor_shape.outer_edge() * top_superconductor_shape.outer_edge()
 
+    #------------------------
+    # Remove edge from middle
+    interior_shape = middle_shape - edge_shape
+    interior_initial_site = (a, a)
+    
     #-----------
     # Define cut
     cut_curve_top = above_curve(lambda x: curve(x))
@@ -363,9 +362,9 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
     if ns_junction:
         conservation_matrix = -supercurrent.sigz
         
-        barrier_syst = kwant.Builder(conservation_law=conservation_matrix)
-        top_superconductor_lead = kwant.Builder(kwant.TranslationalSymmetry((0, a)))
-        bottom_normal_lead = kwant.Builder(kwant.TranslationalSymmetry((0, -a)),
+        barrier_syst = kwant.Builder(kwant.TranslationalSymmetry([L_x, 0]), conservation_law=conservation_matrix)
+        top_superconductor_lead = kwant.Builder(kwant.TranslationalSymmetry((L_x,0), (0, a)))
+        bottom_normal_lead = kwant.Builder(kwant.TranslationalSymmetry((L_x,0), (0, -a)),
                                            conservation_law=conservation_matrix)
         
         edge_sites = barrier_syst.fill(template_edge, middle_shape, (0, -a))
@@ -380,13 +379,15 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
                                  bottom_normal_lead_shape, 
                                  (0,0))
         
-        top_superconductor_sites = barrier_syst.attach_lead(top_superconductor_lead)
-        add_to_site_colors(site_colors, top_superconductor_sites, 'top_superconductor')
-
+        barrier_syst = kwant.wraparound.wraparound(barrier_syst)
+        top_superconductor_lead = kwant.wraparound.wraparound(top_superconductor_lead, keep=1)
+        bottom_normal_lead = kwant.wraparound.wraparound(bottom_normal_lead, keep=1)
         
         normal_sites = barrier_syst.attach_lead(bottom_normal_lead)
         add_to_site_colors(site_colors, normal_sites, 'middle_interior')
-
+        
+        top_superconductor_sites = barrier_syst.attach_lead(top_superconductor_lead)
+        add_to_site_colors(site_colors, top_superconductor_sites, 'top_superconductor')    
       
         barrier_syst = barrier_syst.finalized()
         return barrier_syst, site_colors, None
@@ -404,8 +405,11 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
 
         #----------
         # Fill edge
-        edge_sites = syst.fill(template_edge, edge_shape, edge_initial_site)
-        add_to_site_colors(site_colors, edge_sites, 'middle_barrier')
+        for y in np.arange(-L_m - z_y, L_m + z_y, a):
+            pos = (0, y)
+            edge_sites_new = syst.fill(template_edge, edge_shape, pos)
+            if len(edge_sites_new) > 0:
+                add_to_site_colors(site_colors, edge_sites_new, 'middle_barrier')
 
         #--------------
         # Fill interior
