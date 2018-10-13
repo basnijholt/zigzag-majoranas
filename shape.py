@@ -25,6 +25,9 @@ class Shape:
     def edge(self):
         return Shape(EDGE(self.shape))
     
+    def outer_edge(self):
+        return Shape(OUTER_EDGE(self.shape))
+    
     def interior(self):
         return Shape(INTERIOR(self.shape))
     
@@ -81,6 +84,17 @@ def EDGE(shape):
         s = lambda x: kwant.builder.Site(site.family, site.tag + x)
         neighboring_sites = {k: s(x) for k, x in sites}
         return shape(site) and not all(map(shape, neighboring_sites.values()))
+    return _shape
+
+def OUTER_EDGE(shape):
+    def _shape(site):
+        sites = [('wsite', [-1, 0]), ('esite', [1, 0]),
+                 ('nsite', [0, 1]), ('ssite', [0, -1]),
+                 ('nwsite', [-1, 1]), ('nesite', [1, 1]),
+                 ('swsite', [-1, -1]), ('sesite', [1, -1])]
+        s = lambda x: kwant.builder.Site(site.family, site.tag + x)
+        neighboring_sites = {k: s(x) for k, x in sites}
+        return not shape(site) and any(map(shape, neighboring_sites.values()))
     return _shape
 
 def INTERIOR(shape):
