@@ -97,7 +97,9 @@ def get_template_strings(
     ham_sc_left += superconductivity.format('left', '-')
     ham_sc_right += superconductivity.format('right', '+')
 
-    zeeman = "+ g_factor_{} * mu_B * B * kron(sigma_x, sigma_0)"
+    zeeman = "+ g_factor_{} * mu_B *( B_x * kron(sigma_x, sigma_0)"
+    zeeman += "+ B_y * kron(sigma_y, sigma_0)"
+    zeeman += "+ B_z * kron(sigma_z, sigma_0))"
     ham_normal += zeeman.format('middle')
     ham_sc_left += zeeman.format('left')
     ham_sc_right += zeeman.format('right')
