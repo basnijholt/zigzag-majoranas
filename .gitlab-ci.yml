@@ -7,3 +7,12 @@ notes:
   artifacts:
     paths:
     - progress_report/*.pdf
+
+
+paper:
+  script:
+    - cd paper
+    - make
+  artifacts:
+    paths:
+      - paper/snakemajoranas.pdf

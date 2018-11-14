@@ -1,0 +1,170 @@
+\documentclass[english, twocolumn, 10pt, aps, superscriptaddress, floatfix, prb, citeautoscript]{revtex4-1}
+\pdfoutput=1
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{verbatim}
+\usepackage{units}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{wasysym}
+\usepackage{layouts}
+\usepackage{siunitx}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage[colorlinks, citecolor={blue!50!black}, urlcolor={blue!50!black}, linkcolor={red!50!black}]{hyperref}
+\usepackage{bookmark}
+\usepackage{tabularx}
+\usepackage{microtype}
+\usepackage{babel}
+\hypersetup{pdfauthor={T. Laeven and friends},pdftitle={Increasing the topological gap by an order of magnitude through the geomerty for Majorana SNS junctions.}}
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
+\DeclareMathOperator{\e}{e}
+\DeclareMathOperator{\de}{d\!}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Pf}{Pf}
+\DeclareMathOperator{\Det}{Det}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\re}{Re}
+
+\renewcommand{\comment}[2]{#2}
+% Uncomment the following line for paragraph descriptions to appear in the file.
+\renewcommand{\comment}{\paragraph}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+\newcommand{\ev}[1]{\langle#1\rangle}
+\newcommand{\bra}[1]{\langle#1|}
+\newcommand{\ket}[1]{|#1\rangle}
+\newcommand{\bracket}[2]{\langle#1|#2\rangle}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+
+\begin{document}
+
+
+\title{Increasing the topological gap by an order of magnitude through the geomerty for Majorana SNS junctions.}
+
+\author{Tom Laeven}
+\affiliation{Kavli Institute of Nanoscience, Delft University of Technology, P.O. Box 4056, 2600 GA Delft, The Netherlands}
+\email[Electronic address: ]{tlaeven@hotmail.com}
+
+\author{Bas Nijholt}
+\affiliation{Kavli Institute of Nanoscience, Delft University of Technology, P.O. Box 4056, 2600 GA Delft, The Netherlands}
+\email[Electronic address: ]{bas@nijho.lt}
+
+\author{Michael Wimmer}
+\affiliation{Kavli Institute of Nanoscience, Delft University of Technology, P.O. Box 4056, 2600 GA Delft, The Netherlands}
+\affiliation{QuTech, Delft University of Technology, P.O. Box 4056, 2600 GA Delft, The Netherlands}
+\email[Electronic address: ]{m.t.wimmer@tudelft.nl}
+
+\author{Anton R. Akhmerov}
+\email[Electronic address: ]{snakemajoranas@antonakhmerov.org}
+\affiliation{Kavli Institute of Nanoscience, Delft University of Technology, P.O. Box 4056, 2600 GA Delft, The Netherlands}
+
+\date{\today}
+
+\begin{abstract}
+We are solving a problem of soft gap in high density SNS Majorana junctions \cite{pientka2017topological}.
+We do this by introducing a zigzag geometry.
+This works because the maximum trajactory length is cut-off due to the geomerty and therefore the minimal energy gap is given by a simple formula, which we also verify using numerics.
+In addition to having a large minimum energy gap, the abscence of long length trajectories means that the localization length is very short as well.
+\end{abstract}
+
+\maketitle
+
+
+\section{Introduction}
+
+\comment{The gap is small because of long trajectories.}
+
+\begin{figure}
+% \includegraphics[width=0.95\columnwidth]{figures/SOME_FIGURE}
+\caption{Setups. Figure of a straight and zigzag system, including trajectories.
+\label{fig:setup}}
+\end{figure}
+
+
+\section{Analytical estimate}
+
+Quasi classical short junction calculation explaination.
+Include all, later move stuff to the appendix if necessary.
+
+
+\section{Numerical bandstructures}
+
+\comment{We consider a 2D SNS junction with a Rashba-BdG Hamiltonian.}
+
+\comment{We discretize the model and simulate it with Kwant.}
+
+\section{Calculating the bandstuctures.}
+
+\section{Calculating the topological phase diagram.}
+
+\comment{We use a generalized eigenvalue problem to find all phase boundaries at once.}
+
+\comment{We calculate the gap by finding the minimum energy in the spectrum.}
+
+\begin{figure}
+% \includegraphics[width=0.95\columnwidth]{figures/SOME_FIGURE}
+\caption{Figure of the bandstuctures.
+Where the lines are (blue) $\phi=0$, $B=0$ and (red) $\phi=\pi$, $B \ne 0$.
+and the subplots (a) $z_y=0$, (b) $z_y=\frac{W}{2}$, and (c) $z_y=W$, where $W$ is the junction width.
+\label{fig:bandstuctures}}
+\end{figure}
+
+\begin{figure}
+% \includegraphics[width=0.95\columnwidth]{figures/SOME_FIGURE}
+\caption{Phase diagrams of a straight system (a, b) and zigzag system (c, d), where (a, c) are $E(\mu, B)$ and (b, d) are $E(\phi, B)$.
+We use a generalized eigenvalue problem to find all phase boundaries at once and find the minimal energy gap by finding the minimum in the spectrum: $\min{E(k)}$.
+\label{fig:phasediagrams}}
+\end{figure}
+
+
+\section{Localization lengths and shape effect}
+
+\comment{We find the Majorana lengths by calculating the slowest decaying mode.}
+
+\begin{figure}
+% \includegraphics[width=0.95\columnwidth]{figures/SOME_FIGURE}
+\caption{Wavefunctions for different sizes and geometries.
+With (a) a straight system, (b) a zigzag sytem, (c) a system where the normal region is defined by two parallel sine waves, and (d) a system with the Laeven shape.
+Inside the figure we indicate the Majorana lenght (or coherence length) $\xi$ and the topological energy gap $E_\textrm{gap}.$
+We observe that $\xi$ for (a) is orders of magnitude longer and $E_\textrm{gap}$ orders of magnitude smaller than for (b, c, d), meaning that the details of the geometry do not matter.
+\label{fig:wavefunctions}}
+\end{figure}
+
+
+\section{Discussion and Conclusions}
+
+\comment{Extensions: we omit several physical effects, disorder, electrostatics, etc.}
+
+\comment{Outlook: how to cope with the complications.}
+
+\comment{Acknowledgments}
+
+We are grateful to M. Irfan, L. P. Kouwenhoven, R. M. Lutchyn, C. M. Marcus, T. Ö. Rosdahl, S. Rubbert, D. Sticlet, and D. Varjas for useful discussions.
+This work was supported by the Netherlands Organization for Scientific Research (NWO/OCW), as part of the Frontiers of Nanoscience program, the Foundation for Fundamental Research on Matter (FOM), and an ERC Starting Grant STATOPINS 638760.
+
+\bibliographystyle{apsrev4-1}
+\bibliography{snakemajoranas}
+\end{document}
