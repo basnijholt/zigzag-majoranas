@@ -260,8 +260,7 @@ def to_site_ph_spin(syst_pars, wf):
 
 @lru_cache()
 def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
-                sawtooth,
-                parallel_curve,
+                shape,
                 transverse_soi,
                 mu_from_bottom_of_spin_orbit_bands,
                 k_x_in_sc,
@@ -272,7 +271,9 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
     ######################
     ## Define templates ##
     ######################
-    assert((sawtooth and parallel_curve) is not True)
+    parallel_curve = sawtooth = False
+    parallel_curve = (shape == 'parallel_curve')
+    sawtooth = (shape == 'sawtooth')
     
     template_barrier, template_normal, template_sc_left, template_sc_right = get_templates(
         a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
