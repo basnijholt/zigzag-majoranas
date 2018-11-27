@@ -188,3 +188,42 @@ def find_gap_of_lead(lead, params, tol=1e-6):
                 lim[0] = energy
         gap = sum(lim) / 2
     return gap
+
+
+def phase_bounds_operator(lead, params, k_x=0):
+    params['mu'] = 0
+    h_k = lead.hamiltonian_submatrix(params=dict(params, k_x=k_x),
+        sparse=True)
+    sigma_z = sp.csc_matrix(np.array([[1, 0], [0, -1]]))
+    _operator = sp.kron(sp.eye(h_k.shape[0] // 2), sigma_z) @ h_k
+    return _operator
+
+
+def find_phase_bounds(lead, params, k_x=0, num_bands=20):
+    """Find the phase boundaries.
+    Solve an eigenproblem that finds values of chemical potential at which the
+    gap closes at momentum k=0. We are looking for all real solutions of the
+    form H*psi=0 so we solve sigma_0 * tau_z H * psi = mu * psi.
+
+    Parameters
+    -----------
+    lead : kwant.builder.InfiniteSystem object
+        The finalized infinite system.
+    params : dict
+        A dictionary that is used to store Hamiltonian parameters.
+    k_x : float
+        Momentum value, by default set to 0.
+
+    Returns
+    --------
+    chemical_potential : numpy array
+        Twenty values of chemical potential at which a bandgap closes at k=0.
+    """
+    chemical_potentials = phase_bounds_operator(lead, params, k_x)
+
+    if num_bands is None:
+        mus = np.linalg.eigvals(chemical_potentials)
+    else:
+        mus = sla.eigs(chemical_potentials, k=num_bands, sigma=0)[0]
+
+    return np.sort(mus.real), mus
