@@ -23,11 +23,11 @@ def calc_lowest_state(syst_pars_params, syst=None):
         syst = sns_system.make_zigzag_system(**syst_pars)
 
     ham = syst.hamiltonian_submatrix(sparse=True, params=params)
-    e, ev = sparse_diag(ham, 4, 0)
+    e, ev = mumps_eigsh(ham, 4, 0)
     return np.sort(np.abs(e))[::2]
 
 
-def sparse_diag(matrix, k, sigma, **kwargs):
+def mumps_eigsh(matrix, k, sigma, **kwargs):
     """Call sla.eigsh with mumps support.
 
     Please see scipy.sparse.linalg.eigsh for documentation.
@@ -50,7 +50,7 @@ def sparse_diag(matrix, k, sigma, **kwargs):
 
 def calc_spectrum(syst, params, k=20):
     ham = syst.hamiltonian_submatrix(params=params, sparse=True)
-    (energies, wfs) = sparse_diag(ham, k=k, sigma=0)
+    (energies, wfs) = mumps_eigsh(ham, k=k, sigma=0)
     return (energies, wfs)
 
 
