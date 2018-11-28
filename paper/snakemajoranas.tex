@@ -85,12 +85,6 @@ In order to create a stable platform for quantum computing, Majorana bound state
 
 We claim that one of the problems lying in the way of a stable system, is the appearance of a soft gap; the gap is greatly reduced for states with momentum directed along the length of the strip. We claim that this is due to, from a semiclassical perspective, long paths through the semiconductor without interruption by the superconductor. We show that introducing a zigzag or snake like geometry for the semiconductor removes these long trajectories and avoids the appearance of a soft gap.
 
-
-\comment{Majoranas are mostly made in hybrid NS structures.}
-\comment{Currently proposed workarounds are low density or disorder, but both have drawbacks.}
-\comment{The gap is small because of long trajectories.}
-\comment{We show that zigzag geometry solves this problem in a controllable manner.}
-
 \begin{figure}[!htb]
 % \includegraphics[width=0.95\columnwidth]{figures/SOME_FIGURE}
 \caption{Setups. Figure of a straight and zigzag system, including trajectories.
@@ -99,12 +93,39 @@ We claim that one of the problems lying in the way of a stable system, is the ap
 
 
 \section{Analytical estimate}
+\begin{align}
+    &S = 
+    &\left(
+    \begin{array}{cc}
+    r & t\\
+    t & e^{-2 i q W} r\\
+    \end{array}
+    \right) 
+    \\
+    &r = &\left(
+    \begin{array}{rr}
+    e^{i \nu_{\arg}}\left(\omega_+ - \omega_-\right) & (\omega _+ + \omega _-)\\
+    -(\omega _+ + \omega _-) & - e^{-i \nu _{\arg }} \left(\omega _+ - \omega _-\right)\\
+    \end{array}
+    \right)
+    \\
+    &t = e^{-i q W} &\left(
+    \begin{array}{rr}
+    e^{i \nu_{\arg}}\left(\beta_+ - \beta_-\right) & (\beta_+ + \beta_-)\\
+    -(\beta_+ + \beta_-) & - e^{-i \nu _{\arg }} \left(\beta_+ - \beta_-\right)\\
+    \end{array}
+    \right)
+\end{align}
 
-Quasi classical short junction calculation explaination.
-Include all, later move stuff to the appendix if necessary.
-
-
-
+\begin{align}
+    \omega_\pm = \frac{1}{4} \left(\gamma _{\pm}+\delta _{\pm}\right)
+    \\
+    \beta_\pm = \frac{1}{4} \left(\gamma _{\pm}-\delta _{\pm}\right)
+\end{align}
+\begin{align}
+    \gamma_\pm = \frac{q+i k_{\pm} \tan \left(\frac{W k_{\pm}}{2}\right)}{q-i k_{\pm} \tan \left(\frac{W k_{\pm}}{2}\right)} \\
+    \delta_\pm = \frac{q-i k_{\pm} \cot \left(\frac{W k_{\pm}}{2}\right)}{q+i k_{\pm} \cot \left(\frac{W k_{\pm}}{2}\right)}
+\end{align}
 \section{Numerical bandstructures}
 
 \comment{We consider a 2D SNS junction with a Rashba-BdG Hamiltonian.}
