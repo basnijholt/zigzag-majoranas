@@ -226,6 +226,6 @@ def find_phase_bounds(lead, params, k_x=0, num_bands=20, sigma=0):
         mus = sla.eigs(chemical_potentials, k=num_bands, sigma=sigma)[0]
 
     inds = np.argsort(mus.real)
-    mus[mus.imag > 1e-14] = np.nan
+    mus[abs(mus.imag) > 1e-14] = np.nan
 
     return mus.real[inds]
