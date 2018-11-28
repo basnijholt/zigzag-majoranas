@@ -17,7 +17,7 @@ paper:
   script:
     - cd paper
     - mkdir -p figures
-    - make pdf
+    - make plot pdf
   artifacts:
     paths:
       - paper/snakemajoranas.pdf

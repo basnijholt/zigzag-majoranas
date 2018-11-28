@@ -1,4 +1,4 @@
-\documentclass[draft, english, twocolumn, 10pt, aps, superscriptaddress, floatfix, prb, citeautoscript]{revtex4-1}
+\documentclass[english, twocolumn, 10pt, aps, superscriptaddress, floatfix, prb, citeautoscript]{revtex4-1}
 \pdfoutput=1
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -94,7 +94,12 @@ We claim that one of the problems lying in the way of a stable system, is the ap
 
 \section{Analytical estimate}
 \begin{align}
-    S &= 
+    S &= \left(
+    \begin{array}{rr}
+    r_{ll}&t_{rl}\\
+    t_{lr}&r_{rr}\\
+    \end{array}
+    \right) =
     \left(
     \begin{array}{rr}
     \beta_+ & e^{-i q W} \beta_-\\
@@ -112,8 +117,15 @@ We claim that one of the problems lying in the way of a stable system, is the ap
 \end{align}
 
 \begin{align}
-    \gamma_j = \frac{q+i k_{j} \tan \left(\frac{W k_{j}}{2}\right)}{q-i k_{j} \tan \left(\frac{W k_{j}}{2}\right)} \\
-    \delta_j = \frac{q-i k_{j} \cot \left(\frac{W k_{j}}{2}\right)}{q+i k_{j} \cot \left(\frac{W k_{\pm}}{2}\right)}
+    \gamma_j &= \frac{q+i k_{j} \tan \left(\frac{W k_{j}}{2}\right)}{q-i k_{j} \tan \left(\frac{W k_{j}}{2}\right)} \\
+    \delta_j &= \frac{q-i k_{j} \cot \left(\frac{W k_{j}}{2}\right)}{q+i k_{j} \cot \left(\frac{W k_{\pm}}{2}\right)}\\
+    e^{i \nu_{\arg}} &= \frac{E_\text{z} e^{i \theta }-i \alpha  k_x}{\sqrt{E_\text{z}^2+\alpha  k_x \left(\alpha  k_x-2 E_\text{z} \sin (\theta )\right)}}
+\end{align}
+
+\begin{align}
+    q &= \sqrt{\frac{2 m_\ast}{\hbar ^2}\left(\mu_s + E\right) - k_x^2}\\
+    k_1 &= \sqrt{\frac{2 m_\ast}{\hbar^2} \left(\mu_n+ E-\sqrt{\text{Ez}^2-2 \alpha  \text{Ez} \sin (\theta ) k_x+\alpha ^2 k_x^2}\right) - k_x^2 }\\
+    k_2 &= \sqrt{\frac{2 m_\ast}{\hbar^2} \left(\mu_n+ E+\sqrt{\text{Ez}^2-2 \alpha  \text{Ez} \sin (\theta ) k_x+\alpha ^2 k_x^2}\right) - k_x^2 }
 \end{align}
 \section{Numerical bandstructures}
 
