@@ -198,13 +198,6 @@ def phase_bounds_operator(lead, params, k_x=0):
     return _operator
 
 
-# def phase_bounds_operator(lead, params, k_x=0):
-#     h_k = lead.hamiltonian_submatrix(params=dict(params, mu=0, k_x=k_x),
-#         sparse=True)
-#     sigma_z = np.array([[1, 0], [0, -1]])
-#     _operator = np.kron(np.eye(len(h) // 2), sigma_z) @ h_k
-#     return _operator
-
 def find_phase_bounds(lead, params, k_x=0, num_bands=20, sigma=0):
     """Find the phase boundaries.
     Solve an eigenproblem that finds values of chemical potential at which the
@@ -232,6 +225,7 @@ def find_phase_bounds(lead, params, k_x=0, num_bands=20, sigma=0):
     else:
         mus = sla.eigs(chemical_potentials, k=num_bands, sigma=sigma)[0]
 
+    inds = np.argsort(mus.real)
     mus[mus.imag > 1e-14] = np.nan
 
-    return np.sort(mus.real)
+    return mus.real[inds]
