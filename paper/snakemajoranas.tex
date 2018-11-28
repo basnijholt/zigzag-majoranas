@@ -97,34 +97,23 @@ We claim that one of the problems lying in the way of a stable system, is the ap
     &S = 
     &\left(
     \begin{array}{cc}
-    r & t\\
-    t & e^{-2 i q W} r\\
+    \beta_+ & e^{-i q W} \beta_-\\
+    e^{-i q W} \beta_- & e^{-2 i q W} \beta_+\\
     \end{array}
     \right) 
     \\
-    &r = &\left(
+    &\beta_\pm = &\left(
     \begin{array}{rr}
-    e^{i \nu_{\arg}}\left(\omega_+ - \omega_-\right) & (\omega _+ + \omega _-)\\
-    -(\omega _+ + \omega _-) & - e^{-i \nu _{\arg }} \left(\omega _+ - \omega _-\right)\\
+    e^{i \nu_{\arg}}\left(\omega^\pm_1 - \omega^\pm_2\right) & (\omega^\pm _1 + \omega^\pm _2)\\
+    -(\omega^\pm _1 + \omega^\pm _2) & - e^{-i \nu _{\arg }} \left(\omega^\pm _1 - \omega^\pm _2\right)\\
     \end{array}
-    \right)
-    \\
-    &t = e^{-i q W} &\left(
-    \begin{array}{rr}
-    e^{i \nu_{\arg}}\left(\beta_+ - \beta_-\right) & (\beta_+ + \beta_-)\\
-    -(\beta_+ + \beta_-) & - e^{-i \nu _{\arg }} \left(\beta_+ - \beta_-\right)\\
-    \end{array}
-    \right)
+    \right)\\
+    &\omega^\pm_j = \frac{1}{4} \left(\gamma _{j} \pm \delta _{j}\right)
 \end{align}
 
 \begin{align}
-    \omega_\pm = \frac{1}{4} \left(\gamma _{\pm}+\delta _{\pm}\right)
-    \\
-    \beta_\pm = \frac{1}{4} \left(\gamma _{\pm}-\delta _{\pm}\right)
-\end{align}
-\begin{align}
-    \gamma_\pm = \frac{q+i k_{\pm} \tan \left(\frac{W k_{\pm}}{2}\right)}{q-i k_{\pm} \tan \left(\frac{W k_{\pm}}{2}\right)} \\
-    \delta_\pm = \frac{q-i k_{\pm} \cot \left(\frac{W k_{\pm}}{2}\right)}{q+i k_{\pm} \cot \left(\frac{W k_{\pm}}{2}\right)}
+    \gamma_j = \frac{q+i k_{j} \tan \left(\frac{W k_{j}}{2}\right)}{q-i k_{j} \tan \left(\frac{W k_{j}}{2}\right)} \\
+    \delta_j = \frac{q-i k_{j} \cot \left(\frac{W k_{j}}{2}\right)}{q+i k_{j} \cot \left(\frac{W k_{\pm}}{2}\right)}
 \end{align}
 \section{Numerical bandstructures}
 
