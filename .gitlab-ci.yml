@@ -1,0 +1,23 @@
+before_script:
+  - pip install -U https://github.com/python-adaptive/adaptive/archive/master.zip
+  - conda install -y sympy==1.1
+
+notes:
+  script:
+    - cd progress_report
+    - pdflatex progress.tex
+    - pdflatex progress.tex
+
+  artifacts:
+    paths:
+    - progress_report/*.pdf
+
+
+paper:
+  script:
+    - cd paper
+    - mkdir -p figures
+    - make pdf
+  artifacts:
+    paths:
+      - paper/snakemajoranas.pdf
