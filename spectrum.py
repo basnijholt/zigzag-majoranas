@@ -191,15 +191,21 @@ def find_gap_of_lead(lead, params, tol=1e-6):
 
 
 def phase_bounds_operator(lead, params, k_x=0):
-    params['mu'] = 0
-    h_k = lead.hamiltonian_submatrix(params=dict(params, k_x=k_x),
+    h_k = lead.hamiltonian_submatrix(params=dict(params, mu=0, k_x=k_x),
         sparse=True)
     sigma_z = sp.csc_matrix(np.array([[1, 0], [0, -1]]))
     _operator = sp.kron(sp.eye(h_k.shape[0] // 2), sigma_z) @ h_k
     return _operator
 
 
-def find_phase_bounds(lead, params, k_x=0, num_bands=20):
+# def phase_bounds_operator(lead, params, k_x=0):
+#     h_k = lead.hamiltonian_submatrix(params=dict(params, mu=0, k_x=k_x),
+#         sparse=True)
+#     sigma_z = np.array([[1, 0], [0, -1]])
+#     _operator = np.kron(np.eye(len(h) // 2), sigma_z) @ h_k
+#     return _operator
+
+def find_phase_bounds(lead, params, k_x=0, num_bands=20, sigma=0):
     """Find the phase boundaries.
     Solve an eigenproblem that finds values of chemical potential at which the
     gap closes at momentum k=0. We are looking for all real solutions of the
@@ -222,8 +228,10 @@ def find_phase_bounds(lead, params, k_x=0, num_bands=20):
     chemical_potentials = phase_bounds_operator(lead, params, k_x)
 
     if num_bands is None:
-        mus = np.linalg.eigvals(chemical_potentials)
+        mus = np.linalg.eigvals(chemical_potentials.todense())
     else:
-        mus = sla.eigs(chemical_potentials, k=num_bands, sigma=0)[0]
+        mus = sla.eigs(chemical_potentials, k=num_bands, sigma=sigma)[0]
 
-    return np.sort(mus.real), mus
+    mus[mus.imag > 1e-14] = np.nan
+
+    return np.sort(mus.real)

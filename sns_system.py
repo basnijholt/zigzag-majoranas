@@ -13,7 +13,6 @@ from scipy.optimize import fsolve
 import peierls
 import supercurrent
 import supercurrent_matsubara
-import topology
 from shape import *
 
 
