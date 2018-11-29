@@ -1,0 +1,57 @@
+% Horizon penetrating coordinates (vs. Schwarzschild coordinates)
+% for a black hole spacetime, with excision
+% Author: Jonah Miller
+\documentclass[tikz,border=10pt]{standalone}
+\usetikzlibrary{snakes}
+\tikzset{zigzag/.style={decorate, decoration=zigzag}}
+\def \L {2.}
+
+% fix for bug in color.sty
+% see: http://tex.stackexchange.com/questions/274524/definecolorset-of-xcolor-problem-with-color-values-starting-with-f
+\makeatletter
+\def\@hex@@Hex#1%
+ {\if a#1A\else \if b#1B\else \if c#1C\else \if d#1D\else
+  \if e#1E\else \if f#1F\else #1\fi\fi\fi\fi\fi\fi \@hex@Hex}
+\makeatother
+
+% Define a prettier green
+\definecolor{darkgreen}{HTML}{006622}
+
+\begin{document}
+\begin{tikzpicture}
+
+  % causal diamond
+  \node (left_sn) at (-42mm, 10mm) {};
+  \node (left_ns) at (-42mm, -10mm) {};
+  \node (right_sn) at (42mm, 10mm) {};
+  \node (right_ns) at (42mm, -10mm) {};
+
+  \node (left_bot) at (-20mm, -40mm) {};
+  \node (right_top) at (20mm, 40mm) {};
+  
+  \node at (0,30mm) {S};
+  \node at (0,0) {N};
+  \node at (0,-30mm) {S};
+  \def\topsnake{[snake=zigzag, segment length=40mm, segment amplitude=10mm] (left_sn) to (right_sn)};
+  \def\botsnake{[snake=zigzag, segment length=40mm, segment amplitude=10mm] (left_ns) to (right_ns)};
+
+  \draw[->, ultra thick] (-25mm,-50mm)--(-25mm,50mm) node[right]{$y$};
+    \draw[|-|] (-25mm,9mm) -> (-25mm, 2);
+    \draw[dotted] (-25mm,2) -> (9mm, 2);
+    \draw[dotted] (-25mm,9mm) -> (-2mm, 9mm);
+    \node (zy) at (-28mm, 14mm) {$z_y$};
+
+  \draw[->, ultra thick] (-30mm,-45mm)--(30mm,-45mm) node[right]{$x$};
+    \draw[|-|] (-20mm,-45mm)--(20mm,-45mm);
+    \node at (0mm,-48mm) {$z_x$};
+
+  \begin{scope}
+  \clip[draw] (left_bot) rectangle (right_top);
+  \draw \topsnake;
+  \draw \botsnake;
+  \end{scope}
+
+  \draw (left_bot) rectangle (right_top);
+
+\end{tikzpicture}
+\end{document}

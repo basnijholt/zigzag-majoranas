@@ -7,6 +7,7 @@ plot:
 	jupyter nbconvert --to notebook --execute --ExecutePreprocessor.timeout=600 ../paper-figures.ipynb
 
 pdf: bbl
+	pdflatex figures/systemPicture.tex
 	pdflatex snakemajoranas.tex
 	pdflatex snakemajoranas.tex
 
