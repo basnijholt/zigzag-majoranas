@@ -79,7 +79,9 @@ In addition to having a large minimum energy gap, the abscence of long length tr
 
 \maketitle
 
-
+%%██████████████████████████████████████████████████████████████████████████
+%%██ Introduction
+%%██████████████████████████████████████████████████████████████████████████
 \section{Introduction}
 In order to create a stable platform for quantum computing, Majorana bound states are one of the contenders currently being pursued. Currently, most efforts to create pairs of Majorana's are based on hybrid NS structures, where a lengthy strip of semiconductor is interfaced with one, or two superconductor structures. Assuming the right parameters, the semiconductor becomes topological and Majorana bound states appear at the ends of the segment. In practice however, multiple problems arise making even the observation, let alone the manipulation of Majorana's difficult.
 
@@ -91,8 +93,11 @@ We claim that one of the problems lying in the way of a stable system, is the ap
 \label{fig:setup}}
 \end{figure}
 
-
+%%██████████████████████████████████████████████████████████████████████████
+%%██ Analytical estimate
+%%██████████████████████████████████████████████████████████████████████████
 \section{Analytical estimate}
+
 \begin{align}
     S &= \left(
     \begin{array}{rr}
@@ -128,14 +133,28 @@ We claim that one of the problems lying in the way of a stable system, is the ap
     k_2 &= \left[ \frac{2 m_\ast}{\hbar^2} \left(\mu_n+\sqrt{\text{Ez}^2-2 \alpha  \text{Ez} \sin (\theta ) k_x+\alpha ^2 k_x^2}\right) - k_x^2 \right]^\frac{1}{2}
 \end{align}
 \end{footnotesize}
+
+
+
+%%██████████████████████████████████████████████████████████████████████████
+%%██ Numerical bandstructures
+%%██████████████████████████████████████████████████████████████████████████
 \section{Numerical bandstructures}
 
 \comment{We consider a 2D SNS junction with a Rashba-BdG Hamiltonian.}
 
 \comment{We discretize the model and simulate it with Kwant.}
 
+
+%%██████████████████████████████████████████████████████████████████████████
+%%██ Calculating the bandstuctures
+%%██████████████████████████████████████████████████████████████████████████
 \section{Calculating the bandstuctures.}
 
+
+%%██████████████████████████████████████████████████████████████████████████
+%%██ Calculating the topological phase diagram
+%%██████████████████████████████████████████████████████████████████████████
 \section{Calculating the topological phase diagram.}
 
 \comment{We use a generalized eigenvalue problem to find all phase boundaries at once.}
@@ -158,7 +177,9 @@ We use a generalized eigenvalue problem to find all phase boundaries at once and
 \label{fig:phasediagrams}}
 \end{figure}
 
-
+%%██████████████████████████████████████████████████████████████████████████
+%%██ Localization lengths and shape effect
+%%██████████████████████████████████████████████████████████████████████████
 \section{Localization lengths and shape effect}
 
 \comment{We find the Majorana lengths by calculating the slowest decaying mode.}
@@ -172,7 +193,9 @@ We observe that $\xi$ for (a) is orders of magnitude longer and $E_\textrm{gap}$
 \label{fig:wavefunctions}}
 \end{figure}
 
-
+%%██████████████████████████████████████████████████████████████████████████
+%%██ Discussion and Conclusions
+%%██████████████████████████████████████████████████████████████████████████
 \section{Discussion and Conclusions}
 
 \comment{Extensions: we omit several physical effects, disorder, electrostatics, etc.}
