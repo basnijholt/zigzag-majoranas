@@ -128,6 +128,7 @@ We cut off the spectrum at the momentum corresponding to the proposed cutoff in 
 
 
 \begin{align}
+\label{eq:smatrix}
     S &= \left(
     \begin{array}{rr}
     r_{ll}&t_{rl}\\
@@ -164,6 +165,26 @@ We cut off the spectrum at the momentum corresponding to the proposed cutoff in 
 \end{footnotesize}
 
 
+In order to get the spectrum from the S-matrix [Eq.~\eqref{eq:smatrix}] we use the main result from Ref.~\onlinecite{beenakker1991universal} and start with a determinantal equation for the bound state energies in a SNS-junction:
+
+\begin{equation}
+\det\left[1+\alpha^{2}\left(E\right)r^{*}S_{e}\left(E,\bm{k}\right)rS_{e}^{*}\left(-E,-\bm{k}\right)\right]=0
+\end{equation}
+
+We rewrite this as a characteristic polynomial problem $\det\left[A-\lambda I\right]=0$, as
+
+\begin{equation}
+\det\left[r^{*}S_{e}\left(E,\bm{k}\right)rS_{e}^{*}\left(-E,-\bm{k}\right)-\frac{-1}{\alpha^{2}\left(E\right)}I\right]=0
+\end{equation}
+
+with
+\begin{equation}
+\lambda=-\frac{1}{\alpha^{2}\left(E\right)},\;A=r^{*}S_{e}\left(E,\bm{k}\right)rS_{e}^{*}\left(-E,-\bm{k}\right).
+\end{equation}
+
+Where $\lambda$ are the eigenvalues of $A$.
+Inverting $\alpha\left(E\right)\equiv\exp\left(-i\arccos\left(E/\Delta\right)\right)$ gives $\frac{E}{\Delta}=\frac{\alpha^{2}+1}{2\alpha}=\frac{1}{2}\left(\alpha+\alpha^{-1}\right)$, and since $\alpha$ is unitary and only defined in the postitive imagionary plane, $E_{i}=\textrm{real}\left(\pm\sqrt{1/\lambda_{i}}\right)$.  % TODO: add the mathematical notation for taking the lambda.imag > 0.
+Using this result and Eq.~\eqref{eq:smatrix}, we numerically find the Andreev spectrum.
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Numerical bandstructures
