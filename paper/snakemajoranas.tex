@@ -65,7 +65,7 @@
 \begin{document}
 
 
-\title{Increasing the topological gap by an order of magnitude through the geomerty for Majorana SNS junctions.}
+\title{Increasing the topological gap by an order of magnitude through the geometry for Majorana SNS junctions.}
 
 \author{Quantum Tinkerer}
 \affiliation{Kavli Institute of Nanoscience, Delft University of Technology, P.O. Box 4056, 2600 GA Delft, The Netherlands}
@@ -76,8 +76,8 @@
 \begin{abstract}
 We are solving a problem of soft gap in high density SNS Majorana junctions \cite{pientka2017topological}.
 We do this by introducing a zigzag geometry.
-This works because the maximum trajactory length is cut-off due to the geomerty and therefore the minimal energy gap is given by a simple formula, which we also verify using numerics.
-In addition to having a large minimum energy gap, the abscence of long length trajectories means that the localization length is very short as well.
+This works because the maximum trajectory length is cut-off due to the geometry and therefore the minimal energy gap is given by a simple formula, which we also verify using numerics.
+In addition to having a large minimum energy gap, the absence of long length trajectories means that the localization length is very short as well.
 \end{abstract}
 
 \maketitle
@@ -86,13 +86,15 @@ In addition to having a large minimum energy gap, the abscence of long length tr
 %%██ Introduction
 %%██████████████████████████████████████████████████████████████████████████
 \section{Introduction}
-In order to create a stable platform for quantum computing, Majorana bound states are one of the contenders currently being pursued.
-Currently, most efforts to create pairs of Majorana's are based on hybrid NS structures, where a lengthy strip of semiconductor is interfaced with one, or two superconductor structures.
-Assuming the right parameters, the semiconductor becomes topological and Majorana bound states appear at the ends of the segment.
-In practice however, multiple problems arise making even the observation, let alone the manipulation of Majorana's difficult.
+Majorana bound states (MBSs) are a promising candidate to form the basis of a stable platform for topological quantum computing.
+The current experimental effort is focused on creating pairs of MBSs in hybrid normal-superconductor (NS) structures, where a lengthy strip (or wire) of semiconductor is interfaced with a \cite{lutchyn_majorana_2010,oreg_helical_2010} superconductor.
+Within the right parameter regime ($E_z^2>\mu^2+\Delta^2$ for a simple wire), the semiconductor becomes topological and MBSs appear at the ends of the segment.
+Recently, a system with a slight modification has been proposed\cite{pientka2017topological}, where instead of having one superconductor, there are two superconductors, creating a superconductors-normal-superconductor (SNS) junction.
+This adds an extra knob to adjust, the superconducting phase difference $\phi$, and this should make it easier to tune the system into the topological phase.
+In practice, multiple problems arise making even the observation, let alone the manipulation of Majoranas difficult.
 
 We claim that one of the problems lying in the way of a stable system, is the appearance of a soft gap; the gap is greatly reduced for states with momentum directed along the length of the strip.
-We claim that this is due to, from a semiclassical perspective, long paths through the semiconductor without interruption by the superconductor.
+We claim that this is due to, from a semi classical perspective, long paths through the semiconductor without interruption by the superconductor.
 We show that introducing a zigzag or snake like geometry for the semiconductor removes these long trajectories and avoids the appearance of a soft gap.
 
 %%██████████████████████████████████████████████████████████████████████████
@@ -102,9 +104,9 @@ We show that introducing a zigzag or snake like geometry for the semiconductor r
 We consider a system [\ref{fig:setup}] consisting of a two dimensional strip of semiconductor, with superconductors adjacent on both sides.
 A magnetic field pointed along the x direction is applied.
 We model the system with a BdG Hamiltonian[\ref{eq:hamiltonian}]; the normal part also has Rashba spin-orbit coupling and a Zeeman field, and the superconductors differ in superconducting phase.
-For the zigzag geometry, we take a sawtooth like pattern wher $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction.
+For the zigzag geometry, we take a sawtooth like pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction.
 We know from [\cite{pientka2017topological}] that the non-zigzag system is in class BDI.
-Using the software package qsymm, we evaluate the symmetry class of the system to be D.
+Using the software package Qsymm\cite{varjas2018qsymm}, we evaluate the symmetry class of the system to be D.
 
 \begin{small}
 \begin{align}
@@ -219,14 +221,14 @@ This has an effect on the Majorana coherence length, as described later on in th
 %%██ Calculating the topological phase diagram
 %%██████████████████████████████████████████████████████████████████████████
 \section{Calculating the topological phase diagram.}
-In order to create a topological phase diagram we would normally compute the topolical invariant(pfaffian).
+In order to create a topological phase diagram we would normally compute the topological invariant(pfaffian).
 For a ribbon this is possible, but computing the invariant of the supercell is too computationally expensive.
-Using a generalized eigenvalue problem also proved unsuccesful due to numerical errors, so we resort to simply calculating the gap and noting the gap closings.
+Using a generalized eigenvalue problem also proved unsuccessful due to numerical errors, so we resort to simply calculating the gap and noting the gap closings.
 
 Similar to what is described in Pientka et. al [\cite{pientka2017topological}], we see that the ribbon topology has a diamond like structure as a function of phase and Zeeman field.
 We also see some additional gap closings which are due to the BDI symmetry class, creating quite an unstable region.
 As expected, for the zigzag system, the magnitude of the gap is significantly improved, whilst maintaining the diamond like shape.
-As the zigzag shape destroys the additional symmetry, moving it to class D, we see a more clean toplogical region.
+As the zigzag shape destroys the additional symmetry, moving it to class D, we see a more clean topological region.
 \comment{We use a generalized eigenvalue problem to find all phase boundaries at once.}
 
 \comment{We calculate the gap by finding the minimum energy in the spectrum.}
@@ -251,7 +253,7 @@ We use a generalized eigenvalue problem to find all phase boundaries at once and
 %%██ Localization lengths and shape effect
 %%██████████████████████████████████████████████████████████████████████████
 \section{Localization lengths and shape effect}
-Using the tight-binding package kwant, we model a finite system to compute the Majorana wave function density for different geometries; ribbon, zigzag, parallel curve and vertically offset sinosoids.
+Using the tight-binding package Kwant~\cite{groth_kwant:_2014}, we model a finite system to compute the Majorana wave function density for different geometries; ribbon, zigzag, parallel curve and vertically offset sinusoids.
 We then superimpose them onto the geometry, as in figure \ref{fig:wavefunctions}.
 For the ribbon system, we see that the Majorana coherence length is relatively large, not showing the decolalized nature sought after.
 All of the zigzag type geometries however show greatly reduced coherence length.\tabularnewline
@@ -261,8 +263,8 @@ This can be explained by two effects: the increase in topological gap, but also 
 \begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/wavefunctions}
 \caption{Wavefunctions for different sizes and geometries.
-With (a) a straight system, (b) a zigzag sytem, (c) a system where the normal region is defined by two parallel sine waves, and (d) a system with the Laeven shape.
-Inside the figure we indicate the Majorana lenght (or coherence length) $\xi$ and the topological energy gap $E_\textrm{gap}.$
+With (a) a straight system, (b) a zigzag system, (c) a system where the normal region is defined by two parallel sine waves, and (d) a system with the Laeven shape.
+Inside the figure we indicate the Majorana length (or coherence length) $\xi$ and the topological energy gap $E_\textrm{gap}.$
 We observe that $\xi$ for (a) is orders of magnitude longer and $E_\textrm{gap}$ orders of magnitude smaller than for (b, c, d), meaning that the details of the geometry do not matter.
 \label{fig:wavefunctions}}
 \end{figure}
