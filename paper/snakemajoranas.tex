@@ -86,9 +86,14 @@ In addition to having a large minimum energy gap, the abscence of long length tr
 %%██ Introduction
 %%██████████████████████████████████████████████████████████████████████████
 \section{Introduction}
-In order to create a stable platform for quantum computing, Majorana bound states are one of the contenders currently being pursued. Currently, most efforts to create pairs of Majorana's are based on hybrid NS structures, where a lengthy strip of semiconductor is interfaced with one, or two superconductor structures. Assuming the right parameters, the semiconductor becomes topological and Majorana bound states appear at the ends of the segment. In practice however, multiple problems arise making even the observation, let alone the manipulation of Majorana's difficult.
+In order to create a stable platform for quantum computing, Majorana bound states are one of the contenders currently being pursued.
+Currently, most efforts to create pairs of Majorana's are based on hybrid NS structures, where a lengthy strip of semiconductor is interfaced with one, or two superconductor structures.
+Assuming the right parameters, the semiconductor becomes topological and Majorana bound states appear at the ends of the segment.
+In practice however, multiple problems arise making even the observation, let alone the manipulation of Majorana's difficult.
 
-We claim that one of the problems lying in the way of a stable system, is the appearance of a soft gap; the gap is greatly reduced for states with momentum directed along the length of the strip. We claim that this is due to, from a semiclassical perspective, long paths through the semiconductor without interruption by the superconductor. We show that introducing a zigzag or snake like geometry for the semiconductor removes these long trajectories and avoids the appearance of a soft gap.
+We claim that one of the problems lying in the way of a stable system, is the appearance of a soft gap; the gap is greatly reduced for states with momentum directed along the length of the strip.
+We claim that this is due to, from a semiclassical perspective, long paths through the semiconductor without interruption by the superconductor.
+We show that introducing a zigzag or snake like geometry for the semiconductor removes these long trajectories and avoids the appearance of a soft gap.
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Physical picture
@@ -121,7 +126,7 @@ Using the software package qsymm, we evaluate the symmetry class of the system t
 %%██ Analytical estimate
 %%██████████████████████████████████████████████████████████████████████████
 \section{Analytical estimate}
-We claim that the hardening of the gap is due to the cutoff of long trajectories. 
+We claim that the hardening of the gap is due to the cutoff of long trajectories.
 In order to verify this is the case, we take a ribbon SNS junction with magnetic field rotated such that it corresponds to a rising section of the zigzag.
 We then compute the scattering matrix [Eq.~\eqref{eq:smatrix}] to find the Andreev bound spectrum as a function of the momentum along the strip direction.
 We cut off the spectrum at the momentum corresponding to the proposed cutoff in the zigzag, and compare it to the numerically obtained gap for a true zigzag system.
@@ -140,7 +145,7 @@ We cut off the spectrum at the momentum corresponding to the proposed cutoff in 
     \beta_+ & e^{-i q W} \beta_-\\
     e^{-i q W} \beta_- & e^{-2 i q W} \beta_+\\
     \end{array}
-    \right) 
+    \right)
     \\
     \beta_\pm &= \left(
     \begin{array}{rr}
@@ -183,7 +188,7 @@ with
 \end{equation}
 
 Where $\lambda_i$ are the eigenvalues of $A$.
-Inverting $\alpha\left(E\right)\equiv\exp\left(-i\arccos\left(E/\Delta\right)\right)$ gives $\frac{E}{\Delta}=\frac{\alpha^{2}+1}{2\alpha}=\frac{1}{2}\left(\alpha+\alpha^{-1}\right)=\textrm{Re}(\alpha)$, where the last equality holds because $\alpha$ is unitary.
+Inverting $\alpha\left(E\right)\equiv\exp\left(-i\arccos\left(E/\Delta\right)\right)$ yields $\frac{E}{\Delta}=\frac{\alpha^{2}+1}{2\alpha}=\frac{1}{2}\left(\alpha+\alpha^{-1}\right)=\textrm{Re}(\alpha)$, where the last equality holds because $\alpha$ is unitary.
 Then, since $\alpha$ is only defined in the positive imaginary plane, the energies are $\frac{E_{i}}{\Delta}=\textrm{Re}\left(\sqrt{-1/\lambda_{i}}\right)$ where we take the root which has a positive imaginary part.
 Using this result and Eq.~\eqref{eq:smatrix}, we numerically find the Andreev spectrum.
 
@@ -207,7 +212,8 @@ For comparisons sake, we take the same cell size for the ribbon structure so the
 The introduction of a zigzag has a striking effect: the bands flatten out, and more importantly, the gap size is increased tenfolds.
 We claim this effect is due to the fact that the modes where the gap is smallest, when the momentum is almost completely focused along the strip ($k_x=k_F$), are cut off by the zigzag geometry.
 Additionally in the presence of normal reflection, due to the availability of NS interfaces at a wide range of slopes, the reflected part will eventually ``find'' a surface with which it is perpendicular to.
-Also apparent is the reduction of group velocity; the slope of the bands is greatly reduced. This has an effect on the Majorana coherence length, as described later on in the manuscript.
+Also apparent is the reduction of group velocity; the slope of the bands is greatly reduced.
+This has an effect on the Majorana coherence length, as described later on in the manuscript.
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Calculating the topological phase diagram
