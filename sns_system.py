@@ -121,9 +121,9 @@ def get_template_strings(
 
 
 @lru_cache()
-def get_templates(a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc):
+def get_templates(a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc, no_phs):
     template_strings = get_template_strings(
-        transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
+        transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc, no_phs=no_phs)
     kwargs = dict(coords=('x', 'y'), grid_spacing=a)
     template_barrier = kwant.continuum.discretize(
         template_strings['ham_barrier'], **kwargs)
@@ -265,7 +265,9 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
                 k_x_in_sc,
                 wraparound,
                 current,
-                ns_junction):
+                ns_junction,
+                sc_leads=False,
+                no_phs=False):
     
     ######################
     ## Define templates ##
@@ -275,7 +277,7 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
     sawtooth = (shape == 'sawtooth')
     
     template_barrier, template_normal, template_sc_left, template_sc_right = get_templates(
-        a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc)
+        a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc, no_phs)
 
     template_interior = template_normal
     template_edge = template_barrier
@@ -454,6 +456,15 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
 
         if wraparound:
             syst = kwant.wraparound.wraparound(syst)
+            if sc_leads:
+                lead_up = kwant.Builder(kwant.TranslationalSymmetry([L_x, 0], [0, a]))
+                lead_down = kwant.Builder(kwant.TranslationalSymmetry([L_x, 0], [0, -a]))
+                lead_up = kwant.wraparound.wraparound(lead_up, keep=1)
+                lead_down = kwant.wraparound.wraparound(lead_down, keep=1)
+                lead_up.fill(template_top_superconductor, lambda s: 0 <= s.pos[0] < L_x, (0, 0))
+                lead_down.fill(template_bottom_superconductor, lambda s: 0 <= s.pos[0] < L_x, (0, 0))
+                syst.attach_lead(lead_up)
+                syst.attach_lead(lead_down)
 
         syst = syst.finalized()
 
