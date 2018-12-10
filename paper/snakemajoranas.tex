@@ -87,15 +87,20 @@ In addition to having a large minimum energy gap, the absence of long length tra
 %%██████████████████████████████████████████████████████████████████████████
 \section{Introduction}
 Majorana bound states (MBSs) are a promising candidate to form the basis of a stable platform for topological quantum computing.
+\comment{Majoranas are mostly made in hybrid NS structures.}
 The current experimental effort is focused on creating pairs of MBSs in hybrid normal-superconductor (NS) structures, where a lengthy strip (or wire) of semiconductor is interfaced with a \cite{lutchyn_majorana_2010,oreg_helical_2010} superconductor.
 Within the right parameter regime ($E_z^2>\mu^2+\Delta^2$ for a simple wire), the semiconductor becomes topological and MBSs appear at the ends of the segment.
 Recently, a system with a slight modification has been proposed\cite{pientka2017topological}, where instead of having one superconductor, there are two superconductors, creating a superconductors-normal-superconductor (SNS) junction.
 This adds an extra knob to adjust, the superconducting phase difference $\phi$, and this should make it easier to tune the system into the topological phase.
 In practice, multiple problems arise making even the observation, let alone the manipulation of Majoranas difficult.
 
+\comment{Currently proposed workarounds are low density or disorder, but both have drawbacks.}
 We claim that one of the problems lying in the way of a stable system, is the appearance of a soft gap; the gap is greatly reduced for states with momentum directed along the length of the strip.
+\comment{The gap is small because of long trajectories.}
 We claim that this is due to, from a semi classical perspective, long paths through the semiconductor without interruption by the superconductor.
+\comment{We show that zigzag geometry solves this problem in a controllable manner.}
 We show that introducing a zigzag or snake like geometry for the semiconductor removes these long trajectories and avoids the appearance of a soft gap.
+
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Physical picture
@@ -111,7 +116,7 @@ Using the software package Qsymm\cite{varjas2018qsymm}, we evaluate the symmetry
 \begin{small}
 \begin{align}
     H = \left(\frac{\hbar^2\left(\kx^2 + \ky^2\right)}{2\meff} - \mu\right)\tau_z+
-        E_\text{z} \sigma_z+
+        E_\text{z} \sigma_x+
         \alpha \left( \ky \sigma_x - \kx \sigma_y \right) \tau_z +
         \Delta \tau_y
 \end{align}
