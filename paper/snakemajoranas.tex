@@ -109,8 +109,9 @@ We show that introducing a zigzag or snake like geometry for the semiconductor r
 %%██████████████████████████████████████████████████████████████████████████
 \section{Physical picture}
 We consider a system (Fig.~\ref{fig:setup}) consisting of a two dimensional strip of semiconductor, with superconductors adjacent on both sides.
-A magnetic field pointed along the x direction is applied.
-We model the system with a BdG Hamiltonian Eq.~\eqref{eq:hamiltonian}; the normal part also has Rashba spin-orbit coupling and a Zeeman field, and the superconductors differ in superconducting phase.
+As seen in the figure, we modulate the shape of the normal region, which can be either zigzag as depicted, or a more smooth snake like shape.
+Just as the normal system[\cite{pientka2017topological}], a magnetic field pointed along the x direction is applied.
+We model the system with a BdG Hamiltonian Eq.~\eqref{eq:hamiltonian}; the normal part has Rashba spin-orbit coupling and a Zeeman field, and apart from the kinetic term, the superconductors only have a superconducting term differ in superconducting phase.
 For the zigzag geometry, we take a sawtooth like pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction.
 We know from \onlinecite{pientka2017topological} that the non-zigzag system is in class BDI.
 Using the software package Qsymm\cite{varjas2018qsymm}, we evaluate the symmetry class of the system to be D.
@@ -132,24 +133,19 @@ Using the software package Qsymm\cite{varjas2018qsymm}, we evaluate the symmetry
 \end{figure}
 
 %%██████████████████████████████████████████████████████████████████████████
-%%██ Numerical bandstructures
-%%██████████████████████████████████████████████████████████████████████████
-\section{Numerical bandstructures}
-
-\comment{We consider a 2D SNS junction with a Rashba-BdG Hamiltonian and zigzag geometry.}
-
-\comment{We discretize the model and simulate it with Kwant.}
-
-
-%%██████████████████████████████████████████████████████████████████████████
 %%██ Calculating the bandstuctures
 %%██████████████████████████████████████████████████████████████████████████
 \section{Calculating the bandstuctures.}
+
+\comment{We consider a 2D SNS junction with a Rashba-BdG Hamiltonian.}
+We consider the model described in section II; a two dimensional SNS junction with a Rashba BdG Hamiltonian.
+
+\comment{We discretize the model and simulate it with Kwant.}
 In figure \ref{fig:bandstuctures}, We calculate the bandstructure for a zigzag system with varying amplitude using Kwant.
 As the zigzag introduces super cell, we see a folded bandstructure.
 For comparisons sake, we take the same cell size for the ribbon structure so the bandstructure is folded in the same way.
-The introduction of a zigzag has a striking effect: the bands flatten out, and more importantly, the gap size is increased tenfolds.
-We claim this effect is due to the fact that the modes where the gap is smallest, when the momentum is almost completely focused along the strip ($k_x=k_F$), are cut off by the zigzag geometry.
+The introduction of a zigzag has a striking effect: the bands flatten out, and more importantly, the gap size is increased more than an order of magnitude.
+This effect is due to the fact that the modes where the gap is smallest, when the momentum is almost completely focused along the strip ($k_x=k_F$), are cut off by the zigzag geometry.
 Additionally in the presence of normal reflection, due to the availability of NS interfaces at a wide range of slopes, the reflected part will eventually ``find'' a surface with which it is perpendicular to.
 Also apparent is the reduction of group velocity; the slope of the bands is greatly reduced.
 This has an effect on the Majorana coherence length, as described later on in the manuscript.
