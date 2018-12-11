@@ -94,11 +94,13 @@ Recently, a system with a slight modification has been proposed\cite{pientka2017
 This adds an extra knob to adjust, the superconducting phase difference $\phi$, and this should make it easier to tune the system into the topological phase.
 In practice, multiple problems arise making even the observation, let alone the manipulation of Majoranas difficult.
 
+\comment{The gap is small because of long trajectories.}
+From a semiclassical perspective, long paths through the semiconductor without interruption by the superconductor.
+
 \comment{Currently proposed workarounds are low density or disorder, but both have drawbacks.}
 We claim that one of the problems lying in the way of a stable system, is the appearance of a soft gap; the gap is greatly reduced for states with momentum directed along the length of the strip.
-\comment{The gap is small because of long trajectories.}
-We claim that this is due to, from a semi classical perspective, long paths through the semiconductor without interruption by the superconductor.
-\comment{We show that zigzag geometry solves this problem in a controllable manner.}
+
+\comment{We show that zigzag geometry solves this problem by eliminating the long trajectories.}
 We show that introducing a zigzag or snake like geometry for the semiconductor removes these long trajectories and avoids the appearance of a soft gap.
 
 
@@ -130,9 +132,71 @@ Using the software package Qsymm\cite{varjas2018qsymm}, we evaluate the symmetry
 \end{figure}
 
 %%██████████████████████████████████████████████████████████████████████████
+%%██ Numerical bandstructures
+%%██████████████████████████████████████████████████████████████████████████
+\section{Numerical bandstructures}
+
+\comment{We consider a 2D SNS junction with a Rashba-BdG Hamiltonian and zigzag geometry.}
+
+\comment{We discretize the model and simulate it with Kwant.}
+
+
+%%██████████████████████████████████████████████████████████████████████████
+%%██ Calculating the bandstuctures
+%%██████████████████████████████████████████████████████████████████████████
+\section{Calculating the bandstuctures.}
+In figure \ref{fig:bandstuctures}, We calculate the bandstructure for a zigzag system with varying amplitude using Kwant.
+As the zigzag introduces super cell, we see a folded bandstructure.
+For comparisons sake, we take the same cell size for the ribbon structure so the bandstructure is folded in the same way.
+The introduction of a zigzag has a striking effect: the bands flatten out, and more importantly, the gap size is increased tenfolds.
+We claim this effect is due to the fact that the modes where the gap is smallest, when the momentum is almost completely focused along the strip ($k_x=k_F$), are cut off by the zigzag geometry.
+Additionally in the presence of normal reflection, due to the availability of NS interfaces at a wide range of slopes, the reflected part will eventually ``find'' a surface with which it is perpendicular to.
+Also apparent is the reduction of group velocity; the slope of the bands is greatly reduced.
+This has an effect on the Majorana coherence length, as described later on in the manuscript.
+
+%%██████████████████████████████████████████████████████████████████████████
+%%██ Calculating the topological phase diagram
+%%██████████████████████████████████████████████████████████████████████████
+\section{Calculating the topological phase diagram.}
+In order to create a topological phase diagram we would normally compute the topological invariant(pfaffian).
+For a ribbon this is possible, but computing the invariant of the supercell is too computationally expensive.
+Using a generalized eigenvalue problem also proved unsuccessful due to numerical errors, so we resort to simply calculating the gap and noting the gap closings.
+
+Similar to what is described in Pientka et. al [\cite{pientka2017topological}], we see that the ribbon topology has a diamond like structure as a function of phase and Zeeman field.
+We also see some additional gap closings which are due to the BDI symmetry class, creating quite an unstable region.
+As expected, for the zigzag system, the magnitude of the gap is significantly improved, whilst maintaining the diamond like shape.
+As the zigzag shape destroys the additional symmetry, moving it to class D, we see a more clean topological region.
+\comment{We use a generalized eigenvalue problem to find all phase boundaries at once.}
+
+\comment{We calculate the gap by finding the minimum energy in the spectrum.}
+
+\begin{figure}[!htb]
+\includegraphics[width=0.95\columnwidth]{figures/bandstructures}
+\caption{Figure of the bandstuctures.
+Where the lines are (blue) $\phi=0$, $B=0$ and (red) $\phi=\pi$, $B \ne 0$.
+and the subplots (a) $z_y=0$, (b) $z_y=\frac{W}{4}$, and (c) $z_y=\frac{W}{2}$, where $W$ is the junction width.
+We observe that once there are no more straight trajectories inside the junction (when $z_y=\frac{W}{2}$) the spectrum becomes most insensitive to the momentum $k_x$.
+\label{fig:bandstuctures}}
+\end{figure}
+
+\begin{figure}[!htb]
+\includegraphics[width=0.95\columnwidth]{figures/phasediagrams}
+\caption{Phase diagrams of a straight system (a, b) and zigzag system (c, d), where (a, c) are $E(\mu, B)$ and (b, d) are $E(\phi, B)$.
+We use a generalized eigenvalue problem to find all phase boundaries at once and find the minimal energy gap by finding the minimum in the spectrum: $\min{E(k)}$.
+\label{fig:phasediagrams}}
+\end{figure}
+
+%%██████████████████████████████████████████████████████████████████████████
 %%██ Analytical estimate
 %%██████████████████████████████████████████████████████████████████████████
-\section{Analytical estimate}
+\section{Analytical estimate of the band gap}
+
+\comment{To compute the effect of cutoff consider a single segment of the zigzag and obtain the spectrum analytically (this allows to use translation invariance).}
+
+\comment{We use a short junction approximation and neglect transverse SO.}
+
+\comment{The lowest energy at $|k| < k_\textrm{cutoff}$ sets the band gap.}
+
 We claim that the hardening of the gap is due to the cutoff of long trajectories.
 In order to verify this is the case, we take a ribbon SNS junction with magnetic field rotated such that it corresponds to a rising section of the zigzag.
 We then compute the scattering matrix Eq.~\eqref{eq:smatrix} to find the Andreev bound spectrum as a function of the momentum along the strip direction.
@@ -200,70 +264,21 @@ Then, since $\alpha$ is only defined in the positive imaginary plane, the energi
 Using this result and Eq.~\eqref{eq:smatrix}, we numerically find the Andreev spectrum.
 
 %%██████████████████████████████████████████████████████████████████████████
-%%██ Numerical bandstructures
-%%██████████████████████████████████████████████████████████████████████████
-\section{Numerical bandstructures}
-
-\comment{We consider a 2D SNS junction with a Rashba-BdG Hamiltonian.}
-
-\comment{We discretize the model and simulate it with Kwant.}
-
-
-%%██████████████████████████████████████████████████████████████████████████
-%%██ Calculating the bandstuctures
-%%██████████████████████████████████████████████████████████████████████████
-\section{Calculating the bandstuctures.}
-In figure \ref{fig:bandstuctures}, We calculate the bandstructure for a zigzag system with varying amplitude using Kwant.
-As the zigzag introduces super cell, we see a folded bandstructure.
-For comparisons sake, we take the same cell size for the ribbon structure so the bandstructure is folded in the same way.
-The introduction of a zigzag has a striking effect: the bands flatten out, and more importantly, the gap size is increased tenfolds.
-We claim this effect is due to the fact that the modes where the gap is smallest, when the momentum is almost completely focused along the strip ($k_x=k_F$), are cut off by the zigzag geometry.
-Additionally in the presence of normal reflection, due to the availability of NS interfaces at a wide range of slopes, the reflected part will eventually ``find'' a surface with which it is perpendicular to.
-Also apparent is the reduction of group velocity; the slope of the bands is greatly reduced.
-This has an effect on the Majorana coherence length, as described later on in the manuscript.
-
-%%██████████████████████████████████████████████████████████████████████████
-%%██ Calculating the topological phase diagram
-%%██████████████████████████████████████████████████████████████████████████
-\section{Calculating the topological phase diagram.}
-In order to create a topological phase diagram we would normally compute the topological invariant(pfaffian).
-For a ribbon this is possible, but computing the invariant of the supercell is too computationally expensive.
-Using a generalized eigenvalue problem also proved unsuccessful due to numerical errors, so we resort to simply calculating the gap and noting the gap closings.
-
-Similar to what is described in Pientka et. al [\cite{pientka2017topological}], we see that the ribbon topology has a diamond like structure as a function of phase and Zeeman field.
-We also see some additional gap closings which are due to the BDI symmetry class, creating quite an unstable region.
-As expected, for the zigzag system, the magnitude of the gap is significantly improved, whilst maintaining the diamond like shape.
-As the zigzag shape destroys the additional symmetry, moving it to class D, we see a more clean topological region.
-\comment{We use a generalized eigenvalue problem to find all phase boundaries at once.}
-
-\comment{We calculate the gap by finding the minimum energy in the spectrum.}
-
-\begin{figure}[!htb]
-\includegraphics[width=0.95\columnwidth]{figures/bandstructures}
-\caption{Figure of the bandstuctures.
-Where the lines are (blue) $\phi=0$, $B=0$ and (red) $\phi=\pi$, $B \ne 0$.
-and the subplots (a) $z_y=0$, (b) $z_y=\frac{W}{4}$, and (c) $z_y=\frac{W}{2}$, where $W$ is the junction width.
-We observe that once there are no more straight trajectories inside the junction (when $z_y=\frac{W}{2}$) the spectrum becomes most insensitive to the momentum $k_x$.
-\label{fig:bandstuctures}}
-\end{figure}
-
-\begin{figure}[!htb]
-\includegraphics[width=0.95\columnwidth]{figures/phasediagrams}
-\caption{Phase diagrams of a straight system (a, b) and zigzag system (c, d), where (a, c) are $E(\mu, B)$ and (b, d) are $E(\phi, B)$.
-We use a generalized eigenvalue problem to find all phase boundaries at once and find the minimal energy gap by finding the minimum in the spectrum: $\min{E(k)}$.
-\label{fig:phasediagrams}}
-\end{figure}
-
-%%██████████████████████████████████████████████████████████████████████████
 %%██ Localization lengths and shape effect
 %%██████████████████████████████████████████████████████████████████████████
 \section{Localization lengths and shape effect}
+
+\comment{We find the Majorana lengths by calculating the slowest decaying mode.}
+
+\comment{In a zigzag geometry Majoranas are localized within one segment of zigzag.}
+
+\comment{We also confirm that the specific shape does not matter.}
+
 Using the tight-binding package Kwant~\cite{groth_kwant:_2014}, we model a finite system to compute the Majorana wave function density for different geometries; ribbon, zigzag, parallel curve and vertically offset sinusoids.
 We then superimpose them onto the geometry, as in figure \ref{fig:wavefunctions}.
 For the ribbon system, we see that the Majorana coherence length is relatively large, not showing the decolalized nature sought after.
 All of the zigzag type geometries however show greatly reduced coherence length.\tabularnewline
 This can be explained by two effects: the increase in topological gap, but also the beforementioned reduction of the group velocity.
-\comment{We find the Majorana lengths by calculating the slowest decaying mode.}
 
 \begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/wavefunctions}
