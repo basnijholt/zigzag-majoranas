@@ -87,6 +87,7 @@ In addition to having a large minimum energy gap, the absence of long length tra
 %%██████████████████████████████████████████████████████████████████████████
 \section{Introduction}
 Majorana bound states (MBSs) are a promising candidate to form the basis of a stable platform for topological quantum computing.
+
 \comment{Majoranas are mostly made in hybrid NS structures.}
 The current experimental effort is focused on creating pairs of MBSs in hybrid normal-superconductor (NS) structures, where a lengthy strip (or wire) of semiconductor is interfaced with a \cite{lutchyn_majorana_2010,oreg_helical_2010} superconductor.
 Within the right parameter regime ($E_z^2>\mu^2+\Delta^2$ for a simple wire), the semiconductor becomes topological and MBSs appear at the ends of the segment.
@@ -94,25 +95,31 @@ Recently, a system with a slight modification has been proposed\cite{pientka2017
 This adds an extra knob to adjust, the superconducting phase difference $\phi$, and this should make it easier to tune the system into the topological phase.
 In practice, multiple problems arise making even the observation, let alone the manipulation of Majoranas difficult.
 
-\comment{The gap is small because of long trajectories.}
-From a semiclassical perspective, long paths through the semiconductor without interruption by the superconductor.
-
 \comment{Currently proposed workarounds are low density or disorder, but both have drawbacks.}
-We claim that one of the problems lying in the way of a stable system, is the appearance of a soft gap; the gap is greatly reduced for states with momentum directed along the length of the strip.
+
+
+\comment{The gap is small because of long trajectories.}
+One of the problems lying in the way of a stable system, is the appearance of a soft gap; the gap is greatly reduced for states with momentum directed along the length of the strip.
+From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor.
+
 
 \comment{We show that zigzag geometry solves this problem by eliminating the long trajectories.}
-We show that introducing a zigzag or snake like geometry for the semiconductor removes these long trajectories and avoids the appearance of a soft gap.
+We show that introducing a zigzag or snake like geometry for the semiconductor removes these long trajectories and prevents the appearance of a soft gap.
 
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Physical picture
 %%██████████████████████████████████████████████████████████████████████████
 \section{Physical picture}
+
+\comment{We consider a two-dimensional system with zigzag.}
 We consider a system (Fig.~\ref{fig:setup}) consisting of a two dimensional strip of semiconductor, with superconductors adjacent on both sides.
 As seen in the figure, we modulate the shape of the normal region, which can be either zigzag as depicted, or a more smooth snake like shape.
 Just as the normal system[\cite{pientka2017topological}], a magnetic field pointed along the x direction is applied.
 We model the system with a BdG Hamiltonian Eq.~\eqref{eq:hamiltonian}; the normal part has Rashba spin-orbit coupling and a Zeeman field, and apart from the kinetic term, the superconductors only have a superconducting term differ in superconducting phase.
 For the zigzag geometry, we take a sawtooth like pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction.
+
+\comment{The symmetry class of the system is D.}
 We know from \onlinecite{pientka2017topological} that the non-zigzag system is in class BDI.
 Using the software package Qsymm\cite{varjas2018qsymm}, we evaluate the symmetry class of the system to be D.
 
@@ -138,17 +145,21 @@ Using the software package Qsymm\cite{varjas2018qsymm}, we evaluate the symmetry
 \section{Calculating the bandstuctures.}
 
 \comment{We consider a 2D SNS junction with a Rashba-BdG Hamiltonian.}
-We consider the model described in section II; a two dimensional SNS junction with a Rashba BdG Hamiltonian.
 
-\comment{We discretize the model and simulate it with Kwant.}
-In figure \ref{fig:bandstuctures}, We calculate the bandstructure for a zigzag system with varying amplitude using Kwant.
+\comment{We discretize the model described in section II and simulate it with Kwant.}
+We implement a tightbinding version of the model described in section II (a two dimensional SNS junction with a Rashba BdG Hamiltonian) using Kwant.
+
+\comment{We calculate the bandstructure for varying amount of zigzag.}
+In figure \ref{fig:bandstuctures}, the bandstructure for zigzag systems with varying amplitude is displayed.
 As the zigzag introduces super cell, we see a folded bandstructure.
 For comparisons sake, we take the same cell size for the ribbon structure so the bandstructure is folded in the same way.
+
+\comment{The bandstructures show that modulation of the geometry increases the gap by an order of magnitude, as well as reduce the group velocity.}
 The introduction of a zigzag has a striking effect: the bands flatten out, and more importantly, the gap size is increased more than an order of magnitude.
 This effect is due to the fact that the modes where the gap is smallest, when the momentum is almost completely focused along the strip ($k_x=k_F$), are cut off by the zigzag geometry.
-Additionally in the presence of normal reflection, due to the availability of NS interfaces at a wide range of slopes, the reflected part will eventually ``find'' a surface with which it is perpendicular to.
 Also apparent is the reduction of group velocity; the slope of the bands is greatly reduced.
 This has an effect on the Majorana coherence length, as described later on in the manuscript.
+
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Calculating the topological phase diagram
@@ -289,6 +300,8 @@ We observe that $\xi$ for (a) is orders of magnitude longer and $E_\textrm{gap}$
 %%██ Discussion and Conclusions
 %%██████████████████████████████████████████████████████████████████████████
 \section{Discussion and Conclusions}
+
+Additionally in the presence of normal reflection, due to the availability of NS interfaces at a wide range of slopes, the reflected part will eventually ``find'' a surface with which it is perpendicular to.
 
 \comment{Extensions: we omit several physical effects, disorder, electrostatics, etc.}
 
