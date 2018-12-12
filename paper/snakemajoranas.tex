@@ -144,8 +144,6 @@ Using the software package Qsymm\cite{varjas2018qsymm}, we evaluate the symmetry
 %%██████████████████████████████████████████████████████████████████████████
 \section{Calculating the bandstuctures.}
 
-\comment{We consider a 2D SNS junction with a Rashba-BdG Hamiltonian.}
-
 \comment{We discretize the model described in section II and simulate it with Kwant.}
 We implement a tightbinding version of the model described in section II (a two dimensional SNS junction with a Rashba BdG Hamiltonian) using Kwant.
 
@@ -165,17 +163,16 @@ This has an effect on the Majorana coherence length, as described later on in th
 %%██ Calculating the topological phase diagram
 %%██████████████████████████████████████████████████████████████████████████
 \section{Calculating the topological phase diagram.}
-In order to create a topological phase diagram we would normally compute the topological invariant(pfaffian).
-For a ribbon this is possible, but computing the invariant of the supercell is too computationally expensive.
-Using a generalized eigenvalue problem also proved unsuccessful due to numerical errors, so we resort to simply calculating the gap and noting the gap closings.
 
+\comment{We calculate the topological phase diagram using the gap size.}
+We calculate the gap from the bandstructure (minimum energy in the spectrum) using the same method described in comment III.
+Noting the gap closings and the fact we know the topology for the non-zigzag system, we can infer the topology of the system with zigzag modulation.
+
+\comment{The phase diagram does not change much, except we see a cleaner spectrum as a result of the D class symmetry. }
 Similar to what is described in Pientka et. al [\cite{pientka2017topological}], we see that the ribbon topology has a diamond like structure as a function of phase and Zeeman field.
 We also see some additional gap closings which are due to the BDI symmetry class, creating quite an unstable region.
 As expected, for the zigzag system, the magnitude of the gap is significantly improved, whilst maintaining the diamond like shape.
 As the zigzag shape destroys the additional symmetry, moving it to class D, we see a more clean topological region.
-\comment{We use a generalized eigenvalue problem to find all phase boundaries at once.}
-
-\comment{We calculate the gap by finding the minimum energy in the spectrum.}
 
 \begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/bandstructures}
@@ -199,16 +196,16 @@ We use a generalized eigenvalue problem to find all phase boundaries at once and
 \section{Analytical estimate of the band gap}
 
 \comment{To compute the effect of cutoff consider a single segment of the zigzag and obtain the spectrum analytically (this allows to use translation invariance).}
+We establish that the cutoff of long trajectories is the driving mechanism behind the order of magnitude gap improvement using an analytical approach.
+We derive the Andreev spectrum for a single (diagonal) segment of the zigzag, and define the gap of the system as the minimum of the spectrum occurring before the cutoff corresponding to the particular geometry.
+The system under consideration is thus a ribbon SNS junction with tilted magnetic field.
+
+\comment{The definition of the cutoff... }
 
 \comment{We use a short junction approximation and neglect transverse SO.}
-
-\comment{The lowest energy at $|k| < k_\textrm{cutoff}$ sets the band gap.}
-
-We claim that the hardening of the gap is due to the cutoff of long trajectories.
-In order to verify this is the case, we take a ribbon SNS junction with magnetic field rotated such that it corresponds to a rising section of the zigzag.
-We then compute the scattering matrix Eq.~\eqref{eq:smatrix} to find the Andreev bound spectrum as a function of the momentum along the strip direction.
-We cut off the spectrum at the momentum corresponding to the proposed cutoff in the zigzag, and compare it to the numerically obtained gap for a true zigzag system.
-
+We derive the spectrum by calculating the scattering matrix for the normal region and applying the Andreev bound state condition for the short junction limit\cite{beenakker1991universal, sticlet_robustness_2017}. 
+For deriviation of the scattering matrix, we neglect SOI in the transverse direction, which is valid for $W<l_\text{so}$.
+The result is specified in Eqs. \ref{eq:smatrix} to \ref{eq:momenta_short_junction}.
 
 \begin{align}
 \label{eq:smatrix}
@@ -239,11 +236,13 @@ We cut off the spectrum at the momentum corresponding to the proposed cutoff in 
     \delta_j &= \frac{q-i k_{j} \cot \left(\frac{W k_{j}}{2}\right)}{q+i k_{j} \cot \left(\frac{W k_{j}}{2}\right)}\\
     e^{i \nu_{\arg}} &= \frac{E_\text{z} e^{i \theta }-i \alpha  k_x}{\sqrt{E_\text{z}^2+\alpha  k_x \left(\alpha  k_x-2 E_\text{z} \sin (\theta )\right)}}
 \end{align}
+
 \begin{footnotesize}
 \begin{align}
     q &= \left[ \frac{2 m_\ast}{\hbar ^2}\mu_s - k_x^2 \right]^\frac{1}{2}\\
     k_1 &= \left[ \frac{2 m_\ast}{\hbar^2} \left(\mu_n-\sqrt{E_z^2-2 \alpha  E_z \sin (\theta ) k_x+\alpha ^2 k_x^2}\right) - k_x^2 \right]^\frac{1}{2}\\
     k_2 &= \left[ \frac{2 m_\ast}{\hbar^2} \left(\mu_n+\sqrt{E_z^2-2 \alpha  E_z \sin (\theta ) k_x+\alpha ^2 k_x^2}\right) - k_x^2 \right]^\frac{1}{2}
+\label{eq:momenta_short_junction}
 \end{align}
 \end{footnotesize}
 
@@ -269,6 +268,9 @@ Where $\lambda_i$ are the eigenvalues of $A$.
 Inverting $\alpha\left(E\right)\equiv\exp\left(-i\arccos\left(E/\Delta\right)\right)$ yields $\frac{E}{\Delta}=\frac{\alpha^{2}+1}{2\alpha}=\frac{1}{2}\left(\alpha+\alpha^{-1}\right)=\textrm{Re}(\alpha)$, where the last equality holds because $\alpha$ is unitary.
 Then, since $\alpha$ is only defined in the positive imaginary plane, the energies are $\frac{E_{i}}{\Delta}=\textrm{Re}\left(\sqrt{-1/\lambda_{i}}\right)$ where we take the root which has a positive imaginary part.
 Using this result and Eq.~\eqref{eq:smatrix}, we numerically find the Andreev spectrum.
+
+\comment{The lowest energy at $|k| < k_\textrm{cutoff}$ sets the band gap.}
+We cut off the spectrum at the momentum corresponding to the proposed cutoff in the zigzag, and compare it to the numerically obtained gap for a true zigzag system.
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Localization lengths and shape effect
