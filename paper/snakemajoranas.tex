@@ -72,7 +72,6 @@
 \email[Electronic address: ]{quantumtinkerer@tudelft.nl}
 
 \date{\today}
-
 \begin{abstract}
 We are solving a problem of soft gap in high density SNS Majorana junctions \cite{pientka2017topological}.
 We do this by introducing a zigzag geometry.
@@ -95,13 +94,13 @@ Recently, a system with a slight modification has been proposed\cite{pientka2017
 This adds an extra knob to adjust, the superconducting phase difference $\phi$, and this should make it easier to tune the system into the topological phase.
 In practice, multiple problems arise making even the observation, let alone the manipulation of Majoranas difficult.
 
-\comment{Currently proposed workarounds are low density or disorder, but both have drawbacks.}
-
-
 \comment{The gap is small because of long trajectories.}
 One of the biggest challenges in constructing stable Majoranas is the appearance of a soft gap; where the gap in the density of states is greatly reduced for states with momentum directed along the length of the strip.
 From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor.
 Additionally, these long trajectories have long flight times $\tau_f$ and equivalenly small Thouless energies $E_{\textrm{Th}}=\hbar / \tau_f$, resulting in a small gap. 
+
+\comment{Currently proposed workarounds are low density or disorder, but both have drawbacks.}
+Currently proposed workarounds are low density or disorder~\cite{haim_double-edge_2018}, but both have drawbacks.
 
 \comment{We show that zigzag geometry solves this problem by eliminating the long trajectories.}
 In this paper we show that introducing a zigzag or snake like geometry for the semiconductor eliminates these long trajectories and prevents the appearance of a soft gap.
@@ -111,7 +110,6 @@ In this paper we show that introducing a zigzag or snake like geometry for the s
 %%██ Physical picture
 %%██████████████████████████████████████████████████████████████████████████
 \section{Physical picture}
-
 \comment{We consider a two-dimensional system with zigzag.}
 We consider a system (Fig.~\ref{fig:setup}) consisting of a two dimensional strip of semiconductor, with superconductors on both sides.
 We modulate the shape of the normal region, which can be either zigzag as depicted, or a more smooth sinusoidal like shape.
@@ -148,7 +146,7 @@ Using the software package Qsymm\cite{varjas2018qsymm}, we evaluate the symmetry
 We implement a tightbinding version of the model described in section II (a two dimensional SNS junction with a Rashba BdG Hamiltonian) using Kwant.
 
 \comment{We calculate the bandstructure for varying amount of zigzag.}
-In figure \ref{fig:bandstuctures}, the bandstructure for zigzag systems with varying amplitude is displayed.
+In figure~\ref{fig:bandstuctures}, the bandstructure for zigzag systems with varying amplitude is displayed.
 As the zigzag introduces super cell, we see a folded bandstructure.
 For comparisons sake, we take the same cell size for the ribbon structure so the bandstructure is folded in the same way.
 
@@ -172,7 +170,7 @@ We calculate the gap from the bandstructure (minimum energy in the spectrum) usi
 Noting the gap closings and the fact we know the topology for the non-zigzag system, we can infer the topology of the system with zigzag modulation.
 
 \comment{The phase diagram does not change much, except we see a cleaner spectrum as a result of the D class symmetry. }
-Similar to what is described in Pientka et. al [\cite{pientka2017topological}], we see that the ribbon topology has a diamond like structure as a function of phase and Zeeman field.
+Similar to what is described in Pientka et. al~\cite{pientka2017topological}, we see that the ribbon topology has a diamond like structure as a function of phase and Zeeman field.
 We also see some additional gap closings which are due to the BDI symmetry class, creating quite an unstable region.
 As expected, for the zigzag system, the magnitude of the gap is significantly improved, whilst maintaining the diamond like shape.
 As the zigzag shape destroys the additional symmetry, moving it to class D, we see a more clean topological region.
@@ -208,7 +206,7 @@ The system under consideration is thus a ribbon SNS junction with tilted magneti
 \comment{We use a short junction approximation and neglect transverse SO.}
 We derive the spectrum by calculating the scattering matrix for the normal region and applying the Andreev bound state condition for the short junction limit\cite{beenakker1991universal, sticlet_robustness_2017}. 
 For deriviation of the scattering matrix, we neglect SOI in the transverse direction, which is valid for $W<l_\text{so}$.
-The result is specified in Eqs. \ref{eq:smatrix} to \ref{eq:momenta_short_junction}.
+The result is specified in Eqs.~\eqref{eq:smatrix} to~\eqref{eq:momenta_short_junction}.
 
 \begin{align}
 \label{eq:smatrix}
@@ -284,7 +282,7 @@ We cut off the spectrum at the momentum corresponding to the proposed cutoff in 
 
 \comment{We find the Majorana lengths by calculating the slowest decaying mode.}
 Using the tight-binding package Kwant~\cite{groth_kwant:_2014}, we model a finite system to compute the Majorana wave function density for different geometries; ribbon, zigzag, parallel curve and vertically offset sinusoids.
-In figure \ref{fig:wavefunctions} the wavefunctions are displayed, superimposed upon their respective geometry.
+In figure~\ref{fig:wavefunctions} the wavefunctions are displayed, superimposed upon their respective geometry.
 For the ribbon system, we see that the Majorana coherence length is relatively large, not showing the decolalized nature sought after.
 All of the zigzag type geometries however show greatly reduced coherence length.
 This can be explained by two effects: the increase in topological gap, but also the before mentioned reduction of the group velocity.
