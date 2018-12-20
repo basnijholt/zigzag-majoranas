@@ -95,15 +95,15 @@ This adds an extra knob to adjust, the superconducting phase difference $\phi$, 
 In practice, multiple problems arise making even the observation, let alone the manipulation of Majoranas difficult.
 
 \comment{The gap is small because of long trajectories.}
-One of the biggest challenges in constructing stable Majoranas is the appearance of a soft gap; where the gap in the density of states is greatly reduced for states with momentum directed along the length of the strip.
+One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap; where the gap in the density of states is greatly reduced for states with the momentum directed along the length of the strip.
 From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor.
 Additionally, these long trajectories have long flight times $\tau_f$ and equivalenly small Thouless energies $E_{\textrm{Th}}=\hbar / \tau_f$, resulting in a small gap. 
 
 \comment{Currently proposed workarounds are low density or disorder, but both have drawbacks.}
-Currently proposed workarounds are low density or disorder~\cite{haim_double-edge_2018}, but both have drawbacks.
+Currently, proposed workarounds are low density or disorder~\cite{haim_double-edge_2018}, but both have drawbacks.
 
 \comment{We show that zigzag geometry solves this problem by eliminating the long trajectories.}
-In this paper we show that introducing a zigzag or snake like geometry for the semiconductor eliminates these long trajectories and prevents the appearance of a soft gap.
+In this paper we show that introducing a zigzag or snake like geometry for the semiconductor eliminates these long trajectories and prevents the appearance of a soft gap while also increasing the topological gap by an order of magnitude.
 
 
 %%██████████████████████████████████████████████████████████████████████████
@@ -111,15 +111,18 @@ In this paper we show that introducing a zigzag or snake like geometry for the s
 %%██████████████████████████████████████████████████████████████████████████
 \section{Physical picture}
 \comment{We consider a two-dimensional system with zigzag.}
-We consider a system (Fig.~\ref{fig:setup}) consisting of a two dimensional strip of semiconductor, with superconductors on both sides.
+We consider a Josephson junction (JJ)(Fig.~\ref{fig:setup}) consisting of a two dimensional strip of semiconductor, with superconductors on both sides.
 We modulate the shape of the normal region, which can be either zigzag as depicted, or a more smooth sinusoidal like shape.
-Similar to the straight system \cite{pientka2017topological}, a magnetic field $B_x$ pointed along the $x$ direction is applied.
-We model the system with a BdG Hamiltonian Eq.~\eqref{eq:hamiltonian}; the normal part has Rashba spin-orbit coupling and a Zeeman field, and apart from the kinetic term, the superconductors only have a superconducting term with a superconducting phase.
-For the zigzag geometry, we take a sawtooth like pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction.
+Similar to the conventional straight system \cite{pientka2017topological}, a magnetic field $B_x$ perpendicular to the junction is applied.
+We model the system with a BdG Hamiltonian Eq.~\eqref{eq:hamiltonian}; the normal part has a linear Rashba spin-orbit coupling term characterized by $\alpha$ and a Zeeman field with $E_z=\frac{1}{2}mu_B g B_x$.
+The superconductor has a superconducting coupling term $\Delta$ with a superconducting phase $\exp{\pm i \phi/2}$.
+Both parts have a kinetic term and chemical potential $\mu$. 
+For the zigzag geometry, we first consider a sawtooth like pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction.
+Later in this manuscript we show that the exact details of the shape are not important and consider different zigzag geometries also parametrized by $z_x, \; z_y, \; W$.
 
 \comment{The symmetry class of the system is D.}
-We know from \onlinecite{pientka2017topological} that the non-zigzag system is in class BDI.
-Using the software package Qsymm\cite{varjas2018qsymm}, we evaluate the symmetry class of the system to be D.
+The non-zigzag system is in the symmetry class BDI \cite{pientka2017topological}.
+Using the software package Qsymm\cite{varjas2018qsymm}, we find that the symmetry class of our system to be $\mathcal{D}$ because we break the chiral symmetry $\mathcal{C}$ resulting from the mirror symmetric junction.
 
 \begin{small}
 \begin{align}
@@ -143,21 +146,24 @@ Using the software package Qsymm\cite{varjas2018qsymm}, we evaluate the symmetry
 \section{Calculating the bandstuctures.}
 
 \comment{We discretize the model described in section II and simulate it with Kwant.}
-We implement a tightbinding version of the model described in section II (a two dimensional SNS junction with a Rashba BdG Hamiltonian) using Kwant.
+We discretize our continuum Hamiltonian \eqref{eq:hamiltonian} and implement a tight-binding model using Kwant~\cite{groth_kwant:_2014}.
+The resulting Hamiltonians are large because instead of having a single slice of sites that is translationally invariant in the $x$-direction, we create a long supercell in order to make the structure periodic.
+To speed up these expensive simualtions we employ an adaptive sampling strategy, using the Python package Adaptive. % TODO: add citation
 
 \comment{We calculate the bandstructure for varying amount of zigzag.}
 In figure~\ref{fig:bandstuctures}, the bandstructure for zigzag systems with varying amplitude is displayed.
-As the zigzag introduces super cell, we see a folded bandstructure.
-For comparisons sake, we take the same cell size for the ribbon structure so the bandstructure is folded in the same way.
+Because the discretized zigzag system is modeled using a super cell, we can only plot a folded bandstructure.
+For comparisons sake, we take the same cell size for the ribbon structure such that the bandstructure is folded in the same way.
 
 \comment{The bandstructures show that modulation of the geometry increases the gap by an order of magnitude, as well as reduce the group velocity.}
-The introduction of a zigzag has a striking effect: the bands flatten out, and more importantly, the gap size is increased more than an order of magnitude.
-This effect is due to the fact that the modes where the gap is smallest, when the momentum is almost completely focused along the strip ($k_x=k_F$), are cut off by the zigzag geometry.
-Also apparent is the reduction of group velocity; the slope of the bands is greatly reduced.
-This has an effect on the Majorana coherence length, as described later on in the manuscript.
+The introduction of a zigzag has a striking effect: the bands flatten out, and more importantly, the gap size is increased by more than an order of magnitude.
+This happens because in a straight system, long trajectories are possible, these have a momentum that is directed along the strip and consequently, $k_x \approx k_F$.
+The smallest gap in a straight system occurs around $k_F$ and because the zigzag cuts off long trajectories, the gap size is increased. 
+Besides this, the velocity of the modes is greatly reduced, which has a positive effect on the Majorana coherence length, as described later in section XXX. % TODO: add ref
 
 \comment{The introduction of an SN interface at many angles also increases performance.}
-Additionally in the presence of normal reflection, due to the availability of NS interfaces at a wide range of slopes, the reflected part will eventually ``find'' a surface with which it is perpendicular to. The transparency of the SN interface is thus improved for transversal modes.
+Additionally, in the presence of normal reflection, due to the presence of NS interfaces at a wide range of angles, the reflected part will eventually scatter with a perpendicular surface.
+This means that for transversal modes the transparency of the NS interface will increase.
 
 
 %%██████████████████████████████████████████████████████████████████████████
@@ -166,11 +172,11 @@ Additionally in the presence of normal reflection, due to the availability of NS
 \section{Calculating the topological phase diagram.}
 
 \comment{We calculate the topological phase diagram using the gap size.}
-We calculate the gap from the bandstructure (minimum energy in the spectrum) using the same method described in comment III.
-Noting the gap closings and the fact we know the topology for the non-zigzag system, we can infer the topology of the system with zigzag modulation.
+We calculate the gap by finding the absolute minimum of the spectrum $E_\textrm{gap}=\min{|E(k)|}$.
+Noting the gap closings and the fact we know the topology for the non-zigzag system, we can infer the topology of the system with zigzag modulation. % Bas: I don't understand what is written here
 
 \comment{The phase diagram does not change much, except we see a cleaner spectrum as a result of the D class symmetry. }
-Similar to what is described in Pientka et. al~\cite{pientka2017topological}, we see that the ribbon topology has a diamond like structure as a function of phase and Zeeman field.
+Similar to what is described by Pientka et. al~\cite{pientka2017topological}, we see that the ribbon topology has a diamond like structure as a function of phase and Zeeman field.
 We also see some additional gap closings which are due to the BDI symmetry class, creating quite an unstable region.
 As expected, for the zigzag system, the magnitude of the gap is significantly improved, whilst maintaining the diamond like shape.
 As the zigzag shape destroys the additional symmetry, moving it to class D, we see a more clean topological region.
