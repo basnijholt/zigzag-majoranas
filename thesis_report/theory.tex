@@ -1,53 +1,75 @@
 % UNCOMMENT SO YOU CAN LINK PAPERS EASILY WITH SUBLIME TEXT
 % \bibliography{report}
 
-% Momentum operators
-\newcommand{\kx}{k_x}
-\newcommand{\ky}{k_y}
 
-% Pauli matrices
-\newcommand{\sigx}{\sigma_x}
-\newcommand{\sigy}{\sigma_y}
-\newcommand{\sigz}{\sigma_z}
-\newcommand{\sigi}{\sigma_0}
-\newcommand{\taux}{\tau_x}
-\newcommand{\tauy}{\tau_y}
-\newcommand{\tauz}{\tau_z}
-\newcommand{\taui}{\tau_0}
 \chapter{Theory}
 
 
 \section{General Physics}
-	\subsection{Boguliubov de Gennes Hamiltonian}
+
+    \subsection{Zeeman interaction}
+    	The energy splitting of the two electron spin species due to magnetic field is called the Zeeman interaction.
+    	It is modeled by:
+    	\begin{equation}
+    	H_\text{Z} = g \mu_B \vec{B} \cdot \vec{\sigma}
+    	\end{equation}
 
     \subsection{Spin-orbit coupling}
-    Rashba spin orbit coupling:
-    \begin{equation}
-    	H_\text{Rashba} = \alpha (\ky \sigx - \kx \sigy) 
-    \end{equation}
+	    An electron mvoing in an electric field will experience a small Zeeman field in its inertial frame as a relativistic effect~\cite{petersen_simple_2000}.
+	    The resulting interaction is known as spin orbit coupling.
+	    Spin-orbit coupling can be approximated with adding a Rashba spin orbit coupling term in the Hamiltonian:
+	    \begin{equation}
+	    H_\text{Rashba} = \alpha (\ky \sigx - \kx \sigy) 
+	    \end{equation}
 
-    \subsection{Supercurrent}
-	The current 	
+    
+    \subsection{Superconductivity}
+		Superconductivity manifests itself as the complete lack of electrical resistance of a material.
+		It is the result of the pairing of electrons close to the Fermi-energy, condensing into so-called Cooper pairs.
+		Because all electrons within a distance of the superconducting order parameter of the Fermi-energy are depleted in this way, charge transport only takes place via these quasiparticles.
+		Scattering of these Cooper pairs is not allowed, resulting in perfect conduction.
 
-	\subsection{Tight binding}
-
-		\subsection{Topology in solid state physics}
-		The Wikipedia definition of mathematical topology is as follows:
+		For the purpose of creating Majorana's, we are interested in two main aspects of superconductivity: the energy gap surrounding the Fermi energy (due to the depletion of states), and the electron-hole (/particle-hole) symmetry.
+		We are thus not interested in the paired up electrons (Cooper pairs), and only wish to model the electronic (unpaired) modes.
+		This can be achieved by modeling superconductivity with the Boguliubov de Gennes Hamiltonian:
 		
-		\quote{Topology can be formally defined as "the study of qualitative properties of certain objects (called topological spaces) that are invariant under a certain kind of transformation}\cite{noauthor_topology_2018}
+		\begin{equation}
+		\mathbf{H}_\text{BdG} = \begin{bmatrix} H & \Delta \\ \Delta^\dagger & H \end{bmatrix}
+		\end{equation}
 
-			\subsubsection{Symmetries}
+		The block matrix restricts the structure of the system in the electron-hole basis, and ensures particle-hole symmetry.
+		For $\Delta \neq 0$ one indeed induces a identically sized gap in the spectrum.
 
+		\subsubsection{Andreev scattering}
+			At the interface between a normal and superconducting region, electrons with energies below the superconducting gap undergo Andreev scattering.
+			The quasiclassical microscopic explanation for this is as follows.
+			An electron in the normal region with energy below the superconducting gap, incident on the normal-superconductor (NS) interface, is retro-reflected as a hole.
+			This phenomenon is known as Andreev scattering, and occurs due to the coupling of electrons in a superconductor.
+			Although a single electron initially enters the superconductor, it draws another electron (with opposite momentum) into the superconductor: forming a Cooper pair.
+			The drawn in electron leaves behind a hole in the normal conductor, which essentially backtracks the motion of the initial electron, hence the term retro-reflection.
+			The same effect, but opposite in particle type, holds for a hole entering the superconductor.
 
-\section{Majorana bound states}
+		\subsubsection{Josephson junctions and supercurrent}
+			
+
+\section{Topology and Majorana bound states}
+	\subsection{Topology in solid state physics}
+	The Wikipedia definition of mathematical topology is as follows:
+	
+	\quote{Topology can be formally defined as "the study of qualitative properties of certain objects (called topological spaces) that are invariant under a certain kind of transformation}\cite{noauthor_topology_2018}
+
+		\subsubsection{Symmetries}
+
 	\subsection{General properties}
 	\subsection{Decay length}
 	\subsection{Topological gap}
+
 
 \section{Two dimensional platform for Majoranas}
 	\subsection{Phase diagram}
 	\subsection{Current phase relationship}
 	\subsection{Thouless energy}
+	\subsection{Transparency at NS interface}
 
 \section{Scattering matrix formalism}
 

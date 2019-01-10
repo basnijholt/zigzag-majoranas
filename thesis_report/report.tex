@@ -1,10 +1,55 @@
 \documentclass{tudelft-report}
 \usepackage{natbib}
 \usepackage{changes}
-\newcommand{\comment}[2]{#2}
+
+\usepackage{verbatim}
+\usepackage{units}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{wasysym}
+\usepackage{siunitx}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage{bookmark}
+\usepackage{tabularx}
+\usepackage{microtype}
+\usepackage{babel}
+
+\renewcommand{\comment}[2]{#2}
 % Uncomment the following line for paragraph descriptions to appear in the file.
 \renewcommand{\comment}{\paragraph}
 
+% Parameters
+\newcommand{\meff}{m_\text{eff}}
+
+% Momentum operators
+\newcommand{\kx}{k_x}
+\newcommand{\ky}{k_y}
+
+% Pauli matrices
+\newcommand{\sigx}{\sigma_x}
+\newcommand{\sigy}{\sigma_y}
+\newcommand{\sigz}{\sigma_z}
+\newcommand{\sigi}{\sigma_0}
+\newcommand{\taux}{\tau_x}
+\newcommand{\tauy}{\tau_y}
+\newcommand{\tauz}{\tau_z}
+\newcommand{\taui}{\tau_0}
+
+% Operators
+\DeclareMathOperator{\e}{e}
+\DeclareMathOperator{\de}{d\!}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Pf}{Pf}
+\DeclareMathOperator{\Det}{Det}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\re}{Re}
 
 \begin{document}
 
@@ -50,7 +95,7 @@
 \input{theory}
 \input{methods}
 \input{results}
-\input{discussion}
+\input{conclusion}
 %% Use letters for the chapter numbers of the appendices.
 \appendix
 

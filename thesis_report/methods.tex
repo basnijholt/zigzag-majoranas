@@ -1,7 +1,174 @@
 \chapter{Methods}
+% UNCOMMENT TO USE LaTeXing autocomplete for refereces
+% \bibliography{report} 
 
-\section{Sparse eigendecomposition of kwant system}
-	\subsection{Wrapped system}
-	\subsection{Finite system}
 
-\section{Scattering matrix formalism}
+
+\comment{We propose a method to verify that elimination of long trajectories is responsible for the increased topological gap in a zigzag system.}
+\section{Quasiclassical estimation of the topological gap}
+	\comment{To compute the effect of cutoff consider a single segment of the zigzag and obtain the spectrum analytically (this allows to use translation invariance).}
+	In order to establish that the elimination of long trajectories is the driving mechanism behind the order of magnitude gap improvement, we use an analytical approach.
+	We estimate the gap of the zigzag system by the minimum energy occuring in the Andreev spectrum of a single (diagonal) segment of zigzag.
+	The spectrum of the zigzag segment we define as the spectrum of an infinite ribbon SNS junction with tilted-magnetic field. 
+	The finite length of the segment is modeled by not including momenta corresponding to long trajectories when taking the minimum over the spectrum.
+
+	\comment{The spectrum is derived using a scattering matrix, and we consider multiple ways to eliminate long trajectory momenta.}
+
+	Estimating the gap is a two-step process: derivation of the Andreev spectrum, and taking the minimum energy over a particular set of allowed momenta.
+	The first is derived using scattering matrix formalism and the Andreev bound state condition\cite{beenakker1991universal, sticlet_robustness_2017}.
+	The second step is mostly trivial, but the difficulty lies with identifying the set of allowed  momenta to take the minimum over.
+
+
+	\subsection{Analytical estimate of Andreev spectrum for a straight junction}
+		
+		\comment{We use a short junction approximation and neglect transverse SO.}
+		We derive the spectrum by calculating the scattering matrix for the normal region and applying the Andreev bound state condition for the short junction limit\cite{beenakker1991universal, sticlet_robustness_2017}. 
+		For deriviation of the scattering matrix, we neglect SOI in the transverse direction, which is valid for $W<l_\text{so}$.
+		The result is specified in Eqs.~\eqref{eq:smatrix} to~\eqref{eq:momenta_short_junction}.
+
+
+
+
+
+		In order to get the spectrum from the S-matrix [Eq.~\eqref{eq:smatrix}] we use the main result from Ref.~\cite{beenakker1991universal} and start with a determinantal equation for the bound state energies in a SNS-junction:
+
+		\begin{equation}
+		\det\left[1+\alpha^{2}\left(E\right)r^{*}S_{e}\left(E,\bm{k}\right)rS_{e}^{*}\left(-E,-\bm{k}\right)\right]=0
+		\end{equation}
+
+		We rewrite this as a characteristic polynomial problem $\det\left[A-\lambda I\right]=0$, as
+
+		\begin{equation}
+		\det\left[r^{*}S_{e}\left(E,\bm{k}\right)rS_{e}^{*}\left(-E,-\bm{k}\right)-\frac{-1}{\alpha^{2}\left(E\right)}I\right]=0
+		\end{equation}
+
+		with
+		\begin{equation}
+		\lambda=-\frac{1}{\alpha^{2}\left(E\right)},\;A=r^{*}S_{e}\left(E,\bm{k}\right)rS_{e}^{*}\left(-E,-\bm{k}\right).
+		\end{equation}
+
+		Where $\lambda_i$ are the eigenvalues of $A$.
+		Inverting $\alpha\left(E\right)\equiv\exp\left(-i\arccos\left(E/\Delta\right)\right)$ yields $\frac{E}{\Delta}=\frac{\alpha^{2}+1}{2\alpha}=\frac{1}{2}\left(\alpha+\alpha^{-1}\right)=\textrm{Re}(\alpha)$, where the last equality holds because $\alpha$ is unitary.
+		Then, since $\alpha$ is only defined in the positive imaginary plane, the energies are $\frac{E_{i}}{\Delta}=\textrm{Re}\left(\sqrt{-1/\lambda_{i}}\right)$ where we take the root which has a positive imaginary part.
+		Using this result and Eq.~\eqref{eq:smatrix}, we numerically find the Andreev spectrum.
+
+
+		\subsubsection{Derivation of the scattering matrix}
+			We consider the scattering problem defined by Fig. \ref{fig:scattering}, the corresponding system of equations given in Eq. \eqref{eq:scattering_matrix_problem}, and
+			continuity and flux conservation(continuity of first derivative) at the normal-superconductor interfaces.
+			The Hamiltonians of the respective regions are given by Eqs. \eqref{eq:ham_smat_normal,eq:ham_smat_superconducting}.
+			The Hamiltonian of the superconducting region does not include the superconducting term because we implement Andreev reflection seperately: this way we halve the dimensionality of the problem.
+
+			\begin{equation}
+			\begin{bmatrix} 
+			b_{1,L}\\
+			b_{2,L}\\
+			b_{1,R}\\
+			b_{2,R}
+			\end{bmatrix} 
+			= S_\text{sns} \cdot 
+			\begin{bmatrix} 
+			a_{1,L}\\
+			a_{2,L}\\
+			a_{1,R}\\
+			a_{2,R}
+			\end{bmatrix}
+			\label{eq:scattering_matrix_problem}
+			\end{equation}
+
+			\begin{align}
+			H_\text{N} &= \left[ \frac{\hbar^2}{2 \meff} \left(\kx^2 + \ky^2\right) -\mu_n\right]\sigi +
+						 \alpha \kx \sigy +
+						 E_z \left[ \cos(\theta) \sigx + \sin(\theta) \sigy \right]
+			\label{eq:ham_smat_normal} 
+			\\
+			H_\text{S} &= \left[\frac{\hbar^2}{2 \meff} \left(\kx^2 + \ky^2\right) -\mu_s\right]\sigi
+			\label{eq:ham_smat_superconducting}
+			\end{align}
+
+			\begin{figure}[!htb]
+			\includegraphics[width=0.95\columnwidth]{images/scattering}
+			\caption{Basis for scattering matrix. `S' region corresponds to the superconductor Hamiltonian without the superconducting term.}
+			\label{fig:scattering}
+			\end{figure}
+			
+
+			The resulting scattering matrix:
+
+			\begin{align}
+			\label{eq:smatrix}
+		    S &= \left(
+		    \begin{array}{rr}
+		    r_{ll}&t_{rl}\\
+		    t_{lr}&r_{rr}\\
+		    \end{array}
+		    \right) =
+		    \left(
+		    \begin{array}{rr}
+		    \beta_+ & e^{-i q W} \beta_-\\
+		    e^{-i q W} \beta_- & e^{-2 i q W} \beta_+\\
+		    \end{array}
+		    \right)
+		    \\
+		    \beta_\pm &= \left(
+		    \begin{array}{rr}
+		    e^{i \nu_{\arg}}\left(\omega^\pm_1 - \omega^\pm_2\right) & (\omega^\pm _1 + \omega^\pm _2)\\
+		    -(\omega^\pm _1 + \omega^\pm _2) & e^{-i \nu _{\arg }} \left(\omega^\pm _2 - \omega^\pm _1\right)\\
+		    \end{array}
+		    \right)\\
+		    \omega^\pm_j &= \frac{1}{4} \left(\gamma _{j} \pm \delta _{j}\right)
+			\end{align}
+
+			\begin{align}
+			    \gamma_j &= \frac{q+i k_{j} \tan \left(\frac{W k_{j}}{2}\right)}{q-i k_{j} \tan \left(\frac{W k_{j}}{2}\right)} \\
+			    \delta_j &= \frac{q-i k_{j} \cot \left(\frac{W k_{j}}{2}\right)}{q+i k_{j} \cot \left(\frac{W k_{j}}{2}\right)}\\
+			    e^{i \nu_{\arg}} &= \frac{E_\text{z} e^{i \theta }-i \alpha  k_x}{\sqrt{E_\text{z}^2+\alpha  k_x \left(\alpha  k_x-2 E_\text{z} \sin (\theta )\right)}}
+			\end{align}
+
+			\begin{footnotesize}
+			\begin{align}
+			    q &= \left[ \frac{2 m_\ast}{\hbar ^2}\mu_s - k_x^2 \right]^\frac{1}{2}\\
+			    k_1 &= \left[ \frac{2 m_\ast}{\hbar^2} \left(\mu_n-\sqrt{E_z^2-2 \alpha  E_z \sin (\theta ) k_x+\alpha ^2 k_x^2}\right) - k_x^2 \right]^\frac{1}{2}\\
+			    k_2 &= \left[ \frac{2 m_\ast}{\hbar^2} \left(\mu_n+\sqrt{E_z^2-2 \alpha  E_z \sin (\theta ) k_x+\alpha ^2 k_x^2}\right) - k_x^2 \right]^\frac{1}{2}
+			\label{eq:momenta_short_junction}
+			\end{align}
+			\end{footnotesize}
+
+		\subsubsection{Resulting spectrum}
+			In order to get the spectrum from the S-matrix [Eq.~\eqref{eq:smatrix}] we use the main result from Ref.~\cite{beenakker1991universal} and start with a determinantal equation for the bound state energies in a SNS-junction:
+
+			\begin{equation}
+			\det\left[1+\alpha^{2}\left(E\right)r^{*}S_{e}\left(E,\bm{k}\right)rS_{e}^{*}\left(-E,-\bm{k}\right)\right]=0
+			\end{equation}
+
+			We rewrite this as a characteristic polynomial problem $\det\left[A-\lambda I\right]=0$, as
+
+			\begin{equation}
+			\det\left[r^{*}S_{e}\left(E,\bm{k}\right)rS_{e}^{*}\left(-E,-\bm{k}\right)-\frac{-1}{\alpha^{2}\left(E\right)}I\right]=0
+			\end{equation}
+
+			with
+			\begin{equation}
+			\lambda=-\frac{1}{\alpha^{2}\left(E\right)},\;A=r^{*}S_{e}\left(E,\bm{k}\right)rS_{e}^{*}\left(-E,-\bm{k}\right).
+			\end{equation}
+
+			Where $\lambda_i$ are the eigenvalues of $A$.
+			Inverting $\alpha\left(E\right)\equiv\exp\left(-i\arccos\left(E/\Delta\right)\right)$ yields $\frac{E}{\Delta}=\frac{\alpha^{2}+1}{2\alpha}=\frac{1}{2}\left(\alpha+\alpha^{-1}\right)=\textrm{Re}(\alpha)$, where the last equality holds because $\alpha$ is unitary.
+			Then, since $\alpha$ is only defined in the positive imaginary plane, the energies are $\frac{E_{i}}{\Delta}=\textrm{Re}\left(\sqrt{-1/\lambda_{i}}\right)$ where we take the root which has a positive imaginary part.
+			Using this result and Eq.~\eqref{eq:smatrix}, we numerically find the Andreev spectrum.
+
+	\subsection{Eliminating long trajectories}
+		\comment{We devise two different ways to define the cutoff of momentum.}
+			
+		\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=0.75\columnwidth]{images/zigzag.pdf}
+		\caption{Setups. Figure of a straight and zigzag system, including trajectories.
+		\label{fig:setup}}
+		\end{figure}
+		
+		\subsubsection{Momentum cutoff}
+			We take the longest trajectory possible in a zigzag segment
+		\subsubsection{Angular cutoff}
+
+

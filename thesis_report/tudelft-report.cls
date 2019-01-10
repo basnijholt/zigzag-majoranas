@@ -631,7 +631,7 @@
 %% Subsubsections have the same font and color as sections and subsections, but
 %% are not preceded by a number.
 \titleformat{\subsubsection}
-    {\headerstyle}
+    {\sectitlestyle}% Changed from {\headerstyle}
     {}
     {0pt}
     {\color{title}}
