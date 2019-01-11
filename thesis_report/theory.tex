@@ -26,6 +26,9 @@
     \subsection{Superconductivity}
 		Superconductivity manifests itself as the complete lack of electrical resistance of a material.
 		It is the result of the pairing of electrons close to the Fermi-energy, condensing into so-called Cooper pairs.
+		The main parameter defining superconductivity is known as the superconducting order parameter, a complex number.
+		The phase of this parameter is a macroscopic potential relative to ones choice of gauge.
+		The magnitude of the superconducting order parameter, also referred to as the superconducting gap, quantifies the range around the Fermi-energy condensed into Cooper pairs.
 		Because all electrons within a distance of the superconducting order parameter of the Fermi-energy are depleted in this way, charge transport only takes place via these quasiparticles.
 		Scattering of these Cooper pairs is not allowed, resulting in perfect conduction.
 
@@ -40,7 +43,7 @@
 		The block matrix restricts the structure of the system in the electron-hole basis, and ensures particle-hole symmetry.
 		For $\Delta \neq 0$ one indeed induces a identically sized gap in the spectrum.
 
-		\subsubsection{Andreev scattering}
+		\subsubsection{Andreev scattering and bound states}
 			At the interface between a normal and superconducting region, electrons with energies below the superconducting gap undergo Andreev scattering.
 			The quasiclassical microscopic explanation for this is as follows.
 			An electron in the normal region with energy below the superconducting gap, incident on the normal-superconductor (NS) interface, is retro-reflected as a hole.
@@ -49,27 +52,53 @@
 			The drawn in electron leaves behind a hole in the normal conductor, which essentially backtracks the motion of the initial electron, hence the term retro-reflection.
 			The same effect, but opposite in particle type, holds for a hole entering the superconductor.
 
-		\subsubsection{Josephson junctions and supercurrent}
+
+		\subsubsection{Josephson junctions, Andreev bound states, and supercurrent}
+			An important device in the field of condensed matter physics is the Josephson junction.
+			A Josephson junction consists of a normal region sandwhiched in between two superconductors (SNS junction).
+			Electrons within the normal region, with energies below the superconducting gap, experience Andreev scattering from both superconductors.
+			The eigen modes of the sandwiched system, with energies below the gap, are known as Andreev bound states.
+			It is these Andreev bound states which exhibit interesting physics, and make the Josephson junction such an important device.
+
+			Although superconducting phase is relative to the choice of gauge, the difference of phase between two superconductors is in fact a physical quantity.
+			A difference in superconducting phase results in a flow of current from one superconductor to the other, known as a supercurrent.
+			The relationship between superconducting phase and current is known as the current-phase relationship, and is in the most simple case a sinosoid.
+			This relationship is exploited by experimentalist to control the phase difference between the two superconductors.
+			The amplitude of the current variation due to variation of phase is known as the critical current, and is the relatively trivial physical quantity to measure.
 			
+			Josephson junctions are relevant to this thesis as the primary device studied is a Josephson junction itself.
+
 
 \section{Topology and Majorana bound states}
-	\subsection{Topology in solid state physics}
+
 	The Wikipedia definition of mathematical topology is as follows:
 	
-	\quote{Topology can be formally defined as "the study of qualitative properties of certain objects (called topological spaces) that are invariant under a certain kind of transformation}\cite{noauthor_topology_2018}
+	\begin{quote}Topology can be formally defined as "the study of qualitative properties of certain objects (called topological spaces) that are invariant under a certain kind of transformation
+	\cite{noauthor_topology_2018}
+	\end{quote}
 
-		\subsubsection{Symmetries}
+	Similarly, in condensed matter physics, topology refers to the study of properties of a system, which do not change within a particular range of parameters.
+	Topology is relevant to the context of the system under study, because the emergence of seperated Majorana's is guaranteed within a continuous range of parameters.
+	The precense of Majorana's is therefore \emph{topologically protected}, as they will be unpurturbed by variations of parameters, within a certain range.
+	For an infinite system, the system is said to be topological if Majorana's would emerge if the system is cut to finite length.
+	The system is trivial if the converse is true.
 
-	\subsection{General properties}
-	\subsection{Decay length}
+	\subsection{Majorana bound states}
+		In the context of condensed matter physics, Majorana
+
+	\subsection{Decay/Coherence length}
+		The decay or coherence length of a Majorana pair is an important measure signifying the seperation of the two half-particles.
+		A decay length larger or of equal size to the system dimensions will lead to overlap of the Majorana's, diminishing the desired robustness of the state.
+
 	\subsection{Topological gap}
-
+		The topological gap is defined as the energy gap between the Majorana state -- conveniently located at zero energy -- and the first available state.
+		It's magnitude governs the protection of the system against perturbations causing the system to be lifted out of its ground state: the Majorana state.
 
 \section{Two dimensional platform for Majoranas}
+	
 	\subsection{Phase diagram}
+
 	\subsection{Current phase relationship}
+	
 	\subsection{Thouless energy}
 	\subsection{Transparency at NS interface}
-
-\section{Scattering matrix formalism}
-
