@@ -1,11 +1,9 @@
-% UNCOMMENT SO YOU CAN LINK PAPERS EASILY WITH SUBLIME TEXT
-% \bibliography{report}
-
+% -*- root: ./report.tex -*-
 
 \chapter{Theory}
 
-
 \section{General Physics}
+	We give a brief description of the interactions and physics present in the system under study.
 
     \subsection{Zeeman interaction}
     	The energy splitting of the two electron spin species due to magnetic field is called the Zeeman interaction.
@@ -68,6 +66,8 @@
 			
 			Josephson junctions are relevant to this thesis as the primary device studied is a Josephson junction itself.
 
+		\subsubsection{Thouless energy}
+
 
 \section{Topology and Majorana bound states}
 
@@ -84,21 +84,61 @@
 	The system is trivial if the converse is true.
 
 	\subsection{Majorana bound states}
-		In the context of condensed matter physics, Majorana
+		We will give a very pragmatic description of Majorana bound states, insofar their relevance to this work.
+
+		The Majorana state is a superposition of electrons and holes, and is its own anti-particle: exchanging electrons and holes yields the same state.
+		The Majorana state carries no spin, charge, or energy, giving almost no degrees of freedom for it to interact with the environment.
+		The Majorana state constitutes a single fermion, but is comprised of two Majorana's.
+		In a finite, topological system, these two Majorana's are physically seperated, appearing at the edges.
+
+		The lack of interaction, as well as the physical seperation of the state, makes it very robust against perturbations, but also difficult to detect.
+		Luckily, the state's presence itself is measurable: the availability of a state contributes to the conduction at that energy.
+		When measuring the conduction through a system with Majorana's present, one should thus encounter a rise in the conductance at zero energy: the zero bias peak.
 
 	\subsection{Decay/Coherence length}
 		The decay or coherence length of a Majorana pair is an important measure signifying the seperation of the two half-particles.
 		A decay length larger or of equal size to the system dimensions will lead to overlap of the Majorana's, diminishing the desired robustness of the state.
+		An overlap of the Majorana's will in fact lead to the system having a non-zero energy, its magnitude depending on the amount of overlap.
+		A crude estimation of the size of an individual Majorana is:
+		\begin{equation}
+			\xi = \hbar \frac{v_\text{F}}{\Delta}
+		\end{equation}
 
 	\subsection{Topological gap}
 		The topological gap is defined as the energy gap between the Majorana state -- conveniently located at zero energy -- and the first available state.
 		It's magnitude governs the protection of the system against perturbations causing the system to be lifted out of its ground state: the Majorana state.
 
 \section{Two dimensional platform for Majoranas}
-	
+
+	\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.5\columnwidth]{figures/pientka_system}
+	\caption{System overview. Source\cite{pientka_topological_2017}}
+	\label{fig:pientka_system}
+	\end{figure}
+
+	The earliest devices used to create a seperated pair of Majorana's were nanowires deposited onto a slab of superconducting material.
+	A relatively new proposal is that of creating Majorana's in a planar Josephson junction~\cite{pientka_topological_2017}.
+	An advantage of this system is that the phase difference between the superconductors can be used as a knob to switch the system from the topological state to the trivial state. 
+	In addition, the presence of the second superconductor increases the topological gap of the system due to the proximity effect.
+
+			
+
 	\subsection{Phase diagram}
+	As mentioned, the superconducting phase difference plays a critical role in the physics of the device.
+	The topological phase diagram, as a function of magnetic field and superconducting phase, is depicted in Fig. \ref{fig:pientka_phase_diagram}.
+	Without normal reflection (perfect Andreev reflection), the diagram has a diamond-like shape.
+	The system is always topological when the superconducting phase is $pi$, or when the magnetic field is tuned to $(2N-1)$ times the Thouless energy (With exception of the corners of the diamonds).
+	
+	\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.5\columnwidth]{figures/pientka_phase_diagram}
+	\caption{Phase vs. Magnetic field. Source\cite{pientka_topological_2017}}
+	\label{fig:pientka_phase_diagram}
+	\end{figure}
+	
 
 	\subsection{Current phase relationship}
 	
-	\subsection{Thouless energy}
+	
 	\subsection{Transparency at NS interface}
