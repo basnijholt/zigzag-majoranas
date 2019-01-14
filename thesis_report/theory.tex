@@ -1,9 +1,18 @@
 % -*- root: ./report.tex -*-
 
 \chapter{Theory}
+The topological quantum computer uses pairs of Majorana particles as its unit of computation (qubit).
+In order to host Majorana modes in a system, one needs a material which has properties from a superconducting material, as well as from a semi-conducting material.
+As this material does not seem to exist on its own, one creates a heterogeneous system.
+I simple terms, this consists of a slab of superconductor and a strip of semiconductor.
+By interfacing the two, one creates a region where all the necessary ingredients are present to realize Majorana's.
+
+In this chapter, we first give a description of the normal (semi-conductor) and superconducting regions.
+We then focus on what happens in a system where the two are interfaced.
+Following that, we briefly explain what Majorana are, before introducing the implementation mainly relevant to this thesis.
+
 
 \section{General Physics}
-	We give a brief description of the interactions and physics present in the system under study.
 
     \subsection{Zeeman interaction}
     	The energy splitting of the two electron spin species due to magnetic field is called the Zeeman interaction.
@@ -13,7 +22,7 @@
     	\end{equation}
 
     \subsection{Spin-orbit coupling}
-	    An electron mvoing in an electric field will experience a small Zeeman field in its inertial frame as a relativistic effect~\cite{petersen_simple_2000}.
+	    An electron moving in an electric field will experience a small Zeeman field in its inertial frame as a relativistic effect~\cite{petersen_simple_2000}.
 	    The resulting interaction is known as spin orbit coupling.
 	    Spin-orbit coupling can be approximated with adding a Rashba spin orbit coupling term in the Hamiltonian:
 	    \begin{equation}
@@ -67,6 +76,7 @@
 			Josephson junctions are relevant to this thesis as the primary device studied is a Josephson junction itself.
 
 		\subsubsection{Thouless energy}
+
 
 
 \section{Topology and Majorana bound states}
@@ -136,9 +146,6 @@
 	\caption{Phase vs. Magnetic field. Source\cite{pientka_topological_2017}}
 	\label{fig:pientka_phase_diagram}
 	\end{figure}
-	
-
-	\subsection{Current phase relationship}
-	
-	
+		
 	\subsection{Transparency at NS interface}
+
