@@ -19,37 +19,9 @@
 
 	\subsection{Analytical estimate of Andreev spectrum for a straight junction}
 		
-		\comment{We use a short junction approximation and neglect transverse SO.}
 		We derive the spectrum by calculating the scattering matrix for the normal region and applying the Andreev bound state condition for the short junction limit\cite{beenakker1991universal, sticlet_robustness_2017}. 
+		The short junction limit is valid for [TODO: WHEN IS THE SHORT JUNCTION LIMIT VALID]
 		For deriviation of the scattering matrix, we neglect SOI in the transverse direction, which is valid for $W<l_\text{so}$.
-		The result is specified in Eqs.~\eqref{eq:smatrix} to~\eqref{eq:momenta_short_junction}.
-
-
-
-
-
-		In order to get the spectrum from the S-matrix [Eq.~\eqref{eq:smatrix}] we use the main result from Ref.~\cite{beenakker1991universal} and start with a determinantal equation for the bound state energies in a SNS-junction:
-
-		\begin{equation}
-		\det\left[1+\alpha^{2}\left(E\right)r^{*}S_{e}\left(E,\bm{k}\right)rS_{e}^{*}\left(-E,-\bm{k}\right)\right]=0
-		\end{equation}
-
-		We rewrite this as a characteristic polynomial problem $\det\left[A-\lambda I\right]=0$, as
-
-		\begin{equation}
-		\det\left[r^{*}S_{e}\left(E,\bm{k}\right)rS_{e}^{*}\left(-E,-\bm{k}\right)-\frac{-1}{\alpha^{2}\left(E\right)}I\right]=0
-		\end{equation}
-
-		with
-		\begin{equation}
-		\lambda=-\frac{1}{\alpha^{2}\left(E\right)},\;A=r^{*}S_{e}\left(E,\bm{k}\right)rS_{e}^{*}\left(-E,-\bm{k}\right).
-		\end{equation}
-
-		Where $\lambda_i$ are the eigenvalues of $A$.
-		Inverting $\alpha\left(E\right)\equiv\exp\left(-i\arccos\left(E/\Delta\right)\right)$ yields $\frac{E}{\Delta}=\frac{\alpha^{2}+1}{2\alpha}=\frac{1}{2}\left(\alpha+\alpha^{-1}\right)=\textrm{Re}(\alpha)$, where the last equality holds because $\alpha$ is unitary.
-		Then, since $\alpha$ is only defined in the positive imaginary plane, the energies are $\frac{E_{i}}{\Delta}=\textrm{Re}\left(\sqrt{-1/\lambda_{i}}\right)$ where we take the root which has a positive imaginary part.
-		Using this result and Eq.~\eqref{eq:smatrix}, we numerically find the Andreev spectrum.
-
 
 		\subsubsection{Derivation of the scattering matrix}
 
@@ -122,7 +94,8 @@
 			\end{align}
 
 			To solve the system analytically, we use the Short Junction limit: we set the energy to zero.
-			By applying the boundary conditions and solving the resulting linear system of equations, the resulting solution is given by Eqs.~\eqref{eq:smatrix} through ~\eqref{eq:momenta_short_junction}.\\
+			By applying the boundary conditions and solving the resulting linear system of equations, the resulting solution is given by Eqs.~\eqref{eq:smatrix} through ~\eqref{eq:momenta_short_junction}.
+			\emph{Important note: In order to use the Andreev bound state condition, the scattering matrix must be in the [TODO: NAME OF BASIS] basis. This basis transformation has already been applied in Eqs. ~\eqref{eq:smatrix} through ~\eqref{eq:momenta_short_junction}}\\
 			
 			Scattering matrix, in block matrix format:
 			\begin{align}
