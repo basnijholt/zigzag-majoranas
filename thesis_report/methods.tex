@@ -52,11 +52,34 @@
 
 
 		\subsubsection{Derivation of the scattering matrix}
-			We consider the scattering problem defined by Fig. \ref{fig:scattering}, the corresponding system of equations given in Eq. \eqref{eq:scattering_matrix_problem}, and
-			continuity and flux conservation(continuity of first derivative) at the normal-superconductor interfaces.
-			The Hamiltonians of the respective regions are given by Eqs. \eqref{eq:ham_smat_normal,eq:ham_smat_superconducting}.
-			The Hamiltonian of the superconducting region does not include the superconducting term because we implement Andreev reflection seperately: this way we halve the dimensionality of the problem.
 
+			\begin{figure}[!htb]
+			\includegraphics[width=0.95\columnwidth]{images/scattering}
+			\caption{Basis for scattering matrix. 
+			The `S' region corresponds to the superconductor Hamiltonian without the superconducting term, Eq.~\eqref{eq:ham_smat_superconducting}, `N' to the normal region, Eq.~\eqref{eq:ham_smat_normal}. 
+			The coefficients represent the amplitude of the modes present in the system, at a particular energy.
+			The different color arrows correspond to the two different spinors in each region.
+			For example, $a_{1,L}$ is the amplitude of the rightmoving incoming mode, $\vec{\psi}_1 \exp\left(i k_{1,L} x\right)$}
+			\label{fig:scattering}
+			\end{figure}
+			
+			\begin{align}
+			H_\text{N} &= \left[ \frac{\hbar^2}{2 \meff} \left(\kx^2 + \ky^2\right) -\mu_n\right]\sigi +
+						 \alpha \kx \sigy +
+						 E_z \left[ \cos(\theta) \sigx + \sin(\theta) \sigy \right]
+			\label{eq:ham_smat_normal} \\
+			H_\text{S} &= \left[\frac{\hbar^2}{2 \meff} \left(\kx^2 + \ky^2\right) -\mu_s\right]\sigi
+			\label{eq:ham_smat_superconducting}
+			\end{align}
+			
+			We consider the scattering region as depicted in Fig. \ref{fig:scattering}.
+			There are three regions in the system, one normal system (N), with Hamiltonian given by Eq.~\eqref{eq:ham_smat_superconducting}, and two superconducting regions (S), with Hamiltonian given by Eq.~\eqref{eq:ham_smat_superconducting}.
+			Not that Eq.~\eqref{eq:ham_smat_superconducting} region does not include the superconducting term ($\Delta \tau_y$), because we implement Andreev reflection seperately: this way we avoid doubling (electron and hole) the dimensionality of the problem.
+			We set the energy of the system, and find the planar waves propogating in each region.
+			Because the plane waves can go in two directions, and the additional degree of freedom introduced due to spin, each region has four propogating waves.
+			The idea of the scattering matrix is to set the vector $\vec{a}$, containing the amplitudes of the planar waves coming in to the scattering region, and find the amplitudes of the modes exiting the scattering region.
+			This is captured by a system of linear equations, displayed in Eq.~\eqref{eq:scattering_matrix_problem}
+			
 			\begin{equation}
 			\begin{bmatrix} 
 			b_{1,L}\\
@@ -64,7 +87,7 @@
 			b_{1,R}\\
 			b_{2,R}
 			\end{bmatrix} 
-			= S_\text{sns} \cdot 
+			= S_\text{sns}(\epsilon) \cdot 
 			\begin{bmatrix} 
 			a_{1,L}\\
 			a_{2,L}\\
@@ -74,25 +97,34 @@
 			\label{eq:scattering_matrix_problem}
 			\end{equation}
 
+			In order to find the coefficients of the matrix $S_\text{sns}(\epsilon)$, we take the wavefunction $u(x)$ and apply the boundary equations (continuity and flux conservation): specified in Eqs.~\eqref{eq:scattering_equations} through \eqref{eq:scattering_boundary_eqs}.
+			Note that because we neglect spin-orbit coupling in the x-direction, the velocity operator $\hat{\mathbf{v}}$ can be simplified to the first derivative.
+			Although omitted to keep the expression compact, the momenta $k_i, q$ and spinors $\vec{\Psi_{i, L/R}}$ are energy dependent.
+
 			\begin{align}
-			H_\text{N} &= \left[ \frac{\hbar^2}{2 \meff} \left(\kx^2 + \ky^2\right) -\mu_n\right]\sigi +
-						 \alpha \kx \sigy +
-						 E_z \left[ \cos(\theta) \sigx + \sin(\theta) \sigy \right]
-			\label{eq:ham_smat_normal} 
-			\\
-			H_\text{S} &= \left[\frac{\hbar^2}{2 \meff} \left(\kx^2 + \ky^2\right) -\mu_s\right]\sigi
-			\label{eq:ham_smat_superconducting}
+				&u(x) = 
+				\begin{cases}
+				u_L(x) = a_{1,L} \vec{\Psi} _{s,1} \exp (i q y) + a_{2,L} \vec{\Psi} _{s,2} \exp (i q y) + b_{1,L} \vec{\Psi} _{s,1} \exp (-i q y) + b_{2,L} \vec{\Psi} _{s,2} \exp (-i q y)  & x \leq 0\\
+				u_m(x) = d_{1,l} \vec{\Psi} _{n,1} \exp \left(-i k_1 y\right) + d_{1,r} \vec{\Psi} _{n,1} \exp \left(i k_1 y\right) + d_{2,l} \vec{\Psi} _{n,2} \exp \left(-i k_2 y\right) + d_{2,r} \vec{\Psi} _{n,2} \exp \left(i k_2 y\right)  & 0 \geq x \leq W\\
+				u_R(x) = a_{1,R} \vec{\Psi} _{s,1} \exp (-i q y) + a_{2,R} \vec{\Psi} _{s,2} \exp (-i q y) + b_{1,R} \vec{\Psi} _{s,1} \exp (i q y) + b_{2,R} \vec{\Psi} _{s,2} \exp (i q y)  & W \geq x
+				\end{cases}
+				\label{eq:scattering_equations}
+			\end{align}
+				
+			Where $a_{i, L/R}$ are the coefficients of the incoming modes, $b_{i, L/R}$ are those of the outgoing modes, and $d_{i, l/r}$ are the modes in the middle region: see Fig.\ref{fig:scattering}.
+			The symbols $\vec{\Psi}_{n/s, i}$ and $k_i, q$ are respectively the spinors and corresponding momenta belonging to each region.
+			Both are energy dependent.\\
+
+			The boundary conditions are,
+			\begin{align}
+				& u(x) \text{ is continuous}\\
+				&\hat{\mathbf{v}} u(x) \text{ is continuous, where $\hat{\mathbf{v}}$ is the velocity operator}\label{eq:scattering_boundary_eqs}
 			\end{align}
 
-			\begin{figure}[!htb]
-			\includegraphics[width=0.95\columnwidth]{images/scattering}
-			\caption{Basis for scattering matrix. `S' region corresponds to the superconductor Hamiltonian without the superconducting term.}
-			\label{fig:scattering}
-			\end{figure}
+			To solve the system analytically, we use the Short Junction limit: we set the energy to zero.
+			By applying the boundary conditions and solving the resulting linear system of equations, the resulting solution is given by Eqs.~\eqref{eq:smatrix} through ~\eqref{eq:momenta_short_junction}.\\
 			
-
-			The resulting scattering matrix:
-
+			Scattering matrix, in block matrix format:
 			\begin{align}
 			\label{eq:smatrix}
 		    S &= \left(
@@ -117,20 +149,20 @@
 		    \omega^\pm_j &= \frac{1}{4} \left(\gamma _{j} \pm \delta _{j}\right)
 			\end{align}
 
+			Subexpressions:
 			\begin{align}
 			    \gamma_j &= \frac{q+i k_{j} \tan \left(\frac{W k_{j}}{2}\right)}{q-i k_{j} \tan \left(\frac{W k_{j}}{2}\right)} \\
 			    \delta_j &= \frac{q-i k_{j} \cot \left(\frac{W k_{j}}{2}\right)}{q+i k_{j} \cot \left(\frac{W k_{j}}{2}\right)}\\
 			    e^{i \nu_{\arg}} &= \frac{E_\text{z} e^{i \theta }-i \alpha  k_x}{\sqrt{E_\text{z}^2+\alpha  k_x \left(\alpha  k_x-2 E_\text{z} \sin (\theta )\right)}}
 			\end{align}
 
-			\begin{footnotesize}
+			Momenta:
 			\begin{align}
 			    q &= \left[ \frac{2 m_\ast}{\hbar ^2}\mu_s - k_x^2 \right]^\frac{1}{2}\\
 			    k_1 &= \left[ \frac{2 m_\ast}{\hbar^2} \left(\mu_n-\sqrt{E_z^2-2 \alpha  E_z \sin (\theta ) k_x+\alpha ^2 k_x^2}\right) - k_x^2 \right]^\frac{1}{2}\\
 			    k_2 &= \left[ \frac{2 m_\ast}{\hbar^2} \left(\mu_n+\sqrt{E_z^2-2 \alpha  E_z \sin (\theta ) k_x+\alpha ^2 k_x^2}\right) - k_x^2 \right]^\frac{1}{2}
 			\label{eq:momenta_short_junction}
 			\end{align}
-			\end{footnotesize}
 
 		\subsubsection{Resulting spectrum}
 			In order to get the spectrum from the S-matrix [Eq.~\eqref{eq:smatrix}] we use the main result from Ref.~\cite{beenakker1991universal} and start with a determinantal equation for the bound state energies in a SNS-junction:
