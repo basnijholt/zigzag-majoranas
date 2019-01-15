@@ -12,7 +12,11 @@ We then focus on what happens in a system where the two are interfaced.
 Following that, we briefly explain what Majorana are, before introducing the implementation mainly relevant to this thesis.
 
 
-\section{General Physics}
+\section{Normal region}
+	Two important ingredients required for realizing Majorana fermions are strong spin-orbit coupling, and a strong interaction with the applied magnetic field.
+	It is the normal conductor which brings these two physical effects to the mix.
+	Note that the Hamiltonian of the normal region is the same for electrons and holes, except for the sign.
+	The Hamiltonian terms provided in this section are relevant to the electron states.
 
     \subsection{Zeeman interaction}
     	The energy splitting of the two electron spin species due to magnetic field is called the Zeeman interaction.
@@ -23,13 +27,16 @@ Following that, we briefly explain what Majorana are, before introducing the imp
 
     \subsection{Spin-orbit coupling}
 	    An electron moving in an electric field will experience a small Zeeman field in its inertial frame as a relativistic effect~\cite{petersen_simple_2000}.
-	    The resulting interaction is known as spin orbit coupling.
-	    Spin-orbit coupling can be approximated with adding a Rashba spin orbit coupling term in the Hamiltonian:
+	    The resulting interaction, coupling the momentum and spin of electron, is known as spin orbit coupling.
+	    Spin-orbit coupling can be approximated by adding a Rashba spin orbit coupling term in the Hamiltonian:
 	    \begin{equation}
 	    H_\text{Rashba} = \alpha (\ky \sigx - \kx \sigy) 
 	    \end{equation}
 
-    
+\section{Superconducting region}
+    The superconductor is responsible for ensuring particle-hole symmetry, as well as providing a `gapped' area in the bandstructure, isolating the zero-energy state.
+    Superconductivity is a very complicated phenomenon, so we again provide only the background required for the understanding of this work.
+
     \subsection{Superconductivity}
 		Superconductivity manifests itself as the complete lack of electrical resistance of a material.
 		It is the result of the pairing of electrons close to the Fermi-energy, condensing into so-called Cooper pairs.
@@ -50,35 +57,43 @@ Following that, we briefly explain what Majorana are, before introducing the imp
 		The block matrix restricts the structure of the system in the electron-hole basis, and ensures particle-hole symmetry.
 		For $\Delta \neq 0$ one indeed induces a identically sized gap in the spectrum.
 
-		\subsubsection{Andreev scattering and bound states}
-			At the interface between a normal and superconducting region, electrons with energies below the superconducting gap undergo Andreev scattering.
-			The quasiclassical microscopic explanation for this is as follows.
-			An electron in the normal region with energy below the superconducting gap, incident on the normal-superconductor (NS) interface, is retro-reflected as a hole.
-			This phenomenon is known as Andreev scattering, and occurs due to the coupling of electrons in a superconductor.
-			Although a single electron initially enters the superconductor, it draws another electron (with opposite momentum) into the superconductor: forming a Cooper pair.
-			The drawn in electron leaves behind a hole in the normal conductor, which essentially backtracks the motion of the initial electron, hence the term retro-reflection.
-			The same effect, but opposite in particle type, holds for a hole entering the superconductor.
+
+\section{Normal-superconducting junctions}
+	As mentioned, the interesting physics occur when a normal conductor is interfaced with a superconductor.
+	A single interface between a normal conductor and a superconductor is known as a NS junction.
+	When one creates a sandwich, superconductor - normal - superconducting, we speak of a SNS junction.
+	Even not considering topological phases, which are only present if the normal regions meets certain conditions, both have interesting physics which will be discussed first.
 
 
-		\subsubsection{Josephson junctions, Andreev bound states, and supercurrent}
-			An important device in the field of condensed matter physics is the Josephson junction.
-			A Josephson junction consists of a normal region sandwhiched in between two superconductors (SNS junction).
-			Electrons within the normal region, with energies below the superconducting gap, experience Andreev scattering from both superconductors.
-			The eigen modes of the sandwiched system, with energies below the gap, are known as Andreev bound states.
-			It is these Andreev bound states which exhibit interesting physics, and make the Josephson junction such an important device.
+	\subsection{Andreev scattering}
+		At the interface between a normal and superconducting region, electrons with energies below the superconducting gap undergo Andreev scattering.
+		The quasiclassical microscopic explanation for this is as follows.
+		An electron in the normal region with energy below the superconducting gap, incident on the normal-superconductor (NS) interface, is retro-reflected as a hole.
+		This phenomenon is known as Andreev scattering, and occurs due to the coupling of electrons in a superconductor.
+		Although a single electron initially enters the superconductor, it draws another electron (with opposite momentum) into the superconductor: forming a Cooper pair.
+		The drawn in electron leaves behind a hole in the normal conductor, which essentially backtracks the motion of the initial electron, hence the term retro-reflection.
+		The same effect, but opposite in particle type, holds for a hole entering the superconductor.
 
-			Although superconducting phase is relative to the choice of gauge, the difference of phase between two superconductors is in fact a physical quantity.
-			A difference in superconducting phase results in a flow of current from one superconductor to the other, known as a supercurrent.
-			The relationship between superconducting phase and current is known as the current-phase relationship, and is in the most simple case a sinosoid.
-			This relationship is exploited by experimentalist to control the phase difference between the two superconductors.
-			The amplitude of the current variation due to variation of phase is known as the critical current, and is the relatively trivial physical quantity to measure.
-			
-			Josephson junctions are relevant to this thesis as the primary device studied is a Josephson junction itself.
+	\subsection{Andreev bound states}
+		If the normal region is finite in the direction normal to the NS/SN interface, Andreev bound states form.
+		This is true for both SNS and SN junctions.
+		Quasiclassically, one can imagine electrons (and holes) in the normal region, with energies below the gap, bouncing back and forth the system.
+		The corresponding eigenstates have energies below the gap, and are thus bound to the normal region.
 
-		\subsubsection{Thouless energy}
+	\subsection{Josephson junctions and supercurrent}
+		An important device in the field of condensed matter physics is the Josephson junction.
+		A Josephson junction consists of a normal region sandwiched in between two superconductors (SNS junction).
+		The resulting Andreev bound states exhibit interesting physics, making the Josephson junction an important device.
 
+		Although superconducting phase is relative to the choice of gauge, the difference of phase between two superconductors is in fact a physical quantity.
+		A difference in superconducting phase in a Josephson junction, results in a flow of current between the two superconductors: a supercurrent.
+		The relationship between superconducting phase and current is known as the current-phase relationship, and is in the most simple case a sinosoid.
+		This relationship can be exploited to control the phase difference: it is a matter of inducing a current.
 
-
+		An important measure in a Josephson junction is the Thouless energy.
+		In the context of this work, the Thouless energy is inversely proportional to the travel time of an electron in a system, without interacting with the superconductor(s).
+		As an example of its relevance, in a SNS junction with magnetic field, if the Zeeman field has an energy comparable to the Thouless energy, as the electron traverses the system from supercondcutor to superconductor, the spin will be flipped.
+		
 \section{Topology and Majorana bound states}
 
 	The Wikipedia definition of mathematical topology is as follows:
@@ -135,17 +150,16 @@ Following that, we briefly explain what Majorana are, before introducing the imp
 			
 
 	\subsection{Phase diagram}
-	As mentioned, the superconducting phase difference plays a critical role in the physics of the device.
-	The topological phase diagram, as a function of magnetic field and superconducting phase, is depicted in Fig. \ref{fig:pientka_phase_diagram}.
-	Without normal reflection (perfect Andreev reflection), the diagram has a diamond-like shape.
-	The system is always topological when the superconducting phase is $pi$, or when the magnetic field is tuned to $(2N-1)$ times the Thouless energy (With exception of the corners of the diamonds).
-	
-	\begin{figure}[!htb]
-	\centering
-	\includegraphics[width=0.5\columnwidth]{figures/pientka_phase_diagram}
-	\caption{Phase vs. Magnetic field. Source\cite{pientka_topological_2017}}
-	\label{fig:pientka_phase_diagram}
-	\end{figure}
+		As mentioned, the superconducting phase difference plays a critical role in the physics of the device.
+		The topological phase diagram, as a function of magnetic field and superconducting phase, is depicted in Fig. \ref{fig:pientka_phase_diagram}.
+		Without normal reflection (perfect Andreev reflection), the diagram has a diamond-like shape.
+		The system is always topological when the superconducting phase is $pi$, or when the magnetic field is tuned to $(2N-1)$ times the Thouless energy (With exception of the corners of the diamonds).
 		
-	\subsection{Transparency at NS interface}
-
+		\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=0.5\columnwidth]{figures/pientka_phase_diagram}
+		\caption{Phase vs. Magnetic field. Source\cite{pientka_topological_2017}}
+		\label{fig:pientka_phase_diagram}
+		\end{figure}
+			
+	\subsection{Bandstructure of a typical system}
