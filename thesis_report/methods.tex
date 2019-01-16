@@ -161,17 +161,44 @@
 			Using this result and Eq.~\eqref{eq:smatrix}, we numerically find the Andreev spectrum.
 
 	\subsection{Eliminating long trajectories}
-		\comment{We devise two different ways to define the cutoff of momentum.}
-			
+
 		\begin{figure}[!htb]
 		\centering
 		\includegraphics[width=0.75\columnwidth]{images/zigzag.pdf}
 		\caption{Setups. Figure of a straight and zigzag system, including trajectories.
 		\label{fig:setup}}
 		\end{figure}
+
+		\comment{We make an analogy between the cutoff of long trajectories to the cutoff of high momenta.}
+		We hypothesize that the increase of the topological gap in a zigzag is due to the cutoff of long trajectories.
+		In order to make substantiate that this is indeed the driving mechanism behind the improvement, we propose an analogy using the bandstructure of a regular SNS junction.
+
+		\comment{We map the zigzag to an infinite SNS junction with tilted magnetic field and a range of forbidden momenta.}
+		We essentially take a single diagonal section of a zigzag, and map it to a normal, infinite SNS junction.
+		The new coordinate system is depicted by the set of axes with $x^\prime$ and $y^\prime$ in Fig.~\ref{fig:setup}.
+		Note that the magnetic field has an angle $\theta$ with respect to the $x^\prime$ axis.
+		We identify trajectories cut off by the zigzag with a particular range of forbidden momenta.
+		By then analysing the bandstructure of this infinite SNS junction, ignoring the forbidden momenta, we can give an estimate the resulting gap of the device.
+		As the system is only momentum localized in the $x$ direction (the translationally invariant direction), we only control $\kx$.
+		Denoting the set of allowed momenta by $\Omega$, the equation for the estimated topological gap becomes,
+		
+		\begin{equation}
+			\Delta_\text{topological} = \min_{\kx\in\Omega} \left\rvert E(\kx) \right\rvert
+			\label{eq:definition_gap}
+		\end{equation}
+		
+		\comment{We first link the long trajectories to a maximum allowed angle.}
+		In the infinite system, the long trajectories have a small angle with respect to the $x^\prime$$ axis.
+		By defining a minimum angle, we thus can filter out the long trajectories.
+		We define this angle by identifying the angle
+
 		
 		\subsubsection{Momentum cutoff}
+			\comment{We link the allowed angle by estimating it by $k_x = k_F \cos(\alpha)$}
 			We take the longest trajectory possible in a zigzag segment
+            
 		\subsubsection{Angular cutoff}
-
+            \begin{equation}
+            \sin (\alpha_\text{max}) = \frac{v_y}{v_x} = \frac{ \frac{\de E}{\de k_y} }{ \frac{\de E}{\de k_x} }
+            \end{equation}
 
