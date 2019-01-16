@@ -166,16 +166,17 @@
 		\centering
 		\includegraphics[width=0.75\columnwidth]{images/zigzag_methods.pdf}
 		\caption{Setups. Figure of a straight and zigzag system, including trajectories.
-		\label{fig:setup}}
+		\label{fig:zigzag_methods}}
 		\end{figure}
 
 		\comment{We make an analogy between the cutoff of long trajectories to the cutoff of high momenta.}
-		We hypothesize that the increase of the topological gap in a zigzag is due to the cutoff of long trajectories.
+		We hypothesize that the increase of the topological gap in a zigzag is due to the cutoff of modes on the Fermi surface with long trajectories.
 		In order to make substantiate that this is indeed the driving mechanism behind the improvement, we propose an analogy using the bandstructure of a regular SNS junction.
 
 		\comment{We map the zigzag to an infinite SNS junction with tilted magnetic field and a range of forbidden momenta.}
 		We essentially take a single diagonal section of a zigzag, and map it to a normal, infinite SNS junction.
-		The new coordinate system is depicted by the set of axes with $x^\prime$ and $y^\prime$ in Fig.~\ref{fig:setup}.
+		We assume that the zigzag is shaped such that there is no straight trajectory possible through the system anymore.
+		The system is depicted in Fig.~\ref{fig:zigzag_methods}, along with the set of axes with $x^\prime$ and $y^\prime$.
 		Note that the magnetic field has an angle $\theta$ with respect to the $x^\prime$ axis.
 		We identify trajectories cut off by the zigzag with a particular range of forbidden momenta.
 		By then analysing the bandstructure of this infinite SNS junction, ignoring the forbidden momenta, we can give an estimate the resulting gap of the device.
@@ -190,15 +191,17 @@
 		\comment{We first link the long trajectories to a maximum allowed angle.}
 		In the infinite system, the long trajectories have a small angle with respect to the $x^\prime$ axis.
 		By defining a minimum angle, we thus can filter out the long trajectories.
-		We define this angle by identifying it with the angle of the longest trajectory from one side of the superconductor to the other.
+		We define this angle $\alpha_\text{min}$ by identifying it with the angle of the longest trajectory from one side of the superconductor to the other: see Fig.~\ref{fig:zigzag_methods}.
+		Note that longer trajectories exist, by `grazing' the concave corners of the zigzag.
+		We suspect that this `grazing' leads to physics which cannot be captured in this simple model, and we thus choose to restrict this method for systems where the chosen trajectory is indeed a good approximation of the longest path.
 
+        We estimate the restriction of the domain for the momentum by defining the angle for the various 
+
+        \begin{equation}
+        \tan (\alpha) = \frac{v_y}{v_x}\bigr{\rvert_{E=E_F}} = \frac{ \frac{\de E}{\de k_y} }{ \frac{\de E}{\de k_x} } \Biggr\rvert_{E=E_F}=
+        \begin{cases}
+        \frac{\hbar ^2 k_y}{\frac{\alpha  m_s \left(\alpha  k_x-\text{Ez} \sin (\theta )\right)}{\sqrt{\text{Ez}^2+\alpha  k_x \left(\alpha  k_x-2 \text{Ez} \sin (\theta )\right)}}+\hbar ^2 k_x} & \text{band 1}\\
+        \frac{\hbar ^2 k_y}{\frac{\alpha  m_s \left(\text{Ez} \sin (\theta )-\alpha  k_x\right)}{\sqrt{\text{Ez}^2+\alpha  k_x \left(\alpha  k_x-2 \text{Ez} \sin (\theta )\right)}}+\hbar ^2 k_x} & \text{band 2}
+        \end{cases}
+        \end{equation}
 		
-		\subsubsection{Momentum cutoff}
-			\comment{We link the allowed angle by estimating it by $k_x = k_F \cos(\alpha)$}
-			We take the longest trajectory possible in a zigzag segment
-            
-		\subsubsection{Angular cutoff}
-            \begin{equation}
-            \sin (\alpha_\text{max}) = \frac{v_y}{v_x} = \frac{ \frac{\de E}{\de k_y} }{ \frac{\de E}{\de k_x} }
-            \end{equation}
-
