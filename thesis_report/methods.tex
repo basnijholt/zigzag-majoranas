@@ -1,6 +1,19 @@
 % -*- root: ./report.tex -*-
 \chapter{Methods}
 
+\section{Tight binding simulation}
+
+	\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.95\columnwidth]{figures/kwant_system}
+	\caption{Figure of the simulated system in Kwant.
+	Lattice spacing is made smaller to make the discretization visible.
+	The two golden regions are both superconducting, but differ in phase.
+	The blue and black regions form the semiconductor, but the black region has an optional potential offset to model an imperfect interface, increasing the amount of normal reflection.}
+	\label{fig:kwant_system}
+	\end{figure}
+
+	
 
 \comment{We propose a method to verify that elimination of long trajectories is responsible for the increased topological gap in a zigzag system.}
 \section{Quasiclassical estimation of the topological gap}
@@ -26,7 +39,8 @@
 		\subsubsection{Derivation of the scattering matrix}
 
 			\begin{figure}[!htb]
-			\includegraphics[width=0.95\columnwidth]{images/scattering}
+			\centering
+			\includegraphics[width=0.75\columnwidth]{images/scattering}
 			\caption{Basis for scattering matrix. 
 			The `S' region corresponds to the superconductor Hamiltonian without the superconducting term, Eq.~\eqref{eq:ham_smat_superconducting}, `N' to the normal region, Eq.~\eqref{eq:ham_smat_normal}. 
 			The coefficients represent the amplitude of the modes present in the system, at a particular energy.
@@ -165,7 +179,9 @@
 		\begin{figure}[!htb]
 		\centering
 		\includegraphics[width=0.75\columnwidth]{images/zigzag_methods.pdf}
-		\caption{Setups. Figure of a straight and zigzag system, including trajectories.
+		\caption{Schematic of the system, along with relevant dimensions, and the quasiclassical approach.
+		The $x^\prime, y^\prime$ axis depicts the rotated frame for the quasiclassical estimate.
+		The white trajectory indicates the estimate taken for the longest trajectory allowed by a zigzag.
 		\label{fig:zigzag_methods}}
 		\end{figure}
 
@@ -191,17 +207,30 @@
 		\comment{We first link the long trajectories to a maximum allowed angle.}
 		In the infinite system, the long trajectories have a small angle with respect to the $x^\prime$ axis.
 		By defining a minimum angle, we thus can filter out the long trajectories.
-		We define this angle $\alpha_\text{min}$ by identifying it with the angle of the longest trajectory from one side of the superconductor to the other: see Fig.~\ref{fig:zigzag_methods}.
+		We define this angle $\beta\text{min}$ by identifying it with the angle of the longest trajectory from one side of the superconductor to the other: see Fig.~\ref{fig:zigzag_methods}.
 		Note that longer trajectories exist, by `grazing' the concave corners of the zigzag.
 		We suspect that this `grazing' leads to physics which cannot be captured in this simple model, and we thus choose to restrict this method for systems where the chosen trajectory is indeed a good approximation of the longest path.
 
-        We estimate the restriction of the domain for the momentum by defining the angle for the various 
+        We identify the momentum with its angle by defining it through the reciprocal of the component velocities, given by Eq.~\eqref{eq:methods_angle_of_state}. Note that $k_1$ and $k_2$ are the momenta as defined in Eq.~\eqref{eq:momenta_short_junction}.
 
         \begin{equation}
-        \tan (\alpha) = \frac{v_y}{v_x}\bigr{\rvert_{E=E_F}} = \frac{ \frac{\de E}{\de k_y} }{ \frac{\de E}{\de k_x} } \Biggr\rvert_{E=E_F}=
+        \tan (\beta) = \frac{v_y}{v_x}\bigr{\rvert_{E=E_F}} = \frac{ \frac{\de E}{\de k_y} }{ \frac{\de E}{\de k_x} } \Biggr\rvert_{E=E_F}=
         \begin{cases}
-        \frac{\hbar ^2 k_y}{\frac{\alpha  m_s \left(\alpha  k_x-\text{Ez} \sin (\theta )\right)}{\sqrt{\text{Ez}^2+\alpha  k_x \left(\alpha  k_x-2 \text{Ez} \sin (\theta )\right)}}+\hbar ^2 k_x} & \text{band 1}\\
-        \frac{\hbar ^2 k_y}{\frac{\alpha  m_s \left(\text{Ez} \sin (\theta )-\alpha  k_x\right)}{\sqrt{\text{Ez}^2+\alpha  k_x \left(\alpha  k_x-2 \text{Ez} \sin (\theta )\right)}}+\hbar ^2 k_x} & \text{band 2}
+        \frac{\hbar ^2 k_1}{\frac{\alpha  \meff \left(\alpha  k_x-\text{Ez} \sin (\theta )\right)}{\sqrt{\text{Ez}^2+\alpha  k_x \left(\alpha  k_x-2 \text{Ez} \sin (\theta )\right)}}+\hbar ^2 k_x} & \text{band 1}\\
+        \frac{\hbar ^2 k_2}{\frac{\alpha  \meff \left(\text{Ez} \sin (\theta )-\alpha  k_x\right)}{\sqrt{\text{Ez}^2+\alpha  k_x \left(\alpha  k_x-2 \text{Ez} \sin (\theta )\right)}}+\hbar ^2 k_x} & \text{band 2}
         \end{cases}
+        \label{eq:methods_angle_of_state}
         \end{equation}
 		
+        We estimate the restriction of the domain for the momentum by geometrically calculating the minimum angle, as depicted in Fig.\ref{fig:zigzag_methods}. The result:
+
+        \begin{align}
+        	\tan \left(\beta_\text{min} \right) = \frac{W}{\sqrt{D^2 - W^2}} \label{eq:beta_min}\\
+        	D = \sqrt{z_x^2 + \left(z_y + W \sqrt{1 + \left(\frac{z_y}{z_x}\right)^2}\right)^2} \nonumber
+        \end{align}
+
+        The condition for the restricted momentum becomes:
+        \begin{equation}
+        	\tan \left(\beta\right) \geq \tan \left(\beta_\text{min}\right)
+        	\label{eq:restriction_momentum}
+        \end{equation}
