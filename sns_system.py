@@ -80,13 +80,13 @@ def get_template_strings(
     if not with_k_z:
         ham_str = ham_str.replace('k_z', '0')
 
-    spin_orbit = """+ alpha_{} * kron(sigma_x, sigma_z) * k_y"""
+    spin_orbit = "- alpha_{} * kron(sigma_y, sigma_z) * k_x"
     ham_normal = ham_str + spin_orbit.format('middle')
     ham_sc_left = ham_str + spin_orbit.format('left')
     ham_sc_right = ham_str + spin_orbit.format('right')
 
     if transverse_soi:
-        tr_spin_orbit = "- alpha_{} * kron(sigma_y, sigma_z) * k_x"
+        tr_spin_orbit = """+ alpha_{} * kron(sigma_x, sigma_z) * k_y"""
         ham_normal += tr_spin_orbit.format('middle')
         ham_sc_left += tr_spin_orbit.format('left')
         ham_sc_right += tr_spin_orbit.format('right')
