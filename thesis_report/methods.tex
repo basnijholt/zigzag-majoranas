@@ -6,13 +6,22 @@
 	\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.95\columnwidth]{figures/kwant_system}
-	\caption{Figure of the simulated system in Kwant.
+	\caption{Figure of different examples of simulated systems in Kwant.
 	Lattice spacing is made smaller to make the discretization visible.
 	The two golden regions are both superconducting, but differ in phase.
 	The blue and black regions form the semiconductor, but the black region has an optional potential offset to model an imperfect interface, increasing the amount of normal reflection.}
 	\label{fig:kwant_system}
 	\end{figure}
 
+	\comment{We use kwant to make systems and extract the eigenstates}
+	We use a tight-binding model, implemented using Kwant, to simulate various properties of the system.
+	The model consists of a two-dimensional square lattice of sites.
+	Each site has two orbitals: spin and electron-hole.
+	There are four different types of sites (and thus four different Hamiltonians): the top superconductor, the bottom superconductor, the normal region, and a normal region with a variable potential offset, forming a barrier to simulated an imperfect NS interface.
+	A schematic of such kwant systems is depicted in Fig.~\ref{fig:kwant_system}.
+	After the system is specified, we can extract the total Hamiltonian of the system, allowing analysis of the eigenstates.
+
+	\comment{We extract the gap by either taking the lowest energy state for an infinite system, or the difference between the lowest two eigenstates.}
 	
 
 \comment{We propose a method to verify that elimination of long trajectories is responsible for the increased topological gap in a zigzag system.}
