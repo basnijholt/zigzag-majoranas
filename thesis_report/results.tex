@@ -1,11 +1,14 @@
 % -*- root: ./report.tex -*-
 \chapter{Results \& Discussion}
+		In this chapter, we show how the properties of the system change under introduction of the zigzag geometry.
+		Additionally, we attempt to isolate the mechanism behind the improved properties by estimating the gap size through the quasiclassical model introduced in the Methods chapter.
+		
 	\comment{Introduction of a zigzag opens up the gap, creates a more stable topological phase diagram, and decreases coherence length of Majorana's}
 	\section{Increased isolation and stability of the Majorana state}
 
-	\comment{We see that the introduction of a zigzag leads to a reduction of the gap}
+		\comment{We see that the introduction of a zigzag leads to a reduction of the gap}
 		\subsection{Gap/bandstructure as a function of zigzagginess}
-			\comment{We discretize the model described in section II and simulate it with Kwant.}
+			\comment{We discretize the model described in the methods and simulate it with Kwant.}
 			We implement a tightbinding version of the model described in the Methods section (a two dimensional SNS junction with a Rashba BdG Hamiltonian) using Kwant.
 
 			\begin{figure}[!htb]
@@ -19,32 +22,23 @@
 			\end{figure}
 
 			\comment{We calculate the bandstructure for varying amount of zigzag.}
-			In figure~\ref{fig:bandstuctures}, the bandstructure for zigzag systems with varying amplitude is displayed.
+			In figure~\ref{fig:bandstuctures}, the bandstructure for zigzag systems (sawtooth shape) with varying amplitude is displayed.
 			As the zigzag introduces super cell, we see a folded bandstructure.
 			For comparisons sake, we take the same cell size for the ribbon structure so the bandstructure is folded in the same way.
 
 			\comment{The bandstructures show that modulation of the geometry increases the gap by an order of magnitude, as well as reduce the group velocity.}
 			The introduction of a zigzag has a striking effect: the bands flatten out, and more importantly, the gap size is increased more than an order of magnitude.
 			This effect is due to the fact that the modes where the gap is smallest, when the momentum is almost completely focused along the strip ($k_x=k_F$), are cut off by the zigzag geometry.
-			Also apparent is the reduction of group velocity; the slope of the bands is greatly reduced.
-			This has an effect on the Majorana coherence length, as described later on in the manuscript.
+			Also apparent is the significant reduction of group velocity; the slope of the bands is virtually zero.
+			The size of the gap, together with the velocity, directly relate to the Majorana coherence length (Eq.~\eqref{eq:majorana_coherence_length}), the effect of which is seen in the following section.
 
 			\comment{The introduction of an SN interface at many angles also increases performance.}
-			Additionally in the presence of normal reflection, due to the availability of NS interfaces at a wide range of slopes, the reflected part will eventually ``find'' a surface with which it is perpendicular to. The transparency of the SN interface is thus improved for transversal modes.
+			Additionally we note that, in the presence of normal reflection, due to the availability of NS interfaces at a wide range of slopes, a zigzag system will perform more favorable.
+			One can imagine that the normally reflected part of a wavefunction will, in a zigzag system, eventually ``find'' a surface with which it is perpendicular to.
+			The transparency of the SN interface is thus improved for non-transversal modes.
 
 		\comment{Introduction of a zigzag leads to localization of the Majorana's}
 		\subsection{Majorana decay length}
-			\comment{In a zigzag geometry Majoranas are localized within one segment of zigzag.}
-
-			\comment{We find the Majorana lengths by calculating the slowest decaying mode.}
-			Using the tight-binding package Kwant~\cite{groth_kwant:_2014}, we model a finite system to compute the Majorana wave function density for different geometries; ribbon, zigzag, parallel curve and vertically offset sinusoids.
-			In figure~\ref{fig:wavefunctions} the wavefunctions are displayed, superimposed upon their respective geometry.
-			For the ribbon system, we see that the Majorana coherence length is relatively large, not showing the decolalized nature sought after.
-			All of the zigzag type geometries however show greatly reduced coherence length.
-			This can be explained by two effects: the increase in topological gap, but also the before mentioned reduction of the group velocity.
-
-			\comment{We also confirm that the specific shape does not matter.}
-			Also note the similarity between the various shapes, sharp corners or more smoothlike, the effect is the same.
 
 			\begin{figure}[!htb]
 			\centering
@@ -55,6 +49,27 @@
 			We observe that $\xi$ for (a) is orders of magnitude longer and $E_\textrm{gap}$ orders of magnitude smaller than for (b, c, d), meaning that the details of the geometry do not matter.
 			\label{fig:wavefunctions}}
 			\end{figure}
+
+			\comment{We calculate the lowest eigenfunction and plot the density.}
+			Using the tight-binding package Kwant~\cite{groth_kwant:_2014}, we model a finite system to compute the Majorana wave function density for different geometries; ribbon, zigzag, parallel curve and vertically offset sinusoids.
+			In figure~\ref{fig:wavefunctions} the wavefunctions are displayed, superimposed upon their respective geometry.
+			Also displayed in the figure are the energies $\E_M$, corresponding to the plotted Majorana wavefunctions, as well as $E_1$: the energies corresponding to the next lowest state.
+
+			\comment{In a straight system, the Majorana's are very poorly localized.}
+			For the ribbon system, we see that the decay of the density is slow: the wavefunction clearly extends to the middle of the system, not showing the delocalization sought after.
+			Apart from the density, as mentioned in the Theory chapter, overlap of Majorana's leads to a non-zero energy of the state.
+			Taking this into consideration, we see that the energy of the Majorana state in the straight system is only barely below the next lowest lying eigenstate: the Majorana's are very poorly localized, and topological protection against perturbations is minimal.
+			
+			\comment{In a zigzag geometry Majoranas are localized within one segment of zigzag.}
+			All of the zigzag type geometries show a greatly reduced coherence length.
+			The delocalized nature of the wavefunctions is clearly visible through the density plots.
+			Quantitatively, the improvement in localization of the Majorana's is also distinctly apparent: the energies of the Majorana states are orders of magnitude lower than the energy of the second lowest lying wavefunctions.
+			As mentioned in the previous section, this can be attributed due to the way the gap and velocity factor into the Majorana coherence length.
+
+			\comment{We also confirm that the specific shape does not matter.}
+			The shape of the wavefunctions does not seem to change much depending on the details of the shape.
+			The sharp corners of the sawtooth versus the smooth shape of the snakelike system do not seem to have great impact upon the shape of the wavefunction.
+
 
 		\comment{Zigzag Majorana's have a cleaner phase diagram due to the reduction in symmetry class}
 		\subsection{Phase diagram}
