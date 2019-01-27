@@ -124,11 +124,20 @@
 
 		\subsection{Estimation of the gap through momentum cutoff}
 			As explained in the Methods chapter, we estimate the topological gap using a quasiclassical estimate.
-			We keep the ratio $4\dfrac{z_x}{z_y}$ constant, and vary $z_y$.
+			We keep the ratio $4\dfrac{z_x}{z_y}$ constant, and compute the gap as a function of $z_y$.
+			In Figure \ref{fig:quasiclassical_approximation}, the result is shown, comparing numerical gap calculations of the full zigzag system (full lines), with the result of the quasiclassical estimation.
+			Note that the quasiclassics are only valid once the zigzag cuts off all trajectories which extend infinitely.
 
 			\begin{figure}[!htb]
 			\centering
 			\includegraphics[width=0.95\columnwidth]{figures/quasiclassical_approximation}
-			\caption{Andreev Bound State spectrum of a SNS junction with a tilted in-plane magnetic field, computed using four different methods.}.
+			\caption{Comparison of the topological gap computed using a full zigzag system implemented in Kwant with the quasiclassical estimate. The ratio $4\dfrac{z_x}{z_y}$ is kept constant at three different values, and the gap is calculated for varying $z_y$.
+			The full lines represent  the numerical gap calculations of the full zigzag system, the dashed lines represent the quasiclassical estimation.}
 			\label{fig:quasiclassical_approximation}
 			\end{figure}
+
+			We would expect that the maximum gap improvement would occur near where the zigzag amplitude $z_y$ is large enough to cut off any angle in the system.
+			This point is different for the three ratios, but can be identified by where the gap is largest for the quasiclassical estimate (dashed lines).
+			Increasing $z_y$ further would only allow longer trajectories, which would seem extra undesirable due to the magnetic field not being aligned with the diagonal sections.
+			Considering the lines corresponding to the full zigzag systems, we see that, for the lower ratios (and thus steeper slopes), the optimal value lies far beyond the cutoff point.
+			This is unexpected, 
