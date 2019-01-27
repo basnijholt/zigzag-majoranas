@@ -8,8 +8,6 @@
 
 		\comment{We see that the introduction of a zigzag leads to a reduction of the gap}
 		\subsection{Gap/bandstructure as a function of zigzagginess}
-			\comment{We discretize the model described in the methods and simulate it with Kwant.}
-			We implement a tightbinding version of the model described in the Methods section (a two dimensional SNS junction with a Rashba BdG Hamiltonian) using Kwant.
 
 			\begin{figure}[!htb]
 			\centering
@@ -20,8 +18,8 @@
 			We observe that once there are no more straight trajectories inside the junction (when $z_y=\frac{W}{2}$) the spectrum becomes most insensitive to the momentum $k_x$.
 			\label{fig:bandstuctures}}
 			\end{figure}
-
 			\comment{We calculate the bandstructure for varying amount of zigzag.}
+			We implement a tightbinding version of the model described in the Methods section (a two dimensional SNS junction with a Rashba BdG Hamiltonian) using Kwant.
 			In figure~\ref{fig:bandstuctures}, the bandstructure for zigzag systems (sawtooth shape) with varying amplitude is displayed.
 			As the zigzag introduces super cell, we see a folded bandstructure.
 			For comparisons sake, we take the same cell size for the ribbon structure so the bandstructure is folded in the same way.
@@ -40,6 +38,11 @@
 		\comment{Introduction of a zigzag leads to localization of the Majorana's}
 		\subsection{Majorana decay length}
 
+			\comment{We calculate the lowest eigenfunction and plot the density.}
+			Using the tight-binding package Kwant~\cite{groth_kwant:_2014}, we model a finite system to compute the Majorana wave function density for different geometries; ribbon, zigzag, parallel curve and vertically offset sinusoids.
+			In figure~\ref{fig:wavefunctions} the wavefunctions are displayed, superimposed upon their respective geometry.
+			Also displayed in the figure are the energies $E_M$, corresponding to the plotted Majorana wavefunctions, as well as $E_1$: the energies corresponding to the next lowest state.
+
 			\begin{figure}[!htb]
 			\centering
 			\includegraphics[width=0.55\columnwidth]{figures/wavefunctions}
@@ -49,11 +52,6 @@
 			We observe that $\xi$ for (a) is orders of magnitude longer and $E_\textrm{gap} = E_\textrm{1} - E_M$ orders of magnitude smaller than for (b, c, d), meaning that the details of the geometry do not matter.
 			\label{fig:wavefunctions}}
 			\end{figure}
-
-			\comment{We calculate the lowest eigenfunction and plot the density.}
-			Using the tight-binding package Kwant~\cite{groth_kwant:_2014}, we model a finite system to compute the Majorana wave function density for different geometries; ribbon, zigzag, parallel curve and vertically offset sinusoids.
-			In figure~\ref{fig:wavefunctions} the wavefunctions are displayed, superimposed upon their respective geometry.
-			Also displayed in the figure are the energies $E_M$, corresponding to the plotted Majorana wavefunctions, as well as $E_1$: the energies corresponding to the next lowest state.
 
 			\comment{In a straight system, the Majorana's are very poorly localized.}
 			For the ribbon system, we see that the decay of the density is slow: the wavefunction clearly extends to the middle of the system, not showing the delocalization sought after.
@@ -73,15 +71,12 @@
 
 		\comment{Zigzag Majorana's have a cleaner phase diagram due to the reduction in symmetry class}
 		\subsection{Phase diagram}
-			\comment{We calculate the topological phase diagram using the gap size.}
-			We calculate the gap by finding the absolute minimum of the spectrum $E_\textrm{gap}=\min{|E(k)|}$.
-			Noting the gap closings and the fact we know the topology for the non-zigzag system, we can infer the topology of the system with zigzag modulation. % Bas: I don't understand what is written here
 
-			\comment{The phase diagram does not change much, except we see a cleaner spectrum as a result of the D class symmetry. }
-			Similar to what is described by Pientka et. al~\cite{pientka2017topological}, we see that the ribbon topology has a diamond like structure as a function of phase and Zeeman field.
-			We also see some additional gap closings which are due to the BDI symmetry class, creating quite an unstable region.
-			As expected, for the zigzag system, the magnitude of the gap is significantly improved, whilst maintaining the diamond like shape.
-			As the zigzag shape destroys the additional symmetry, moving it to class D, we see a more clean topological region.
+			\comment{We calculate the topological phase diagram using the gap size.}
+			Due to the size of the system, we cannot use full spectrum methods (the Pfaffian in this case) to compute the topological phase of our system.
+			Instead, we calculate the gap by finding the absolute minimum of the spectrum $E_\textrm{gap}=\min{|E(k)|}$.
+			Noting the gap closings, and the fact we know the topological phase for the non-zigzag system (e.g. for magnetic field vs. phase difference it is diamond shaped: Fig.~\ref{fig:pientka_phase_diagram}), we can infer the topology of the system with zigzag modulation.
+			In Figure ~\ref{fig:phasediagrams}, the energy gap as a function of magnetic field, chemical potential, and superconducting phase difference is displayed, for both a straight system (a and b), and a zigzag system (c and d).
 
 			\begin{figure}[!htb]
 			\centering
@@ -91,8 +86,25 @@
 			\label{fig:phasediagrams}}
 			\end{figure}
 
+			\comment{The phase diagram does not change much, except we see a cleaner spectrum as a result of the D class symmetry. }
+			Similar to what is described by Pientka et. al~\cite{pientka2017topological} (see Fig.~\ref{fig:pientka_phase_diagram}), we see that the straight geometry, as a function of superconducting phase difference and Zeeman field (b), has a diamond shaped phase diagram.
+			The additional gap closings visible within the diamond are due to the system belonging to the BDI symmetry class, and cause the region of interest, where there is a single pair of Majoranas, to be relatively small.
+			
+			For the zigzag system, the magnitude of the gap is significantly improved, as expected.
+			The diamond like shape of the phase-Zeeman plot is retained, and there is no significant change in its size either.
+			We expect a cleaner phase diagram due to the system belonging to the D symmetry class, which is partially reflected in the diagram: there is a large and stable (no gap closings) central region, but near 0 and 2$\pi$ phase difference, in the corner of the diamond, we see a chaotic collection of gap closings.
+			We are unsure of the nature of these gap closings, but they can perhaps be attributed to the symmetry breaking being relatively weak.
+
+
+
 	\section{Finding the mechanism responsible for the increased gap}
-		\comment{We use our analytical bandstructure to }
+		\comment{We compare different techniques to calculate the bandstructure of a 1D system.}
+		We verify the validity of the analytic model described in the Methods, to compute the bandstructure of a straight system in a tilted magnetic field. 
+		In Fig.\ref{fig:spectrum_calculation_comparison}, we compare the analytical model with bandstructures obtained using three different methods, implemented in Kwant.
+		To show that the model has been correctly implemented, we compute the Kwant scattering matrix of the identical model used in the analytics, and substitute it into the bound state condition\eqref{eq:bound_state_condition_sjl} (labeled Kwant without SOI SJL).
+		To show the validity of neglecting spin orbit in the transverse direction, we also compute the scattering matrix including the additional term, and again use the bound state condition to obtain the spectrum (labeled Kwant with SOI SJL).
+		We also perform the fully accurate calculation of the spectrum by simply computing the bandstructure of the corresponding Kwant system (labeled Full 1D kwant system): this result serves as the benchmark for the other techniques.
+
 		\subsection{Verification of analytical estimate}
 			\begin{figure}[!htb]
 			\centering
@@ -100,7 +112,23 @@
 			\caption{Andreev Bound State spectrum of a SNS junction with a tilted in-plane magnetic field, computed using four different methods.}.
 			\label{fig:spectrum_calculation_comparison}
 			\end{figure}
-			
-		\subsection{Estimation of the gap through momentum cutoff}
-
 		
+			All three of the scattering matrix approaches agree almost perfectly with each other.
+			We must note that ignoring spin orbit coupling in the transverse direction is only valid if the spin orbit length is sufficiently small compared to the width of the system.
+			What is also clear from the plot is that the domain of the scattering matrix methods is limited.
+			This is a result of the zero energy approximation  used to compute the momenta in the short junction limit: this assumption yields no solutions beyond the Fermi surface.
+
+			When comparing the scattering matrix approach to the full bandstructure calculation, we see that it holds only approximately: the shape of the bands is similar, but the magnitude differs significantly.
+			We attribute this to the loose compliance with the short junction limit: one needs both a long superconducting coherence length, as well as the energies in the spectrum to be near zero.
+			As we find the accuracy of the analytical spectrum to be relatively weak, we continue estimation of the gap in a zigzag system using the spectrum calculated with the full Kwant system.
+
+		\subsection{Estimation of the gap through momentum cutoff}
+			As explained in the Methods chapter, we estimate the topological gap using a quasiclassical estimate.
+			We keep the ratio $4\dfrac{z_x}{z_y}$ constant, and vary $z_y$.
+
+			\begin{figure}[!htb]
+			\centering
+			\includegraphics[width=0.95\columnwidth]{figures/quasiclassical_approximation}
+			\caption{Andreev Bound State spectrum of a SNS junction with a tilted in-plane magnetic field, computed using four different methods.}.
+			\label{fig:quasiclassical_approximation}
+			\end{figure}
