@@ -57,6 +57,17 @@ Following that, we briefly explain what Majorana are, before introducing the imp
 		The block matrix restricts the structure of the system in the electron-hole basis, and ensures particle-hole symmetry.
 		For $\Delta \neq 0$ one indeed induces a identically sized gap in the spectrum.
 
+	\subsection{Proximity effect}
+		In order to create Majorana's, one needs a material with properties unique to both superconductors and semiconductors.
+		However, if a superconductor is interfaced with a normal conductor, some of the properties belonging to the superconductor transfer to normal material.
+		This effective transfer of properties to the normal material is known as the proximity effect.
+		The characteristic distance governing the decay of the superconducting behavior is given by the superconducting coherence length, Eq.\eqref{eq:theory_sc_coherence_length}
+		
+		\begin{equation}
+			\xi = \hbar \frac{v_\text{F}}{\Delta}
+			\label{eq:theory_sc_coherence_length}
+		\end{equation}
+
 
 \section{Normal-superconducting junctions}
 	As mentioned, the interesting physics occur when a normal conductor is interfaced with a superconductor.
@@ -94,7 +105,7 @@ Following that, we briefly explain what Majorana are, before introducing the imp
 		In the context of this work, the Thouless energy is inversely proportional to the travel time of an electron in a system, without interacting with the superconductor(s).
 		As an example of its relevance, in a SNS junction with magnetic field, if the Zeeman field has an energy comparable to the Thouless energy, as the electron traverses the system from supercondcutor to superconductor, the spin will be flipped.
 		
-\section{Topology and Majorana bound states}
+\section{Topology, Symmetry, and Majorana bound states}
 
 	The Wikipedia definition of mathematical topology is as follows:
 	
@@ -102,11 +113,21 @@ Following that, we briefly explain what Majorana are, before introducing the imp
 	\cite{noauthor_topology_2018}
 	\end{quote}
 
-	Similarly, in condensed matter physics, topology refers to the study of properties of a system, which do not change within a particular range of parameters.
+	Similarly, in condensed matter physics, topology refers to the study of properties of a system, which are guaranteed by particular symmetries of the Hamiltonian.
+	These symmetries are present within a particular range of parameters, and any variation of those parameters within that range does not destroy these \emph{topologically protected} properties.
+	
 	Topology is relevant to the context of the system under study, because the emergence of seperated Majorana's is guaranteed within a continuous range of parameters.
-	The precense of Majorana's is therefore \emph{topologically protected}, as they will be unpurturbed by variations of parameters, within a certain range.
-	For an infinite system, the system is said to be topological if Majorana's would emerge if the system is cut to finite length.
-	The system is trivial if the converse is true.
+	The presence of Majorana's is therefore topologically protected, as they will be unpurturbed by variations of parameters, within a certain range.
+	For an infinite system, the system is said to be in the topological phase if Majorana's emerge once the system is cut to finite length.
+	The system is considered to be in its trivial phase if the converse is true.
+	The allocation of a system into one of its phases (in this case two) is quantitatively captured by its topological invariant.
+	The relevant topological invariant is dependent on the symmetry class the system belongs to.
+	In the case of the what is studied in this manuscript, the systems discussed belong to either symmetry class BDI or D.
+	Any system which is in the BDI class is also contained within class D.
+	The topological invariant of a class D system is binary: $-1$, corresponding to the topological phase, and $1$, corresponding to the trivial phase.
+	The invariant of a BDI system can be any integer number, which also means there are more than two topological phases.
+	More importantly, the transition of the system from one topological phase to the other means the system must undergo a gap closing.
+
 
 	\subsection{Majorana bound states}
 		We will give a very pragmatic description of Majorana bound states, insofar their relevance to this work.
@@ -120,19 +141,22 @@ Following that, we briefly explain what Majorana are, before introducing the imp
 		Luckily, the state's presence itself is measurable: the availability of a state contributes to the conduction at that energy.
 		When measuring the conduction through a system with Majorana's present, one should thus encounter a rise in the conductance at zero energy: the zero bias peak.
 
+	\subsection{Topological gap}
+		The topological gap is defined as the energy gap between the Majorana state -- conveniently located at zero energy -- and the first available state.
+		It's magnitude governs the protection of the system against perturbations causing the system to be lifted out of its ground state: the Majorana state.
+
 	\subsection{Decay/Coherence length}
 		The decay or coherence length of a Majorana pair is an important measure signifying the seperation of the two half-particles.
 		A decay length larger or of equal size to the system dimensions will lead to overlap of the Majorana's, diminishing the desired robustness of the state.
 		An overlap of the Majorana's will in fact lead to the system having a non-zero energy, its magnitude depending on the amount of overlap.
 		A crude estimation of the size of an individual Majorana is:
 		\begin{equation}
-			\xi = \hbar \frac{v_\text{F}}{\Delta}
+			\xi = \hbar \frac{v_\text{F}}{\Delta_\text{topological}}
 			\label{eq:majorana_coherence_length}
 		\end{equation}
 
-	\subsection{Topological gap}
-		The topological gap is defined as the energy gap between the Majorana state -- conveniently located at zero energy -- and the first available state.
-		It's magnitude governs the protection of the system against perturbations causing the system to be lifted out of its ground state: the Majorana state.
+		When the system is cut to a finite length, any overlap of the two Majorana's will lead to a non-zero energy.
+		This decreases the robustness of the topological state and it is thus desirable that the Majorana decay length is significantly smaller than the system size.
 
 \section{Two dimensional platform for Majoranas}
 
@@ -154,7 +178,11 @@ Following that, we briefly explain what Majorana are, before introducing the imp
 		As mentioned, the superconducting phase difference plays a critical role in the physics of the device.
 		The topological phase diagram, as a function of magnetic field and superconducting phase, is depicted in Fig. \ref{fig:pientka_phase_diagram}.
 		Without normal reflection (perfect Andreev reflection), the diagram has a diamond-like shape.
-		The system is always topological when the superconducting phase is $pi$, or when the magnetic field is tuned to $(2N-1)$ times the Thouless energy (With exception of the corners of the diamonds).
+		The system is always topological when the superconducting phase is $pi$, or when the magnetic field is tuned to $(2N-1)$ times the Thouless energy(Eq. \ref{eq:theory:E_th})
+		\begin{equation}
+			E_\text{Th} = \frac{\hbar^2 \pi^2}{2 \meff \left( 2 W \right)^2}
+			\label{eq:theory_E_th}
+		\end{equation}
 		
 		\begin{figure}[!htb]
 		\centering
