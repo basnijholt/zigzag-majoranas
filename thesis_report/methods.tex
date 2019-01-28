@@ -2,8 +2,45 @@
 \chapter{Methods}
 
 \section{Physical picture}
+	\comment{We consider a two-dimensional system with zigzag.}
+	We consider a Josephson junction (JJ)(Fig.~\ref{fig:setup}) consisting of a two dimensional strip of semiconductor, with superconductors on both sides.
+	We modulate the shape of the normal region, which can be either zigzag as depicted, or a more smooth sinusoidal like shape.
+	Similar to the conventional straight system \cite{pientka2017topological}, a magnetic field $B_x$ perpendicular to the junction is applied.
+	We model the system with a BdG Hamiltonian Eq.~\eqref{eq:hamiltonian}; the normal part has a linear Rashba spin-orbit coupling term characterized by $\alpha$ and a Zeeman field with $E_z=\frac{1}{2}mu_B g B_x$.
+	The superconductor has a superconducting coupling term $\Delta$ with a superconducting phase $\exp{\pm i \phi/2}$.
+	Both parts have a kinetic term and chemical potential $\mu$ (counted from the bottom spin-orbit band). 
+	For the zigzag geometry, we first consider a sawtooth like pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction.
+
+	\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.5\columnwidth]{images/zigzag.pdf}
+	\caption{Setups. Figure of a straight and zigzag system, including trajectories.
+	\label{fig:setup}}
+	\end{figure}
+
+	\comment{The symmetry class of the system is D.}
+	The non-zigzag system is in the symmetry class BDI \cite{pientka2017topological}.
+	Using the software package Qsymm\cite{varjas2018qsymm}, we find that the symmetry class of our system to be $\mathcal{D}$ because we break the chiral/time-reversal resulting from the mirror symmetric junction.
+
+	\begin{small}
+	\begin{align}
+	    H = \left(\frac{\hbar^2\left(\kx^2 + \ky^2\right)}{2\meff} - \mu + \frac{\meff \alpha^2}{2 \hbar^2} \right)\tau_z+
+	        E_\text{z} \sigma_x+
+	        \alpha \left( \ky \sigma_x - \kx \sigma_y \right) \tau_z +
+	        \Delta \tau_y
+	\end{align}
+	\label{eq:hamiltonian}
+	\end{small}
 
 \section{Tight binding simulation}
+
+	\comment{We use kwant to make systems and extract the eigenstates}
+	We use a tight-binding model, implemented using Kwant, to simulate various properties of the system.
+	The model consists of a two-dimensional square lattice of sites.
+	Each site has two orbitals: spin and electron-hole.
+	There are four different types of sites (and thus four different Hamiltonians): the top superconductor, the bottom superconductor, the normal region, and a normal region with a variable potential offset, forming a barrier to simulated an imperfect NS interface.
+	A schematic of such kwant systems is depicted in Fig.~\ref{fig:kwant_system}.
+	We can also make the system infinite in for example the $x$ direction by connecting the sites on the left border with those on the right border with a $\kx$ dependent hopping.
 
 	\begin{figure}[!htb]
 	\centering
@@ -15,15 +52,10 @@
 	\label{fig:kwant_system}
 	\end{figure}
 
-	\comment{We use kwant to make systems and extract the eigenstates}
-	We use a tight-binding model, implemented using Kwant, to simulate various properties of the system.
-	The model consists of a two-dimensional square lattice of sites.
-	Each site has two orbitals: spin and electron-hole.
-	There are four different types of sites (and thus four different Hamiltonians): the top superconductor, the bottom superconductor, the normal region, and a normal region with a variable potential offset, forming a barrier to simulated an imperfect NS interface.
-	A schematic of such kwant systems is depicted in Fig.~\ref{fig:kwant_system}.
-	After the system is specified, we can extract the total Hamiltonian of the system, allowing analysis of the eigenstates.
-
 	\comment{We extract the gap by either taking the lowest energy state for an infinite system, or the difference between the lowest two eigenstates.}
+	After the system is specified, we can extract the total Hamiltonian of the system, allowing analysis of the eigenstates.
+	For example, calculating the bandstructure of a system is performed by taking a translationally invariant system and calculating the eigenvalues for different momenta.
+
 	
 
 \comment{We propose a method to verify that elimination of long trajectories is responsible for the increased topological gap in a zigzag system.}
@@ -44,7 +76,7 @@
 	\subsection{Analytical estimate of Andreev spectrum for a straight junction}
 		
 		We derive the spectrum by calculating the scattering matrix for the normal region and applying the Andreev bound state condition for the short junction limit\cite{beenakker1991universal, sticlet_robustness_2017}. 
-		The short junction limit is valid for [TODO: WHEN IS THE SHORT JUNCTION LIMIT VALID]
+		The short junction limit is valid for $W<\xi$, where $\xi$ is the superconducting coherence length.
 		For deriviation of the scattering matrix, we neglect SOI in the transverse direction, which is valid for $W<l_\text{so}$.
 
 		\subsubsection{Derivation of the scattering matrix}
@@ -120,7 +152,7 @@
 
 			To solve the system analytically, we use the Short Junction limit: we set the energy to zero.
 			By applying the boundary conditions and solving the resulting linear system of equations, the resulting solution is given by Eqs.~\eqref{eq:smatrix} through ~\eqref{eq:momenta_short_junction}.
-			\emph{Important note: In order to use the Andreev bound state condition, the scattering matrix must be in the [TODO: NAME OF BASIS] basis. This basis transformation has already been applied in Eqs. ~\eqref{eq:smatrix} through ~\eqref{eq:momenta_short_junction}}\\
+			\emph{Important note: In order to use the Andreev bound state condition, the scattering matrix must be in the correct basis. The relevant basis transformation has already been applied in Eqs. ~\eqref{eq:smatrix} through ~\eqref{eq:momenta_short_junction}}.\\
 			
 			Scattering matrix, in block matrix format:
 			\begin{align}
