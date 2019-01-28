@@ -127,6 +127,14 @@
 			We keep the ratio $4\dfrac{z_x}{z_y}$ constant, and compute the gap as a function of $z_y$.
 			In Figure \ref{fig:quasiclassical_approximation}, the result is shown, comparing numerical gap calculations of the full zigzag system (full lines), with the result of the quasiclassical estimation.
 			Note that the quasiclassics are only valid once the zigzag cuts off all trajectories which extend infinitely.
+			Also important to note is that for the quasiclassical estimate, we set the longest trajectory to be the trajectory that does not include the corners, as depicted in Fig.~\ref{fig:longest_trajectory_wo_corners}
+
+			\begin{figure}
+			\centering
+			\includegraphics[width=0.45\columnwidth]{images/longest_trajectory_wo_corners}
+			\caption{Diagram depicting quasiclassical estimate of a zigzag system, but now with the longest trajectory chosen to avoid the corners of the zigzag.}
+			\label{fig:quasiclassical_approximation}
+			\end{figure}
 
 			\begin{figure}[!htb]
 			\centering
@@ -136,8 +144,20 @@
 			\label{fig:quasiclassical_approximation}
 			\end{figure}
 
+
 			We would expect that the maximum gap improvement would occur near where the zigzag amplitude $z_y$ is large enough to cut off any angle in the system.
 			This point is different for the three ratios, but can be identified by where the gap is largest for the quasiclassical estimate (dashed lines).
 			Increasing $z_y$ further would only allow longer trajectories, which would seem extra undesirable due to the magnetic field not being aligned with the diagonal sections.
+			
 			Considering the lines corresponding to the full zigzag systems, we see that, for the lower ratios (and thus steeper slopes), the optimal value lies far beyond the cutoff point.
-			This is unexpected, 
+			This is unexpected, and it weakens the validity of the idea that the gap is mostly determined by the length of the trajectories.
+			A possible explanation is that for lower ratios, the length of the diagonal sections is smaller, and  it is easier for the wavefunction to tunnel through the superconductor.
+			In any case, this phenomenon requires additional explanation.
+
+			The quasiclassical estimate, indicated by the dashed lines, seems to consistently under estimate the gap.
+			We also see that the gap declines monotonically with respect to the zigzag amplitude, which is by design: increasing the zigzag amplitude corresponds to increasing the domain of permitted trajectories, and thus the minimum can only decrease.
+			Even so, we see that the decline of the gap with respect to $z_y$ is much quicker than with an actual zigzag.
+			A possible reason that the quasiclassical model sketches a darker picture than full zigzag, is due to the fact that in that model, long trajectories also correspond to grazing angles of incidence at the NS interface.
+
+			We conclude that the proposed model to estimate the gap does not capture the physics of the zigzag very well: the model merely gives a lower bound for the topological gap.
+			
