@@ -1,24 +1,55 @@
 % -*- root: ./report.tex -*-
 \chapter{Introduction}
+
+\comment{The history of quantum computing and why QC is important}
+	The idea to use coherent quantum states as a means to perform complex calculations first appeared in the beginning of the 80's.
+	A handful of papers had already been published on the matter, Nobel laureate Richard Feynman suggested its importance with respect to physics simulations during a keynote speech at the California Institute of Technology.
+	To put things in very simple terms, calculating the quantum mechanical state of a system on a conventional computer scales exponentially with respect to the system size.
+	The idea of a quantum computer is that this scaling becomes polynomial.
+	Beyond physics, quantum computers have been suggested to be used for tasks such as cryptography, optimization and search algorithms.
+	With the potential applications in mind, a lot of resources and effort has been put into realising such a quantum computer in recent years.
+	Apart from quantum computing being a largely publicly funded effort, the private sector has also started to recognize the potential of the technology: large companies such as Microsoft, Google and IBM are investing into the development of a quantum computer.
+	As of this moment, working quantum computers have been realized on a very small scale: calculations of meaningful scale are still not possible.
+
+\comment{It is still an open question what the implementation for a qubit will be, but majorana's are one of the contenders}
+	If we consider the evolution of the regular computer, we see that the technological/physical platform for the bit, something which can be in either of two states, 1 or 0, has been constantly changing.
+	For the earliest computers, it was complex mechanical systems with gears and cogs.
+	Then later, switching to electronics, binary states were implemented in the form of vacuum tubes, and later, up to today, it is the transistor which acts as the basic unit of computation.
+	Similarly, because quantum computing is still in its infancy, there are still many contenders for what the underlying technology will be: what physical system will form the basis for the quantum bit, the qubit.
+	Some of the current platforms for implementing a qubit being pursued are the transmon qubit, NV-centers, quantum dots, and Majorana bound states.
+	Majorana bound states (MBSs) are a promising candidate to form the basis of a stable platform for topological quantum computing, and the specific way to create them are the topic of study in this manuscript.
+
+\section{Majorana bound states as qubits}
+
+	\comment{What are Majorana bound states}
+
+	\comment{Ways to make Majorana's: nanowires \& sns system}
+
+\section{The Josephson }
+	\comment{Current experimental progress}
+
+	\comment{The challenges encountered}
+
+% \comment{We show that by adding a zigzag geometry, small gap and poor localization is combatted by eliminating the long trajectories.}
+% In this paper we show that introducing a zigzag or snake like geometry for the semiconductor eliminates these long trajectories and prevents the appearance of a soft gap while also increasing the topological gap by an order of magnitude.
+
+
+% \comment{Majoranas are mostly made in hybrid NS structures.}
+% The current experimental effort is focused on creating pairs of MBSs in hybrid normal-superconductor (NS) structures, where a lengthy strip (or wire) of semiconductor is interfaced with a \cite{lutchyn_majorana_2010,oreg_helical_2010} superconductor.
+% Within the right parameter regime ($E_z^2>\mu^2+\Delta^2$ for a simple wire), the semiconductor becomes topological and MBSs appear at the ends of the segment.
+% Recently, a system with a slight modification has been proposed\cite{pientka2017topological}, where instead of having one superconductor, there are two superconductors, creating a superconductors-normal-superconductor (SNS) junction.
+% This adds an extra knob to adjust, the superconducting phase difference $\phi$, and this should make it easier to tune the system into the topological phase.
+% In practice, multiple problems arise making even the observation, let alone the manipulation of Majoranas difficult.
+
+% \comment{The gap is small because of long trajectories.}
+% One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap; where the gap in the density of states is greatly reduced for states with the momentum directed along the length of the strip.
+% From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor.
+% Additionally, these long trajectories have long flight times $\tau_f$ and equivalenly small Thouless energies $E_{\textrm{Th}}=\hbar / \tau_f$, resulting in a small gap. 
+
+% \comment{Currently proposed workarounds are low density or disorder, but both have drawbacks.}
+% Currently, proposed workarounds are low density or disorder~\cite{haim_double-edge_2018}, but both have drawbacks.
+
+
 % \comment{We propose that the introduction of a zigzag-shaped modulation of the junction region leads to an increased topological gap, as well as a reduction of the Majorana coherence length.}
 % \comment{We hypothesize that the gap improvement is the result of the elimination of long trajectories}
 
-Majorana bound states (MBSs) are a promising candidate to form the basis of a stable platform for topological quantum computing.
-
-\comment{Majoranas are mostly made in hybrid NS structures.}
-The current experimental effort is focused on creating pairs of MBSs in hybrid normal-superconductor (NS) structures, where a lengthy strip (or wire) of semiconductor is interfaced with a \cite{lutchyn_majorana_2010,oreg_helical_2010} superconductor.
-Within the right parameter regime ($E_z^2>\mu^2+\Delta^2$ for a simple wire), the semiconductor becomes topological and MBSs appear at the ends of the segment.
-Recently, a system with a slight modification has been proposed\cite{pientka2017topological}, where instead of having one superconductor, there are two superconductors, creating a superconductors-normal-superconductor (SNS) junction.
-This adds an extra knob to adjust, the superconducting phase difference $\phi$, and this should make it easier to tune the system into the topological phase.
-In practice, multiple problems arise making even the observation, let alone the manipulation of Majoranas difficult.
-
-\comment{The gap is small because of long trajectories.}
-One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap; where the gap in the density of states is greatly reduced for states with the momentum directed along the length of the strip.
-From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor.
-Additionally, these long trajectories have long flight times $\tau_f$ and equivalenly small Thouless energies $E_{\textrm{Th}}=\hbar / \tau_f$, resulting in a small gap. 
-
-\comment{Currently proposed workarounds are low density or disorder, but both have drawbacks.}
-Currently, proposed workarounds are low density or disorder~\cite{haim_double-edge_2018}, but both have drawbacks.
-
-\comment{We show that zigzag geometry solves this problem by eliminating the long trajectories.}
-In this paper we show that introducing a zigzag or snake like geometry for the semiconductor eliminates these long trajectories and prevents the appearance of a soft gap while also increasing the topological gap by an order of magnitude.
