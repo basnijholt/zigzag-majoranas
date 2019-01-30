@@ -3,12 +3,12 @@
 
 \comment{The history of quantum computing and why QC is important}
 	The idea to use coherent quantum states as a means to perform complex calculations first appeared in the beginning of the 80's.
-	A handful of papers had already been published on the matter, Nobel laureate Richard Feynman suggested its importance with respect to physics simulations during a keynote speech at the California Institute of Technology.
-	To put things in very simple terms, calculating the quantum mechanical state of a system on a conventional computer scales exponentially with respect to the system size.
-	The idea of a quantum computer is that this scaling becomes polynomial.
-	Beyond physics, quantum computers have been suggested to be used for tasks such as cryptography, optimization and search algorithms.
+	A handful of papers had already been published on the matter, when, during a keynote speech at the California Institute of Technology, Nobel laureate Richard Feynman suggested its importance with respect to physics simulations .
+	To put his idea in very simple terms, calculating the quantum mechanical state of a system on a conventional computer scales exponentially with respect to the system size.
+	By making a computer that is based on quantum states itself, and making a mapping between those states and the system you want to simulate, the idea is that this scaling becomes polynomial.
+	Beyond its significance in physics simulations, quantum computers have been suggested to be used for other, perhaps more pragmatic tasks, including topics like cryptography, optimization and search algorithms.
 	With the potential applications in mind, a lot of resources and effort has been put into realising such a quantum computer in recent years.
-	Apart from quantum computing being a largely publicly funded effort, the private sector has also started to recognize the potential of the technology: large companies such as Microsoft, Google and IBM are investing into the development of a quantum computer.
+	Recently, apart from being a largely publicly funded effort, the private sector has also started to recognize the potential of the technology: large companies such as Microsoft, Google and IBM are investing into the development of a quantum computer.
 	As of this moment, working quantum computers have been realized on a very small scale: calculations of meaningful scale are still not possible.
 
 \comment{It is still an open question what the implementation for a qubit will be, but majorana's are one of the contenders}
@@ -22,10 +22,24 @@
 \section{Majorana bound states as qubits}
 
 	\comment{What are Majorana bound states}
+	Majorana particles are particles that always come in pairs: one pair of Majorana's forms a single electronic state.
+	Disambiguating electrons and holes into their Majorana counterparts is often analogized with splitting a complex number into its real and imaginary part.
+	In terms of the creation and annihilation operators of electrons, respectively $\hat{c}^\dagger$ and $\hat{c}$, we write,
+	\begin{align}
+		\hat{c} =  \frac{1}{2} \left( \gamma_1 - i\gamma_2 \right) && \hat{c}^\dagger = \frac{1}{2} \left( \gamma_1 + i\gamma_2 \right)
+	\end{align}
 
 	\comment{Ways to make Majorana's: nanowires \& sns system}
+	A realistic experimental implementation of Kitaev's model did not emerge until two papers were published around the same time by both Lutchyn et. al\cite{lutchyn_majorana_2010} and Oreg et. al\cite{ oreg_helical_2010}, where they proposed an experiment composed of a semiconducting nanowire deposited onto a superconductor.
+	They predicted that, if the semiconductor has strong spin-orbit coupling, a magnetic field applied along the wire axis, as well as a carefully tuned chemical potential, Majoranas would appear at the ends of the nanowire.
+	The experiment proved to be sufficiently practical to perform in the lab and the first signatures of Majorana bound states were found using the setup by Mourik et. al~\cite{mourik_signatures_2012}.
 
-\section{The Josephson }
+	\comment{Why are SNS junctions potentially better?}
+
+	\comment{Why do }
+
+
+\section{Majoranas in a Josephson junction}
 	\comment{Current experimental progress}
 
 	\comment{The challenges encountered}
