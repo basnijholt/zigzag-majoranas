@@ -29,41 +29,60 @@
 		\hat{c} =  \frac{1}{2} \left( \gamma_1 - i\gamma_2 \right) && \hat{c}^\dagger = \frac{1}{2} \left( \gamma_1 + i\gamma_2 \right)
 	\end{align}
 
-	\comment{Ways to make Majorana's: nanowires \& sns system}
-	A realistic experimental implementation of Kitaev's model did not emerge until two papers were published around the same time by both Lutchyn et. al\cite{lutchyn_majorana_2010} and Oreg et. al\cite{ oreg_helical_2010}, where they proposed an experiment composed of a semiconducting nanowire deposited onto a superconductor.
+	\comment{Forming a kitaev chain}
+	Without going into to much detail, and at the cost of making gross oversimplifications, one can suppose that an electron consists of two Majorana particles.
+	Borrowing an analogy with domino stones from the online course Topology in Condensed Matter\cite{noauthor_topology_2015}, we can see an electron as a domino stone: the two ends, seperated by a line, each correspond to a Majorona particle.
+	In the figure below\cite{noauthor_topology_2015}, the dominoes, and thus electrons, have been placed in a chain:\\
+	
+	
+	\begin{centering}
+	\includegraphics[width=0.95\columnwidth]{images/majorana_dominoes}
+	\end{centering}
+	
+	In a regular system, the Majoranas on each end of stone are paired locally, as depicted in the figure below:\\
+
+	\begin{centering}
+	\includegraphics[width=0.95\columnwidth]{images/trivial_dominoes}
+	\end{centering}
+	
+	Now suppose one would be able to shift the pairing, such that the Majoranas form pairs with the Majoranas on adjacent stones:\\
+
+	\begin{centering}
+	\includegraphics[width=0.95\columnwidth]{images/topological_dominoes}
+	\end{centering}
+	
+	As is apparent from the above image, this would leave two unpaired Majoranas at the ends of the chain.
+	This is the state we are interested in: the Majorana state, where two Majoranas are seperated in space.
+	This physical seperation has the effect of not allowing simple local perturbations to disturb the system.
+
+\section{Ways to make Majorana's: nanowires \& sns system}
+	A realistic experimental implementation of Kitaev's model did not emerge until the similar works of Lutchyn et. al\cite{lutchyn_majorana_2010} and Oreg et. al\cite{ oreg_helical_2010}, where they proposed an experiment composed of a semiconducting nanowire deposited onto a superconductor.
 	They predicted that, if the semiconductor has strong spin-orbit coupling, a magnetic field applied along the wire axis, as well as a carefully tuned chemical potential, Majoranas would appear at the ends of the nanowire.
 	The experiment proved to be sufficiently practical to perform in the lab and the first signatures of Majorana bound states were found using the setup by Mourik et. al~\cite{mourik_signatures_2012}.
 
-	\comment{Why are SNS junctions potentially better?}
-
-	\comment{Why do }
-
+	For the same reasons Majoranas are inherently protected against decoherence, it is notoriously difficult to prove their existence.
+	Perhaps the most direct way to detect their presence is through the observation of a so-called zero bias peak.
+	When performing a tunneling conductance experiment, measuring the conductance through the nanowire, the zero-energy (with respect to the Fermi energy) Majorana state provides a resonant tunneling state when no bias is applied, appearing as a peak in conductance.
+	There are however also other physical phenomena which can be responsible for such a conductance peak, and thus it is not unique to the Majorana state.
 
 \section{Majoranas in a Josephson junction}
-	\comment{Current experimental progress}
+	\comment{Why are SNS junctions potentially better?}
+	A more convincing case could be made if one could control the system in such a way that the presence of Majoranas can be turned on or off.
+	This feature is realized in a relatively recent proposal by Pientka et. al\cite{pientka_topological_2017}, where, instead of a nanowire, a two-dimensional strip of semiconductor is used.
+	On each side of the strip a superconductor is placed, forming a Josephson junction.
+	Using the Josephson junction, one can use the supercurrent which flows between the two superconductors to control whether the system is in a topological phase (meaning it contains Majoranas), or not.
+	The system has addition advantages, namely the system allows for Majorana's to be created at lower magnetic fields, the system is more compatible with convential semiconductor technology, and the Josephson junction allows for new ways to detect the topological phase of the system.
+
+	% \comment{Current experimental progress}
+	% Two papers that claimed they have observed signs of topological behavior.
+	% Soft gap, questionable results.
 
 	\comment{The challenges encountered}
-
-% \comment{We show that by adding a zigzag geometry, small gap and poor localization is combatted by eliminating the long trajectories.}
-% In this paper we show that introducing a zigzag or snake like geometry for the semiconductor eliminates these long trajectories and prevents the appearance of a soft gap while also increasing the topological gap by an order of magnitude.
-
-
-% \comment{Majoranas are mostly made in hybrid NS structures.}
-% The current experimental effort is focused on creating pairs of MBSs in hybrid normal-superconductor (NS) structures, where a lengthy strip (or wire) of semiconductor is interfaced with a \cite{lutchyn_majorana_2010,oreg_helical_2010} superconductor.
-% Within the right parameter regime ($E_z^2>\mu^2+\Delta^2$ for a simple wire), the semiconductor becomes topological and MBSs appear at the ends of the segment.
-% Recently, a system with a slight modification has been proposed\cite{pientka2017topological}, where instead of having one superconductor, there are two superconductors, creating a superconductors-normal-superconductor (SNS) junction.
-% This adds an extra knob to adjust, the superconducting phase difference $\phi$, and this should make it easier to tune the system into the topological phase.
-% In practice, multiple problems arise making even the observation, let alone the manipulation of Majoranas difficult.
-
-% \comment{The gap is small because of long trajectories.}
-% One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap; where the gap in the density of states is greatly reduced for states with the momentum directed along the length of the strip.
-% From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor.
-% Additionally, these long trajectories have long flight times $\tau_f$ and equivalenly small Thouless energies $E_{\textrm{Th}}=\hbar / \tau_f$, resulting in a small gap. 
-
-% \comment{Currently proposed workarounds are low density or disorder, but both have drawbacks.}
-% Currently, proposed workarounds are low density or disorder~\cite{haim_double-edge_2018}, but both have drawbacks.
+	One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap; where the gap in the density of states is greatly reduced for states with the momentum directed along the length of the strip.
+	From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor.
+	Additionally, these long trajectories have long flight times $\tau_f$ and equivalenly small Thouless energies $E_{\textrm{Th}}=\hbar / \tau_f$, resulting in a small gap. 
+	Currently, proposed workarounds are low density or disorder~\cite{haim_double-edge_2018}, but both have drawbacks.
 
 
-% \comment{We propose that the introduction of a zigzag-shaped modulation of the junction region leads to an increased topological gap, as well as a reduction of the Majorana coherence length.}
-% \comment{We hypothesize that the gap improvement is the result of the elimination of long trajectories}
-
+	We propose that the introduction of a zigzag-shaped modulation of the junction region leads to an increased topological gap, as well as a reduction of the Majorana coherence length.
+	Furthermore, we hypothesize that the gap improvement is the result of the elimination of long trajectories
