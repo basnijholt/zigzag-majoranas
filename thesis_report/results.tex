@@ -98,12 +98,12 @@
 
 
 	\section{Finding the mechanism responsible for the increased gap}
-		\comment{We compare different techniques to calculate the bandstructure of a 1D system.}
+		\comment{We compare different techniques to calculate the bandstructure of a straight system.}
 		We verify the validity of the analytic model described in the Methods, to compute the bandstructure of a straight system in a tilted magnetic field. 
 		In Fig.\ref{fig:spectrum_calculation_comparison}, we compare the analytical model with bandstructures obtained using three different methods, implemented in Kwant.
 		To show that the model has been correctly implemented, we compute the Kwant scattering matrix of the identical model used in the analytics, and substitute it into the bound state condition\eqref{eq:bound_state_condition_sjl} (labeled Kwant without SOI SJL).
 		To show the validity of neglecting spin orbit in the transverse direction, we also compute the scattering matrix including the additional term, and again use the bound state condition to obtain the spectrum (labeled Kwant with SOI SJL).
-		We also perform the fully accurate calculation of the spectrum by simply computing the bandstructure of the corresponding Kwant system (labeled Full 1D kwant system): this result serves as the benchmark for the other techniques.
+		We also perform the fully accurate calculation of the spectrum by simply computing the bandstructure of the corresponding Kwant system (labeled Full ribbon kwant system): this result serves as the benchmark for the other techniques.
 
 		\subsection{Verification of analytical estimate}
 			\begin{figure}[!htb]
