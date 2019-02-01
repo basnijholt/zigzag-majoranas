@@ -43,7 +43,7 @@ dummy_params_raw = dict(g_factor_middle=1,
 dummy_params = dict(**constants,
                     **dummy_params_raw)
 
-def create_parallel_sine(distance, z_x, z_y):
+def create_parallel_sine(distance, z_x, z_y, rough_edge=None):
     def _parallel_sine(x, distance, z_x, z_y):
         g       = lambda t: z_y * math.sin(2*np.pi/z_x*t)
         g_prime = lambda t: z_y * 2*np.pi/z_x*math.cos(2*np.pi/z_x*t)
@@ -56,12 +56,36 @@ def create_parallel_sine(distance, z_x, z_y):
         t = fsolve(_x, x)
         return y(t)
 
-    xdim = np.linspace(0, z_x, 1000)
-    ydim = [_parallel_sine(x, distance, z_x, z_y) for x in xdim]
-    
-    parallel_sine = scipy.interpolate.interp1d(xdim, ydim)
-    
+    xs = np.linspace(0, z_x, 1000)
+    ys = [_parallel_sine(x, distance, z_x, z_y) for x in xs]
+
+    if rough_edge is not None:
+        X, Y, salt = rough_edge
+
+        # Calculate the unit vector to the sine
+        tck = scipy.interpolate.splrep(xs, ys)
+        dydx = scipy.interpolate.splev(xs, tck, der=1)
+        unit_vectors = 1 / (1 + dydx**2) * np.array([-dydx, np.ones_like(dydx)])
+
+        # Generate a disordered boundary parameterized by (X, Y, salt)
+        rand = lambda i: X * kwant.digest.uniform(str(i), salt=str(salt))
+        rands = [rand(i) for i in range(int(z_x / Y) - 2)]
+        rands = [0, *rands, 0]  # make sure that it starts and ends with 0 (for periodicity)
+        ys_disorder = scipy.interpolate.interp1d(
+            np.linspace(0, z_x, len(rands)), rands, kind='quadratic')(xs)
+        ys_disorder -= ys_disorder.mean()
+
+        # Disorder in the direction normal to the sine
+        dxys = ys_disorder * unit_vectors
+
+        # Modify xs and ys to include the disorder
+        xs[1:-1] += dxys[0, 1:-1]
+        ys[1:-1] += dxys[1, 1:-1]
+
+    parallel_sine = scipy.interpolate.interp1d(xs, ys)
+
     return lambda x: parallel_sine(x%z_x)
+
 
 def remove_phs(H):
     return re.sub(r'kron\((sigma_[xyz0]), sigma_[xzy0]\)', r'\1', H)
@@ -267,15 +291,16 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
                 current,
                 ns_junction,
                 sc_leads=False,
-                no_phs=False):
-    
+                no_phs=False,
+                rough_edge=None):
+
     ######################
     ## Define templates ##
     ######################
     parallel_curve = sawtooth = False
     parallel_curve = (shape == 'parallel_curve')
     sawtooth = (shape == 'sawtooth')
-    
+
     template_barrier, template_normal, template_sc_left, template_sc_right = get_templates(
         a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc, no_phs)
 
@@ -284,29 +309,32 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
     template_top_superconductor = template_sc_left
     template_bottom_superconductor = template_sc_right
 
-    
-    if parallel_curve:
-        curve = create_parallel_sine(0, z_x, z_y)
 
-        curve_top = create_parallel_sine(L_m//2, z_x, z_y)
+    if parallel_curve:
+        if rough_edge is not None:
+            X, Y, salt = rough_edge
+
+        curve = create_parallel_sine(0, z_x, z_y, rough_edge=None)
+
+        curve_top = create_parallel_sine(L_m//2, z_x, z_y, rough_edge=(X, Y, salt) if rough_edge else None)
         below_shape = below_curve(curve_top)
 
-        curve_bottom = create_parallel_sine(-L_m//2, z_x, z_y)
+        curve_bottom = create_parallel_sine(-L_m//2, z_x, z_y, rough_edge=(X, Y, -salt) if rough_edge else None)
         above_shape = above_curve(curve_bottom)
-        
+
     elif sawtooth:
         _curve = lambda x: 4*z_y/z_x*(x%(z_x//2)) - z_y if x%z_x < z_x//2 else -4*z_y/z_x*(x%(z_x//2)) + z_y
         curve = lambda x: _curve(x+z_x/4)
-        
+
         if z_y is not 0:
             theta = np.arctan(4*z_y/z_x)
             y_offset = L_m/np.cos(theta)
         else:
             y_offset = L_m
-            
+
         below_shape = below_curve(lambda x: curve(x) + y_offset//2)
-        above_shape = above_curve(lambda x: curve(x) - y_offset//2)        
-        
+        above_shape = above_curve(lambda x: curve(x) - y_offset//2)
+
     else:
         curve = lambda x: z_y*sin(2*np.pi / z_x * x)
         below_shape = below_curve(lambda x: curve(x) + L_m//2)
@@ -323,18 +351,18 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
         top_superconductor_initial_site = (0, y_offset//2+a)
         top_superconductor_shape = middle_shape.inverse()[0:L_x, :L_sc_up + y_offset//2 + z_y]
     else:
-        top_superconductor_initial_site = (z_x//4, L_m//2+z_y+a)
+        top_superconductor_initial_site = (z_x//4, L_m//2+z_y+L_sc_up//2)
         top_superconductor_shape = middle_shape.inverse()[0:L_x, :L_sc_up + L_m//2 + z_y]
-    
+
     #-----------------------------
     # Define bottom superconductor
     if sawtooth:
         bottom_superconductor_initial_site = (0, -y_offset//2-a)
         bottom_superconductor_shape = middle_shape.inverse()[0:L_x, -L_sc_down - y_offset//2 - z_y:]
     else:
-        bottom_superconductor_initial_site = (z_x//4, -L_m//2-z_y-2*a)
+        bottom_superconductor_initial_site = (z_x//4, -L_m//2-z_y-L_sc_down//2)
         bottom_superconductor_shape = middle_shape.inverse()[0:L_x, -L_sc_down - L_m//2 - z_y:]
-    
+
     #------------
     # Define edge
     edge_shape = middle_shape.edge() * bottom_superconductor_shape.outer_edge() * top_superconductor_shape.outer_edge()
@@ -343,7 +371,7 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
     # Remove edge from middle
     interior_shape = middle_shape - edge_shape
     interior_initial_site = (a, a)
-    
+
     #-----------
     # Define cut
     cut_curve_top = above_curve(lambda x: curve(x))
@@ -358,47 +386,47 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
         middle_shape = below_curve(curve).edge()[0:L_x, :]
         top_superconductor_lead_shape = Shape()[0:L_x, :]
         bottom_normal_lead_shape = Shape()[0:L_x, :]
-        
+
     ############################
     ## Build junnction system ##
     ############################
     site_colors = dict()
     if ns_junction:
         conservation_matrix = -supercurrent.sigz
-        
+
         barrier_syst = kwant.Builder(kwant.TranslationalSymmetry([L_x, 0]), conservation_law=conservation_matrix)
         top_superconductor_lead = kwant.Builder(kwant.TranslationalSymmetry((L_x,0), (0, a)))
         bottom_normal_lead = kwant.Builder(kwant.TranslationalSymmetry((L_x,0), (0, -a)),
                                            conservation_law=conservation_matrix)
-        
+
         edge_sites = barrier_syst.fill(template_edge, middle_shape, (0, -a))
         add_to_site_colors(site_colors, edge_sites, 'middle_barrier')
-        
-        
-        top_superconductor_lead.fill(template_top_superconductor, 
-                                       top_superconductor_lead_shape, 
+
+
+        top_superconductor_lead.fill(template_top_superconductor,
+                                       top_superconductor_lead_shape,
                                        (0,0))
-        
+
         bottom_normal_lead.fill(template_normal,
-                                 bottom_normal_lead_shape, 
+                                 bottom_normal_lead_shape,
                                  (0,0))
-        
+
         barrier_syst = kwant.wraparound.wraparound(barrier_syst)
         top_superconductor_lead = kwant.wraparound.wraparound(top_superconductor_lead, keep=1)
         bottom_normal_lead = kwant.wraparound.wraparound(bottom_normal_lead, keep=1)
-        
+
         normal_sites = barrier_syst.attach_lead(bottom_normal_lead)
         add_to_site_colors(site_colors, normal_sites, 'middle_interior')
-        
+
         top_superconductor_sites = barrier_syst.attach_lead(top_superconductor_lead)
-        add_to_site_colors(site_colors, top_superconductor_sites, 'top_superconductor')    
-      
+        add_to_site_colors(site_colors, top_superconductor_sites, 'top_superconductor')
+
         barrier_syst = barrier_syst.finalized()
         return barrier_syst, site_colors, None
-    
+
     ##################
     ## Build system ##
-    ##################        
+    ##################
     else:
         #---------------
         # Create builder
