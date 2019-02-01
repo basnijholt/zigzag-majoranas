@@ -6,7 +6,7 @@
 	We consider a Josephson junction (JJ)(Fig.~\ref{fig:setup}) consisting of a two dimensional strip of semiconductor, with superconductors on both sides.
 	We modulate the shape of the normal region, which can be either zigzag as depicted, or a more smooth sinusoidal like shape.
 	Similar to the conventional straight system \cite{pientka2017topological}, a magnetic field $B_x$ perpendicular to the junction is applied.
-	We model the system with a BdG Hamiltonian Eq.~\eqref{eq:hamiltonian}; the normal part has a linear Rashba spin-orbit coupling term characterized by $\alpha$ and a Zeeman field with $E_z=\frac{1}{2}mu_B g B_x$.
+	We model the system with a BdG Hamiltonian, Eqs.~\eqref{eq:hamiltonian_n}-~\eqref{eq:hamiltonian_s}  ; the normal part has a linear Rashba spin-orbit coupling term characterized by $\alpha$ and a Zeeman field with $E_z=\frac{1}{2}mu_B g B_x$.
 	The superconductor has a superconducting coupling term $\Delta$ with a superconducting phase $\exp{\pm i \phi/2}$.
 	Both parts have a kinetic term and chemical potential $\mu$ (counted from the bottom spin-orbit band). 
 	For the zigzag geometry, we first consider a sawtooth like pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction.
@@ -18,19 +18,24 @@
 	\label{fig:setup}}
 	\end{figure}
 
-	\comment{The symmetry class of the system is D.}
-	The non-zigzag system is in the symmetry class BDI \cite{pientka2017topological}.
-	Using the software package Qsymm\cite{varjas2018qsymm}, we find that the symmetry class of our system to be $\mathcal{D}$ because we break the chiral/time-reversal resulting from the mirror symmetric junction.
-
-	\begin{small}
 	\begin{align}
-	    H = \left(\frac{\hbar^2\left(\kx^2 + \ky^2\right)}{2\meff} - \mu + \frac{\meff \alpha^2}{2 \hbar^2} \right)\tau_z+
-	        E_\text{z} \sigma_x+
-	        \alpha \left( \ky \sigma_x - \kx \sigma_y \right) \tau_z +
-	        \Delta \tau_y
+	    H_\text{N} &= \left(\frac{\hbar^2\left(\kx^2 + \ky^2\right)}{2\meff} - \mu + \frac{\meff \alpha^2}{2 \hbar^2} \right) \left( \sigi \otimes \tauz \right)+
+	        E_\text{z} \left(\sigx \otimes \tauz \right) +
+	        \alpha \left( \ky \sigx - \kx \sigma_y \right) \otimes \tauz \label{eq:hamiltonian_n} \\
+	    H_\text{SC} &= \left(\frac{\hbar^2\left(\kx^2 + \ky^2\right)}{2\meff} - \mu \right) \left(\sigi \otimes \tauz \right) +
+	        \Delta \left(\sigi \otimes \tau_{\pm \phi /2}\right)
+	\label{eq:hamiltonian_s}
 	\end{align}
-	\label{eq:hamiltonian}
-	\end{small}
+	where,
+	\begin{equation}
+	    \tau_{\pm \phi /2} = \cos\left( \pm \phi /2 \right) \taux + \sin\left( \pm \phi /2 \right) \tauy \nonumber
+	\end{equation}
+
+\subsection{Symmetry class of system}
+	\comment{The symmetry class of the system is D.}
+	The non-zigzag system is in the symmetry class BDI \cite{pientka2017topological}, unless the additional symmetries are broken due to for example a difference in superconducting gap magnitude between the two superconductors.
+	Using the software package Qsymm\cite{varjas2018qsymm}, we find that the symmetry class of our system to be $\mathcal{D}$, because we break this chiral/time-reversal symmetry resulting from the mirror symmetric junction.
+
 
 \section{Tight binding simulation}
 
@@ -38,9 +43,13 @@
 	We use a tight-binding model, implemented using Kwant, to simulate various properties of the system.
 	The model consists of a two-dimensional square lattice of sites.
 	Each site has two orbitals: spin and electron-hole.
-	There are four different types of sites (and thus four different Hamiltonians): the top superconductor, the bottom superconductor, the normal region, and a normal region with a variable potential offset, forming a barrier to simulated an imperfect NS interface.
+	There are four different types of sites (and thus four different Hamiltonians): the top superconductor, the bottom superconductor, the normal region, and a normal region with a variable potential offset, forming a barrier to simulate an imperfect NS interface.
 	A schematic of such kwant systems is depicted in Fig.~\ref{fig:kwant_system}.
-	We can also make the system infinite in for example the $x$ direction by connecting the sites on the left border with those on the right border with a $\kx$ dependent hopping.
+
+	\comment{The model hamiltonian is converted into the tight binding form by substitution}
+	In order to turn the set of Hamiltonians, Eqs.\eqref{eq:hamiltonian_n} and \eqref{eq:hamiltonian_s} into a tight binding model, we write the equations into differential form by substituting $k_\alpha \rightarrow - i \partial_\alpha$, $\alpha \in \left\{ x, y \right\}$, and thereafter discretize on a rectangular grid.
+	In practice, this is implemented using the Kwant discretizer module.
+
 
 	\begin{figure}[!htb]
 	\centering
@@ -52,11 +61,11 @@
 	\label{fig:kwant_system}
 	\end{figure}
 
+
 	\comment{We extract the gap by either taking the lowest energy state for an infinite system, or the difference between the lowest two eigenstates.}
 	After the system is specified, we can extract the total Hamiltonian of the system, allowing analysis of the eigenstates.
 	For example, calculating the bandstructure of a system is performed by taking a translationally invariant system and calculating the eigenvalues for different momenta.
-
-	
+	The system is made translationally invariant, in for example the $x$ direction, by connecting the sites on the left border with those on the right border with a $\kx$ dependent hopping.
 
 \comment{We propose a method to verify that elimination of long trajectories is responsible for the increased topological gap in a zigzag system.}
 \section{Quasiclassical estimation of the topological gap}

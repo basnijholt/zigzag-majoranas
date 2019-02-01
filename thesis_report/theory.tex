@@ -11,12 +11,28 @@ In this chapter, we first give a description of the normal (semi-conductor) and 
 We then focus on what happens in a system where the two are interfaced.
 Following that, we briefly explain what Majorana are, before introducing the implementation mainly relevant to this thesis.
 
-
 \section{Normal region}
 	Two important ingredients required for realizing Majorana fermions are strong spin-orbit coupling, and a strong interaction with the applied magnetic field.
-	It is the normal conductor which brings these two physical effects to the mix.
+	It is the semiconductor which brings these two physical effects to the mix.
 	Note that the Hamiltonian of the normal region is the same for electrons and holes, except for the sign.
 	The Hamiltonian terms provided in this section are relevant to the electron states.
+	In figure \ref{fig:ham_simple_terms}, the effect of the various terms in the Hamiltonian on the dispersion relation is shown.
+
+	\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.95\columnwidth]{figures/simple_terms}
+	\caption{Energy dispersion of electrons with different physical effects (spin orbit and magnetic field).
+	The dashed line in the figure with both spin orbit coupling and zeeman field corresponds to the case when magnetic field is not aligned with the spin orbit direction.}
+	\label{fig:ham_simple_terms}
+	\end{figure}
+
+	\subsection{Kinetic term}
+		We rewrite the kinetic term in the Schrodinger equation into it's momentum form by noting $- i \partial_x \rightarrow \kx$:
+		\begin{equation}
+			H_\text{kin} = - \frac{\hbar^2}{2 \meff} \nabla^2 = \frac{\hbar^2}{2 \meff} \left( \kx^2 + \ky^2 \right)
+		\end{equation}
+		The effective mass is a way of capturing the periodic potential of the crystal lattice into a single term.
+		Its value differs per material.
 
     \subsection{Zeeman interaction}
     	The energy splitting of the two electron spin species due to magnetic field is called the Zeeman interaction.
@@ -46,16 +62,28 @@ Following that, we briefly explain what Majorana are, before introducing the imp
 		Because all electrons within a distance of the superconducting order parameter of the Fermi-energy are depleted in this way, charge transport only takes place via these quasiparticles.
 		Scattering of these Cooper pairs is not allowed, resulting in perfect conduction.
 
+	\subsection{Superconducting Hamiltonian}
 		For the purpose of creating Majorana's, we are interested in two main aspects of superconductivity: the energy gap surrounding the Fermi energy (due to the depletion of states), and the electron-hole (/particle-hole) symmetry.
 		We are thus not interested in the paired up electrons (Cooper pairs), and only wish to model the electronic (unpaired) modes.
-		This can be achieved by modeling superconductivity with the Boguliubov de Gennes Hamiltonian:
+		This can be achieved by modeling superconductivity with the Boguliubov de Gennes Hamiltonian, which ensures particle-hole symmetry:
 		
 		\begin{equation}
-		\mathbf{H}_\text{BdG} = \begin{bmatrix} H & \Delta \\ \Delta^\dagger & H \end{bmatrix}
+		\mathbf{H}_\text{BdG} = \begin{bmatrix} H & \Delta \\ \Delta^\dagger & -H \end{bmatrix}
+		\label{eq:bdg}
 		\end{equation}
 
-		The block matrix restricts the structure of the system in the electron-hole basis, and ensures particle-hole symmetry.
-		For $\Delta \neq 0$ one indeed induces a identically sized gap in the spectrum.
+		Note that Eq.\eqref{eq:bdg} describes a block matrix: both $H$ and $\Delta$ can be matrices themselves, where the degrees of freedom correspond to for example spin, or discretized positions.
+		Using this basis, one is able to describe a heterogeneous system, containing both superconducting and normal regions.
+		As an example, we write the Hamiltonian of a heterogeneous 1D system, consisting of a superconductor extending from $x = -\infty$ to $0$, and a normal system from  $x = 0$ to $\infty$:
+
+		\begin{equation}
+			\mathbf{H} =  \Theta \left(-x\right) \begin{bmatrix} H_\text{SC, kin} & \Delta \\ \Delta^\dagger & -H_\text{SC, kin} \end{bmatrix} + \Theta \left(x\right)  \left( \tau_z \otimes H_\text{normal} \right) 
+			\end{equation}
+		where, 
+		\begin{equation}
+			\Theta(x) = \begin{cases} 1 & x \geq 0 \\ 0 & x < 0 \end{cases}
+		\end{equation}
+
 
 	\subsection{Proximity effect}
 		In order to create Majorana's, one needs a material with properties unique to both superconductors and semiconductors.
@@ -67,8 +95,6 @@ Following that, we briefly explain what Majorana are, before introducing the imp
 			\xi = \hbar \frac{v_\text{F}}{\Delta}
 			\label{eq:theory_sc_coherence_length}
 		\end{equation}
-
-linewidth: \printinunitsof{in}\prntlen{\linewidth}
 
 \section{Normal-superconducting junctions}
 	As mentioned, the interesting physics occur when a normal conductor is interfaced with a superconductor.
@@ -105,7 +131,8 @@ linewidth: \printinunitsof{in}\prntlen{\linewidth}
 		An important measure in a Josephson junction is the Thouless energy.
 		In the context of this work, the Thouless energy is inversely proportional to the travel time of an electron in a system, without interacting with the superconductor(s).
 		As an example of its relevance, in a SNS junction with magnetic field, if the Zeeman field has an energy comparable to the Thouless energy, as the electron traverses the system from supercondcutor to superconductor, the spin will be flipped.
-		
+
+	
 \section{Topology, Symmetry, and Majorana bound states}
 
 	The Wikipedia definition of mathematical topology is as follows:
