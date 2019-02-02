@@ -12,34 +12,36 @@
 			\begin{figure}[!htb]
 			\centering
 			\includegraphics[width=0.55\columnwidth]{figures/bandstructures}
-			\caption{Figure of the bandstuctures.
-			Where the lines are (blue) $\phi=0$, $B=0$ and (red) $\phi=\pi$, $B \ne 0$.
-			and the subplots (a) $z_y=0$, (b) $z_y=\frac{W}{4}$, and (c) $z_y=\frac{W}{2}$, where $W$ is the junction width.
+			\caption{Figure of the bandstuctures corresponding to the system in Fig.~\ref{fig:zigzag_methods}.
+			Blue lines correspond to $\phi=0$, $B=0$, red lines to $\phi=\pi$, $B = 1$.
+			Thre three subplots are for different amplitudes of zigzag: (a) $z_y=0$, (b) $z_y=\frac{W}{4}$, and (c) $z_y=\frac{W}{2}$, where $W=200$\si{\nm} is the junction width.
 			We observe that once there are no more straight trajectories inside the junction (when $z_y=\frac{W}{2}$) the spectrum becomes most insensitive to the momentum $k_x$.
+			The value of the remaining parameters are, $\alpha=20$ \si{\milli \eV \nm}, $g=26$, $\meff=0.02$\si{\electronmass}, $\mu=20$ \si{\milli \eV}, $\Delta=1$ \si{\milli \eV}.
 			\label{fig:bandstuctures}}
 			\end{figure}
+
 			\comment{We calculate the bandstructure for varying amount of zigzag.}
-			We implement a tightbinding version of the model described in the Methods section (a two dimensional SNS junction with a Rashba BdG Hamiltonian) using Kwant.
-			In figure~\ref{fig:bandstuctures}, the bandstructure for zigzag systems (sawtooth shape) with varying amplitude is displayed.
-			As the zigzag introduces super cell, we see a folded bandstructure.
+			We implement a tight-binding version of the model described in the section \ref{sec:physical_picture}(a two dimensional SNS junction with a Rashba BdG Hamiltonian) using Kwant.
+			In figure~\ref{fig:bandstuctures}, the bandstructure for zigzag systems~\ref{fig:zigzag_methods} (sawtooth shape) with varying amplitude is displayed.
+			Because the zigzag has to be modeled using a super cell, we see a folded bandstructure.
 			For comparisons sake, we take the same cell size for the ribbon structure so the bandstructure is folded in the same way.
 
 			\comment{The bandstructures show that modulation of the geometry increases the gap by an order of magnitude, as well as reduce the group velocity.}
 			The introduction of a zigzag has a striking effect: the bands flatten out, and more importantly, the gap size is increased more than an order of magnitude.
-			This effect is due to the fact that the modes where the gap is smallest, when the momentum is almost completely focused along the strip ($k_x=k_F$), are cut off by the zigzag geometry.
-			Also apparent is the significant reduction of group velocity; the slope of the bands is virtually zero.
-			The size of the gap, together with the velocity, directly relate to the Majorana coherence length (Eq.~\eqref{eq:majorana_coherence_length}), the effect of which is seen in the following section.
+			This happens because the modes where the gap is the smallest, when the momentum is almost completely focused along the strip ($k_x=k_F$), are cut off in a zigzag geometry.
+			There is also a significant reduction of the group velocity where in Fig.~\ref{fig:bandstuctures} (c) the bands are almost completely flat.
+			The size of the gap, together with the velocity, directly relate to the Majorana coherence length (Eq.~\eqref{eq:majorana_coherence_length}), which will be discussed in the following section.
 
 			\comment{The introduction of an SN interface at many angles also increases performance.}
-			Additionally we note that, in the presence of normal reflection, due to the availability of NS interfaces at a wide range of slopes, a zigzag system will perform more favorable.
-			One can imagine that the normally reflected part of a wavefunction will, in a zigzag system, eventually ``find'' a surface with which it is perpendicular to.
-			The transparency of the SN interface is thus improved for non-transversal modes.
+			Finally, in the presence of normal reflection, due to the availability of NS interfaces at a wide range of slopes, a zigzag system has an increased effective transmission.
+			In a zigzag system, the normally reflected part of a wavefunction will eventually intersect a surface with which it is nearly perpendicular to.
+			The transparency of the NS interface is thus improved for non-transversal modes.
 
 		\comment{Introduction of a zigzag leads to localization of the Majorana's}
 		\subsection{Majorana decay length}
 
 			\comment{We calculate the lowest eigenfunction and plot the density.}
-			Using the tight-binding package Kwant~\cite{groth_kwant:_2014}, we model a finite system to compute the Majorana wave function density for different geometries; ribbon, zigzag, parallel curve and vertically offset sinusoids.
+			Using the tight-binding package Kwant~\cite{groth_kwant:_2014}, we model a finite system to compute the Majorana wave function density for different geometries; ribbon, zigzag, parallel curve, and vertically offset sinusoids.
 			In figure~\ref{fig:wavefunctions} the wavefunctions are displayed, superimposed upon their respective geometry.
 			Also displayed in the figure are the energies $E_M$, corresponding to the plotted Majorana wavefunctions, as well as $E_1$: the energies corresponding to the next lowest state.
 
