@@ -24,21 +24,49 @@
 	\comment{What are Majorana bound states}
 	Majorana particles are particles that always come in pairs: one pair of Majorana's forms a single electronic state.
 	Disambiguating electrons and holes into their Majorana counterparts is often analogized with splitting a complex number into its real and imaginary part.
-	In terms of the creation and annihilation operators of electrons, respectively $\hat{c}^\dagger$ and $\hat{c}$, we write,
+	We write the Majorana operators in terms of the creation(annihilation) and annihilation(creation) operators of electrons(holes), respectively $\hat{c}^\dagger$ and $\hat{c}$:
+
 	\begin{align}
 		\hat{c} =  \frac{1}{2} \left( \gamma_1 - i\gamma_2 \right) && \hat{c}^\dagger = \frac{1}{2} \left( \gamma_1 + i\gamma_2 \right)
+		\label{eq:intro_ferm2maj}
 	\end{align}
 
-	\comment{Forming a kitaev chain}
-	Without going into to much detail, and at the cost of making gross oversimplifications, one can suppose that an electron consists of two Majorana particles.
-	Borrowing an analogy with domino stones from the online course Topology in Condensed Matter\cite{noauthor_topology_2015}, we can see an electron as a domino stone: the two ends, seperated by a line, each correspond to a Majorona particle.
+	Inverting this, we get,
+	\begin{align}
+		\gamma_1 = \hat{c} + \hat{c}^\dagger && \gamma_2 = i \left( \hat{c} - \hat{c}^\dagger \right)
+		\label{eq:intro_maj2ferm}
+	\end{align}
+
+	Note that the basic excitation is still a fermion (electron/hole); one cannot have just one Majorana, they always come in pairs.
+	The idea is to create a system where we have a single pair of Majoranas which is seperated in space.
+
+	A system in which this seperation can be accomplished was first proposed by Kitaev\cite{kitaev_unpaired_2001}.
+	We consider a one dimensional chain of sites which can host a single fermion, and thus a pair of Majoranas.
+	Suppose that the occupation of a site by a fermion comes at the cost of energy $\mu$.
+	Also, we consider the situation where there is an interaction energy between neighboring sites: $t$ quantifies the energy cost of one site being occupied while the adjacent isn't, and $\Delta$ is the gain in energy if adjacent sites are both occupied or empty.
+	This leads to the following Hamiltonian:
+
+	\begin{equation}
+		H = -\mu \sum_n \hat{c}_n^\dagger \hat{c}_n
+		- t \sum_n \left( \hat{c}_{n+1}^\dagger \hat{c}_n +\text{h.c.} \right) 
+		+ \Delta \sum_n \left( \hat{c}_n \hat{c}_{n+1} +\text{h.c.} \right) 
+	\end{equation}
+
+	Considering equation \eqref{eq:intro_ferm2maj} we can also write the Hamiltonian above using Majorana operators.
+	In this way, we get a Hamiltonian describing pairing energies between Majoranas on adjacent sites.
+	In figure, we discern two extremes:
+	one is the situation where the pairing energy is minimal for Majorana pairs on the same site, the other is when the energy is minimal for pairing between of Majoranas from adjacent sites. 
+
+
+	Borrowing the analogy from the online course Topology in Condensed Matter\cite{noauthor_topology_2015}, we can see an electron as a domino stone: the two ends, seperated by a line, each correspond to a Majorona particle.
 	In the figure below\cite{noauthor_topology_2015}, the dominoes, and thus electrons, have been placed in a chain:\\
-	
 	
 	\begin{centering}
 	\includegraphics[width=0.95\columnwidth]{images/majorana_dominoes}
 	\end{centering}
 	
+	Corresponding to the system above, we have a Hamiltonian describing the physics of the system.
+
 	In a regular system, the Majoranas on each end of stone are paired locally, as depicted in the figure below:\\
 
 	\begin{centering}
