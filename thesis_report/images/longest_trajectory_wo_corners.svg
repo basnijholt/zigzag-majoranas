@@ -31,11 +31,11 @@
      inkscape:window-height="1031"
      inkscape:window-width="1920"
      showgrid="false"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      inkscape:document-units="mm"
-     inkscape:cy="193.89389"
-     inkscape:cx="177.25405"
-     inkscape:zoom="1.4142136"
+     inkscape:cy="293.83429"
+     inkscape:cx="-265.35718"
+     inkscape:zoom="0.50000001"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -576,17 +576,6 @@
      inkscape:label="Zigzag"
      style="display:inline"
      transform="translate(-0.72926902,-0.55720185)">
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="35"
-       y="177"
-       id="text9519"><tspan
-         sodipodi:role="line"
-         id="tspan9517"
-         x="35"
-         y="177"
-         style="font-size:5.64444447px;line-height:1.25;stroke-width:0.26458332"> </tspan></text>
     <path
        style="display:inline;fill:none;stroke:#000000;stroke-width:0.70497268;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.70497274, 1.40994547;stroke-dashoffset:0;stroke-opacity:1"
        d="m 93.782526,85.535502 31.352364,0.0217"
