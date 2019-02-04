@@ -21,7 +21,7 @@
 			\end{figure}
 
 			\comment{We calculate the bandstructure for varying amount of zigzag.}
-			We implement a tight-binding version of the model described in section \ref{sec:physical_picture}(a two dimensional SNS junction with a Rashba BdG Hamiltonian) using Kwant.
+			We implement a tight-binding version of the model described in section \ref{sec:physical_picture}.
 			In figure~\ref{fig:bandstuctures}, the bandstructure for zigzag systems~\ref{fig:zigzag_methods} (sawtooth shape) with varying amplitude is displayed.
 			Because the zigzag has to be modeled using a supercell, we see a folded bandstructure.
 			For comparison's sake, we take the same cell size for the ribbon structure so the bandstructure is folded in the same way.
@@ -78,12 +78,12 @@
 			Due to the size of the system, we cannot use full spectrum methods (the Pfaffian in this case) to compute the topological phase of our system.
 			Instead, we calculate the gap by finding the absolute minimum of the spectrum $E_\textrm{gap}=\min{|E(k)|}$.
 			Noting the gap closings, and the fact we know the topological phase for the non-zigzag system (e.g. for magnetic field vs. phase difference it is diamond shaped: Fig.~\ref{fig:pientka_phase_diagram}), we can infer the topology of the system with zigzag modulation.
-			In Figure ~\ref{fig:phasediagrams}, the energy gap as a function of magnetic field, chemical potential, and the superconducting phase difference is displayed, for both a straight system (a and b) and a zigzag system (c and d).
+			In Figure ~\ref{fig:phasediagrams}, the energy gap as a function of magnetic field, chemical potential, and the superconducting phase difference is displayed, for both a straight system [(a) and (b)] and a zigzag system [(c) and (d)].
 
 			\begin{figure}[!htb]
 			\centering
 			\includegraphics[width=0.75\columnwidth]{figures/phasediagrams}
-			\caption{Phase diagrams of a straight system (a, b) and zigzag system (c, d), where (a, c) are $E(\mu, B)$ and (b, d) are $E(\phi, B)$.
+			\caption{Phase diagrams of a straight system (a), (b) and zigzag system (c), (d), where (a), (c) are $E(\mu, B)$ and (b), (d) are $E(\phi, B)$.
 			We use a generalized eigenvalue problem to find all phase boundaries at once and find the minimal energy gap by finding the minimum in the spectrum: $\min{E(k)}$.
 			\label{fig:phasediagrams}}
 			\end{figure}
@@ -101,7 +101,7 @@
 
 	\section{Finding the mechanism responsible for the increased gap}
 		\comment{We compare different techniques to calculate the band structure of a straight system.}
-		We verify the validity of the analytic model described in the Methods, to compute the bandstructure of a straight system in a tilted magnetic field. 
+		We verify the validity of the analytic model described in the Methods, to compute the bandstructure of a straight system in a tilted magnetic field.
 		In Fig.\ref{fig:spectrum_calculation_comparison}, we compare the analytical model with band structures obtained using three different methods, implemented in Kwant.
 		To show that the model has been correctly implemented, we compute the Kwant scattering matrix of the identical model used in the analytics and substitute it into the bound state condition\eqref{eq:bound_state_condition_sjl} (labeled Kwant without SOI SJL).
 		To show the validity of neglecting spin-orbit in the transverse direction, we also compute the scattering matrix including the additional term and again use the bound state condition to obtain the spectrum (labeled Kwant with SOI SJL).
@@ -146,7 +146,6 @@
 			The full lines represent  the numerical gap calculations of the full zigzag system, the dashed lines represent the quasiclassical estimation.}
 			\label{fig:quasiclassical_approximation}
 			\end{figure}
-
 
 			We would expect that the maximum gap improvement would occur near where the zigzag amplitude $z_y$ is large enough to cut off any angle in the system.
 			This point is different for the three ratios but can be identified by where the gap is largest for the quasiclassical estimate (dashed lines).
