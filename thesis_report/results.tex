@@ -2,7 +2,7 @@
 \chapter{Results \& Discussion}\label{chap:results}
 		In this chapter, we show how some properties of the system change by the introduction of a zigzag geometry.
 		Additionally, we attempt to isolate the mechanism behind the improved properties by estimating the gap size through the quasiclassical model introduced in chapter \ref{chap:methods}.
-		
+
 	\comment{Introduction of a zigzag opens up the gap, creates a more stable topological phase diagram, and decreases coherence length of Majoranas}
 	\section{Increased isolation and stability of the Majorana state}
 
@@ -59,7 +59,7 @@
 			We see that the wavefunction extends to the centre of the system, not showing the delocalization sought after.
 			Apart from the density, as discussed in chapter \ref{chap:theory}, an overlap of Majoranas leads to a non-zero energy of the state.
 			Taking this into consideration, we see that the energy of the Majorana state in the straight system is only barely below the next lowest lying eigenstate: the Majoranas are very poorly localized and topological protection against perturbations is minimal.
-			
+
 			\comment{In a zigzag geometry Majoranas are localized within one segment of zigzag.}
 			All of the zigzag type geometries show a greatly reduced coherence length.
 			The delocalized nature of the wavefunctions is clearly visible through the density plots.
@@ -91,7 +91,7 @@
 			\comment{The phase diagram does not change much, except we see a cleaner spectrum as a result of the D class symmetry. }
 			Similar to what is described by Pientka et. al~\cite{pientka2017topological} (see Fig.~\ref{fig:pientka_phase_diagram}), we see that the straight geometry, as a function of superconducting phase difference and Zeeman field (b), has a diamond-shaped phase diagram.
 			The additional gap closings visible within the diamond are because of the presence of a chiral symmetry which classifies the system as BDI and causes the region of interest, where there is a single pair of Majoranas, to be relatively small.
-			
+
 			For the zigzag system, the magnitude of the gap is significantly improved, as expected.
 			The diamond-like shape of the phase-Zeeman plot is retained, and there is no significant change in its size either.
 			We expect a cleaner phase diagram due to the system belonging to the D symmetry class, which is partially reflected in the diagram: there is a large and stable (no gap closings) central region, but near 0 and 2$\pi$ phase difference, in the corner of the diamond, we see a chaotic region of gap closings.
@@ -114,7 +114,7 @@
 			\caption{Andreev Bound State spectrum of a SNS junction with a tilted in-plane magnetic field, computed using four different methods.}.
 			\label{fig:spectrum_calculation_comparison}
 			\end{figure}
-		
+
 			All three of the scattering matrix approaches agree almost perfectly with each other.
 			We must note that ignoring spin-orbit coupling in the transverse direction is only valid if the spin-orbit length is sufficiently small compared to the width of the system.
 			What is also clear from the plot is that the domain of the scattering matrix methods is limited.
@@ -125,9 +125,9 @@
 			As we find the accuracy of the analytical spectrum to be relatively weak, we continue estimation of the gap in a zigzag system using the spectrum calculated with the full Kwant system.
 
 		\subsection{Estimation of the gap through momentum cutoff}
-			As explained in the Methods chapter, we estimate the topological gap using a quasiclassical estimate.
+			As explained in chapter \ref{chap:methods}, we estimate the topological gap using a quasiclassical estimate.
 			We keep the ratio $4\dfrac{z_x}{z_y}$ constant and compute the gap as a function of $z_y$.
-			In Figure \ref{fig:quasiclassical_approximation}, the result is shown, comparing numerical gap calculations of the full zigzag system (full lines), with the result of the quasiclassical estimation.
+			In figure \ref{fig:quasiclassical_approximation}, the result is shown, comparing numerical gap calculations of the full zigzag system (full lines), with the result of the quasiclassical estimation.
 			Note that the quasi-classics are only valid once the zigzag cuts off all trajectories which extend infinitely.
 			Also important to note is that for the quasiclassical estimate, we set the longest trajectory to be the trajectory that does not include the corners, as depicted in Fig.~\ref{fig:longest_trajectory_wo_corners}
 
@@ -150,7 +150,7 @@
 			We would expect that the maximum gap improvement would occur near where the zigzag amplitude $z_y$ is large enough to cut off any angle in the system.
 			This point is different for the three ratios but can be identified by where the gap is largest for the quasiclassical estimate (dashed lines).
 			Increasing $z_y$ further would only allow longer trajectories, which would seem extra undesirable due to the magnetic field not being aligned with the diagonal sections.
-			
+
 			Considering the lines corresponding to the full zigzag systems, we see that, for the lower ratios (and thus steeper slopes), the optimal value lies far beyond the cutoff point.
 			This is unexpected, and it weakens the validity of the idea that the length of the trajectories mostly determines the gap.
 			A possible explanation is that for lower ratios, the length of the diagonal sections is smaller, and it is easier for the wavefunction to tunnel through the superconductor.
@@ -161,4 +161,4 @@
 			Even so, we see that the decline of the gap with respect to $z_y$ is much quicker than with an actual zigzag.
 			A possible reason that the quasiclassical model sketches a darker picture than full zigzag, is because in that model, long trajectories also correspond to grazing angles of incidence at the NS interface.
 
-			We conclude that the proposed model to estimate the gap does not capture the physics of the zigzag very well: the model merely gives a lower bound for the topological gap.
+			We conclude that the proposed model to estimate the gap does not capture all the physics of the zigzag very well: the model merely gives a lower bound for the topological gap.
