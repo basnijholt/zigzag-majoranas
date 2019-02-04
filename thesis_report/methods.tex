@@ -87,7 +87,7 @@
 
 	\subsection{Analytical estimate of Andreev spectrum for a straight junction}
 		
-		We derive the spectrum by calculating the scattering matrix for the normal region and applying the Andreev bound state condition for the short junction limit\cite{beenakker1991universal, sticlet_robustness_2017}. 
+		We derive the spectrum by calculating the scattering matrix for the normal region and applying the Andreev bound state condition for the short junction limit\cite{beenakker_universal_1991,sticlet_robustness_2017}.. 
 		The short junction limit is valid for $W<\xi$, where $\xi$ is the superconducting coherence length.
 		For deriviation of the scattering matrix, we neglect SOI in the transverse direction, which is valid for $W<l_\text{so}$.
 
@@ -98,7 +98,7 @@
 			\includegraphics[width=0.75\columnwidth]{images/scattering}
 			\caption{Basis for scattering matrix. 
 			The `S' region corresponds to the superconductor Hamiltonian without the superconducting term, Eq.~\eqref{eq:ham_smat_superconducting}, `N' to the normal region, Eq.~\eqref{eq:ham_smat_normal}. 
-			The coefficients represent the amplitude of the modes present in the system, at a particular energy.
+			The coefficients (corresponding to the scattering problem outlined in Eqs.~\ref{eq:scattering_matrix_problem} and \ref{eq:scattering_equations}) represent the amplitude of the modes present in the system, at a particular energy.
 			The different color arrows correspond to the two different spinors in each region.
 			For example, $a_{1,L}$ is the amplitude of the rightmoving incoming mode, $\vec{\psi}_1 \exp\left(i k_{1,L} x\right)$}
 			\label{fig:scattering}
@@ -114,12 +114,13 @@
 			\end{align}
 			
 			We consider the scattering region as depicted in Fig. \ref{fig:scattering}.
-			There are three regions in the system, one normal system (N), with Hamiltonian given by Eq.~\eqref{eq:ham_smat_superconducting}, and two superconducting regions (S), with Hamiltonian given by Eq.~\eqref{eq:ham_smat_superconducting}.
-			Not that Eq.~\eqref{eq:ham_smat_superconducting} region does not include the superconducting term ($\Delta \tau_y$), because we implement Andreev reflection seperately: this way we avoid doubling (electron and hole) the dimensionality of the problem.
+			There are three regions in the system, one normal system (N), with Hamiltonian given by Eq.~\eqref{eq:ham_smat_normal}, and two superconducting regions (S), with Hamiltonian given by Eq.~\eqref{eq:ham_smat_superconducting}.
+			Note that Eq.~\eqref{eq:ham_smat_superconducting} region does not include the superconducting term ($\Delta \tau_y$), because we implement Andreev reflection seperately (see Eq.~\eqref{eq:andreev_scat_mat})~\cite{beenakker_universal_1991}: this way we avoid doubling (electron and hole) the dimensionality of the problem.
+			
 			We set the energy of the system, and find the planar waves propogating in each region.
 			Because the plane waves can go in two directions, and the additional degree of freedom introduced due to spin, each region has four propogating waves.
 			The idea of the scattering matrix is to set the vector $\vec{a}$, containing the amplitudes of the planar waves coming in to the scattering region, and find the amplitudes of the modes exiting the scattering region.
-			This is captured by a system of linear equations, displayed in Eq.~\eqref{eq:scattering_matrix_problem}
+			This is captured by a system of linear equations, displayed in Eq.~\eqref{eq:scattering_matrix_problem}.
 			
 			\begin{equation}
 			\begin{bmatrix} 
@@ -162,7 +163,7 @@
 				&\hat{\mathbf{v}} u(x) \text{ is continuous, where $\hat{\mathbf{v}}$ is the velocity operator}\label{eq:scattering_boundary_eqs}
 			\end{align}
 
-			To solve the system analytically, we use the Short Junction limit: we set the energy to zero.
+			To solve the system analytically, we use the Short Junction limit: we set $E=0$ in Eq.~\eqref{eq:scattering_matrix_problem}.
 			By applying the boundary conditions and solving the resulting linear system of equations, the resulting solution is given by Eqs.~\eqref{eq:smatrix} through ~\eqref{eq:momenta_short_junction}.
 			\emph{Important note: In order to use the Andreev bound state condition, the scattering matrix must be in the correct basis. The relevant basis transformation has already been applied in Eqs. ~\eqref{eq:smatrix} through ~\eqref{eq:momenta_short_junction}}.\\
 			
@@ -213,6 +214,17 @@
 			\det\left[1+\alpha^{2}\left(E\right)r^{*}S_{e}\left(E,\bm{k}\right)rS_{e}^{*}\left(-E,-\bm{k}\right)\right]=0
 			\label{eq:bound_state_condition_sjl}
 			\end{equation}
+			Where the Andreev scattering is captured by the matrix in Eq.~\ref{eq:andreev_scat_mat}, where $\phi_1$ and $phi_2$ are the phases of the respective superconductors.
+
+			\begin{equation}
+				r = \left[\begin{array}{llll}
+		    		e^{i \phi_1}&0&0&0\\
+		    		0&e^{i \phi_1}&0&0\\
+		    		0&0&e^{i \phi_2}&0\\
+		    		0&0&0&e^{i \phi_2}
+		    		\end{array}\right]
+				\label{eq:andreev_scat_mat}
+			\end{equation}
 
 			We rewrite this as a characteristic polynomial problem $\det\left[A-\lambda I\right]=0$, as
 
@@ -221,9 +233,9 @@
 			\end{equation}
 
 			with
-			\begin{equation}
-			\lambda=-\frac{1}{\alpha^{2}\left(E\right)},\;A=r^{*}S_{e}\left(E,\bm{k}\right)rS_{e}^{*}\left(-E,-\bm{k}\right).
-			\end{equation}
+			\begin{align}
+			\lambda_i=-\frac{1}{\alpha^{2}\left(E\right)},&&A=r^{*}S_{e}\left(E,\bm{k}\right)rS_{e}^{*}\left(-E,-\bm{k}\right).
+			\end{align}
 
 			Where $\lambda_i$ are the eigenvalues of $A$.
 			Inverting $\alpha\left(E\right)\equiv\exp\left(-i\arccos\left(E/\Delta\right)\right)$ yields $\frac{E}{\Delta}=\frac{\alpha^{2}+1}{2\alpha}=\frac{1}{2}\left(\alpha+\alpha^{-1}\right)=\textrm{Re}(\alpha)$, where the last equality holds because $\alpha$ is unitary.
@@ -243,38 +255,38 @@
 
 		\comment{We make an analogy between the cutoff of long trajectories to the cutoff of high momenta.}
 		We hypothesize that the increase of the topological gap in a zigzag is due to the cutoff of modes on the Fermi surface with long trajectories.
-		In order to make substantiate that this is indeed the driving mechanism behind the improvement, we propose an analogy using the bandstructure of a regular SNS junction.
+		In order to substantiate that this is indeed the driving mechanism behind the improvement, we propose an analogy using the bandstructure of a regular SNS junction.
 
 		\comment{We map the zigzag to an infinite SNS junction with tilted magnetic field and a range of forbidden momenta.}
-		We essentially take a single diagonal section of a zigzag, and map it to a normal, infinite SNS junction.
+		We take a single diagonal section of a zigzag, and map it to a normal, infinite SNS junction.
 		We assume that the zigzag is shaped such that there is no straight trajectory possible through the system anymore.
 		The system is depicted in Fig.~\ref{fig:zigzag_methods}, along with the set of axes with $x^\prime$ and $y^\prime$.
 		Note that the magnetic field has an angle $\theta$ with respect to the $x^\prime$ axis.
 		We identify trajectories cut off by the zigzag with a particular range of forbidden momenta.
-		By then analysing the bandstructure of this infinite SNS junction, ignoring the forbidden momenta, we can give an estimate the resulting gap of the device.
+		By then analysing the bandstructure of this infinite SNS junction, we can give an estimate the resulting gap of the device.
 		As the system is only momentum localized in the $x$ direction (the translationally invariant direction), we only control $\kx$.
 		Denoting the set of allowed momenta by $\Omega$, the equation for the estimated topological gap becomes,
 		
 		\begin{equation}
-			\Delta_\text{topological} = \min_{\kx\in\Omega} \left\rvert E(\kx) \right\rvert
+			\Delta_\text{topological} = \min_{\kx\in\Omega} \left| E(\kx) \right|
 			\label{eq:definition_gap}
 		\end{equation}
 		
 		\comment{We first link the long trajectories to a maximum allowed angle.}
 		In the infinite system, the long trajectories have a small angle with respect to the $x^\prime$ axis.
 		By defining a minimum angle, we thus can filter out the long trajectories.
-		We define this angle $\beta\text{min}$ by identifying it with the angle of the longest trajectory from one side of the superconductor to the other: see Fig.~\ref{fig:zigzag_methods}.
+		We define this angle $\beta_\text{min}$ by identifying it with the angle of the longest trajectory from one side of the superconductor to the other: see Fig.~\ref{fig:zigzag_methods}.
 		Note that longer trajectories exist, by `grazing' the concave corners of the zigzag.
 		We suspect that this `grazing' leads to physics which cannot be captured in this simple model, and we thus choose to restrict this method for systems where the chosen trajectory is indeed a good approximation of the longest path.
 
         We identify the momentum with its angle by defining it through the reciprocal of the component velocities, given by Eq.~\eqref{eq:methods_angle_of_state}. Note that $k_1$ and $k_2$ are the momenta as defined in Eq.~\eqref{eq:momenta_short_junction}.
 
         \begin{equation}
-        \tan (\beta) = \frac{v_y}{v_x}\bigr{\rvert_{E=E_F}} = \frac{ \frac{\de E}{\de k_y} }{ \frac{\de E}{\de k_x} } \Biggr\rvert_{E=E_F}=
-        \begin{cases}
+        \tan (\beta) = \left.\frac{v_y}{v_x}\right|_{E=E_F} = \left.\frac{ \frac{\de E}{\de k_y} }{ \frac{\de E}{\de k_x} } \right|_{E=E_F}=
+        \begin{dcases}
         \frac{\hbar ^2 k_1}{\frac{\alpha  \meff \left(\alpha  k_x-\text{Ez} \sin (\theta )\right)}{\sqrt{\text{Ez}^2+\alpha  k_x \left(\alpha  k_x-2 \text{Ez} \sin (\theta )\right)}}+\hbar ^2 k_x} & \text{band 1}\\
         \frac{\hbar ^2 k_2}{\frac{\alpha  \meff \left(\text{Ez} \sin (\theta )-\alpha  k_x\right)}{\sqrt{\text{Ez}^2+\alpha  k_x \left(\alpha  k_x-2 \text{Ez} \sin (\theta )\right)}}+\hbar ^2 k_x} & \text{band 2}
-        \end{cases}
+        \end{dcases}
         \label{eq:methods_angle_of_state}
         \end{equation}
 		
