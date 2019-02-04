@@ -48,7 +48,7 @@
 			\centering
 			\includegraphics[width=0.55\columnwidth]{figures/wavefunctions}
 			\caption{Wavefunctions for different sizes and geometries.
-			With (a) a straight system, (b) a zigzag system, (c) a system where the normal region is defined by lines parallel to a sinusoid, and (d) a system with vertically offset sinusoids.
+			With (a) a straight system, (b) a zigzag system, (c) a system where lines parallel to a sinusoid defines the normal region, and (d) a system with vertically offset sinusoids.
 			Inside the figure, we indicate the Majorana length (or coherence length) $\lambda_\textrm{M}$ and the topological energy gap $E_\textrm{gap}$.
 			We observe that $\xi$ for (a) is orders of magnitude longer and $E_\textrm{gap} = E_\textrm{1} - E_M$ orders of magnitude smaller than for (b), (c), and (d), meaning that the details of the geometry do not matter for the improvements to occur.
 			\label{fig:wavefunctions}}
@@ -68,7 +68,7 @@
 
 			\comment{We also confirm that the specific shape does not matter.}
 			The shape of the wavefunctions does not change significantly depending on the details of the shape.
-			The sharp corners of the sawtooth versus the smooth shape of the snakelike system do not have a great impact on the shape of the wavefunction.
+			The sharp corners of the sawtooth versus the smooth shape of the snakelike system do not have a significant impact on the shape of the wavefunction.
 
 
 		\comment{Zigzag Majoranas have a cleaner phase diagram due to the reduction in symmetry class}
@@ -105,7 +105,7 @@
 		In figure \ref{fig:spectrum_calculation_comparison}, we compare the analytical model with band structures obtained using three different methods, implemented in Kwant.
 		To show that the model has been correctly implemented, we compute the Kwant scattering matrix of the identical model used in the analytics and substitute it into the bound state condition\eqref{eq:bound_state_condition_sjl} (labelled Kwant without SOI SJL).
 		To show the validity of neglecting spin-orbit in the transverse direction, we also compute the scattering matrix including the additional term and again use the bound state condition to obtain the spectrum (labelled Kwant with SOI SJL).
-		We also perform the fully accurate calculation of the spectrum by simply computing the bandstructure of the corresponding Kwant system (labelled Full ribbon Kwant system): this result serves as the benchmark for the other techniques.
+		We also perform the full calculation of the spectrum by computing the bandstructure of the corresponding Kwant system (labelled Full ribbon Kwant system): this result serves as the benchmark for the other techniques.
 
 		\subsection{Verification of analytical estimate}
 			\begin{figure}[!htb]
@@ -152,13 +152,13 @@
 			Increasing $z_y$ further would only allow longer trajectories, which would seem extra undesirable due to the magnetic field not being aligned with the diagonal sections.
 			
 			Considering the lines corresponding to the full zigzag systems, we see that, for the lower ratios (and thus steeper slopes), the optimal value lies far beyond the cutoff point.
-			This is unexpected, and it weakens the validity of the idea that the gap is mostly determined by the length of the trajectories.
+			This is unexpected, and it weakens the validity of the idea that the length of the trajectories mostly determines the gap.
 			A possible explanation is that for lower ratios, the length of the diagonal sections is smaller, and it is easier for the wavefunction to tunnel through the superconductor.
 			In any case, this phenomenon requires additional explanation.
 
-			The quasiclassical estimate, indicated by the dashed lines, seems to consistently underestimate the gap.
+			The quasiclassical estimate, indicated by the dashed lines, seems to underestimate the gap consistently.
 			We also see that the gap declines monotonically with respect to the zigzag amplitude, which is by design: increasing the zigzag amplitude corresponds to increasing the domain of permitted trajectories, and thus the minimum can only decrease.
 			Even so, we see that the decline of the gap with respect to $z_y$ is much quicker than with an actual zigzag.
-			A possible reason that the quasiclassical model sketches a darker picture than full zigzag, is due to the fact that in that model, long trajectories also correspond to grazing angles of incidence at the NS interface.
+			A possible reason that the quasiclassical model sketches a darker picture than full zigzag, is because in that model, long trajectories also correspond to grazing angles of incidence at the NS interface.
 
 			We conclude that the proposed model to estimate the gap does not capture the physics of the zigzag very well: the model merely gives a lower bound for the topological gap.
