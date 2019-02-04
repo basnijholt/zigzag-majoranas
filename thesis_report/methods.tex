@@ -5,16 +5,19 @@
 	\comment{We consider a two-dimensional system with zigzag.}
 	We consider a Josephson junction (JJ)(Fig.~\ref{fig:setup}) consisting of a two dimensional strip of semiconductor, with superconductors on both sides.
 	We modulate the shape of the normal region, which can be either zigzag as depicted, or a more smooth sinusoidal like shape.
-	Similar to the conventional straight system \cite{pientka2017topological}, a magnetic field $B_x$ perpendicular to the junction is applied.
-	We model the system with a BdG Hamiltonian, Eqs.~\eqref{eq:hamiltonian_n}-~\eqref{eq:hamiltonian_s}  ; the normal part has a linear Rashba spin-orbit coupling term characterized by $\alpha$ and a Zeeman field with $E_z=\frac{1}{2}mu_B g B_x$.
-	The superconductor has a superconducting coupling term $\Delta$ with a superconducting phase $\exp{\pm i \phi/2}$.
+	Similar to the conventional straight system \cite{pientka_topological_2017}, a magnetic field $B_x$ is applied, along the x-axis.
+	We model the system with a BdG Hamiltonian, Eqs.~\eqref{eq:hamiltonian_n}-~\eqref{eq:hamiltonian_s}  ; the normal part has a linear Rashba spin-orbit coupling term characterized by the spin-orbit strength $\alpha$ , and a Zeeman energy $E_z= mu_B g B_x$.
+	The superconductor has a superconducting coupling term $\Delta$ with a superconducting phase $\pm\phi/2$ (the phase difference between the superconductors is $\phi$).
 	Both parts have a kinetic term and chemical potential $\mu$ (counted from the bottom spin-orbit band). 
-	For the zigzag geometry, we first consider a sawtooth like pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction.
+	For the zigzag geometry, we first consider a sawtooth like pattern where $z_y$ is the amplitude, $z_x$ is the period, and $W$ the width of the junction.
 
 	\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=0.5\columnwidth]{images/zigzag.pdf}
-	\caption{Setups. Figure of a straight and zigzag system, including trajectories.
+	\caption{Figure of a zigzag system.
+	$z_x$, $z_y$ and $W$ describe the geometry of the zigzag junction.
+	$H_\text{K}$ describes the kinetic part of the Hamiltonian, $H_\text{SOI}$ is the spin-orbit term, $H_\text{Z}$ is the Zeeman coupling, and $H_\Delta$ represents the superconducting term.
+	The magnetic field (B) points along the x-axis.
 	\label{fig:setup}}
 	\end{figure}
 
@@ -33,8 +36,8 @@
 
 \subsection{Symmetry class of system}
 	\comment{The symmetry class of the system is D.}
-	The non-zigzag system is in the symmetry class BDI \cite{pientka2017topological}, unless the additional symmetries are broken due to for example a difference in superconducting gap magnitude between the two superconductors.
-	Using the software package Qsymm\cite{varjas2018qsymm}, we find that the symmetry class of our system to be $\mathcal{D}$, because we break this chiral/time-reversal symmetry resulting from the mirror symmetric junction.
+	The non-zigzag system is in the symmetry class BDI \cite{pientka_topological_2017}, unless the additional symmetries are broken due to for example a difference in superconducting gap magnitude between the two superconductors.
+	Using the software package Qsymm\cite{varjas_qsymm_2018}, we find that the symmetry class of our system to be D, because we break this chiral/time-reversal symmetry resulting from the mirror symmetric junction.
 
 
 \section{Tight binding simulation}
@@ -43,11 +46,11 @@
 	We use a tight-binding model, implemented using Kwant, to simulate various properties of the system.
 	The model consists of a two-dimensional square lattice of sites.
 	Each site has two orbitals: spin and electron-hole.
-	There are four different types of sites (and thus four different Hamiltonians): the top superconductor, the bottom superconductor, the normal region, and a normal region with a variable potential offset, forming a barrier to simulate an imperfect NS interface.
+	There are four different types of sites (and thus four different Hamiltonians): the top superconductor, the bottom superconductor, the normal region, and a normal region with an optional potential offset, acting as a barrier to simulate an imperfect NS interface.
 	A schematic of such kwant systems is depicted in Fig.~\ref{fig:kwant_system}.
 
 	\comment{The model hamiltonian is converted into the tight binding form by substitution}
-	In order to turn the set of Hamiltonians, Eqs.\eqref{eq:hamiltonian_n} and \eqref{eq:hamiltonian_s} into a tight binding model, we write the equations into differential form by substituting $k_\alpha \rightarrow - i \partial_\alpha$, $\alpha \in \left\{ x, y \right\}$, and thereafter discretize on a rectangular grid.
+	In order to turn the set of Hamiltonians, Eqs.\eqref{eq:hamiltonian_n} and \eqref{eq:hamiltonian_s} into a tight binding model, we write the equations into differential form by substituting $k_\alpha \rightarrow - i \partial_\sigma$, $\sigma \in \left\{ x, y \right\}$, and thereafter discretize on a rectangular grid.
 	In practice, this is implemented using the Kwant discretizer module.
 
 
@@ -70,16 +73,15 @@
 \comment{We propose a method to verify that elimination of long trajectories is responsible for the increased topological gap in a zigzag system.}
 \section{Quasiclassical estimation of the topological gap}
 	\comment{To compute the effect of cutoff consider a single segment of the zigzag and obtain the spectrum analytically (this allows to use translation invariance).}
-	In order to establish that the elimination of long trajectories is the driving mechanism behind the order of magnitude gap improvement, we use an analytical approach.
-	We estimate the gap of the zigzag system by the minimum energy occuring in the Andreev spectrum of a single (diagonal) segment of zigzag.
-	The spectrum of the zigzag segment we define as the spectrum of an infinite ribbon SNS junction with tilted-magnetic field. 
+	To establish that the elimination of long trajectories is indeed the driving mechanism behind the improvement of the gap, we use an analytical model in an effort to isolate the gap-trajectory dependence.
+	We estimate the gap of the zigzag system by the minimum energy occuring in the Andreev spectrum of a single (diagonal) segment of zigzag (see Fig.~\ref{fig:zigzag_methods}).
+	We define the spectrum of a single zigzag segment by identifying it with the spectrum of an infinite ribbon SNS junction with tilted-magnetic field.
 	The finite length of the segment is modeled by not including momenta corresponding to long trajectories when taking the minimum over the spectrum.
 
 	\comment{The spectrum is derived using a scattering matrix, and we consider multiple ways to eliminate long trajectory momenta.}
-
-	Estimating the gap is a two-step process: derivation of the Andreev spectrum, and taking the minimum energy over a particular set of allowed momenta.
-	The first is derived using scattering matrix formalism and the Andreev bound state condition\cite{beenakker1991universal, sticlet_robustness_2017}.
-	The second step is mostly trivial, but the difficulty lies with identifying the set of allowed  momenta to take the minimum over.
+	Estimating the gap is a two-step process: first, derivation of the Andreev spectrum, and second, taking the absolute minimum of that spectrum over the set of momenta allowed by the specific geometry.
+	An analytic expression for the spectrum is derived using scattering matrix formalism and the Andreev bound state condition\cite{beenakker1991universal, sticlet_robustness_2017}.
+	For the second step, the difficulty lies with identifying the set of allowed momenta in a particular geometry.
 
 
 	\subsection{Analytical estimate of Andreev spectrum for a straight junction}
