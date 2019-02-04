@@ -22,7 +22,7 @@
 
 			\comment{We calculate the bandstructure for varying amount of zigzag.}
 			We implement a tight-binding version of the model described in section \ref{sec:physical_picture}.
-			In figure~\ref{fig:bandstuctures}, the bandstructure for zigzag systems~\ref{fig:zigzag_methods} (sawtooth shape) with varying amplitude is displayed.
+			In figure~\ref{fig:bandstuctures}, the bandstructure for saw toothed zigzag systems [Fig.~\ref{fig:zigzag_methods}] with varying amplitude is displayed.
 			Because the zigzag has to be modeled using a supercell, we see a folded bandstructure.
 			For comparison's sake, we take the same cell size for the ribbon structure so the bandstructure is folded in the same way.
 
@@ -42,8 +42,7 @@
 
 			\comment{We calculate the lowest eigenfunction and plot the density.}
 			Using the tight-binding package Kwant~\cite{groth_kwant:_2014}, we model a finite system to compute the Majorana wave function density for different geometries; ribbon, zigzag, parallel curve, and vertically offset sinusoids.
-			In figure~\ref{fig:wavefunctions} the wavefunctions are displayed, superimposed upon their respective geometry.
-			Also displayed in the figure are the energies $E_M$, corresponding to the plotted Majorana wavefunctions, as well as $E_1$: the energies corresponding to the next lowest state.
+			In figure~\ref{fig:wavefunctions} the wavefunctions superimposed upon their respective geometry are displayed including the corresponding Majorana energies $E_M$, as well as $E_1$: the energies corresponding to the next lowest state.
 
 			\begin{figure}[!htb]
 			\centering
@@ -56,29 +55,30 @@
 			\end{figure}
 
 			\comment{In a straight system, the Majoranas are very poorly localized.}
-			For the ribbon system, we see that the decay of the density is slow: the wavefunction clearly extends to the middle of the system, not showing the delocalization sought after.
-			Apart from the density, as mentioned in the Theory chapter, overlap of Majoranas leads to a non-zero energy of the state.
-			Taking this into consideration, we see that the energy of the Majorana state in the straight system is only barely below the next lowest lying eigenstate: the Majoranas are very poorly localized, and topological protection against perturbations is minimal.
+			For the ribbon system [Fig.~\ref{fig:wavefunction}(a)], we see that the decay of the density is long compared to the system size.
+			We see that the wavefunction extends to the center of the system, not showing the delocalization sought after.
+			Apart from the density, as discussed in chapter \ref{chap:theory}, overlap of Majoranas leads to a non-zero energy of the state.
+			Taking this into consideration, we see that the energy of the Majorana state in the straight system is only barely below the next lowest lying eigenstate: the Majoranas are very poorly localized and topological protection against perturbations is minimal.
 			
 			\comment{In a zigzag geometry Majoranas are localized within one segment of zigzag.}
 			All of the zigzag type geometries show a greatly reduced coherence length.
 			The delocalized nature of the wavefunctions is clearly visible through the density plots.
-			Quantitatively, the improvement in the localization of the Majoranas is also distinctly apparent: the energies of the Majorana states are orders of magnitude lower than the energy of the second lowest-lying wavefunctions.
-			As mentioned in the previous section, this can be attributed due to the way the gap and velocity factor into the Majorana coherence length.
+			Quantitatively, the improvement in the localization of the Majoranas is also distinctly apparent: the energies of the Majorana states are three orders of magnitude lower than the energy of the second lowest-lying wavefunctions.
+			As mentioned in the previous section, this can be attributed to the way the gap and velocity factor into the Majorana coherence length.
 
 			\comment{We also confirm that the specific shape does not matter.}
-			The shape of the wavefunctions does not seem to change much depending on the details of the shape.
-			The sharp corners of the sawtooth versus the smooth shape of the snakelike system do not seem to have a great impact on the shape of the wavefunction.
+			The shape of the wavefunctions does not change significantly depending on the details of the shape.
+			The sharp corners of the sawtooth versus the smooth shape of the snakelike system do not have a great impact on the shape of the wavefunction.
 
 
 		\comment{Zigzag Majoranas have a cleaner phase diagram due to the reduction in symmetry class}
 		\subsection{Phase diagram}
 
 			\comment{We calculate the topological phase diagram using the gap size.}
-			Due to the size of the system, we cannot use full spectrum methods (the Pfaffian in this case) to compute the topological phase of our system.
+			Due to the size of the system, we cannot use full spectrum methods (the Pfaffian in this case) to compute the topological invariant of our system.
 			Instead, we calculate the gap by finding the absolute minimum of the spectrum $E_\textrm{gap}=\min{|E(k)|}$.
-			Noting the gap closings, and the fact we know the topological phase for the non-zigzag system (e.g. for magnetic field vs. phase difference it is diamond shaped: Fig.~\ref{fig:pientka_phase_diagram}), we can infer the topology of the system with zigzag modulation.
-			In Figure ~\ref{fig:phasediagrams}, the energy gap as a function of magnetic field, chemical potential, and the superconducting phase difference is displayed, for both a straight system [(a) and (b)] and a zigzag system [(c) and (d)].
+			Noting the gap closings, and that we know the topological phase for the non-zigzag system (e.g. for magnetic field vs. phase difference it is diamond shaped: Fig.~\ref{fig:pientka_phase_diagram}), we can infer the topology of the system with zigzag modulation.
+			In figure ~\ref{fig:phasediagrams}, we plot the energy gap as a function of magnetic field, chemical potential, and the superconducting phase difference for both a straight system [(a) and (b)] and a zigzag system [(c) and (d)].
 
 			\begin{figure}[!htb]
 			\centering
