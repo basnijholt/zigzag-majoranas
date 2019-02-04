@@ -88,8 +88,8 @@ In addition to having a large minimum energy gap, the absence of long length tra
 Majorana bound states (MBSs) are a promising candidate to form the basis of a stable platform for topological quantum computing.
 
 \comment{Majoranas are mostly made in hybrid NS structures.}
-The current experimental effort is focused on creating pairs of MBSs in hybrid normal-superconductor (NS) structures, where a lengthy strip (or wire) of semiconductor is interfaced with a \cite{lutchyn_majorana_2010,oreg_helical_2010} superconductor.
-Within the right parameter regime ($E_z^2>\mu^2+\Delta^2$ for a simple wire), the semiconductor becomes topological and MBSs appear at the ends of the segment.
+The current experimental effort is focuses on creating pairs of MBSs in hybrid normal-superconductor (NS) structures, where a long strip (or wire) of a semiconductor is interfaced with a \cite{lutchyn_majorana_2010,oreg_helical_2010} superconductor.
+Within the right parameter regime ($E_z^2>\mu^2+\Delta^2$ for a simple wire), the semiconductor becomes topological while MBSs appear at the ends of the segment.
 Recently, a system with a slight modification has been proposed\cite{pientka2017topological}, where instead of having one superconductor, there are two superconductors, creating a superconductors-normal-superconductor (SNS) junction.
 This adds an extra knob to adjust, the superconducting phase difference $\phi$, and this should make it easier to tune the system into the topological phase.
 In practice, multiple problems arise making even the observation, let alone the manipulation of Majoranas difficult.
@@ -100,10 +100,10 @@ From a semiclassical perspective, these momenta correspond to long paths through
 Additionally, these long trajectories have long flight times $\tau_f$ and equivalenly small Thouless energies $E_{\textrm{Th}}=\hbar / \tau_f$, resulting in a small gap. 
 
 \comment{Currently proposed workarounds are low density or disorder, but both have drawbacks.}
-Currently, proposed workarounds are low density or disorder~\cite{haim_double-edge_2018}, but both have drawbacks.
+Currently, proposed workarounds are to work at low density \cite{nijholt2015orbital} or to have disorder~\cite{haim_double-edge_2018}, but both have drawbacks.
 
 \comment{We show that zigzag geometry solves this problem by eliminating the long trajectories.}
-In this paper we show that introducing a zigzag or snake like geometry for the semiconductor eliminates these long trajectories and prevents the appearance of a soft gap while also increasing the topological gap by an order of magnitude.
+In this paper, we show that introducing a zigzag or snake-like geometry for the semiconductor eliminates these long trajectories and prevents the appearance of a soft gap while also increasing the topological gap by an order of magnitude.
 
 
 %%██████████████████████████████████████████████████████████████████████████
@@ -111,14 +111,14 @@ In this paper we show that introducing a zigzag or snake like geometry for the s
 %%██████████████████████████████████████████████████████████████████████████
 \section{Physical picture}
 \comment{We consider a two-dimensional system with zigzag.}
-We consider a Josephson junction (JJ)(Fig.~\ref{fig:setup}) consisting of a two dimensional strip of semiconductor, with superconductors on both sides.
-We modulate the shape of the normal region, which can be either zigzag as depicted, or a more smooth sinusoidal like shape.
+We consider a Josephson junction (JJ)(Fig.~\ref{fig:setup}) consisting of a two-dimensional strip of semiconductor, with superconductors on both sides.
+We modulate the shape of the normal region, which can be either zigzag as depicted, or a more smooth sinusoidal-like shape.
 Similar to the conventional straight system \cite{pientka2017topological}, a magnetic field $B_x$ perpendicular to the junction is applied.
 We model the system with a BdG Hamiltonian Eq.~\eqref{eq:hamiltonian}; the normal part has a linear Rashba spin-orbit coupling term characterized by $\alpha$ and a Zeeman field with $E_z=\frac{1}{2}mu_B g B_x$.
 The superconductor has a superconducting coupling term $\Delta$ with a superconducting phase $\exp{\pm i \phi/2}$.
 Both parts have a kinetic term and chemical potential $\mu$. 
-For the zigzag geometry, we first consider a sawtooth like pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction.
-Later in this manuscript we show that the exact details of the shape are not important and consider different zigzag geometries also parametrized by $z_x, \; z_y, \; W$.
+For the zigzag geometry, we first consider a sawtooth-like pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction.
+Later in this manuscript, we show that the exact details of the shape are not important and consider different zigzag geometries also parametrized by $z_x, \; z_y, \; W$.
 
 \comment{The symmetry class of the system is D.}
 The non-zigzag system is in the symmetry class BDI \cite{pientka2017topological}.
@@ -147,19 +147,19 @@ Using the software package Qsymm\cite{varjas2018qsymm}, we find that the symmetr
 
 \comment{We discretize the model described in section II and simulate it with Kwant.}
 We discretize our continuum Hamiltonian \eqref{eq:hamiltonian} and implement a tight-binding model using Kwant~\cite{groth_kwant:_2014}.
-The resulting Hamiltonians are large because instead of having a single slice of sites that is translationally invariant in the $x$-direction, we create a long supercell in order to make the structure periodic.
-To speed up these expensive simualtions we employ an adaptive sampling strategy, using the Python package Adaptive. % TODO: add citation
+The resulting Hamiltonians are large because instead of having a single slice of sites that is translationally invariant in the $x$-direction, we create a long supercell to make the structure periodic.
+To speed up these expensive simulations we employ an adaptive sampling strategy, using the Python package Adaptive. % TODO: add a citation
 
 \comment{We calculate the bandstructure for varying amount of zigzag.}
 In figure~\ref{fig:bandstuctures}, the bandstructure for zigzag systems with varying amplitude is displayed.
-Because the discretized zigzag system is modeled using a super cell, we can only plot a folded bandstructure.
-For comparisons sake, we take the same cell size for the ribbon structure such that the bandstructure is folded in the same way.
+Because the discretized zigzag system is modeled using a supercell, we can only plot a folded bandstructure.
+For comparison's sake, we take the same cell size for the ribbon structure such that the bandstructure folds in the same way.
 
-\comment{The bandstructures show that modulation of the geometry increases the gap by an order of magnitude, as well as reduce the group velocity.}
-The introduction of a zigzag has a striking effect: the bands flatten out, and more importantly, the gap size is increased by more than an order of magnitude.
-This happens because in a straight system, long trajectories are possible, these have a momentum that is directed along the strip and consequently, $k_x \approx k_F$.
-The smallest gap in a straight system occurs around $k_F$ and because the zigzag cuts off long trajectories, the gap size is increased. 
-Besides this, the velocity of the modes is greatly reduced, which has a positive effect on the Majorana coherence length, as described later in section XXX. % TODO: add ref
+\comment{The band structures show that modulation of the geometry increases the gap by an order of magnitude, as well as reduce the group velocity.}
+The introduction of a zigzag has a striking effect: the bands flatten out, and more importantly, the gap size increases by more than an order of magnitude.
+This happens because in a straight system long trajectories are possible, these have a momentum that is directed along the strip and consequently, $k_x \approx k_F$.
+The smallest gap in a straight system occurs around $k_F$, and because the zigzag cuts off long trajectories, the gap size increases. 
+Besides this, the velocity of the modes greatly reduces, which has a positive effect on the Majorana coherence length, as described later in section XXX. % TODO: add ref
 
 \comment{The introduction of an SN interface at many angles also increases performance.}
 Additionally, in the presence of normal reflection, due to the presence of NS interfaces at a wide range of angles, the reflected part will eventually scatter with a near perpendicular surface.
@@ -176,10 +176,10 @@ We calculate the gap $E_\textrm{gap}$ by finding the absolute minimum of the spe
 Noting the gap closings and the fact we know the topology for the non-zigzag system, we can infer the topology of the system with zigzag modulation. % Bas: I don't understand what is written here
 
 \comment{The phase diagram does not change much, except we see a cleaner spectrum as a result of the D class symmetry. }
-Similar to what is described by Pientka et. al~\cite{pientka2017topological}, we see that the ribbon topology has a diamond like structure as a function of phase $\phi$ and Zeeman field $E_Z$.
+Similar to what is described by Pientka et. al~\cite{pientka2017topological}, we see that the ribbon topology has a diamond-like structure as a function of phase $\phi$ and Zeeman field $E_Z$.
 We also observe additional gap closings which are due to the BDI symmetry that is present.
-As expected for the zigzag system, the magnitude of the gap is significantly improved, whilst maintaining the diamond like shape.
-As the zigzag shape destroys the additional symmetry, moving it to class D, we see a more clean topological region.
+As expected for the zigzag system, the magnitude of the gap is significantly improved, while maintaining the diamond-like shape.
+As the zigzag shape destroys the additional symmetry, moving it to class D, we see a cleaner topological region.
 
 \begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/bandstructures}
@@ -205,13 +205,13 @@ We use a generalized eigenvalue problem to find all phase boundaries at once and
 \comment{To compute the effect of cutoff consider a single segment of the zigzag and obtain the spectrum analytically (this allows to use translation invariance).}
 We establish that the cutoff of long trajectories is the driving mechanism behind the order of magnitude gap improvement using an analytical approach.
 We derive the Andreev spectrum for a single (diagonal) segment of the zigzag, and define the gap of the system as the minimum of the spectrum occurring before the cutoff corresponding to the particular geometry.
-The system under consideration is thus a ribbon SNS junction with tilted magnetic field.
+The system under consideration is thus a ribbon SNS junction with a tilted magnetic field.
 
 \comment{The definition of the cutoff... }
 
 \comment{We use a short junction approximation and neglect transverse SO.}
 We derive the spectrum by calculating the scattering matrix for the normal region and applying the Andreev bound state condition for the short junction limit\cite{beenakker1991universal, sticlet_robustness_2017}. 
-For deriviation of the scattering matrix, we neglect SOI in the transverse direction, which is valid for $W<l_\text{so}$.
+For derivation of the scattering matrix, we neglect SOI in the transverse direction, which is valid for $W<l_\text{so}$.
 The result is specified in Eqs.~\eqref{eq:smatrix} to~\eqref{eq:momenta_short_junction}.
 
 \begin{align}
@@ -289,18 +289,18 @@ We cut off the spectrum at the momentum corresponding to the proposed cutoff in 
 \comment{We find the Majorana lengths by calculating the slowest decaying mode.}
 Using the tight-binding package Kwant~\cite{groth_kwant:_2014}, we model a finite system to compute the Majorana wave function density for different geometries; ribbon, zigzag, parallel curve and vertically offset sinusoids.
 In figure~\ref{fig:wavefunctions} the wavefunctions are displayed, superimposed upon their respective geometry.
-For the ribbon system, we see that the Majorana coherence length is relatively large, not showing the decolalized nature sought after.
-All of the zigzag type geometries however show greatly reduced coherence length.
-This can be explained by two effects: the increase in topological gap, but also the before mentioned reduction of the group velocity.
+For the ribbon system, we see that the Majorana coherence length is relatively large, not showing the delocalized nature sought after.
+All of the zigzag type geometries, however, show significantly reduced coherence length.
+Two effects can explain this: the increase in the topological gap, but also the before mentioned reduction of the group velocity.
 
 \comment{We also confirm that the specific shape does not matter.}
-Also note the similarity between the various shapes, sharp corners or more smoothlike, the effect is the same.
+Also note the similarity between the various shapes, sharp corners or a smoother system, the effect is the same.
 
 \begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/wavefunctions}
 \caption{Wavefunctions for different sizes and geometries.
-With (a) a straight system, (b) a zigzag system, (c) a system where the normal region is defined by lines parallel to a sinosoid, and (d) a system with vertically offset sinosoids.
-Inside the figure we indicate the Majorana length (or coherence length) $\xi$ and the topological energy gap $E_\textrm{gap}.$
+With (a) a straight system, (b) a zigzag system, (c) a system where the normal region is defined by lines parallel to a sinusoid, and (d) a system with vertically offset sinusoids.
+Inside the figure, we indicate the Majorana length (or coherence length) $\xi$ and the topological energy gap $E_\textrm{gap}.$
 We observe that $\xi$ for (a) is orders of magnitude longer and $E_\textrm{gap}$ orders of magnitude smaller than for (b, c, d), meaning that the details of the geometry do not matter.
 \label{fig:wavefunctions}}
 \end{figure}
@@ -310,20 +310,20 @@ We observe that $\xi$ for (a) is orders of magnitude longer and $E_\textrm{gap}$
 %%██████████████████████████████████████████████████████████████████████████
 \section{Discussion and Conclusions}
 
-\comment{The zigzag geometry is a useful tool in hardening the gap and decreasing majorana length, now experimental verification necessary}
+\comment{The zigzag geometry is a useful tool in hardening the gap and decreasing Majorana length, now experimental verification necessary}
 The introduction of a zigzag geometry increases the topological gap by over an order of magnitude, as well as offering a substantial reduction of the Majorana length.
 Additionally, the breaking of BDI symmetry into D symmetry results in a cleaner topological region.
 
 \comment{Current fabrication techniques seem compatible with the proposed geometry, and experimental verification should point out whether it holds up to its promise.}
 Current fabrication techniques seem compatible with the proposed geometry; zigzag devices have already been created.
-Slight modifications to the geometry, for example to ease measurement, should not have large implications on the physics.
+Slight modifications to the geometry, for example to ease measurement, should not have significant implications on the physics.
 
 \comment{It would be interesting to study what geometry creates an optimal environment for Majorana modes to exist.}
-We have studied sawtooth, snake like and offset sinosoid modulation of the semicondctor region, but perhaps a more exotic shape will be optimal.
+We have studied sawtooth, snake-like and offset sinusoidal modulation of the semiconductor region, but perhaps a more exotic shape will be optimal.
 A study optimizing the geometry for supporting Majoranas would be an interesting continuation.
 
 \comment{Extensions: we omit several physical effects, disorder, electrostatics, etc.}
-We omit several physical effects, such as: disorder, electrostatics, the orbital effect, etc..
+We exclude several physical effects, such as disorder, electrostatics, the orbital effect, etc..
 Further study, as well as experimental verification, are required to see whether the conclusions of this model are valid for the real case.
 
 \comment{Acknowledgments}
