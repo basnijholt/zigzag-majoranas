@@ -136,6 +136,8 @@ Later in this manuscript, we show that the exact details of the shape are not im
 \label{fig:setup}}
 \end{figure}
 
+Unless noted differently, the parameters of the system are $\alpha=20$ \si{\milli \eV \nm}, $g=26$, $\meff=0.02$\si{\electronmass}, $\mu=20$ \si{\milli \eV}, $\Delta=1$ \si{\milli \eV}.
+
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Calculating the bandstuctures
 %%██████████████████████████████████████████████████████████████████████████
@@ -145,6 +147,15 @@ Later in this manuscript, we show that the exact details of the shape are not im
 We discretize our continuum Hamiltonian \eqref{eq:hamiltonian} on a square grid and implement a tight-binding model using Kwant~\cite{groth_kwant:_2014}.
 The resulting Hamiltonians are large because instead of having a single slice of sites that is translationally invariant in the $x$-direction, we create a long supercell to make the structure periodic.
 To speed up these expensive simulations we employ an adaptive sampling strategy, using the Python package Adaptive. % TODO: add a citation
+
+\begin{figure}[!htb]
+\includegraphics[width=0.95\columnwidth]{figures/bandstructures}
+\caption{Figure of the bandstuctures corresponding to the system in Fig.~\ref{fig:zigzag_methods}.
+Blue lines correspond to $\phi=0$, $B=0$ and red lines to $\phi=\pi$, $B = \SI{1}{\T}$.
+The three subplots are for different amplitudes of the zigzag, with (a) $z_y=0$, (b) $z_y=\frac{W}{4}$, and (c) $z_y=\frac{W}{2}$, where $W=200$\si{\nm} is the junction width.
+We observe that once there are no more straight trajectories inside the junction (when $z_y=\frac{W}{2}$) the spectrum becomes most insensitive to the momentum $k_x$.
+\label{fig:bandstuctures}}
+\end{figure}
 
 \comment{We calculate the bandstructure for varying amount of zigzag.}
 In figure~\ref{fig:bandstuctures}, the bandstructure for zigzag systems with varying amplitude is displayed.
@@ -182,18 +193,11 @@ As expected for the zigzag system, the magnitude of the gap is significantly imp
 Additionally, we see a cleaner topological region due to the absence of the gap closings resulting from the former mentioned chiral symmetry.
 
 \begin{figure}[!htb]
-\includegraphics[width=0.95\columnwidth]{figures/bandstructures}
-\caption{Figure of the bandstuctures.
-Where the lines are (blue) $\phi=0$, $B=0$ and (red) $\phi=\pi$, $B \ne 0$.
-and the subplots (a) $z_y=0$, (b) $z_y=\frac{W}{4}$, and (c) $z_y=\frac{W}{2}$, where $W$ is the junction width.
-We observe that once there are no more straight trajectories possible inside the junction (when $z_y=\frac{W}{2}$) the spectrum becomes most insensitive to the momentum $k_x$.
-\label{fig:bandstuctures}}
-\end{figure}
-
-\begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/phasediagrams}
 \caption{Phase diagrams of a straight system (a), (b) and zigzag system (c), (d), where (a), (c) are $E(\mu, B)$ and (b), (d) are $E(\phi, B)$.
-% We use a generalized eigenvalue problem to find all phase boundaries at once and find the minimal energy gap by finding the minimum in the spectrum: $\min{E(k)}$.
+Phase diagrams of a straight system (a), (b) and zigzag system (c), (d), where (a), (c) are $E(\mu, B)$ and (b), (d) are $E(\phi, B)$.
+We compute the dispersion of the translationally invariant realizations of a straight and saw-toothed zigzag system and find $\min{E(k)}$ to obtain the energy gap.
+% Additionally, use a generalized eigenvalue problem to find all phase boundaries at once.
 \label{fig:phasediagrams}}
 \end{figure}
 
@@ -302,6 +306,7 @@ We observe that for zigzag systems the Majorana properties properties improve.
 All of the zigzag type geometries display a reduced coherence length and the delocalized nature of the wavefunctions is improved, as is visible through the density plots.
 Quantitatively, the improvement in the localization of the Majoranas is also distinctly apparent: the energies of the Majorana states are three orders of magnitude lower than the energy of the second lowest-lying wavefunctions.
 As mentioned in section \ref{sec:bandstuctures}, this can be attributed to the way the energy gap and velocity factor into the Majorana coherence length which scales with these parameters $\lambda_\textrm{M}=\hbar\frac{v_\textrm{F}}{\Delta_\textrm{ind}}$.
+Additionally, the reduction of the Majorana decay length allows for shorter systems sizes, which is favorable because in an experimental device the coherence length of a material sets a limit for the device size.
 
 \comment{The specific geometry is not important.}
 The shape of the wavefunctions does not change significantly depending on the details of the geometry.
@@ -309,11 +314,11 @@ The sharp corners of the sawtooth versus the smooth shape of the snakelike syste
 
 \begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/wavefunctions}
-\caption{Density of wavefunctions $|\psi|^2$ for different sizes and geometries.
-With (a) a straight system, (b) a zigzag system, (c) a system where the normal region is defined by lines parallel to a sinusoid, and (d) a system with vertically offset sinusoids.
-Inside the figure, we indicate the Majorana length (or coherence length) $\xi$ and the topological energy gap $E_\textrm{gap}.$
-We observe that $\xi$ for (a) is orders of magnitude longer and $E_\textrm{gap}$ orders of magnitude smaller than for (b, c, d), meaning that the details of the geometry do not matter.
-\label{fig:wavefunctions}}
+\caption{Density of wavefunctions $|\psi|^2$ for sizes and geometries.
+With (a) a straight system, (b) a saw-toothed zigzag system, (c) a system where the normal region is defined by lines parallel to a sinusoid, and (d) similar to (c) but with disordered edges.
+Inside the figure, we indicate the Majorana length (or coherence length) $\lambda_\textrm{M}$ and the topological energy gap $E_\textrm{gap}$.
+We observe that $\xi$ for (a) is significantly longer and $E_\textrm{gap} = E_\textrm{1} - E_M$ orders of magnitude smaller than for (b), (c), and (d), meaning that the details of the geometry do not matter for the improvements to occur.
+The values of the remaining parameters are $\alpha=20$ \si{\milli \eV \nm}, $g=26$, $\meff=0.02$\si{\electronmass}, $\mu=20$ \si{\milli \eV}, $\Delta=1$ \si{\milli \eV}, $B=1$\si{\tesla}, $\phi=2\pi$.\label{fig:wavefunctions}}
 \end{figure}
 
 %%██████████████████████████████████████████████████████████████████████████
