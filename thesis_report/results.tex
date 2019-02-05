@@ -50,7 +50,7 @@
 			\caption{Wavefunctions for different sizes and geometries.
 			With (a) a straight system, (b) a zigzag system, (c) a system where lines parallel to a sinusoid defines the normal region, and (d) a system with vertically offset sinusoids.
 			Inside the figure, we indicate the Majorana length (or coherence length) $\lambda_\textrm{M}$ and the topological energy gap $E_\textrm{gap}$.
-			We observe that $\xi$ for (a) is orders of magnitude longer and $E_\textrm{gap} = E_\textrm{1} - E_M$ orders of magnitude smaller than for (b), (c), and (d), meaning that the details of the geometry do not matter for the improvements to occur.
+			We observe that $\xi$ for (a) is significantly longer and $E_\textrm{gap} = E_\textrm{1} - E_M$ orders of magnitude smaller than for (b), (c), and (d), meaning that the details of the geometry do not matter for the improvements to occur.
 			The value of the remaining parameters are $\alpha=20$ \si{\milli \eV \nm}, $g=26$, $\meff=0.02$\si{\electronmass}, $\mu=20$ \si{\milli \eV}, $\Delta=1$ \si{\milli \eV}, $B=1$\si{\tesla}, $\phi=2\pi$.
 			}\label{fig:wavefunctions}
 			\end{figure}
@@ -99,7 +99,9 @@
 			We expect a cleaner phase diagram due to the system belonging to the D symmetry class, which is partially reflected in the diagram: there is a large and stable (no gap closings) central region, but near 0 and 2$\pi$ phase difference, in the corner of the diamond, we see a chaotic region of gap closings.
 			We are unsure of the nature of these gap closings, but they can perhaps be attributed to the symmetry breaking being relatively weak.
 
-
+			Figures \ref{fig:phasediagrams}(a, c) showing $E(\mu, B)$ for both a straight and zigzag system, do not differ much apart from magnitude.
+			The weak dependence of the spectrum on chemical potential is clearly visible for both geometries, and is a feature of the SNS system.
+			The square-root dependence of the Thouless energy on the chemical potential is vaguely visible.
 
 	\section{Finding the mechanism responsible for the increased gap}
 		\comment{We compare different techniques to calculate the band structure of a straight system.}
@@ -131,13 +133,16 @@
 			We keep the ratio $\dfrac{z_x}{z_y}$ constant and compute the gap as a function of $z_y$.
 			In Figure~\ref{fig:quasiclassical_approximation}, the result is shown, comparing numerical gap calculations of the full zigzag system (full lines), with the result of the quasiclassical estimation.
 			Note that the quasi-classics are only valid once the zigzag cuts off all trajectories which extend infinitely.
-			It is also important to notice that for the quasiclassical estimate, we set the longest trajectory to be the trajectory that does not include the corners, as depicted in Figure~\ref{fig:quasiclassical_approximation}.
+			It is also important to notice that for the quasiclassical estimate, we set the longest trajectory to be the trajectory that does not include the corners, as depicted in Figure~\ref{fig:longest_trajectory_wo_corners}.
+			This is done because the wavefunction tends to avoid the corners of the zigzag.
+			A possible explanation is that the corners are part of two diagonal elements, which may, under influence of their respective spin-orbit and magnetic field direction, form an energetically unfavorable region for the wavefunction.
+
 
 			\begin{figure}
 			\centering
 			\includegraphics[width=0.75\columnwidth]{images/longest_trajectory_wo_corners}
 			\caption{Diagram depicting quasiclassical estimate of a zigzag system, but now with the longest trajectory chosen to avoid the corners of the zigzag.}
-			\label{fig:quasiclassical_approximation}
+			\label{fig:longest_trajectory_wo_corners}
 			\end{figure}
 
 			\begin{figure}[!htb]
@@ -162,5 +167,5 @@
 			We also see that the gap declines monotonically with respect to the zigzag amplitude, which is by design: increasing the zigzag amplitude corresponds to increasing the domain of permitted trajectories, and thus the minimum can only decrease.
 			Even so, we observe that the decline of the gap with respect to $z_y$ is much quicker than with an actual zigzag.
 			A possible reason that the quasiclassical model sketches a darker picture than full zigzag, is because in that model, long trajectories also correspond to grazing angles of incidence at the NS interface.
+			We conclude that the proposed model to estimate the gap does not capture all the physics of the zigzag very well: further research is required for a more acurate model.
 
-			We conclude that the proposed model to estimate the gap does not capture all the physics of the zigzag very well: the model merely gives a lower bound for the topological gap.
