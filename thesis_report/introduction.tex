@@ -6,7 +6,7 @@
 	A handful of papers had already been published on the matter, when, during a keynote speech~\cite{feynman_simulating_1982} at the California Institute of Technology, Nobel laureate Richard Feynman suggested its importance with respect to physics simulations.
 	To put his idea in very simple terms, calculating the quantum mechanical state of a system on a conventional computer scales exponentially with respect to the system size.
 	By making a computer that is based on quantum states itself, and creating a mapping between those states and the system you want to simulate, this scaling becomes polynomial.
-	Beyond their significance in physics simulations, quantum computers could be used in a more pragmatic way, for implementing cryptography, optimization and search algorithms.
+	Beyond their significance in physics simulations, quantum computers could be used in a more pragmatic way, for implementing cryptography~\cite{nielsen_quantum_2002}, optimization~\cite{han_quantum-inspired_2002} and search algorithms~\cite{grover_fast_1996}.
 	With the potential applications in mind, a lot of resources and effort have been put into building such a quantum computer in the last years.
 	Recently, apart from being a largely publicly funded effort, the private sector has also started to recognize the potential of this technology: large companies such as Microsoft~\cite{noauthor_why_nodate}, Google~\cite{noauthor_quantum_nodate} and IBM~\cite{noauthor_ibm_2018} are investing into the development of a quantum computer.
 	As of this moment, functional quantum computers have been realized on a very small scale: calculations of meaningful magnitude are still not possible.
@@ -19,7 +19,7 @@
 	Similarly, because quantum computing is still in its infancy, there are still many contenders for what the underlying technology will be: what physical system will form the basis for the quantum bit, the qubit?
 	The platforms which are currently explored for the implementation of a qubit include the transmon qubit~\cite{wendin_quantum_2017}, NV-centers~\cite{childress_diamond_2013}, quantum dots~\cite{kloeffel_prospects_2013}, and Majorana bound states~\cite{wendin_quantum_2017}.
 	The main problem with most of the quantum computing platforms is that it is very difficult to keep the qubit from decohering.
-	To counteract this, apart from trying to reduce the decoherence rate of the qubit, much effort is put into devising quantum error correction codes: devise strategies such that potential errors can be detected and corrected for.
+	To counteract this, apart from trying to reduce the decoherence rate of the qubit, much effort is put into devising quantum error correction codes~\cite{terhal_quantum_2015}: devise strategies such that potential errors can be detected and corrected for.
 	For topological quantum computers, employing Majorana bound states as qubits, information is encoded in such a way that it is inherently protected against decoherence.
 	This \emph{topological} protection of the quantum states makes Majorana bound states (MBSs) a promising candidate as a stable platform for quantum computing.
 	However, the implementation of such Majorana bound states has proven elusive, and much research is being done on designing a device that reliably and unequivocally hosts Majoranas.
@@ -88,7 +88,7 @@
 	They predicted that, if the semiconductor has a strong spin-orbit coupling, a magnetic field applied along the wire axis, as well as a carefully tuned chemical potential, Majoranas would appear at the ends of the nanowire.
 	The experiment proved to be sufficiently practical to be performed in the lab and the first signatures of Majorana bound states were found using the setup by Mourik et. al~\cite{mourik_signatures_2012}.
 
-	The inherent protection against decoherence, in part due to the absence of properties such as spin or charge, also makes it notoriously difficult to detect and prove their existence.
+	The inherent protection against decoherence, in part due to the absence of properties such as spin or charge, also makes it notoriously difficult to detect and prove their existence~\cite{beenakker_search_2013}.
 	Perhaps the most direct way to detect their presence is through the observation of a so-called zero bias peak.
 	When performing a tunneling conductance experiment, measuring the conductance through the nanowire, the zero-energy (with respect to the Fermi energy) Majorana state provides a resonant tunneling state when no bias is applied, appearing as a peak in conductance.
 	There are however also other physical phenomena which can be responsible for such a conductance peak, and thus it is not unique to the Majorana state.
@@ -102,7 +102,7 @@
 	The system has additional advantages: it allows for Majorana's to be created at lower magnetic fields, it is more compatible with convential semiconductor technology, and the Josephson junction provides new ways to detect the topological phase of the system.
 
 	\comment{The challenges encountered}
-	One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap, where the gap in the density of states is greatly reduced for states with the momentum directed along the length of the strip.
+	One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap~\cite{ren_topological_2018}, where the gap in the density of states is greatly reduced for states with the momentum directed along the length of the strip.
 	From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor.
 	Additionally, these long trajectories have long flight times $\tau_f$ and equivalenly small Thouless energies $E_{\textrm{Th}}=\hbar / \tau_f$, resulting in a small gap. 
 	Currently, proposed workarounds are low density or disorder~\cite{haim_double-edge_2018}, but both have drawbacks.
