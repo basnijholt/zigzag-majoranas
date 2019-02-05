@@ -176,24 +176,24 @@ The non-zigzag system is in the symmetry class BDI \cite{pientka2017topological}
 Using the software package Qsymm\cite{varjas2018qsymm}, we find that the symmetry class of our system to be $\mathcal{D}$ because we break the chiral symmetry $\mathcal{C}$ resulting from the mirror symmetric junction.
 
 \comment{The phase diagram does not change much, except we see a cleaner spectrum as a result of the D class symmetry. }
-Similar to what is described by Pientka et. al~\cite{pientka2017topological}, we see that the ribbon topology has a diamond-like structure as a function of phase $\phi$ and Zeeman field $E_Z$.
+Similar to what is described by Pientka et. al~\cite{pientka2017topological}, we see that the ribbon topology has a diamond-like shape as a function of phase $\phi$ and Zeeman field $E_Z$.
 We also observe additional gap closings which are due to the BDI symmetry that is present.
-As expected for the zigzag system, the magnitude of the gap is significantly improved, while maintaining the diamond-like shape.
-As the zigzag shape destroys the additional symmetry, moving it to class D, we see a cleaner topological region.
+As expected for the zigzag system, the magnitude of the gap is significantly improved, while preserving the diamond-like shape in parameter space.
+Because the introduction of the zigzag shape moves the system to class D, we see a cleaner topological region due to the absence of the gap closings resulting from the BDI symmetry.
 
 \begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/bandstructures}
 \caption{Figure of the bandstuctures.
 Where the lines are (blue) $\phi=0$, $B=0$ and (red) $\phi=\pi$, $B \ne 0$.
 and the subplots (a) $z_y=0$, (b) $z_y=\frac{W}{4}$, and (c) $z_y=\frac{W}{2}$, where $W$ is the junction width.
-We observe that once there are no more straight trajectories inside the junction (when $z_y=\frac{W}{2}$) the spectrum becomes most insensitive to the momentum $k_x$.
+We observe that once there are no more straight trajectories possible inside the junction (when $z_y=\frac{W}{2}$) the spectrum becomes most insensitive to the momentum $k_x$.
 \label{fig:bandstuctures}}
 \end{figure}
 
 \begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/phasediagrams}
-\caption{Phase diagrams of a straight system (a, b) and zigzag system (c, d), where (a, c) are $E(\mu, B)$ and (b, d) are $E(\phi, B)$.
-We use a generalized eigenvalue problem to find all phase boundaries at once and find the minimal energy gap by finding the minimum in the spectrum: $\min{E(k)}$.
+\caption{Phase diagrams of a straight system (a), (b) and zigzag system (c), (d), where (a), (c) are $E(\mu, B)$ and (b), (d) are $E(\phi, B)$.
+% We use a generalized eigenvalue problem to find all phase boundaries at once and find the minimal energy gap by finding the minimum in the spectrum: $\min{E(k)}$.
 \label{fig:phasediagrams}}
 \end{figure}
 
@@ -284,7 +284,21 @@ We cut off the spectrum at the momentum corresponding to the proposed cutoff in 
 %%██████████████████████████████████████████████████████████████████████████
 \section{Localization lengths and shape effects}
 
+\comment{In a straight system, the Majoranas are very poorly localized.}
+For the ribbon system [Fig.~\ref{fig:wavefunction}(a)], we see that the decay of the density is long compared to the system size.
+The wavefunction extends to the center of the system, resulting in overlapping Majoranas and a non-zero energy of the state.
+Further, the energy of the Majorana state in the straight system is badly septated from the next lowest lying eigenstate.
+Altogether, for the parameters of the system, the Majoranas are very poorly localized and topological protection against perturbations is minimal.
+
 \comment{In a zigzag geometry Majoranas are localized within one segment of zigzag.}
+All of the zigzag type geometries show a reduced coherence length.
+The delocalized nature of the wavefunctions is clearly visible through the density plots.
+Quantitatively, the improvement in the localization of the Majoranas is also distinctly apparent: the energies of the Majorana states are three orders of magnitude lower than the energy of the second lowest-lying wavefunctions.
+As mentioned in the previous section, this can be attributed to the way the gap and velocity factor into the Majorana coherence length.
+
+\comment{We also confirm that the specific shape does not matter.}
+The shape of the wavefunctions does not change significantly depending on the details of the geometry.
+The sharp corners of the sawtooth versus the smooth shape of the snakelike system do not have a significant impact on the shape of the wavefunction and neither do the disordered edges effect the relevant parameters.
 
 \comment{We find the Majorana lengths by fitting an exponential to the wavefunction.}
 Using the tight-binding package Kwant~\cite{groth_kwant:_2014}, we model a finite system to compute the Majorana wave function density for different geometries; ribbon, zigzag, parallel curve and vertically offset sinusoids.
