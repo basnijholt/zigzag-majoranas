@@ -97,7 +97,7 @@ In practice, multiple problems arise making even the observation, let alone the 
 \comment{The gap is small because of long trajectories.}
 One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap; where the gap in the density of states is greatly reduced for states with the momentum directed along the length of the strip.
 From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor.
-Additionally, these long trajectories have long flight times $\tau_f$ and equivalenly small Thouless energies $E_{\textrm{Th}}=\hbar / \tau_f$, resulting in a small gap. 
+Additionally, these long trajectories have long flight times $\tau_f$ and equivalenly small Thouless energies $E_{\textrm{Th}}=\hbar / \tau_f$, resulting in a small gap.
 
 \comment{Currently proposed workarounds are low density or disorder, but both have drawbacks.}
 Currently, proposed workarounds are to work at low density \cite{nijholt2015orbital} or to have disorder~\cite{haim_double-edge_2018}, but both have drawbacks.
@@ -116,7 +116,7 @@ We modulate the shape of the normal region, which can be either zigzag as depict
 Similar to the conventional straight system \cite{pientka2017topological}, a magnetic field $B_x$ perpendicular to the junction is applied.
 We model the system with a BdG Hamiltonian Eq.~\eqref{eq:hamiltonian}; the normal part has a linear Rashba spin-orbit coupling term characterized by $\alpha$ and a Zeeman field with $E_z=\frac{1}{2}mu_B g B_x$.
 The superconductor has a superconducting coupling term $\Delta$ with a superconducting phase $\exp{\pm i \phi/2}$.
-Both parts have a kinetic term and chemical potential $\mu$. 
+Both parts have a kinetic term and chemical potential $\mu$.
 For the zigzag geometry, we first consider a sawtooth-like pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction.
 Later in this manuscript, we show that the exact details of the shape are not important and consider different zigzag geometries also parametrized by $z_x, \; z_y, \; W$.
 
@@ -139,10 +139,10 @@ Later in this manuscript, we show that the exact details of the shape are not im
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Calculating the bandstuctures
 %%██████████████████████████████████████████████████████████████████████████
-\section{Calculating the bandstuctures.}
+\section{Calculating the bandstuctures.}\label{sec:bandstuctures}
 
 \comment{We discretize the Hamiltonian and simulate it with Kwant.}
-We discretize our continuum Hamiltonian \eqref{eq:hamiltonian} and implement a tight-binding model using Kwant~\cite{groth_kwant:_2014}.
+We discretize our continuum Hamiltonian \eqref{eq:hamiltonian} on a square grid and implement a tight-binding model using Kwant~\cite{groth_kwant:_2014}.
 The resulting Hamiltonians are large because instead of having a single slice of sites that is translationally invariant in the $x$-direction, we create a long supercell to make the structure periodic.
 To speed up these expensive simulations we employ an adaptive sampling strategy, using the Python package Adaptive. % TODO: add a citation
 
@@ -152,10 +152,10 @@ Because the discretized zigzag system is modeled using a supercell, we can only 
 For comparison's sake, we take the same cell size for the ribbon structure such that the bandstructure folds in the same way.
 
 \comment{The band structures show that modulation of the geometry increases the gap by an order of magnitude, as well as reduce the group velocity.}
-The introduction of a zigzag has a striking effect: the bands flatten out, and more importantly, the gap size increases by more than an order of magnitude.
-This increase happens because in a straight system long trajectories are possible, these have a momentum that is directed along the strip and consequently, $k_x \approx k_F$.
-The smallest gap in a straight system occurs around $k_F$, and because the zigzag cuts off long trajectories, the gap size increases. 
-Besides this, the velocity of the modes greatly reduces, which has a positive effect on the Majorana coherence length, as described later in section XXX. % TODO: add ref
+The introduction of a zigzag has a striking effect: the bands flatten out, and more importantly, the topological gap increases by more than an order of magnitude.
+On an intuitive level we can understand this because in a straight system long trajectories are possible, these have a momentum that is directed along the strip and consequently, $k_x \approx k_F$.
+Further, the smallest gap in a straight system occurs around $k_F$, and because the zigzag cuts off long trajectories, the gap size increases.
+Besides this, the velocity of the modes greatly reduces, which has a positive effect on the Majorana coherence length, as described later in section \ref{sec:shape_effects}.
 
 \comment{The introduction of an NS interface at many angles increases the transparency.}
 Additionally, in the presence of normal reflection, due to the presence of NS interfaces at a wide range of angles, the reflected part will eventually scatter with a near perpendicular surface.
@@ -179,7 +179,7 @@ Using the software package Qsymm\cite{varjas2018qsymm}, we find that the symmetr
 Similar to what is described by Pientka et. al~\cite{pientka2017topological}, we see that the ribbon topology has a diamond-like shape as a function of phase $\phi$ and Zeeman field $E_Z$.
 We also observe additional gap closings which are due to the BDI symmetry that is present.
 As expected for the zigzag system, the magnitude of the gap is significantly improved, while preserving the diamond-like shape in parameter space.
-Because the introduction of the zigzag shape moves the system to class D, we see a cleaner topological region due to the absence of the gap closings resulting from the BDI symmetry.
+Additionally, we see a cleaner topological region due to the absence of the gap closings resulting from the former mentioned chiral symmetry.
 
 \begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/bandstructures}
@@ -210,7 +210,7 @@ The system under consideration is thus a ribbon SNS junction with a tilted magne
 \comment{The definition of the cutoff... }
 
 \comment{We use a short junction approximation and neglect transverse SO.}
-We derive the spectrum by calculating the scattering matrix for the normal region and applying the Andreev bound state condition for the short junction limit\cite{beenakker1991universal, sticlet_robustness_2017}. 
+We derive the spectrum by calculating the scattering matrix for the normal region and applying the Andreev bound state condition for the short junction limit\cite{beenakker1991universal, sticlet_robustness_2017}.
 For derivation of the scattering matrix, we neglect SOI in the transverse direction, which is valid for $W<l_\text{so}$.
 The result is specified in Eqs.~\eqref{eq:smatrix} to~\eqref{eq:momenta_short_junction}.
 
@@ -282,37 +282,34 @@ We cut off the spectrum at the momentum corresponding to the proposed cutoff in 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Localization lengths and shape effect
 %%██████████████████████████████████████████████████████████████████████████
-\section{Localization lengths and shape effects}
+\section{Localization lengths and shape effects}\label{sec:shape_effects}
+
+\comment{We calculate the wave functions and find the Majorana lengths by fitting an exponential.}
+We model a finite system to compute the Majorana wave function density for different geometries; ribbon, zigzag, parallel curve, and variants of the former with disordered egdes.
+By diagonalizing the Hamiltonian we find the Majorana energy $E_\textrm{M}$ and the energy of the first excited state $E_1$, the lowest and second lowest energies, respectively.
+Using the eigenstates, we calculate the Majorana decay length $\lambda_\textrm{M}$ by fitting an exponential to the desity of the Majorana wavefunction projected on the $x$-axis.
+In figure~\ref{fig:wavefunctions} the wavefunctions are displayed, superimposed upon their respective geometry.
+All systems have identical Hamiltonian parameters in order to meaningfully compare the effects of the changing geometry.
 
 \comment{In a straight system, the Majoranas are very poorly localized.}
 For the ribbon system [Fig.~\ref{fig:wavefunction}(a)], we see that the decay of the density is long compared to the system size.
 The wavefunction extends to the center of the system, resulting in overlapping Majoranas and a non-zero energy of the state.
-Further, the energy of the Majorana state in the straight system is badly septated from the next lowest lying eigenstate.
-Altogether, for the parameters of the system, the Majoranas are very poorly localized and topological protection against perturbations is minimal.
+Further, the energy of the Majorana state $E_\textrm{M}$ in the straight system is badly septated from the next lowest lying eigenstate $E_1$.
+Altogether, the increase in the topological gap, but also the before mentioned reduction of the group velocity, result in poorly localized Majoranas and a minimal topological protection against perturbations.  % XXX: probably put the eq for coherence length here
 
 \comment{In a zigzag geometry Majoranas are localized within one segment of zigzag.}
-All of the zigzag type geometries show a reduced coherence length.
-The delocalized nature of the wavefunctions is clearly visible through the density plots.
+We observe that for zigzag systems the Majorana properties properties improve.
+All of the zigzag type geometries display a reduced coherence length and the delocalized nature of the wavefunctions is improved, as is visible through the density plots.
 Quantitatively, the improvement in the localization of the Majoranas is also distinctly apparent: the energies of the Majorana states are three orders of magnitude lower than the energy of the second lowest-lying wavefunctions.
-As mentioned in the previous section, this can be attributed to the way the gap and velocity factor into the Majorana coherence length.
+As mentioned in section \ref{sec:bandstuctures}, this can be attributed to the way the energy gap and velocity factor into the Majorana coherence length which scales with these parameters $\lambda_\textrm{M}=\hbar\frac{v_\textrm{F}}{\Delta_\textrm{ind}}$.
 
-\comment{We also confirm that the specific shape does not matter.}
+\comment{The specific geometry is not important.}
 The shape of the wavefunctions does not change significantly depending on the details of the geometry.
 The sharp corners of the sawtooth versus the smooth shape of the snakelike system do not have a significant impact on the shape of the wavefunction and neither do the disordered edges effect the relevant parameters.
 
-\comment{We find the Majorana lengths by fitting an exponential to the wavefunction.}
-Using the tight-binding package Kwant~\cite{groth_kwant:_2014}, we model a finite system to compute the Majorana wave function density for different geometries; ribbon, zigzag, parallel curve and vertically offset sinusoids.
-In figure~\ref{fig:wavefunctions} the wavefunctions are displayed, superimposed upon their respective geometry.
-For the ribbon system, we see that the Majorana coherence length is relatively large, not showing the delocalized nature sought after.
-All of the zigzag type geometries, however, show significantly reduced coherence length.
-Two effects can explain this: the increase in the topological gap, but also the before mentioned reduction of the group velocity.
-
-\comment{We confirm that the specific shape and its details do not matter.}
-Also note the similarity between the various shapes, sharp corners or a smoother system, the effect is the same.
-
 \begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/wavefunctions}
-\caption{Wavefunctions for different sizes and geometries.
+\caption{Density of wavefunctions $|\psi|^2$ for different sizes and geometries.
 With (a) a straight system, (b) a zigzag system, (c) a system where the normal region is defined by lines parallel to a sinusoid, and (d) a system with vertically offset sinusoids.
 Inside the figure, we indicate the Majorana length (or coherence length) $\xi$ and the topological energy gap $E_\textrm{gap}.$
 We observe that $\xi$ for (a) is orders of magnitude longer and $E_\textrm{gap}$ orders of magnitude smaller than for (b, c, d), meaning that the details of the geometry do not matter.
