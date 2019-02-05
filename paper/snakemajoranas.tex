@@ -174,34 +174,6 @@ This means that for transversal modes the transparency of the NS interface will 
 
 
 %%██████████████████████████████████████████████████████████████████████████
-%%██ Calculating the topological phase diagram
-%%██████████████████████████████████████████████████████████████████████████
-\section{Calculating the topological phase diagram.}
-
-\comment{We calculate the topological phase diagram using the gap size.}
-We calculate the gap $E_\textrm{gap}$ by finding the absolute minimum of the spectrum $E_\textrm{gap}=\min{|E(k)|}$.
-Noting the gap closings and the fact we know the topology for the non-zigzag system, we can infer the topology of the system with zigzag modulation. % Bas: I don't understand what is written here
-
-\comment{The introduction of the zigzag breaks a chiral symmetry, bringing the system from the BDI to the D symmetry class}
-The non-zigzag system is in the symmetry class BDI \cite{pientka2017topological}.
-Using the software package Qsymm\cite{varjas2018qsymm}, we find that the symmetry class of our system to be $\mathcal{D}$ because we break the chiral symmetry $\mathcal{C}$ resulting from the mirror symmetric junction.
-
-\comment{The phase diagram does not change much, except we see a cleaner spectrum as a result of the D class symmetry. }
-Similar to what is described by Pientka et. al~\cite{pientka2017topological}, we see that the ribbon topology has a diamond-like shape as a function of phase $\phi$ and Zeeman field $E_Z$.
-We also observe additional gap closings which are due to the BDI symmetry that is present.
-As expected for the zigzag system, the magnitude of the gap is significantly improved, while preserving the diamond-like shape in parameter space.
-Additionally, we see a cleaner topological region due to the absence of the gap closings resulting from the former mentioned chiral symmetry.
-
-\begin{figure}[!htb]
-\includegraphics[width=0.95\columnwidth]{figures/phasediagrams}
-\caption{Phase diagrams of a straight system (a), (b) and zigzag system (c), (d), where (a), (c) are $E(\mu, B)$ and (b), (d) are $E(\phi, B)$.
-Phase diagrams of a straight system (a), (b) and zigzag system (c), (d), where (a), (c) are $E(\mu, B)$ and (b), (d) are $E(\phi, B)$.
-We compute the dispersion of the translationally invariant realizations of a straight and saw-toothed zigzag system and find $\min{E(k)}$ to obtain the energy gap.
-% Additionally, use a generalized eigenvalue problem to find all phase boundaries at once.
-\label{fig:phasediagrams}}
-\end{figure}
-
-%%██████████████████████████████████████████████████████████████████████████
 %%██ Analytical estimate
 %%██████████████████████████████████████████████████████████████████████████
 \section{Analytical estimate of the band gap}
@@ -319,6 +291,34 @@ With (a) a straight system, (b) a saw-toothed zigzag system, (c) a system where 
 Inside the figure, we indicate the Majorana length (or coherence length) $\lambda_\textrm{M}$ and the topological energy gap $E_\textrm{gap}$.
 We observe that $\xi$ for (a) is significantly longer and $E_\textrm{gap} = E_\textrm{1} - E_M$ orders of magnitude smaller than for (b), (c), and (d), meaning that the details of the geometry do not matter for the improvements to occur.
 The values of the remaining parameters are $\alpha=20$ \si{\milli \eV \nm}, $g=26$, $\meff=0.02$\si{\electronmass}, $\mu=20$ \si{\milli \eV}, $\Delta=1$ \si{\milli \eV}, $B=1$\si{\tesla}, $\phi=2\pi$.\label{fig:wavefunctions}}
+\end{figure}
+
+%%██████████████████████████████████████████████████████████████████████████
+%%██ Calculating the topological phase diagram
+%%██████████████████████████████████████████████████████████████████████████
+\section{Calculating the topological phase diagram.}
+
+\comment{We calculate the topological phase diagram using the gap size.}
+We calculate the gap $E_\textrm{gap}$ by finding the absolute minimum of the spectrum $E_\textrm{gap}=\min{|E(k)|}$.
+Noting the gap closings and the fact we know the topology for the non-zigzag system, we can infer the topology of the system with zigzag modulation. % Bas: I don't understand what is written here
+
+\comment{The introduction of the zigzag breaks a chiral symmetry, bringing the system from the BDI to the D symmetry class}
+The non-zigzag system is in the symmetry class BDI \cite{pientka2017topological}.
+Using the software package Qsymm\cite{varjas2018qsymm}, we find that the symmetry class of our system to be $\mathcal{D}$ because we break the chiral symmetry $\mathcal{C}$ resulting from the mirror symmetric junction.
+
+\comment{The phase diagram does not change much, except we see a cleaner spectrum as a result of the D class symmetry. }
+Similar to what is described by Pientka et. al~\cite{pientka2017topological}, we see that the ribbon topology has a diamond-like shape as a function of phase $\phi$ and Zeeman field $E_Z$.
+We also observe additional gap closings which are due to the BDI symmetry that is present.
+As expected for the zigzag system, the magnitude of the gap is significantly improved, while preserving the diamond-like shape in parameter space.
+Additionally, we see a cleaner topological region due to the absence of the gap closings resulting from the former mentioned chiral symmetry.
+
+\begin{figure}[!htb]
+\includegraphics[width=0.95\columnwidth]{figures/phasediagrams}
+\caption{Phase diagrams of a straight system (a), (b) and zigzag system (c), (d), where (a), (c) are $E(\mu, B)$ and (b), (d) are $E(\phi, B)$.
+Phase diagrams of a straight system (a), (b) and zigzag system (c), (d), where (a), (c) are $E(\mu, B)$ and (b), (d) are $E(\phi, B)$.
+We compute the dispersion of the translationally invariant realizations of a straight and saw-toothed zigzag system and find $\min{E(k)}$ to obtain the energy gap.
+% Additionally, use a generalized eigenvalue problem to find all phase boundaries at once.
+\label{fig:phasediagrams}}
 \end{figure}
 
 %%██████████████████████████████████████████████████████████████████████████
