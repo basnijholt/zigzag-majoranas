@@ -280,7 +280,7 @@
 \setlength\@cover@spinewidth{0.375in}
 %% Width and height of the boxes on the front and back cover.
 \newlength\@cover@frontboxwidth
-\setlength\@cover@frontboxwidth{4.375in}
+\setlength\@cover@frontboxwidth{5.375in}
 \newlength\@cover@frontboxheight
 \setlength\@cover@frontboxheight{2.1875in}
 \newlength\@cover@fronttextwidth
@@ -472,7 +472,7 @@
           \coordinate (front bottom right) at ($(front top left)+(\@cover@frontboxwidth,-\@cover@frontboxheight)$);
           \coordinate (back bottom right) at ($(back top left)+(\@cover@splitboxwidth,-\@cover@splitboxheight)$);
           %% Draw the front box in black.
-  %        \fill[fill=tudelft-black](front top left) rectangle (front bottom right);
+         % \fill[fill=tudelft-black](front top left) rectangle (front bottom right);
           %% Calculate the width and height of the front text box.
           \setlength\@cover@fronttextwidth{\@cover@frontboxwidth}
           \addtolength\@cover@fronttextwidth{-2\@cover@margin}
@@ -482,8 +482,8 @@
           \node at (front top left)[anchor=north west,inner sep=\@cover@margin]{
               \begin{minipage}[t][\@cover@fronttextheight]{\@cover@fronttextwidth}
                   %% Print the title and optional subtitle at the top in white.
-                  {\largetitlestyle\color{\@titlecolor}\fontsize{96}{96}\selectfont\@title}
-  %                {\tudsffamily\color{\@titlecolor}\fontsize{96}{96}\selectfont\@title}
+                  % {\largetitlestyle\color{\@titlecolor}\fontsize{52}{52}\selectfont\@title}
+                 {\tudsffamily\color{\@titlecolor}\fontsize{52}{52}\selectfont\@title}
                   \ifx\@subtitle\undefined\else
                       \\[3mm]
                       {\tudsffamily\color{\@subtitlecolor}\fontsize{22}{32}\selectfont\@subtitle}
