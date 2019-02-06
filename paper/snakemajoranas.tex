@@ -88,14 +88,14 @@ In addition to having a large minimum energy gap, the absence of long length tra
 Majorana bound states (MBSs) are a promising candidate to form the basis of a stable platform for topological quantum computing.
 
 \comment{Majoranas are mostly made in hybrid NS structures.}
-The current experimental effort is focuses on creating pairs of MBSs in hybrid normal-superconductor (NS) structures, where a long strip (or wire) of a semiconductor is interfaced with a \cite{lutchyn_majorana_2010,oreg_helical_2010} superconductor.
+The current experimental effort focuses on creating pairs of MBSs in hybrid normal-superconductor (NS) structures, where a long strip (or wire) of a semiconductor is interfaced with a \cite{lutchyn_majorana_2010,oreg_helical_2010} superconductor.
 Within the right parameter regime ($E_z^2>\mu^2+\Delta^2$ for a simple wire), the semiconductor becomes topological while MBSs appear at the ends of the segment.
 Recently, a system with a slight modification has been proposed\cite{pientka2017topological}, where instead of having one superconductor, there are two superconductors, creating a superconductors-normal-superconductor (SNS) junction.
-This adds an extra knob to adjust, the superconducting phase difference $\phi$, and this should make it easier to tune the system into the topological phase.
+The additional superconductor adds an extra knob to adjust, the superconducting phase difference $\phi$, and this should make it easier to tune the system into the topological phase.
 In practice, multiple problems arise making even the observation, let alone the manipulation of Majoranas difficult.
 
 \comment{The gap is small because of long trajectories.}
-One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap; where the gap in the density of states is greatly reduced for states with the momentum directed along the length of the strip.
+One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap; where the gap in the density of states significantly reduces for states with the momentum directed along the length of the strip.
 From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor.
 Additionally, these long trajectories have long flight times $\tau_f$ and equivalenly small Thouless energies $E_{\textrm{Th}}=\hbar / \tau_f$, resulting in a small gap.
 
@@ -125,7 +125,7 @@ We model the system with a BdG Hamiltonian Eq.~\eqref{eq:hamiltonian}; the norma
 The superconductor has a superconducting coupling term $\Delta$ with a superconducting phase $\exp{\pm i \phi/2}$.
 Both parts have a kinetic term and chemical potential $\mu$.
 For the zigzag geometry, we first consider a sawtooth-like pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction.
-Later in this manuscript, we show that the exact details of the shape are not important and consider different zigzag geometries also parametrized by $z_x, \; z_y, \; W$.
+Later in this manuscript, we show that the exact details of the shape are not of importance and consider different zigzag geometries also parametrized by $z_x, \; z_y, \; W$.
 
 \begin{small}
 \begin{align}
@@ -270,20 +270,20 @@ The values of the remaining parameters are $\alpha=\SI{20}{\meV \nm}$, $g=26$, $
 \end{figure}
 
 \comment{We calculate the wave functions and find the Majorana lengths by fitting an exponential.}
-We model a finite system to compute the Majorana wave function density for different geometries; ribbon, zigzag, parallel curve, and variants of the former with disordered egdes.
-By diagonalizing the Hamiltonian we find the Majorana energy $E_\textrm{M}$ and the energy of the first excited state $E_1$, the lowest and second lowest energies, respectively.
-Using the eigenstates, we calculate the Majorana decay length $\lambda_\textrm{M}$ by fitting an exponential to the desity of the Majorana wavefunction projected on the $x$-axis.
+We model a finite system to compute the Majorana wave function density for different geometries; ribbon, zigzag, parallel curve, and variants of the former with disordered edges.
+By diagonalizing the Hamiltonian, we find the Majorana energy $E_\textrm{M}$ and the energy of the first excited state $E_1$, the lowest and second lowest energies, respectively.
+Using the eigenstates, we calculate the Majorana decay length $\lambda_\textrm{M}$ by fitting an exponential to the density of the Majorana wavefunction projected on the $x$-axis.
 In figure~\ref{fig:wavefunctions} the wavefunctions are displayed, superimposed upon their respective geometry.
-All systems have identical Hamiltonian parameters in order to meaningfully compare the effects of the changing geometry.
+All systems have identical Hamiltonian parameters in order to compare the effects of the changing geometry meaningfully.
 
 \comment{In a straight system, the Majoranas are very poorly localized.}
 For the ribbon system [Fig.~\ref{fig:wavefunctions}(a)], we see that the decay of the density is long compared to the system size.
 The wavefunction extends to the center of the system, resulting in overlapping Majoranas and a non-zero energy of the state.
 Further, the energy of the Majorana state $E_\textrm{M}$ in the straight system is badly septated from the next lowest lying eigenstate $E_1$.
-Altogether, the increase in the topological gap, but also the before mentioned reduction of the group velocity, result in poorly localized Majoranas and a minimal topological protection against perturbations.  % XXX: probably put the eq for coherence length here?
+Altogether, the increase in the topological gap, but also the before mentioned reduction of the group velocity, result in poorly localized Majoranas and minimal topological protection against perturbations.  % XXX: probably put the eq for coherence length here?
 
 \comment{In a zigzag geometry Majoranas are localized within one segment of zigzag.}
-We observe that for zigzag systems the Majorana properties properties improve.
+We observe that for zigzag systems the Majorana properties improve.
 All of the zigzag type geometries display a reduced coherence length and the delocalized nature of the wavefunctions is improved, as is visible through the density plots.
 Quantitatively, the improvement in the localization of the Majoranas is also distinctly apparent: the energies of the Majorana states are three orders of magnitude lower than the energy of the second lowest-lying wavefunctions.
 As mentioned in section \ref{sec:bandstuctures}, this can be attributed to the way the energy gap and velocity factor into the Majorana coherence length which scales with these parameters $\lambda_\textrm{M}=\hbar\frac{v_\textrm{F}}{\Delta_\textrm{ind}}$.
@@ -291,7 +291,7 @@ Additionally, the reduction of the Majorana decay length allows for shorter syst
 
 \comment{The specific geometry is not important.}
 The shape of the wavefunctions does not change significantly depending on the details of the geometry.
-The sharp corners of the sawtooth versus the smooth shape of the snakelike system do not have a significant impact on the shape of the wavefunction and neither do the disordered edges effect the relevant parameters.
+The sharp corners of the sawtooth versus the smooth shape of the snakelike system do not have a significant impact on the shape of the wavefunction, and neither do the disordered edges affect the relevant parameters.
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Calculating the topological phase diagram
@@ -315,7 +315,7 @@ In Fig.~\ref{fig:phasediagrams}, we plot the energy gap as a function of magneti
 
 \comment{The introduction of the zigzag breaks a chiral symmetry, bringing the system from the BDI to the D symmetry class}
 The non-zigzag system is in the symmetry class BDI \cite{pientka2017topological}.
-Using the software package Qsymm\cite{varjas2018qsymm}, we find that the symmetry class of our system to be $\mathcal{D}$ because we break the chiral symmetry $\mathcal{C}$ resulting from the mirror symmetric junction.
+Using the software package Qsymm\cite{varjas2018qsymm}, we find that the symmetry class of our system to be $\mathcal{D}$ because we break the chiral symmetry $\mathcal{C}$ resulting from the mirror-symmetric junction.
 
 \comment{The phase diagram does not change much, except we see a cleaner spectrum as a result of the D class symmetry.}
 Similar to what is described by Pientka et. al~\cite{pientka2017topological}, we see that the ribbon topology has a diamond-like shape as a function of phase $\phi$ and Zeeman field $E_Z$.
@@ -333,12 +333,12 @@ The introduction of a zigzag geometry increases the topological gap by over an o
 Additionally, the breaking of BDI symmetry into D symmetry results in a cleaner topological region.
 
 \comment{Current fabrication techniques seem compatible with the proposed geometry, and experimental verification should point out whether it holds up to its promise.}
-Current fabrication techniques seem compatible with the proposed geometry; zigzag devices have already been created.
-Slight modifications to the geometry, for example to ease measurement, should not have significant implications on the physics.
+Current fabrication techniques are compatible with the proposed geometry; zigzag devices have already been fabricated.
+Slight modifications to the geometry, for example, to ease measurement, should not have significant implications on the physics.
 
 \comment{It is interesting to study what geometry creates an optimal environment for Majorana modes to exist.}
 We have studied sawtooth, snake-like, and offset sinusoidal modulation of the semiconductor region, but perhaps a more exotic shape will be optimal.
-A study optimizing the geometry for supporting Majoranas would be an interesting continuation.
+A study optimizing the geometry for supporting Majoranas would be an exciting continuation.
 
 \comment{Extensions: we omit several physical effects, disorder, electrostatics, etc.}
 We exclude several physical effects, such as disorder, electrostatics, the orbital effect, etc..
