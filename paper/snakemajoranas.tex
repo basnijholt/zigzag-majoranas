@@ -137,7 +137,7 @@ Later in this manuscript, we show that the exact details of the shape are not im
 \label{eq:hamiltonian}
 \end{small}
 
-Unless noted differently, the parameters of the system are $\alpha=\SI{20}{\milli \eV \nm}$, $g=26$, $\meff=\SI{0.02}{\electronmass}$, $\mu=\SI{20}{\milli \eV}$, $\Delta=\SI{1}{\milli \eV}$.
+Unless noted differently, the parameters of the system are $\alpha=\SI{20}{\meV \nm}$, $g=26$, $\meff=\SI{0.02}{\electronmass}$, $\mu=\SI{20}{\meV}$, $\Delta=\SI{1}{\meV}$.
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Calculating the bandstuctures
@@ -151,7 +151,7 @@ To speed up these expensive simulations we employ an adaptive sampling strategy,
 
 \begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/bandstructures}
-\caption{Figure of the bandstuctures corresponding to the system in Fig.~\ref{fig:zigzag_methods}.
+\caption{Figure of the bandstuctures corresponding to the system in Fig.~\ref{fig:setup}.
 Blue lines correspond to $\phi=0$, $B=0$ and red lines to $\phi=\pi$, $B = \SI{1}{T}$.
 The three subplots are for different amplitudes of the zigzag, with (a) $z_y=0$, (b) $z_y=\frac{W}{4}$, and (c) $z_y=\frac{W}{2}$, where $W=\SI{200}{\nm}$ is the junction width.
 We observe that once there are no more straight trajectories inside the junction (when $z_y=\frac{W}{2}$) the spectrum becomes most insensitive to the momentum $k_x$.\label{fig:bandstuctures}}
@@ -266,7 +266,7 @@ We cut off the spectrum at the momentum corresponding to the proposed cutoff in 
 With (a) a straight system, (b) a saw-toothed zigzag system, (c) a system where the normal region is defined by lines parallel to a sinusoid, and (d) similar to (c) but with disordered edges.
 Inside the figure, we indicate the Majorana length (or coherence length) $\lambda_\textrm{M}$ and the topological energy gap $E_\textrm{gap}$.
 We observe that $\xi$ for (a) is significantly longer and $E_\textrm{gap} = E_\textrm{1} - E_M$ orders of magnitude smaller than for (b), (c), and (d), meaning that the details of the geometry do not matter for the improvements to occur.
-The values of the remaining parameters are $\alpha=20$ \si{\milli \eV \nm}, $g=26$, $\meff=0.02$\si{\electronmass}, $\mu=20$ \si{\milli \eV}, $\Delta=1$ \si{\milli \eV}, $B=1$\si{\tesla}, $\phi=2\pi$.\label{fig:wavefunctions}}
+The values of the remaining parameters are $\alpha=\SI{20}{\meV \nm}$, $g=26$, $\meff=\SI{0.02}{\electronmass}$, $\mu=\SI{20}{\meV}$ , $\Delta=\SI{1}{\meV}$ , $B=\SI{1}{\tesla}$, $\phi=2\pi$.\label{fig:wavefunctions}}
 \end{figure}
 
 \comment{We calculate the wave functions and find the Majorana lengths by fitting an exponential.}
@@ -277,7 +277,7 @@ In figure~\ref{fig:wavefunctions} the wavefunctions are displayed, superimposed 
 All systems have identical Hamiltonian parameters in order to meaningfully compare the effects of the changing geometry.
 
 \comment{In a straight system, the Majoranas are very poorly localized.}
-For the ribbon system [Fig.~\ref{fig:wavefunction}(a)], we see that the decay of the density is long compared to the system size.
+For the ribbon system [Fig.~\ref{fig:wavefunctions}(a)], we see that the decay of the density is long compared to the system size.
 The wavefunction extends to the center of the system, resulting in overlapping Majoranas and a non-zero energy of the state.
 Further, the energy of the Majorana state $E_\textrm{M}$ in the straight system is badly septated from the next lowest lying eigenstate $E_1$.
 Altogether, the increase in the topological gap, but also the before mentioned reduction of the group velocity, result in poorly localized Majoranas and a minimal topological protection against perturbations.  % XXX: probably put the eq for coherence length here?
