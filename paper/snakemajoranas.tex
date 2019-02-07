@@ -18,7 +18,7 @@
 \usepackage{tabularx}
 \usepackage{microtype}
 \usepackage{babel}
-\hypersetup{pdfauthor={Quantum Tinkerer},pdftitle={Increasing the topological gap by an order of magnitude through the geomerty for Majorana SNS junctions.}}
+\hypersetup{pdfauthor={Quantum Tinkerer},pdftitle={Enhanced proximity effect in zigzag-shaped Majorana Josephson junctions.}}
 
 \setcounter{secnumdepth}{4}
 \setcounter{tocdepth}{4}
@@ -65,7 +65,7 @@
 \begin{document}
 
 
-\title{Increasing the topological gap by an order of magnitude through the geometry for Majorana SNS junctions.}
+\title{Enhanced proximity effect in zigzag-shaped Majorana Josephson junctions.}
 
 \author{Quantum Tinkerer}
 \affiliation{Kavli Institute of Nanoscience, Delft University of Technology, P.O. Box 4056, 2600 GA Delft, The Netherlands}
@@ -76,7 +76,7 @@
 We solve the problem of the appearance of a soft gap in high-density SNS Majorana junctions \cite{pientka2017topological}.
 Trajectories that do not encounter the superconductor for a long time weaken the proximity effect in Josephson junctions.
 A small induced gap then becomes an essential obstacle in creating Majorana states.
-We show that a zigzag-shaped geometry eliminates these trajectories, at the same time allowing the robust creation of Majorana states with a gap increased by more than an order of magnitude.
+We show that a zigzag-shaped geometry eliminates these trajectories, at the same time allowing the robust creation of Majorana states with a gap increased by more than an order of magnitude and a significantly reduced Majorana decay length.
 \end{abstract}
 
 \maketitle
@@ -90,18 +90,20 @@ Majorana bound states (MBSs) are a promising candidate to form the basis of a st
 \comment{Majoranas are mostly made in hybrid NS structures.}
 The current experimental effort ~\cite{mourik_signatures_2012,das_zero-bias_2012,deng_anomalous_2012,churchill_superconductor-nanowire_2013,zhang2018quantized} focuses on creating pairs of MBSs in hybrid normal-superconductor (NS) structures, where a long strip (or wire) of a semiconductor is interfaced with a superconductor.~\cite{lutchyn_majorana_2010,oreg_helical_2010}
 Within the right parameter regime ($E_z^2>\mu^2+\Delta^2$ for a simple wire), the semiconductor becomes topological while MBSs appear at the ends of the segment.
+
+\comment{A alternative has been proposed (JJ).}
 Recently, a system with a slight modification has been proposed\cite{pientka2017topological}, where instead of having one superconductor, there are two superconductors, creating a superconductors-normal-superconductor (SNS) junction.
 The additional superconductor adds an extra knob to adjust, the superconducting phase difference $\phi$, and this should make it easier to tune the system into the topological phase.
 Recently, two groups~\cite{fornieri_evidence_2018,ren_topological_2018} have realized this system experimentally.
 In practice, multiple problems arise making even the observation difficult, rendering the manipulation of Majoranas in the near future, improbable.
 
 \comment{The gap is small because of long trajectories.}
-One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap; where the gap in the density of states significantly reduces for states with the momentum directed along the length of the strip.  % TODO: do we cite here?
+One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap~\cite{ren_topological_2018}; where the gap in the density of states significantly reduces for states with the momentum directed along the length of the strip.
 From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor.
 Additionally, these long trajectories have long flight times $\tau_f$ and equivalenly small Thouless energies $E_{\textrm{Th}}=\hbar / \tau_f$, resulting in a small gap.
 
 \comment{Currently proposed workarounds are low density or disorder, but both have drawbacks.}
-Currently, proposed workarounds are to work at low density \cite{nijholt2015orbital} or to have disorder~\cite{haim_double-edge_2018}, but both have drawbacks.
+Currently, proposed workarounds are to work at low density \cite{nijholt2015orbital} or to have disorder~\cite{haim_double-edge_2018}, but both have drawbacks.  % TODO: mention drawbacks?
 
 \comment{We show that zigzag geometry solves this problem by eliminating the long trajectories.}
 In this paper, we show that introducing a zigzag or snake-like geometry for the semiconductor eliminates these long trajectories and prevents the appearance of a soft gap while also increasing the topological gap by an order of magnitude.
@@ -138,9 +140,10 @@ The complete Hamiltonian has the form
 It acts on the spinor wave function $\Psi={\left(\psi_{e\uparrow},\psi_{e\downarrow},\psi_{\textrm{h}\downarrow},-\psi_{\textrm{h}\uparrow}\right)}^{T}$, where $\psi_e$, $\psi_\textrm{h}$ are its electron and hole components, and $\psi_\uparrow$, $\psi_\downarrow$ are the spin-up and spin-down components.
 The Pauli matrices $\sigma_{i}$ act on the spin degree of freedom and $\tau_{i}$ act on the electron-hole degree of freedom.
 For the zigzag geometry, we first consider a sawtooth-like pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction.
+The spatial dependence of $\Delta$, $E_z$, and $\alpha$ is explained in text above.
 Later in this manuscript, we show that the exact details of the shape are unimportant and consider different zigzag geometries also parametrized by $z_x, \; z_y, \; W$.
 
-Unless noted differently, the Hamiltonian parameters are $\alpha=\SI{20}{\meV \nm}$, $g=26$, $\meff=\SI{0.02}{\electronmass}$, $\mu=\SI{10}{\meV}$, $B=\SI{1}{T}$, $\phi=\pi$, and $\Delta=\SI{1}{\meV}$; and the geometry parameters are $W=\SI{200}{\nm}$, the period of the zigzag $z_x=\SI{1300}{\nm}$, the discretization contant $a=\SI{10}{\nm}$, and the lengths of the superconductors $L_\textrm{SC}=\SI{200}{\nm}$.
+Unless noted differently, the Hamiltonian parameters are $\alpha=\SI{20}{\meV \nm}$, $g=26$, $\meff=\SI{0.02}{\electronmass}$, $\mu=\SI{10}{\meV}$, $B=\SI{1}{T}$, $\phi=\pi$, and $\Delta=\SI{1}{\meV}$; and the geometry parameters are $W=\SI{200}{\nm}$, the period of the zigzag $z_x=\SI{1300}{\nm}$, the discretization contant $a=\SI{10}{\nm}$, and the lengths of the superconductors $L_\textrm{SC}=\SI{200}{\nm}$.  % TODO: Tom: L_sc and Delta not compatible?
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Calculating the bandstuctures
@@ -149,7 +152,7 @@ Unless noted differently, the Hamiltonian parameters are $\alpha=\SI{20}{\meV \n
 
 \comment{We discretize the Hamiltonian and simulate it with Kwant.}
 We discretize our continuum Hamiltonian [Eq.~\eqref{eq:hamiltonian}] on a square grid and implement a tight-binding model using Kwant~\cite{groth_kwant:_2014}.
-The resulting Hamiltonians are large because instead of having a single slice of sites that is translationally invariant in the $x$-direction, we create a long supercell to make the structure periodic.
+The resulting Hamiltonians are large because instead of having a single slice of sites that is translationally invariant in the $x$-direction, we create a long 2D supercell to make the structure periodic.
 To speed up these expensive simulations we employ an adaptive sampling strategy, using the Python package Adaptive.~\cite{adaptive}
 The entire source code is available in the Supplemental Material~\cite{supp}.  % TODO: update the bib when the data is uploaded
 The resulting raw data are available in Ref.~\onlinecite{data}.  % TODO: update the bib when the data is uploaded
@@ -285,7 +288,7 @@ All systems have identical Hamiltonian parameters in order to compare the effect
 \comment{In a straight system, the Majoranas are very poorly localized.}
 For the ribbon system [Fig.~\ref{fig:wavefunctions}(a)], we see that the decay of the density is long compared to the system size.
 The wavefunction extends to the center of the system, resulting in overlapping Majoranas and a non-zero energy of the state.
-Further, the energy of the Majorana state $E_\textrm{M}$ in the straight system is badly septated from the next lowest lying eigenstate $E_1$.
+Further, the energy of the Majorana state $E_\textrm{M}$ in the straight system is badly separated from the next lowest lying eigenstate $E_1$.
 Altogether, the increase in the topological gap, but also the before mentioned reduction of the group velocity, result in poorly localized Majoranas and minimal topological protection against perturbations.  % TODO: probably put the eq for coherence length here?
 
 \comment{In a zigzag geometry Majoranas are localized within one segment of zigzag.}
