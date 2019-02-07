@@ -151,6 +151,8 @@ Unless noted differently, the Hamiltonian parameters are $\alpha=\SI{20}{\meV \n
 We discretize our continuum Hamiltonian [Eq.~\eqref{eq:hamiltonian}] on a square grid and implement a tight-binding model using Kwant~\cite{groth_kwant:_2014}.
 The resulting Hamiltonians are large because instead of having a single slice of sites that is translationally invariant in the $x$-direction, we create a long supercell to make the structure periodic.
 To speed up these expensive simulations we employ an adaptive sampling strategy, using the Python package Adaptive. % TODO: add a citation
+The entire source code is available in the Supplemental Material~\cite{supp}.  % TODO: update the bib when the data is uploaded
+The resulting raw data are available in Ref.~\onlinecite{data}.  % TODO: update the bib when the data is uploaded
 
 \begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/bandstructures}
@@ -321,7 +323,7 @@ In Fig.~\ref{fig:phasediagrams}, we plot the energy gap as a function of magneti
 
 \comment{The introduction of the zigzag breaks a chiral symmetry, bringing the system from the BDI to the D symmetry class}
 The non-zigzag system is in the symmetry class BDI \cite{pientka2017topological}.
-Using the software package Qsymm\cite{varjas2018qsymm}, we find that the symmetry class of our system to be $\mathcal{D}$ because we break the chiral symmetry $\mathcal{C}$ resulting from the mirror-symmetric junction.
+Using the software package Qsymm\cite{varjas2018qsymm}, we find that the symmetry class of our system to be D because we break the chiral symmetry $\mathcal{C}$ resulting from the mirror-symmetric junction.
 
 \comment{The phase diagram does not change much, except we see a cleaner spectrum as a result of the D class symmetry.}
 Similar to what is described by Pientka et. al~\cite{pientka2017topological}, we see that the ribbon topology has a diamond-like shape as a function of phase $\phi$ and Zeeman field $E_Z$.
