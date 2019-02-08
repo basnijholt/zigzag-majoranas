@@ -120,9 +120,9 @@ The setup consists of a zigzag or snake-like geometry for the semiconductor wher
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Physical picture
 %%██████████████████████████████████████████████████████████████████████████
-\section{Physical picture}\label{sec:physical_picture}
+\section{Setup}\label{sec:physical_picture}
 
-\comment{We consider a two-dimensional system with zigzag.}
+\comment{We consider a two-dimensional system with zigzag and BdG Hamiltonian.}
 We consider a Josephson junction (Fig.~\ref{fig:setup}) consisting of a two-dimensional strip of semiconductor, with superconductors on both sides.
 We modulate the shape of the normal region, which can be either zigzag as depicted, or a more smooth sinusoidal-like shape.
 Similar to the conventional straight system \cite{pientka2017topological}, a magnetic field $B_x$ perpendicular to the junction is applied.
@@ -145,19 +145,19 @@ For the zigzag geometry, we first consider a sawtooth-like pattern where $z_x$ i
 The spatial dependence of $\Delta$, $E_z$, and $\alpha$ is explained in text above.
 Later in this manuscript, we show that the exact details of the shape are unimportant and consider different zigzag geometries also parametrized by $z_x, \; z_y, \; W$.
 
+\comment{The default parameters are ...}
 Unless noted differently, the Hamiltonian parameters are $\alpha=\SI{20}{\meV \nm}$, $g=26$, $\meff=\SI{0.02}{\electronmass}$, $\mu=\SI{10}{\meV}$, $B=\SI{1}{T}$, $\phi=\pi$, and $\Delta=\SI{1}{\meV}$; and the geometry parameters are $W=\SI{200}{\nm}$, the period of the zigzag $z_x=\SI{1300}{\nm}$, the discretization contant $a=\SI{10}{\nm}$, and the lengths of the superconductors $L_\textrm{SC}=\SI{200}{\nm}$.  % TODO: Tom: L_sc and Delta not compatible?
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Calculating the bandstuctures
 %%██████████████████████████████████████████████████████████████████████████
-\section{Calculating the bandstuctures.}\label{sec:bandstuctures}
+\section{Band stuctures}\label{sec:bandstuctures}
 
 \comment{We discretize the Hamiltonian and simulate it with Kwant.}
 We discretize our continuum Hamiltonian [Eq.~\eqref{eq:hamiltonian}] on a square grid and implement a tight-binding model using Kwant~\cite{groth_kwant:_2014}.
 The resulting Hamiltonians are large because instead of having a single slice of sites that is translationally invariant in the $x$-direction, we create a long 2D supercell to make the structure periodic.
 To speed up these expensive simulations we employ an adaptive sampling strategy, using the Python package Adaptive.~\cite{adaptive}
-The entire source code is available in the Supplemental Material~\cite{supp}.  % TODO: update the bib when the data is uploaded
-The resulting raw data are available in Ref.~\onlinecite{data}.  % TODO: update the bib when the data is uploaded
+The entire source code and the resulting raw data are available in Ref.~\onlinecite{data}.  % TODO: update the bib when the data is uploaded
 
 \begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/bandstructures}
@@ -307,13 +307,13 @@ The sharp corners of the sawtooth versus the smooth shape of the snakelike syste
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Calculating the topological phase diagram
 %%██████████████████████████████████████████████████████████████████████████
-\section{Calculating the topological phase diagram.}
+\section{Topological phase diagram}
 
 \begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/phasediagrams}
 \caption{Phase diagrams of a straight system (a), (b) and zigzag system (c), (d), where (a), (c) are $E(\mu, B)$ and (b), (d) are $E(\phi, B)$.
 Phase diagrams of a straight system (a), (b) and zigzag system (c), (d), where (a), (c) are $E(\mu, B)$ and (b), (d) are $E(\phi, B)$.
-We compute the dispersion of the translationally invariant realizations of a straight and saw-toothed zigzag system and find $\min{E(k)}$ to obtain the energy gap.
+We compute the dispersion of the translationally invariant realizations of a straight and saw-toothed zigzag system and find $\min \left| {E(k)} \right|$ to obtain the energy gap.
 % Additionally, use a generalized eigenvalue problem to find all phase boundaries at once.
 The parameters values are written at the bottom of Sec.~\ref{sec:physical_picture}, except with $a=\SI{5}{\nm}$ and $L_\textrm{SC}=\SI{800}{\nm}$.
 The chemical potential is $\mu=\SI{10}{\meV}$ in (b) and (d) and the superconducting phase is $\phi=\pi$ in (a) and (c).
