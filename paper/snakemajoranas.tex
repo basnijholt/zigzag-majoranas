@@ -73,10 +73,12 @@
 
 \date{\today}
 \begin{abstract}
-We solve the problem of the appearance of a soft gap in high-density SNS Majorana junctions \cite{pientka2017topological}.
-Trajectories that do not encounter the superconductor for a long time weaken the proximity effect in Josephson junctions.
-A small induced gap then becomes an essential obstacle in creating Majorana states.
+Quasi-particle trajectories in high density SNS junctions that have a large momentum parallel to the junction have a very long flight time.
+These trajectories that do not encounter the superconductor for a long time weaken the proximity effect in Josephson junctions.
+This results in a very small induced gap and a soft gap in Majorana devices.
+We propose to eliminate these long trajectories using a new Majorana device.
 We show that a zigzag-shaped geometry eliminates these trajectories, at the same time allowing the robust creation of Majorana states with a gap increased by more than an order of magnitude and a significantly reduced Majorana decay length.
+Further, we show that to exploit the benefits of this system, the details exact of the geometry are not important.
 \end{abstract}
 
 \maketitle
@@ -85,34 +87,18 @@ We show that a zigzag-shaped geometry eliminates these trajectories, at the same
 %%██ Introduction
 %%██████████████████████████████████████████████████████████████████████████
 \section{Introduction}
-Majorana bound states (MBSs) are a promising candidate to form the basis of a stable platform for topological quantum computing. ~\cite{alicea2012new,beenakker2013search}
-
-\comment{Majoranas are mostly made in hybrid NS structures.}
-The current experimental effort ~\cite{mourik_signatures_2012,das_zero-bias_2012,deng_anomalous_2012,churchill_superconductor-nanowire_2013,zhang2018quantized} focuses on creating pairs of MBSs in hybrid normal-superconductor (NS) structures, where a long strip (or wire) of a semiconductor is interfaced with a superconductor.~\cite{lutchyn_majorana_2010,oreg_helical_2010}
-Within the right parameter regime ($E_z^2>\mu^2+\Delta^2$ for a simple wire), the semiconductor becomes topological while MBSs appear at the ends of the segment.
-
-\comment{A alternative has been proposed (JJ).}
-Recently, a system with a slight modification has been proposed\cite{pientka2017topological}, where instead of having one superconductor, there are two superconductors, creating a superconductors-normal-superconductor (SNS) junction.
-The additional superconductor adds an extra knob to adjust, the superconducting phase difference $\phi$, and this should make it easier to tune the system into the topological phase.
-Recently, two groups~\cite{fornieri_evidence_2018,ren_topological_2018} have realized this system experimentally.
-In practice, multiple problems arise making even the observation difficult, rendering the manipulation of Majoranas in the near future, improbable.
+\comment{Hybrid NS structures become topological and are useful for TQC.}
+A hybrid structure containing a semiconductor with strong spin-orbit coupling coupled to a superconductor, inside a magnetic field becomes topological within the right parameter regime ($E_z^2>\mu^2+\Delta^2$ for a simple nanowire), while Majorana bound states appear on its edges.~\cite{lutchyn_majorana_2010,oreg_helical_2010}
+Majorana bound states are a promising candidate to form the basis of a stable platform for topological quantum computing. ~\cite{alicea2012new,beenakker2013search}
+The current experimental effort ~\cite{mourik_signatures_2012,das_zero-bias_2012,deng_anomalous_2012,churchill_superconductor-nanowire_2013,zhang2018quantized} focuses on creating pairs of Majorana bound states in hybrid normal-superconductor (NS) nanowires structures.
 
 \comment{The gap is small because of long trajectories.}
 One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap~\cite{ren_topological_2018}; where the gap in the density of states significantly reduces for states with the momentum directed along the length of the strip.
 From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor.
-Additionally, these long trajectories have long flight times $\tau_f$ and equivalenly small Thouless energies $E_{\textrm{Th}}=\hbar / \tau_f$, resulting in a small gap.
-
-\comment{Currently proposed workarounds are low density or disorder, but both have drawbacks.}
-Currently, proposed workarounds are to work at low density \cite{nijholt2015orbital} or to have disorder~\cite{haim_double-edge_2018}, but both have drawbacks.  % TODO: mention drawbacks?
-
-\comment{We show that zigzag geometry solves this problem by eliminating the long trajectories.}
-In this paper, we show that introducing a zigzag or snake-like geometry for the semiconductor eliminates these long trajectories and prevents the appearance of a soft gap while also increasing the topological gap by an order of magnitude.
-
-
-%%██████████████████████████████████████████████████████████████████████████
-%%██ Physical picture
-%%██████████████████████████████████████████████████████████████████████████
-\section{Physical picture}\label{sec:physical_picture}
+Additionally, these long trajectories have long flight times $\tau_f=v_F(\theta) / D$ (see Fig.~\ref{fig:setup}(a)) and equivalenly small Thouless energies $E_{\textrm{Th}}=\hbar / \tau_f$, resulting in a small gap. % TODO: fix the Eq for tau_f
+This problem does not appear when the Fermi surface is small and the zero point motion dominates the transverse velocity, so a low filling of the bands is a workaround\cite{nijholt2015orbital}.
+However, low filling requires precise knowledge of the system and might be more sensitive to disorder or microscopic inhomogeneities.
+On the other hand, disorder scatters these long trajectories and introduces a cut-off on the scale of the mean-free path~\cite{haim_double-edge_2018}, however, disorder is impossible to control to a required precision experimentally.
 
 \begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/zigzag.pdf}
@@ -120,8 +106,24 @@ In this paper, we show that introducing a zigzag or snake-like geometry for the 
 \label{fig:setup}}
 \end{figure}
 
+\comment{A alternative has been proposed.}
+Recently, a system with a modification has been proposed\cite{pientka2017topological}, where instead of having one superconductor, there are two superconductors, creating a superconductors-normal-superconductor (SNS) junction.
+The additional superconductor adds an extra knob to adjust, the superconducting phase difference $\phi$, and this should make it easier to tune the system into the topological phase.
+Recently, two groups~\cite{fornieri_evidence_2018,ren_topological_2018} have realized this system experimentally.
+In practice, multiple problems arise making even the observation difficult, rendering the manipulation of Majoranas in the near future, improbable.
+
+\comment{We show that zigzag geometry solves this problem by eliminating the long trajectories.}
+We propose a new experimental setup (see Fig.~\ref{fig:setup}(b)) for the creation of Majoranas that eliminating long trajectories and therefore prevents the appearance of a soft gap, while while also increasing the topological gap by several orders of magnitude, depending on the parameters.
+The setup consists of a zigzag or snake-like geometry for the semiconductor where long trajectories are not possible due to the geometry.
+
+
+%%██████████████████████████████████████████████████████████████████████████
+%%██ Physical picture
+%%██████████████████████████████████████████████████████████████████████████
+\section{Physical picture}\label{sec:physical_picture}
+
 \comment{We consider a two-dimensional system with zigzag.}
-We consider a Josephson junction (JJ)(Fig.~\ref{fig:setup}) consisting of a two-dimensional strip of semiconductor, with superconductors on both sides.
+We consider a Josephson junction (Fig.~\ref{fig:setup}) consisting of a two-dimensional strip of semiconductor, with superconductors on both sides.
 We modulate the shape of the normal region, which can be either zigzag as depicted, or a more smooth sinusoidal-like shape.
 Similar to the conventional straight system \cite{pientka2017topological}, a magnetic field $B_x$ perpendicular to the junction is applied.
 We model the system with a Bogoliubov-de Gennes Hamiltonian (BdG) Eq.~\eqref{eq:hamiltonian}; the normal part has a linear Rashba spin-orbit coupling term characterized by $\alpha$ and a Zeeman field with $E_z=\frac{1}{2} \mu_B g B_x$.
