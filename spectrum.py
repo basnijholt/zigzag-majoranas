@@ -229,3 +229,137 @@ def find_phase_bounds(lead, params, k_x=0, num_bands=20, sigma=0):
     mus[abs(mus.imag) > 1e-14] = np.nan
 
     return mus.real[inds]
+
+
+def cell_mats(lead, params, bias=0):
+    h = lead.cell_hamiltonian(params=params)
+    h -= bias * np.identity(len(h))
+    t = lead.inter_cell_hopping(params=params)
+    return h, t
+
+
+def get_h_k(lead, params):
+    h, t = cell_mats(lead, params)
+    h_k = lambda k: h + t * np.exp(1j * k) + t.T.conj() * np.exp(-1j * k)
+    return h_k
+
+
+def slowest_evan_mode(lead, params):
+    """Find the slowest decaying (evanescent) mode.
+
+    It uses an adapted version of the function kwant.physics.leads.modes,
+    in such a way that it returns the eigenvalues of the translation operator
+    (lamdba = |r|*e^ik). The imaginary part of the wavevector k, is the part
+    that makes it decay. The inverse of this Im(k) is the size of a Majorana
+    bound state. The norm of the eigenvalue that is closest to one is the
+    slowest decaying mode. Also called decay length.
+
+    Parameters:
+    -----------
+    lead : kwant.builder.InfiniteSystem object
+        The finalized infinite system.
+
+    Returns:
+    --------
+    majorana_length : float
+        The length of the Majorana.
+    """
+    h, t = cell_mats(lead, params, bias=0)
+    ev = translation_ev(h, t)
+    norm = ev * ev.conj()
+    idx = np.abs(norm - 1).argmin()
+    a = lattice_constant_from_syst(lead)
+    majorana_length = np.abs(a / np.log(ev[idx]).real)
+    return majorana_length
+
+
+def phase_bounds_operator(lead, params, k_x=0):
+    params['mu'] = 0
+    h, t = cell_mats(lead, params)
+    tk = t * np.exp(1j * k_x)
+    h_k = h + tk + tk.T.conj()
+    sigma_z = np.array([[1, 0], [0, -1]])
+    _operator = np.kron(np.eye(len(h) // 2), sigma_z) @ h_k
+    return _operator
+
+
+def find_phase_bounds(lead, params, k=0, num_bands=20):
+    """Find the phase boundaries.
+    Solve an eigenproblem that finds values of chemical potential at which the
+    gap closes at momentum k=0. We are looking for all real solutions of the
+    form H\psi=0 so we solve sigma_0 * tau_z H * psi = mu * psi.
+    Parameters:
+    -----------
+    lead : kwant.builder.InfiniteSystem object
+        The finalized infinite system.
+    p : types.SimpleNamespace object
+        A simple container that is used to store Hamiltonian parameters.
+    k : float
+        Momentum value, by default set to 0.
+    Returns:
+    --------
+    chemical_potential : numpy array
+        Twenty values of chemical potential at which a bandgap closes at k=0.
+    """
+    chemical_potentials = phase_bounds_operator(lead, params, k_x=k)
+
+    if num_bands is None:
+        mus = np.linalg.eigvals(chemical_potentials)
+    else:
+        mus = sla.eigs(chemical_potentials, k=num_bands, sigma=0)[0]
+
+    return np.sort(mus).real
+
+
+def make_skew_symmetric(ham):
+    """
+    Makes a skew symmetric matrix by a matrix multiplication of a unitary
+    matrix U. This unitary matrix is taken from the Topology MOOC 0D, but
+    that is in a different basis. To get to the right basis one multiplies
+    by [[np.eye(2), 0], [0, sigma_y]].
+
+    Parameters:
+    -----------
+    ham : numpy.ndarray
+        Hamiltonian matrix gotten from sys.cell_hamiltonian()
+
+    Returns:
+    --------
+    skew_ham : numpy.ndarray
+        Skew symmetrized Hamiltonian
+    """
+    W = ham.shape[0] // 4
+    I = np.eye(2, dtype=complex)
+    sigma_y = np.array([[0, 1j], [-1j, 0]], dtype=complex)
+    U_1 = np.bmat([[I, I], [1j * I, -1j * I]])
+    U_2 = np.bmat([[I, 0 * I], [0 * I, sigma_y]])
+    U = U_1 @ U_2
+    U = np.kron(np.eye(W, dtype=complex), U)
+    skew_ham = U @ ham @ U.H
+
+    assert is_antisymmetric(skew_ham)
+
+    return skew_ham
+
+
+def calculate_pfaffian(lead, params):
+    """
+    Calculates the Pfaffian for the infinite system by computing it at k = 0
+    and k = pi.
+
+    Parameters:
+    -----------
+    lead : kwant.builder.InfiniteSystem object
+          The finalized system.
+
+    """
+    h_k = get_h_k(lead, params)
+
+    skew_h0 = make_skew_symmetric(h_k(0))
+    skew_h_pi = make_skew_symmetric(h_k(np.pi))
+
+    pf_0 = np.sign(pf.pfaffian(1j * skew_h0, sign_only=True).real)
+    pf_pi = np.sign(pf.pfaffian(1j * skew_h_pi, sign_only=True).real)
+    pfaf = pf_0 * pf_pi
+
+    return pfaf

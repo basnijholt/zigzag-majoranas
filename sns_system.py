@@ -288,15 +288,21 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
                 mu_from_bottom_of_spin_orbit_bands,
                 k_x_in_sc,
                 wraparound,
+                infinite,
                 current,
                 ns_junction,
                 sc_leads=False,
                 no_phs=False,
                 rough_edge=None):
+    if wraparound and not infinite:
+        raise ValueError('If you want to use wraparound, infinite must be True.')
+    if sc_leads and not infinite or sc_leads and not wraparound:
+        raise ValueError('If you want to use sc_leads, infinite and wraparound must be True.')
 
     ######################
     ## Define templates ##
     ######################
+
     parallel_curve = sawtooth = False
     parallel_curve = (shape == 'parallel_curve')
     sawtooth = (shape == 'sawtooth')
@@ -430,7 +436,7 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
     else:
         #---------------
         # Create builder
-        if wraparound:
+        if infinite:
             syst = kwant.Builder(kwant.TranslationalSymmetry([L_x, 0]))
         else:
             syst = kwant.Builder()
@@ -482,7 +488,7 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
         ## Finalize system ##
         #####################
 
-        if wraparound:
+        if infinite and wraparound:
             syst = kwant.wraparound.wraparound(syst)
             if sc_leads:
                 lead_up = kwant.Builder(kwant.TranslationalSymmetry([L_x, 0], [0, a]))
