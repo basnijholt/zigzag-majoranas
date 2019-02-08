@@ -124,7 +124,7 @@ The setup consists of a zigzag or snake-like geometry for the semiconductor wher
 
 \comment{We consider a two-dimensional system with zigzag and BdG Hamiltonian.}
 We consider a Josephson junction (Fig.~\ref{fig:setup}) consisting of a two-dimensional strip of semiconductor, with superconductors on both sides.
-We modulate the shape of the normal region, which can be either zigzag as depicted, or a more smooth sinusoidal-like shape.
+We modulate the shape of the normal region, which can be either saw-toothed zigzag as depicted [Fig.~\ref{fig:setup}(b)], or a more smooth sinusoidal-like shape.
 Similar to the conventional straight system \cite{pientka2017topological}, a magnetic field $B_x$ perpendicular to the junction is applied.
 We model the system with a Bogoliubov-de Gennes Hamiltonian (BdG) Eq.~\eqref{eq:hamiltonian}; the normal part has a linear Rashba spin-orbit coupling term characterized by $\alpha$ and a Zeeman field with $E_z=\frac{1}{2} \mu_B g B_x$.
 The superconductor has a superconducting coupling term $\Delta$ with the pair of superconductors at an opposite superconducting phase $\exp{\pm i \phi/2}$.
@@ -275,15 +275,15 @@ This means that for transversal modes the transparency of the NS interface will 
 \includegraphics[width=0.95\columnwidth]{figures/wavefunctions}
 \caption{Density of wavefunctions $\left|\psi\right|^2$ for sizes and geometries.
 With (a) a straight system, (b) a saw-toothed zigzag system, (c) a system where the normal region is defined by lines parallel to a sinusoid, and (d) similar to (c) but with disordered edges.
-Inside the figure, we indicate the Majorana length (or coherence length) $\lambda_\textrm{M}$ and the topological energy gap $E_\textrm{gap}$.
-We observe that $\xi$ for (a) is significantly longer and $E_\textrm{gap} = E_\textrm{1} - E_M$ orders of magnitude smaller than for (b), (c), and (d), meaning that the details of the geometry do not matter for the improvements to occur.
+Inside the figure, we indicate the Majorana length (or coherence length) $\xi_\textrm{M}$ and the topological energy gap $E_\textrm{gap}$.
+We observe that $\xi_\textrm{M}$ for (a) is significantly longer and $E_\textrm{gap}$ more than an order of magnitude smaller than for (b), (c), and (d), meaning that the details of the geometry do not matter for the improvements to occur.
 The length of the system is $3L_x=\SI{3900}{\nm}$, the remaining parameters values are written at the bottom of Sec.~\ref{sec:physical_picture}.\label{fig:wavefunctions}}
 \end{figure}
 
 \comment{We calculate the wave functions and find the Majorana lengths by fitting an exponential.}
 We model a finite system to compute the Majorana wave function density for different geometries; ribbon, saw-toothed zigzag, parallel curves, and variants of the latter with disordered edges.
 By diagonalizing the Hamiltonian, we find the Majorana energy $E_\textrm{M}$ and the energy of the first excited state $E_1$, the lowest and second lowest energies, respectively.
-Using the eigenstates, we calculate the Majorana decay length $\lambda_\textrm{M}$ by fitting an exponential to the density of the Majorana wavefunction projected on the $x$-axis.
+Using the eigenstates, we calculate the Majorana decay length $\xi_\textrm{M}$ by fitting an exponential to the density of the Majorana wavefunction projected on the $x$-axis.
 In figure~\ref{fig:wavefunctions} the wavefunctions are displayed, superimposed upon their respective geometry.
 All systems have identical Hamiltonian parameters in order to compare the effects of the changing geometry meaningfully.
 
@@ -297,7 +297,7 @@ Altogether, the increase in the topological gap, but also the before mentioned r
 We observe that for zigzag systems the Majorana properties improve.
 All of the zigzag type geometries display a reduced coherence length and the delocalized nature of the wavefunctions is improved, as is visible through the density plots.
 Quantitatively, the improvement in the localization of the Majoranas is also distinctly apparent: the energies of the Majorana states are three orders of magnitude lower than the energy of the second lowest-lying wavefunctions.
-As mentioned in section \ref{sec:bandstuctures}, this can be attributed to the way the energy gap and velocity factor into the Majorana coherence length which scales with these parameters $\lambda_\textrm{M}=\hbar\frac{v_\textrm{F}}{\Delta_\textrm{ind}}$.
+As mentioned in section \ref{sec:bandstuctures}, this can be attributed to the way the energy gap and velocity factor into the Majorana coherence length which scales with these parameters $\xi_\textrm{M}=\hbar\frac{v_\textrm{F}}{\Delta_\textrm{ind}}$.
 Additionally, the reduction of the Majorana decay length allows for shorter systems sizes, which is favorable because in an experimental device the coherence length of a material sets a limit for the device size.
 
 \comment{The specific geometry is not important.}
