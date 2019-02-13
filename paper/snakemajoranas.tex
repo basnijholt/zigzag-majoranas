@@ -149,9 +149,9 @@ Later in this manuscript, we show that the exact details of the shape are unimpo
 Unless noted differently, the Hamiltonian parameters are $\alpha=\SI{20}{\meV \nm}$, $g=26$, $\meff=\SI{0.02}{\electronmass}$, $\mu=\SI{10}{\meV}$, $B=\SI{1}{T}$, $\phi=\pi$, and $\Delta=\SI{1}{\meV}$; and the geometry parameters are $W=\SI{200}{\nm}$, the period of the zigzag $z_x=\SI{1300}{\nm}$, the discretization contant $a=\SI{10}{\nm}$, and the lengths of the superconductors $L_\textrm{SC}=\SI{200}{\nm}$.  % TODO: Tom: L_sc and Delta not compatible?
 
 %%██████████████████████████████████████████████████████████████████████████
-%%██ Calculating the bandstuctures
+%%██ Calculating the band stuctures
 %%██████████████████████████████████████████████████████████████████████████
-\section{Band stuctures}\label{sec:bandstuctures}
+\section{Band stuctures}\label{sec:band_stuctures}
 
 \comment{We discretize the Hamiltonian and simulate it with Kwant.}
 We discretize our continuum Hamiltonian [Eq.~\eqref{eq:hamiltonian}] on a square grid and implement a tight-binding model using Kwant~\cite{groth_kwant:_2014}.
@@ -161,15 +161,19 @@ The entire source code and the resulting raw data are available in Ref.~\onlinec
 
 \begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/bandstructures}
-\caption{Figure of the bandstuctures corresponding to the system in Fig.~\ref{fig:setup}.
-Blue lines correspond to $\phi=0$, $B=0$ and red lines to $\phi=\pi$, $B = \SI{1}{T}$.
-The three subplots are for different amplitudes of the zigzag, with (a) $z_y=0$, (b) $z_y=\frac{W}{4}$, and (c) $z_y=\frac{W}{2}$, where $W=\SI{200}{\nm}$ is the junction width.
-We observe that once there are no more straight trajectories inside the junction (when $z_y=\frac{W}{2}$) the spectrum becomes most insensitive to the momentum $k_x$.
-The parameters values are written at the bottom of Sec.~\ref{sec:physical_picture}.\label{fig:bandstuctures}}
+\caption{Figure of the band stuctures corresponding to the system in Fig.~\ref{fig:setup} with different zigzag amplitudes.
+The blue lines correspond to $\phi=0$, $B=0$ (trivial phase) and the orange lines to $\phi=\pi$, $B = \SI{1}{T}$ (topological phase).
+The three subplots are for different amplitudes of the zigzag, with (a) a straight system $z_y=0$, (b) $z_y=\frac{W}{4}$, and (c) $z_y=\frac{W}{2}$, where $W=\SI{200}{\nm}$ is the junction width.
+Subplot (a) has a different scale on the $x$-axis for $k_x < 0$ than the other subplots and displays the unfolded band structure.
+For the right-hand side of (a) ($k_x > 0$), (b), and (c), the folding is the same, such that the velocity $v=\frac{dE}{dk}$ can be compared visually.
+We observe that once there are no more straight trajectories inside the junction (when $z_y=\frac{W}{2}$) the spectrum becomes most insensitive to the momentum $k_x$, and thus the $v_\textrm{F}$ decreases.
+As the zigzag amplitude increases the band gap $E_\textrm{gap}$ increases by an order of magnitude.
+The combination of these ensures a significant decrease of the Majorana decay length because $\xi_M \propto \frac{v_\textrm{F}}{E_\textrm{gap}}$
+The parameters values are written at the bottom of Sec.~\ref{sec:physical_picture}.\label{fig:band_stuctures}}
 \end{figure}
 
 \comment{We calculate the bandstructure for varying amount of zigzag.}
-In figure~\ref{fig:bandstuctures}, the bandstructure for zigzag systems with varying amplitude is displayed.
+In figure~\ref{fig:band_stuctures}, the bandstructure for zigzag systems with varying amplitude is displayed.
 Because the discretized zigzag system is modeled using a supercell, we can only plot a folded bandstructure.
 For comparison's sake, we take the same cell size for the ribbon structure such that the bandstructure folds in the same way.
 
@@ -275,7 +279,7 @@ This means that for transversal modes the transparency of the NS interface will 
 \includegraphics[width=0.95\columnwidth]{figures/wavefunctions}
 \caption{Density of wavefunctions $\left|\psi\right|^2$ for sizes and geometries.
 With (a) a straight system, (b) a saw-toothed zigzag system, (c) a system where the normal region is defined by lines parallel to a sinusoid, and (d) similar to (c) but with disordered edges.
-Inside the figure, we indicate the Majorana length (or coherence length) $\xi_\textrm{M}$ and the topological energy gap $E_\textrm{gap}$.
+Inside the figure, we indicate the Majorana length (or coherence length) $\xi_\textrm{M}$, the Majorana energy $E_\textrm{M}$ (the energy of the first excited state), and the topological energy gap $E_\textrm{gap}$.
 We observe that $\xi_\textrm{M}$ for (a) is significantly longer and $E_\textrm{gap}$ more than an order of magnitude smaller than for (b), (c), and (d), meaning that the details of the geometry do not matter for the improvements to occur.
 The length of the system is $3L_x=\SI{3900}{\nm}$, the remaining parameters values are written at the bottom of Sec.~\ref{sec:physical_picture}.\label{fig:wavefunctions}}
 \end{figure}
@@ -297,7 +301,7 @@ Altogether, the increase in the topological gap, but also the before mentioned r
 We observe that for zigzag systems the Majorana properties improve.
 All of the zigzag type geometries display a reduced coherence length and the delocalized nature of the wavefunctions is improved, as is visible through the density plots.
 Quantitatively, the improvement in the localization of the Majoranas is also distinctly apparent: the energies of the Majorana states are three orders of magnitude lower than the energy of the second lowest-lying wavefunctions.
-As mentioned in section \ref{sec:bandstuctures}, this can be attributed to the way the energy gap and velocity factor into the Majorana coherence length which scales with these parameters $\xi_\textrm{M}=\hbar\frac{v_\textrm{F}}{\Delta_\textrm{ind}}$.
+As mentioned in section \ref{sec:band_stuctures}, this can be attributed to the way the energy gap and velocity factor into the Majorana coherence length which scales with these parameters $\xi_\textrm{M}=\hbar\frac{v_\textrm{F}}{\Delta_\textrm{ind}}$.
 Additionally, the reduction of the Majorana decay length allows for shorter systems sizes, which is favorable because in an experimental device the coherence length of a material sets a limit for the device size.
 
 \comment{The specific geometry is not important.}
