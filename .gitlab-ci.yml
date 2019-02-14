@@ -2,16 +2,6 @@ before_script:
   - pip install -U https://github.com/python-adaptive/adaptive/archive/master.zip
   - conda install -y sympy==1.1
 
-thesis:
-  script:
-    - cd thesis_report
-    - mkdir -p figures
-    - make plot pdf
-  artifacts:
-    paths:
-      - thesis_report/report.pdf
-
-
 paper:
   script:
     - cd paper
