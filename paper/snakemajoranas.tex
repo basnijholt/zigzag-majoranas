@@ -119,9 +119,9 @@ In this paper we will focus on two-dimensional (2D) Josephson junctions, however
 
 
 %%██████████████████████████████████████████████████████████████████████████
-%%██ Physical picture
+%%██ Setup
 %%██████████████████████████████████████████████████████████████████████████
-\section{Setup}\label{sec:physical_picture}
+\section{Setup}\label{sec:setup}
 
 \comment{We consider a two-dimensional system with zigzag and BdG Hamiltonian.}
 We consider a Josephson junction (Fig.~\ref{fig:setup}) consisting of a 2D strip of semiconductor, with superconductors on both sides.
@@ -150,7 +150,7 @@ Later in this manuscript, we show that the exact details of the shape are unimpo
 Unless noted differently, the Hamiltonian parameters are $\alpha=\SI{20}{\meV \nm}$, $g=26$, $\meff=\SI{0.02}{\electronmass}$, $\mu=\SI{10}{\meV}$, $B=\SI{1}{T}$, $\phi=\pi$, and $\Delta=\SI{1}{\meV}$; and the geometry parameters are $W=\SI{200}{\nm}$, the period of the zigzag $z_x=\SI{1300}{\nm}$, the discretization contant $a=\SI{10}{\nm}$, and the lengths of the superconductors $L_\textrm{SC}=\SI{200}{\nm}$.  % TODO: Tom: L_sc and Delta not compatible?
 
 %%██████████████████████████████████████████████████████████████████████████
-%%██ Calculating the band stuctures
+%%██ Band stuctures
 %%██████████████████████████████████████████████████████████████████████████
 \section{Band stuctures}\label{sec:band_stuctures}
 
@@ -170,7 +170,7 @@ For the right-hand side of (a) ($k_x > 0$), (b), and (c), the folding is the sam
 We observe that once there are no more straight trajectories inside the junction (when $z_y=\frac{W}{2}$) the spectrum becomes most insensitive to the momentum $k_x$, and thus the $v_\textrm{F}$ decreases.
 As the zigzag amplitude increases the band gap $E_\textrm{gap}$ increases by an order of magnitude.
 The combination of these ensures a significant decrease of the Majorana decay length because $\xi_M \propto \frac{v_\textrm{F}}{E_\textrm{gap}}$
-The parameters values are written at the bottom of Sec.~\ref{sec:physical_picture}.\label{fig:band_stuctures}}
+The parameters values are written at the bottom of Sec.~\ref{sec:setup}.\label{fig:band_stuctures}}
 \end{figure}
 
 \comment{We calculate the bandstructure for varying amount of zigzag.}
@@ -179,7 +179,7 @@ Because the discretized zigzag system is modeled using a supercell, we can only 
 For comparison's sake, we take the same cell size for the ribbon structure such that the bandstructure folds in the same way.
 
 \comment{The band structures show that modulation of the geometry increases the gap by an order of magnitude, as well as reduce the group velocity.}
-The introduction of a zigzag has a striking effect: the bands flatten out, and more importantly, the topological gap increases by more than an order of magnitude.
+The introduction of a zigzag has a striking effect: the bands flatten out because of a reduction in velocity and the topological gap increases by more than an order of magnitude.
 On an intuitive level we can understand this because in a straight system long trajectories are possible, these have a momentum that is directed along the strip and consequently, $k_x \approx k_F$.
 Further, the smallest gap in a straight system occurs around $k_F$, and because the zigzag cuts off long trajectories, the gap size increases.
 Besides this, the velocity of the modes greatly reduces, which has a positive effect on the Majorana coherence length, as described later in section \ref{sec:shape_effects}.
@@ -282,7 +282,7 @@ This means that for transversal modes the transparency of the NS interface will 
 With (a) a straight system, (b) a saw-toothed zigzag system, (c) a system where the normal region is defined by lines parallel to a sinusoid, and (d) similar to (c) but with disordered edges.
 Inside the figure, we indicate the Majorana length (or coherence length) $\xi_\textrm{M}$, the Majorana energy $E_\textrm{M}$ (the energy of the first excited state), and the topological energy gap $E_\textrm{gap}$.
 We observe that $\xi_\textrm{M}$ for (a) is significantly longer and $E_\textrm{gap}$ more than an order of magnitude smaller than for (b), (c), and (d), meaning that the details of the geometry do not matter for the improvements to occur.
-The length of the system is $3L_x=\SI{3900}{\nm}$, the remaining parameters values are written at the bottom of Sec.~\ref{sec:physical_picture}.\label{fig:wavefunctions}}
+The length of the system is $3L_x=\SI{3900}{\nm}$, the remaining parameters values are written at the bottom of Sec.~\ref{sec:setup}.\label{fig:wavefunctions}}
 \end{figure}
 
 \comment{We calculate the wave functions and find the Majorana lengths by fitting an exponential.}
@@ -310,7 +310,7 @@ The shape of the wavefunctions does not change significantly depending on the de
 The sharp corners of the sawtooth versus the smooth shape of the snakelike system do not have a significant impact on the shape of the wavefunction, and neither do the disordered edges affect the relevant parameters.
 
 %%██████████████████████████████████████████████████████████████████████████
-%%██ Calculating the topological phase diagram
+%%██ Topological phase diagram
 %%██████████████████████████████████████████████████████████████████████████
 \section{Topological phase diagram}
 
@@ -320,7 +320,7 @@ The sharp corners of the sawtooth versus the smooth shape of the snakelike syste
 Phase diagrams of a straight system (a), (b) and zigzag system (c), (d), where (a), (c) are $E(\mu, B)$ and (b), (d) are $E(\phi, B)$.
 We compute the dispersion of the translationally invariant realizations of a straight and saw-toothed zigzag system and find $\min \left| {E(k)} \right|$ to obtain the energy gap.
 % Additionally, use a generalized eigenvalue problem to find all phase boundaries at once.
-The parameters values are written at the bottom of Sec.~\ref{sec:physical_picture}, except with $a=\SI{5}{\nm}$ and $L_\textrm{SC}=\SI{800}{\nm}$.
+The parameters values are written at the bottom of Sec.~\ref{sec:setup}, except with $a=\SI{5}{\nm}$ and $L_\textrm{SC}=\SI{800}{\nm}$.
 The chemical potential is $\mu=\SI{10}{\meV}$ in (b) and (d) and the superconducting phase is $\phi=\pi$ in (a) and (c).
 \label{fig:phasediagrams}}
 \end{figure}
