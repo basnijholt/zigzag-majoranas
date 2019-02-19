@@ -94,7 +94,8 @@ def remove_phs(H):
 @lru_cache()
 def get_template_strings(
         transverse_soi, mu_from_bottom_of_spin_orbit_bands=True,
-        k_x_in_sc=False, with_k_z=False, no_phs=False):
+        k_x_in_sc=False, with_k_z=False, no_phs=False,
+        phs_breaking_potential=False):
     kinetic = "(hbar^2 / (2*m_eff) * (k_y^2 + k_x^2 + k_z^2) - mu {}) * kron(sigma_0, sigma_z)"
     if mu_from_bottom_of_spin_orbit_bands:
         ham_str = kinetic.format("+ m_eff*alpha_middle^2 / (2 * hbar^2)")
@@ -120,7 +121,7 @@ def get_template_strings(
     ham_sc_left += superconductivity.format('left', '-')
     ham_sc_right += superconductivity.format('right', '+')
 
-    zeeman = "+ g_factor_{} * mu_B *( B_x * kron(sigma_x, sigma_0)"
+    zeeman = "+ g_factor_{} * mu_B * (B_x * kron(sigma_x, sigma_0)"
     zeeman += "+ B_y * kron(sigma_y, sigma_0)"
     zeeman += "+ B_z * kron(sigma_z, sigma_0))"
     ham_normal += zeeman.format('middle')
@@ -132,6 +133,9 @@ def get_template_strings(
     if not k_x_in_sc:
         ham_sc_right = ham_sc_right.replace('k_x', '0')
         ham_sc_left = ham_sc_left.replace('k_x', '0')
+
+    if phs_breaking_potential:
+        ham_normal += "+ V_breaking(x) * kron(sigma_0, sigma_0)"
 
     template_strings = dict(ham_barrier=ham_barrier,
                             ham_normal=ham_normal,
@@ -145,9 +149,11 @@ def get_template_strings(
 
 
 @lru_cache()
-def get_templates(a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc, no_phs):
+def get_templates(a, transverse_soi, mu_from_bottom_of_spin_orbit_bands,
+    k_x_in_sc, no_phs, phs_breaking_potential):
     template_strings = get_template_strings(
-        transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc, no_phs=no_phs)
+        transverse_soi, mu_from_bottom_of_spin_orbit_bands, 
+        k_x_in_sc, False, no_phs, phs_breaking_potential)
     kwargs = dict(coords=('x', 'y'), grid_spacing=a)
     template_barrier = kwant.continuum.discretize(
         template_strings['ham_barrier'], **kwargs)
@@ -293,7 +299,8 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
                 ns_junction,
                 sc_leads=False,
                 no_phs=False,
-                rough_edge=None):
+                rough_edge=None,
+                phs_breaking_potential=False):
     if wraparound and not infinite:
         raise ValueError('If you want to use wraparound, infinite must be True.')
     if sc_leads and not infinite or sc_leads and not wraparound:
@@ -308,7 +315,8 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
     sawtooth = (shape == 'sawtooth')
 
     template_barrier, template_normal, template_sc_left, template_sc_right = get_templates(
-        a, transverse_soi, mu_from_bottom_of_spin_orbit_bands, k_x_in_sc, no_phs)
+        a, transverse_soi, mu_from_bottom_of_spin_orbit_bands,
+        k_x_in_sc, no_phs, phs_breaking_potential)
 
     template_interior = template_normal
     template_edge = template_barrier

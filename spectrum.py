@@ -223,12 +223,12 @@ def find_phase_bounds(lead, params, k_x=0, num_bands=20, sigma=0):
     if num_bands is None:
         mus = np.linalg.eigvals(chemical_potentials.todense())
     else:
-        mus = sla.eigs(chemical_potentials, k=num_bands, sigma=sigma)[0]
+        mus = sla.eigs(chemical_potentials, k=num_bands, sigma=sigma, which='LM')[0]
 
-    inds = np.argsort(mus.real)
-    mus[abs(mus.imag) > 1e-14] = np.nan
+    real_solutions = abs(np.angle(mus)) < 1e-10
 
-    return mus.real[inds]
+    mus[~real_solutions] = np.nan # To ensure it returns the same shape vector
+    return np.sort(mus.real)
 
 
 def cell_mats(lead, params, bias=0):
@@ -242,6 +242,13 @@ def get_h_k(lead, params):
     h, t = cell_mats(lead, params)
     h_k = lambda k: h + t * np.exp(1j * k) + t.T.conj() * np.exp(-1j * k)
     return h_k
+
+
+def lat_from_syst(syst):
+    lats = set(s.family for s in syst.sites)
+    if len(lats) > 1:
+        raise Exception('No unique lattice in the system.')
+    return list(lats)[0]
 
 
 def slowest_evan_mode(lead, params):
@@ -268,47 +275,9 @@ def slowest_evan_mode(lead, params):
     ev = translation_ev(h, t)
     norm = ev * ev.conj()
     idx = np.abs(norm - 1).argmin()
-    a = lattice_constant_from_syst(lead)
+    a = lat_from_syst(lead).prim_vecs[0, 0]
     majorana_length = np.abs(a / np.log(ev[idx]).real)
     return majorana_length
-
-
-def phase_bounds_operator(lead, params, k_x=0):
-    params['mu'] = 0
-    h, t = cell_mats(lead, params)
-    tk = t * np.exp(1j * k_x)
-    h_k = h + tk + tk.T.conj()
-    sigma_z = np.array([[1, 0], [0, -1]])
-    _operator = np.kron(np.eye(len(h) // 2), sigma_z) @ h_k
-    return _operator
-
-
-def find_phase_bounds(lead, params, k=0, num_bands=20):
-    """Find the phase boundaries.
-    Solve an eigenproblem that finds values of chemical potential at which the
-    gap closes at momentum k=0. We are looking for all real solutions of the
-    form H\psi=0 so we solve sigma_0 * tau_z H * psi = mu * psi.
-    Parameters:
-    -----------
-    lead : kwant.builder.InfiniteSystem object
-        The finalized infinite system.
-    p : types.SimpleNamespace object
-        A simple container that is used to store Hamiltonian parameters.
-    k : float
-        Momentum value, by default set to 0.
-    Returns:
-    --------
-    chemical_potential : numpy array
-        Twenty values of chemical potential at which a bandgap closes at k=0.
-    """
-    chemical_potentials = phase_bounds_operator(lead, params, k_x=k)
-
-    if num_bands is None:
-        mus = np.linalg.eigvals(chemical_potentials)
-    else:
-        mus = sla.eigs(chemical_potentials, k=num_bands, sigma=0)[0]
-
-    return np.sort(mus).real
 
 
 def make_skew_symmetric(ham):

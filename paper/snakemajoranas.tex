@@ -147,7 +147,7 @@ The spatial dependence of $\Delta$, $E_z$, and $\alpha$ is explained in text abo
 Later in this manuscript, we show that the exact details of the shape are unimportant and consider different zigzag geometries also parametrized by $z_x, \; z_y, \; W$.
 
 \comment{The default parameters are ...}
-Unless noted differently, the Hamiltonian parameters are $\alpha=\SI{20}{\meV \nm}$, $g=26$, $\meff=\SI{0.02}{\electronmass}$, $\mu=\SI{10}{\meV}$, $B=\SI{1}{T}$, $\phi=\pi$, and $\Delta=\SI{1}{\meV}$; and the geometry parameters are $W=\SI{200}{\nm}$, the period of the zigzag $z_x=\SI{1300}{\nm}$, the discretization contant $a=\SI{10}{\nm}$, and the lengths of the superconductors $L_\textrm{SC}=\SI{200}{\nm}$.  % TODO: Tom: L_sc and Delta not compatible?
+Unless noted differently, the Hamiltonian parameters are $\alpha=\SI{20}{\meV \nm}$, $g=26$, $\meff=\SI{0.02}{\electronmass}$, $\mu=\SI{10}{\meV}$, $B=\SI{1}{T}$, $\phi=\pi$, and $\Delta=\SI{1}{\meV}$; and the geometry parameters are $W=\SI{200}{\nm}$, the period of the zigzag $z_x=\SI{1300}{\nm}$, the discretization contant $a=\SI{10}{\nm}$, and the lengths of the superconductors $L_\textrm{SC}=\SI{300}{\nm}$.  % TODO: Tom: L_sc and Delta not compatible?
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Band stuctures
@@ -173,7 +173,7 @@ The combination of these ensures a significant decrease of the Majorana decay le
 The parameters values are written at the bottom of Sec.~\ref{sec:setup}.\label{fig:band_stuctures}}
 \end{figure}
 
-\comment{We calculate the bandstructure for varying amount of zigzag.}
+\comment{We calculate the band structure for varying amount of zigzag.}
 In figure~\ref{fig:band_stuctures}, the bandstructure for zigzag systems with varying amplitude is displayed.
 Because the discretized zigzag system is modeled using a supercell, we can only plot a folded bandstructure.
 For comparison's sake, we take the same cell size for the ribbon structure such that the bandstructure folds in the same way.
@@ -284,6 +284,7 @@ Inside the figure, we indicate the Majorana length (or coherence length) $\xi_\t
 We observe that $\xi_\textrm{M}$ for (a) is significantly longer and $E_\textrm{gap}$ more than an order of magnitude smaller than for (b), (c), and (d), meaning that the details of the geometry do not matter for the improvements to occur.
 The length of the system is $3L_x=\SI{3900}{\nm}$, the remaining parameters values are written at the bottom of Sec.~\ref{sec:setup}.\label{fig:wavefunctions}}
 \end{figure}
+% TODO: add a PHS breaking potential on one edge, this pushes the Majorana away in energy.
 
 \comment{We calculate the wave functions and find the Majorana lengths by fitting an exponential.}
 We model a finite system to compute the Majorana wave function density for different geometries; ribbon, saw-toothed zigzag, parallel curves, and variants of the latter with disordered edges.
