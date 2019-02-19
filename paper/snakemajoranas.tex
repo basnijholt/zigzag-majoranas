@@ -284,12 +284,12 @@ Inside the figure, we indicate the Majorana length (or coherence length) $\xi_\t
 We observe that $\xi_\textrm{M}$ for (a) is significantly longer and $E_\textrm{gap}$ more than an order of magnitude smaller than for (b), (c), and (d), meaning that the details of the geometry do not matter for the improvements to occur.
 The length of the system is $3L_x=\SI{3900}{\nm}$, the remaining parameters values are written at the bottom of Sec.~\ref{sec:setup}.\label{fig:wavefunctions}}
 \end{figure}
-% TODO: add a PHS breaking potential on one edge, this pushes the Majorana away in energy.
 
 \comment{We calculate the wave functions and find the Majorana lengths by fitting an exponential.}
 We model a finite system to compute the Majorana wave function density for different geometries; ribbon, saw-toothed zigzag, parallel curves, and variants of the latter with disordered edges.
 By diagonalizing the Hamiltonian, we find the Majorana energy $E_\textrm{M}$ and the energy of the first excited state $E_1$, the lowest and second lowest energies, respectively.
-Using the eigenstates, we calculate the Majorana decay length $\xi_\textrm{M}$ by fitting an exponential to the density of the Majorana wavefunction projected on the $x$-axis.
+Using the eigenstates, we calculate the Majorana decay length $\xi_\textrm{M}$ by fitting an exponential to the density of a single Majorana wavefunction projected on the $x$-axis.
+To determine $\xi_\textrm{M}$, we artificially break the particle-hole symmetry on one edge by adding a potential $V \sigma_0 \tau_0$ such that one of the Majorana states is pushed into the continuum and the fit to $\exp{\frac{x}{\xi_\textrm{M}}}$ becomes easier.
 In figure~\ref{fig:wavefunctions} the wavefunctions are displayed, superimposed upon their respective geometry.
 All systems have identical Hamiltonian parameters in order to compare the effects of the changing geometry meaningfully.
 
@@ -320,7 +320,8 @@ The sharp corners of the sawtooth versus the smooth shape of the snakelike syste
 \caption{Phase diagrams of a straight system (a), (b) and zigzag system (c), (d), where (a), (c) are $E(\mu, B)$ and (b), (d) are $E(\phi, B)$.
 Phase diagrams of a straight system (a), (b) and zigzag system (c), (d), where (a), (c) are $E(\mu, B)$ and (b), (d) are $E(\phi, B)$.
 We compute the dispersion of the translationally invariant realizations of a straight and saw-toothed zigzag system and find $\min \left| {E(k)} \right|$ to obtain the energy gap.
-% Additionally, use a generalized eigenvalue problem to find all phase boundaries at once.
+Additionally, in subplot (a) we plot the phase boundaries because they are too narrow to see.
+We do this by solving a generalized eigenvalue problem to find all phase boundaries at once as described in Ref.~\onlinecite{nijholt2015orbital}.
 The parameters values are written at the bottom of Sec.~\ref{sec:setup}, except with $a=\SI{5}{\nm}$ and $L_\textrm{SC}=\SI{800}{\nm}$.
 The chemical potential is $\mu=\SI{10}{\meV}$ in (b) and (d) and the superconducting phase is $\phi=\pi$ in (a) and (c).
 \label{fig:phasediagrams}}
