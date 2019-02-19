@@ -93,7 +93,7 @@ The current experimental effort ~\cite{mourik_signatures_2012,das_zero-bias_2012
 \comment{The gap is small because of long trajectories.}
 One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap~\cite{ren_topological_2018}; where the gap in the density of states significantly reduces for states with the momentum directed along the length of the strip.
 From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor.
-Additionally, these long trajectories have long flight times $\tau_f \approx W / v_F \sin\theta$ (see Fig.~\ref{fig:setup}(a)) and equivalenly small Thouless energies $E_{\textrm{Th}}=\hbar / \tau_f$, resulting in a small gap.
+Additionally, these long trajectories have long flight times $\tau_f \approx W / v_F \sin\theta$ (see Fig.~\ref{fig:setup}) and equivalenly small Thouless energies $E_{\textrm{Th}}=\hbar / \tau_f$, resulting in a small gap.
 This problem does not appear when the Fermi surface is small and the zero point motion dominates the transverse velocity, so a low filling of the bands is a workaround\cite{nijholt2015orbital}.
 However, low filling requires precise knowledge of the system and might be more sensitive to disorder or microscopic inhomogeneities.
 On the other hand, disorder scatters these long trajectories and introduces a cut-off on the scale of the mean-free path~\cite{haim_double-edge_2018}, however, disorder is impossible to control to a required precision experimentally.
@@ -131,17 +131,19 @@ Both the normal part and the superconducters have a kinetic term and chemical po
 The complete Hamiltonian has the form
 \begin{equation}
 \begin{split}
-    H = & \left[\frac{\hbar^2\left(\kx^2 + \ky^2\right)}{2\meff} - \mu\right] \tau_z \\
-        & + E_\text{z}(x,y) \sigma_x \\
-        & + \alpha(x,y) \left( \ky \sigma_x - \kx \sigma_y \right) \tau_z
-          + \Delta(x,y) \tau_y.
+    H_\textrm{N} = & \left[\frac{\hbar^2\left(\kx^2 + \ky^2\right)}{2\meff} - \mu\right] \tau_z
+        + E_\text{z} \sigma_x
+        + \alpha \left( \ky \sigma_x - \kx \sigma_y \right) \tau_z \\
+    \\
+    H_\textrm{SC} = & \left[\frac{\hbar^2\left(\kx^2 + \ky^2\right)}{2\meff} - \mu\right] \tau_z
+        + \Delta \cos{\frac{\phi}{2}} \tau_x + \Delta \sin{\frac{\phi}{2}} \tau_y.
 \end{split}
 \label{eq:hamiltonian}
 \end{equation}
-It acts on the spinor wave function $\Psi={\left(\psi_{e\uparrow},\psi_{e\downarrow},\psi_{\textrm{h}\downarrow},-\psi_{\textrm{h}\uparrow}\right)}^{T}$, where $\psi_e$, $\psi_\textrm{h}$ are its electron and hole components, and $\psi_\uparrow$, $\psi_\downarrow$ are the spin-up and spin-down components.
+Where $H_\textrm{N}$ and $H_\textrm{SC}$ are the Hamiltonians of the semiconductor and superconductors, respectively.
+They act on the spinor wave function $\Psi={\left(\psi_{e\uparrow},\psi_{e\downarrow},\psi_{\textrm{h}\downarrow},-\psi_{\textrm{h}\uparrow}\right)}^{T}$, where $\psi_e$, $\psi_\textrm{h}$ are its electron and hole components, and $\psi_\uparrow$, $\psi_\downarrow$ are the spin-up and spin-down components.
 The Pauli matrices $\sigma_{i}$ act on the spin degree of freedom and $\tau_{i}$ act on the electron-hole degree of freedom.
-For the zigzag geometry, we first consider a sawtooth-like pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction.
-The spatial dependence of $\Delta$, $E_z$, and $\alpha$ is explained in text above.
+For the zigzag geometry, we first consider a sawtooth-like pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction [see Fig.~\ref{fig:setup}(b)].
 Later in this manuscript, we show that the exact details of the shape are unimportant and consider different zigzag geometries also parametrized by $z_x, \; z_y, \; W$.
 
 \comment{The default parameters are ...}
@@ -169,6 +171,7 @@ We observe that once there are no more straight trajectories inside the junction
 As the zigzag amplitude increases the band gap $E_\textrm{gap}$ increases by an order of magnitude.
 The combination of these ensures a significant decrease of the Majorana decay length because $\xi_M \propto \frac{v_\textrm{F}}{E_\textrm{gap}}$
 The parameters values are written at the bottom of Sec.~\ref{sec:setup}.\label{fig:band_stuctures}}
+% TODO: mention z_x!
 \end{figure}
 
 \comment{We calculate the band structure for varying amount of zigzag.}
@@ -318,9 +321,10 @@ The sharp corners of the sawtooth versus the smooth shape of the snakelike syste
 \includegraphics[width=0.95\columnwidth]{figures/phasediagrams}
 \caption{Phase diagrams of a straight system (a), (b) and zigzag system (c), (d), where (a), (c) are $E(\mu, B)$ and (b), (d) are $E(\phi, B)$.
 Phase diagrams of a straight system (a), (b) and zigzag system (c), (d), where (a), (c) are $E(\mu, B)$ and (b), (d) are $E(\phi, B)$.
-We compute the dispersion of the translationally invariant realizations of a straight and saw-toothed zigzag system and find $\min \left| {E(k)} \right|$ to obtain the energy gap.
+We compute the dispersion of the translationally invariant realizations of a straight and saw-toothed zigzag system and find $\min \left| {E(k)} \right|$ to obtain the energy gap.  % TODO: mention this in main text!
 Additionally, in subplot (a) we plot the phase boundaries because they are too narrow to see.
-We do this by solving a generalized eigenvalue problem to find all phase boundaries at once as described in Ref.~\onlinecite{nijholt2015orbital}.
+We do this by solving a generalized eigenvalue problem to find all phase boundaries at once as described in Ref.~\onlinecite{nijholt2015orbital}.  % TODO: mention in main text
+% TODO: mention distinguish between min E(K) and other algo in main text!
 The parameters values are written at the bottom of Sec.~\ref{sec:setup}, except with $a=\SI{5}{\nm}$ and $L_\textrm{SC}=\SI{800}{\nm}$.
 The chemical potential is $\mu=\SI{10}{\meV}$ in (b) and (d) and the superconducting phase is $\phi=\pi$ in (a) and (c).
 \label{fig:phasediagrams}}
