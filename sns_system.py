@@ -337,7 +337,7 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
         above_shape = above_curve(curve_bottom)
 
     elif sawtooth:
-        _curve = lambda x: 4*z_y/z_x*(x%(z_x//2)) - z_y if x%z_x < z_x//2 else -4*z_y/z_x*(x%(z_x//2)) + z_y
+        _curve = lambda x: 4*z_y/z_x*(x%(z_x/2)) - z_y if x%z_x < z_x/2 else -4*z_y/z_x*(x%(z_x/2)) + z_y
         curve = lambda x: _curve(x+z_x/4)
 
         if z_y is not 0:
