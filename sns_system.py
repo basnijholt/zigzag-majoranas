@@ -451,7 +451,7 @@ def make_system(L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a,
 
         #----------
         # Fill edge
-        for y in np.arange(-L_m - z_y, L_m + z_y, a):
+        for y in np.arange(-L_m - L_sc_down, L_m + L_sc_up, a):
             pos = (0, y)
             edge_sites_new = syst.fill(template_edge, edge_shape, pos)
             if len(edge_sites_new) > 0:
