@@ -129,45 +129,44 @@ We model the system with a Bogoliubov-de Gennes Hamiltonian (BdG) Eq.~\eqref{eq:
 The superconductor has a superconducting coupling term $\Delta$ with the pair of superconductors at an opposite superconducting phase $\exp{\pm i \phi/2}$.
 Both the normal part and the superconducters have a kinetic term and chemical potential $\mu$.
 The complete Hamiltonian has the form
-\begin{equation}
-\begin{split}
-    H_\textrm{N} = & \left[\frac{\hbar^2\left(\kx^2 + \ky^2\right)}{2\meff} - \mu\right] \tau_z
-        + E_\text{z} \sigma_x
-        + \alpha \left( \ky \sigma_x - \kx \sigma_y \right) \tau_z \\
-    \\
+\begin{subequations}
+\begin{align}
+    H_\textrm{N} = & \left[\frac{\hbar^2\left(\kx^2 + \ky^2\right)}{2\meff} - \mu + \alpha \left( \ky \sigma_x - \kx \sigma_y \right) \right] \tau_z
+        + E_\text{z} \sigma_x \\
     H_\textrm{SC} = & \left[\frac{\hbar^2\left(\kx^2 + \ky^2\right)}{2\meff} - \mu\right] \tau_z
         + \Delta \cos{\frac{\phi}{2}} \tau_x + \Delta \sin{\frac{\phi}{2}} \tau_y.
-\end{split}
+\end{align}
 \label{eq:hamiltonian}
-\end{equation}
+\end{subequations}
 Where $H_\textrm{N}$ and $H_\textrm{SC}$ are the Hamiltonians of the semiconductor and superconductors, respectively.
 They act on the spinor wave function $\Psi={\left(\psi_{e\uparrow},\psi_{e\downarrow},\psi_{\textrm{h}\downarrow},-\psi_{\textrm{h}\uparrow}\right)}^{T}$, where $\psi_e$, $\psi_\textrm{h}$ are its electron and hole components, and $\psi_\uparrow$, $\psi_\downarrow$ are the spin-up and spin-down components.
 The Pauli matrices $\sigma_{i}$ act on the spin degree of freedom and $\tau_{i}$ act on the electron-hole degree of freedom.
 For the zigzag geometry, we first consider a sawtooth-like pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction [see Fig.~\ref{fig:setup}(b)].
 Later in this manuscript, we show that the exact details of the shape are unimportant and consider different zigzag geometries also parametrized by $z_x, \; z_y, \; W$.
 
+\comment{We discretize the Hamiltonian and simulate it with Kwant.}
+We discretize our continuum Hamiltonian [Eq.~\eqref{eq:hamiltonian}] on a square grid and implement a tight-binding model using Kwant~\cite{groth_kwant:_2014}.
+To optimize the sampling in important regions of parameter space, we use the Adaptive package.~\cite{adaptive}
+The entire source code and the resulting raw data are available in Ref.~\onlinecite{data}.  % TODO: update the bib when the data is uploaded
+
 \comment{The default parameters are ...}
 Unless noted differently, the Hamiltonian parameters are $\alpha=\SI{20}{\meV \nm}$, $g=26$, $\meff=\SI{0.02}{\electronmass}$, $\mu=\SI{10}{\meV}$, $B=\SI{1}{T}$, $\phi=\pi$, and $\Delta=\SI{1}{\meV}$; and the geometry parameters are $W=\SI{200}{\nm}$, the period of the zigzag $z_x=\SI{1300}{\nm}$, the discretization contant $a=\SI{10}{\nm}$, and the lengths of the superconductors $L_\textrm{SC}=\SI{300}{\nm}$.  % TODO: Tom: L_sc and Delta not compatible?
+
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Band stuctures
 %%██████████████████████████████████████████████████████████████████████████
 \section{Band stuctures}\label{sec:band_stuctures}
 
-\comment{We discretize the Hamiltonian and simulate it with Kwant.}
-We discretize our continuum Hamiltonian [Eq.~\eqref{eq:hamiltonian}] on a square grid and implement a tight-binding model using Kwant~\cite{groth_kwant:_2014}.
-The resulting Hamiltonians are large because instead of having a single slice of sites that is translationally invariant in the $x$-direction, we create a long 2D supercell to make the structure periodic.
-To speed up these expensive simulations we employ an adaptive sampling strategy, using the Python package Adaptive.~\cite{adaptive}
-The entire source code and the resulting raw data are available in Ref.~\onlinecite{data}.  % TODO: update the bib when the data is uploaded
-
 \begin{figure}[!htb]
 \includegraphics[width=0.95\columnwidth]{figures/bandstructures}
 \caption{Figure of the band stuctures corresponding to the system in Fig.~\ref{fig:setup} with different zigzag amplitudes.
 The blue lines correspond to $\phi=0$, $B=0$ (trivial phase) and the orange lines to $\phi=\pi$, $B = \SI{1}{T}$ (topological phase).
-The three subplots are for different amplitudes of the zigzag, with (a) a straight system $z_y=0$, (b) $z_y=\frac{W}{4}$, and (c) $z_y=\frac{W}{2}$, where $W=\SI{200}{\nm}$ is the junction width.
+The three subplots are for different amplitudes of the zigzag, with (a) a straight system $z_y=0$, (b) $z_y=\frac{W}{2}$, and (c) $z_y=W$, where $W=\SI{200}{\nm}$ is the junction width.
+On the $x$-axis is the folded lattice momentum where $z_x=\SI{1300}{\nm}$.
 Subplot (a) has a different scale on the $x$-axis for $k_x < 0$ than the other subplots and displays the unfolded band structure.
 For the right-hand side of (a) ($k_x > 0$), (b), and (c), the folding is the same, such that the velocity $v=\frac{dE}{dk}$ can be compared visually.
-We observe that once there are no more straight trajectories inside the junction (when $z_y=\frac{W}{2}$) the spectrum becomes most insensitive to the momentum $k_x$, and thus the $v_\textrm{F}$ decreases.
+We observe that once there are no more straight trajectories inside the junction (when $z_y=W$) the spectrum becomes most insensitive to the momentum $k_x$, and thus the $v_\textrm{F}$ decreases.
 As the zigzag amplitude increases the band gap $E_\textrm{gap}$ increases by an order of magnitude.
 The combination of these ensures a significant decrease of the Majorana decay length because $\xi_M \propto \frac{v_\textrm{F}}{E_\textrm{gap}}$
 The parameters values are written at the bottom of Sec.~\ref{sec:setup}.\label{fig:band_stuctures}}
@@ -175,15 +174,16 @@ The parameters values are written at the bottom of Sec.~\ref{sec:setup}.\label{f
 \end{figure}
 
 \comment{We calculate the band structure for varying amount of zigzag.}
-In figure~\ref{fig:band_stuctures}, the bandstructure for zigzag systems with varying amplitude is displayed.
-Because the discretized zigzag system is modeled using a supercell, we can only plot a folded bandstructure.
-For comparison's sake, we take the same cell size for the ribbon structure such that the bandstructure folds in the same way.
+We diagonalize the supercell Hamiltonian to compute the band structure.
+Because of the large periodicity of the zigzag and the resulting large supercell, the band structure is heavily folded.
+In figure~\ref{fig:band_stuctures} we show the resulting band structures for zigzag systems with a varying amplitude.
 
 \comment{The band structures show that modulation of the geometry increases the gap by an order of magnitude, as well as reduce the group velocity.}
-The introduction of a zigzag has a striking effect: the bands flatten out because of a reduction in velocity and the topological gap increases by more than an order of magnitude.
+The introduction of a zigzag has a striking effect: the bands flatten out and the topological gap increases by more than an order of magnitude.
 On an intuitive level we can understand this because in a straight system long trajectories are possible, these have a momentum that is directed along the strip and consequently, $k_x \approx k_F$.
 Further, the smallest gap in a straight system occurs around $k_F$, and because the zigzag cuts off long trajectories, the gap size increases.
-Besides this, the velocity of the modes greatly reduces, which has a positive effect on the Majorana coherence length, as described later in section \ref{sec:shape_effects}.
+Besides this, the states that exist in different segments have very little overlap and therefore have a very small velocity.
+This reduction in velocity has a positive effect on the Majorana coherence length, as described later in section \ref{sec:shape_effects}.
 
 \comment{The introduction of an NS interface at many angles increases the transparency.}
 Additionally, in the presence of normal reflection, due to the presence of NS interfaces at a wide range of angles, the reflected part will eventually scatter with a near perpendicular surface.
@@ -284,14 +284,14 @@ With (a) a straight system, (b) a saw-toothed zigzag system, (c) a system where 
 Inside the figure, we indicate the Majorana length (or coherence length) $\xi_\textrm{M}$, the Majorana energy $E_\textrm{M}$ (the energy of the first excited state), and the topological energy gap $E_\textrm{gap}$.
 We observe that $\xi_\textrm{M}$ for (a) is almost two orders of magnitude longer and $E_\textrm{gap}$ more than an order of magnitude smaller than for (b), (c), and (d).
 The robustness of $E_\textrm{gap}$ and $\xi_\textrm{M}$ across (b), (c), and (d) means that the details of the geometry do not matter for the improvements to occur.
-The length of the system is $3L_x=\SI{3900}{\nm}$, the remaining parameters values are written at the bottom of Sec.~\ref{sec:setup}.\label{fig:wavefunctions}}
+The length of the system is $3.5 L_x=\SI{4550}{\nm}$, the remaining parameters values are written at the bottom of Sec.~\ref{sec:setup}.\label{fig:wavefunctions}}
 \end{figure}
 
 \comment{We calculate the wave functions and find the Majorana lengths by fitting an exponential.}
 We model a finite system to compute the Majorana wave function density for different geometries; ribbon, saw-toothed zigzag, parallel curves, and variants of the latter with disordered edges.
 By diagonalizing the Hamiltonian, we find the Majorana energy $E_\textrm{M}$ and the energy of the first excited state $E_1$, the lowest and second lowest energies, respectively.
 Using the eigenstates, we calculate the Majorana decay length $\xi_\textrm{M}$ by fitting an exponential to the density of a single Majorana wavefunction projected on the $x$-axis.
-To determine $\xi_\textrm{M}$, we artificially break the particle-hole symmetry on one edge by adding a potential $V \sigma_0 \tau_0$ such that one of the Majorana states is pushed into the continuum and the fit to $\exp{\frac{x}{\xi_\textrm{M}}}$ becomes easier.
+To determine $\xi_\textrm{M}$, we use a trick and artificially break the particle-hole symmetry on one edge by adding a potential $V \sigma_0 \tau_0$ such that one of the Majorana states is pushed into the continuum and the fit to $\exp{\frac{x}{\xi_\textrm{M}}}$ becomes easier.
 In figure~\ref{fig:wavefunctions} the wavefunctions are displayed, superimposed upon their respective geometry.
 All systems have identical Hamiltonian parameters in order to compare the effects of the changing geometry meaningfully.
 
