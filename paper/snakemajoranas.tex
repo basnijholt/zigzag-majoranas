@@ -146,7 +146,7 @@ Later in this manuscript, we show that the exact details of the shape are unimpo
 
 \comment{We discretize the Hamiltonian and simulate it with Kwant.}
 We discretize our continuum Hamiltonian [Eq.~\eqref{eq:hamiltonian}] on a square grid and implement a tight-binding model using Kwant~\cite{groth_kwant:_2014}.
-To optimize the sampling in important regions of parameter space, we use the Adaptive package.~\cite{adaptive}
+To preferentially sample important regions of parameter space, we use the Adaptive package.~\cite{adaptive}
 The entire source code and the resulting raw data are available in Ref.~\onlinecite{data}.  % TODO: update the bib when the data is uploaded
 
 \comment{The default parameters are ...}
@@ -174,20 +174,18 @@ The parameters values are written at the bottom of Sec.~\ref{sec:setup}.\label{f
 \end{figure}
 
 \comment{We calculate the band structure for varying amount of zigzag.}
-We diagonalize the supercell Hamiltonian to compute the band structure.
+We apply sparse diagonalization to the supercell Hamiltonian at different momenta $k_x$ to compute the band structure.
 Because of the large periodicity of the zigzag and the resulting large supercell, the band structure is heavily folded.
 In figure~\ref{fig:band_stuctures} we show the resulting band structures for zigzag systems with a varying amplitude.
+The introduction of the zigzag has a striking effect: the bands flatten out and the topological gap increases by more than an order of magnitude.
 
-\comment{The band structures show that modulation of the geometry increases the gap by an order of magnitude, as well as reduce the group velocity.}
-The introduction of a zigzag has a striking effect: the bands flatten out and the topological gap increases by more than an order of magnitude.
-On an intuitive level we can understand this because in a straight system long trajectories are possible, these have a momentum that is directed along the strip and consequently, $k_x \approx k_F$.
-Further, the smallest gap in a straight system occurs around $k_F$, and because the zigzag cuts off long trajectories, the gap size increases.
-Besides this, the states that exist in different segments have very little overlap and therefore have a very small velocity.
-This reduction in velocity has a positive effect on the Majorana coherence length, as described later in section \ref{sec:shape_effects}.
-
-\comment{The introduction of an NS interface at many angles increases the transparency.}
-Additionally, in the presence of normal reflection, due to the presence of NS interfaces at a wide range of angles, the reflected part will eventually scatter with a near perpendicular surface.
-This means that for transversal modes the transparency of the NS interface will increase.
+\comment{Zigzag improves the gap and size because of cutting of trajectories and increasing transparency.}
+This confirms our expectation that the zigzag removes trajectories propagating at grazing angles.
+In the unfolded band structure for a straight system, as seen in Fig.~\ref{fig:bandstructures}(a), the gap in a straight system occurs around $k_F$ and because the zigzag cuts off long trajectories, the gap size increases.
+Besides this, the states from different segments of the zigzag pattern have a negligible overlap and therefore have a vanishing velocity.
+This reduction in velocity strongly reduces the Majorana size, as we discuss in section \ref{sec:shape_effects}.
+Additionally, in the presence of normal reflection, due to the presence of NS interfaces at a wide range of angles, the reflected part eventually scatters with a near perpendicular surface.
+This means that for transversal modes the transparency of the NS interface increases.
 
 
 %%██████████████████████████████████████████████████████████████████████████
