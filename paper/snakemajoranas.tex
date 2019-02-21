@@ -234,22 +234,24 @@ The sharp corners of the sawtooth versus the smooth shape of the snakelike syste
 
 \begin{figure}[!htb]
 \includegraphics[width=\columnwidth]{figures/phasediagrams}
-\caption{Phase diagrams of a straight system (a), (b) and zigzag system (c), (d), where (a), (c) are $E(\mu, B)$ and (b), (d) are $E(\phi, B)$.
-Phase diagrams of a straight system (a), (b) and zigzag system (c), (d), where (a), (c) are $E(\mu, B)$ and (b), (d) are $E(\phi, B)$.
-We compute the dispersion of the translationally invariant realizations of a straight and saw-toothed zigzag system and find $\min \left| {E(k)} \right|$ to obtain the energy gap.  % TODO: mention this in main text!
-Additionally, in subplot (a) we plot the phase boundaries because they are too narrow to see.
-We do this by solving a generalized eigenvalue problem to find all phase boundaries at once as described in Ref.~\onlinecite{nijholt2015orbital}.  % TODO: mention in main text
-% TODO: mention distinguish between min E(K) and other algo in main text!
-The parameters values are written at the bottom of Sec.~\ref{sec:setup}, except with $a=\SI{5}{\nm}$ and $L_\textrm{SC}=\SI{800}{\nm}$.
-The chemical potential is $\mu=\SI{10}{\meV}$ in (b) and (d) and the superconducting phase is $\phi=\pi$ in (a) and (c).
+\caption{Part the wave function of a straight system (a) and a zigzag system (b) of length $L=\SI{3900}{\nm}$ but only the first period ($\SI{1300}{\nm}$) is plotted.
+The phase diagrams (c) and (d) display $E_\textrm{gap}(B_x, \mu)$ at $\phi=\pi$ and (e) and (f) display $E_\textrm{gap}(B_x, \phi)$ at $\mu=\SI{10}{\meV}$, where $E_\textrm{gap}$ is the smallest gap in the dispersion relation.
+Subplots (c) and (e) correspond to system (a), and (d) and (f) correspond to system (b).
+The brown dot in the phase diagrams indicate the largest gap in the parameter space for the straight system and the parameter values for which the wavefunctions (a) and (b) are plotted.
+Additionally, in subplot (c) we plot the phase boundaries because they are too narrow to see.
+In (a) and (b) we note the Majorana size $\xi_\textrm{M}$ and $E_\textrm{gap}$, and see that both of these are more than an order of magnitude better for the zigzag system, even though these are plotted for the most optimal parameters for the straight system at $\mu=\SI{10}{\meV}$.
+The remaining parameters values are written at the bottom of Sec.~\ref{sec:setup}, except with $a=\SI{5}{\nm}$ and $L_\textrm{SC}=\SI{800}{\nm}$.
 \label{fig:phasediagrams}}
 \end{figure}
 
 \comment{We calculate the topological phase diagram using the gap size.}
-Due to the large size of the system, we are unable to use full spectrum methods (like the Pfaffian) to compute the topological invariant of our system.
-Instead, we calculate the energy gap by finding the absolute minimum of the spectrum $E_\textrm{gap}=\min{|E(k)|}$.
+In Fig.~\ref{fig:phasediagrams}, we plot the energy gap as a function of magnetic field, chemical potential, $E_\textrm{gap}(B_x, \mu)$; and the superconducting phase difference $E_\textrm{gap}(B_x, \phi)$ for both a straight system [(c) and (e)] and a zigzag system [(d) and (f)].
+Additionally, we plot the first $\SI{1300}{\nm}$ (one zigzag period) of the wavefunction at the most optimal point in parameter space for the straight system.
+For the straight system we calculate $E_\textrm{gap}$ by performing a binary search in $E$ for the energy at which the propagating modes start to appear.
+Additionally, in Fig.~\ref{fig:phasediagrams}(c) we plot the phase boundaries that we find by solving a generalized eigenvalue problem as described in Ref.~\onlinecite{nijholt2015orbital}.
+Due to the large size of the zigzag supercell, we are unable to use these full spectrum methods to compute these quantities.
+Instead, we calculate $E_\textrm{gap}$ by finding the absolute minimum of the spectrum $E_\textrm{gap}=\min{|E(k)|}$.
 By both observing the gap closings and knowing the topological phase for the non-zigzag system, we can infer the topology of the system with zigzag modulation.
-In Fig.~\ref{fig:phasediagrams}, we plot the energy gap as a function of magnetic field, chemical potential, $E_\textrm{gap}(B_x, \mu)$; and the superconducting phase difference $E_\textrm{gap}(B_x, \phi)$ for both a straight system [(a) and (b)] and a zigzag system [(c) and (d)].
 
 \comment{The introduction of the zigzag breaks a chiral symmetry, bringing the system from the BDI to the D symmetry class}
 The non-zigzag system is in the symmetry class BDI \cite{pientka2017topological}.
