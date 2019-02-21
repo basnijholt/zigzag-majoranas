@@ -245,9 +245,9 @@ The remaining parameters values are written at the bottom of Sec.~\ref{sec:setup
 \end{figure}
 
 \comment{We calculate the topological phase diagram using the gap size.}
-In Fig.~\ref{fig:phasediagrams}, we plot the energy gap as a function of magnetic field, chemical potential, $E_\textrm{gap}(B_x, \mu)$; and the superconducting phase difference $E_\textrm{gap}(B_x, \phi)$ for both a straight system [(c) and (e)] and a zigzag system [(d) and (f)].
-Additionally, we plot the first $\SI{1300}{\nm}$ (one zigzag period) of the wavefunction at the most optimal point in parameter space for the straight system.
-For the straight system we calculate $E_\textrm{gap}$ by performing a binary search in $E$ for the energy at which the propagating modes start to appear.
+In Fig.~\ref{fig:phasediagrams} we plot the energy gap as a function of magnetic field, chemical potential, $E_\textrm{gap}(B_x, \mu)$; and the superconducting phase difference $E_\textrm{gap}(B_x, \phi)$ for both a straight system [(c) and (e)] and a zigzag system [(d) and (f)].
+Additionally, we plot the first $\SI{1300}{\nm}$ (one zigzag period) of the wavefunctions [(a) and (b)] at the most optimal point in parameter space for the straight system.
+For the straight system we calculate $E_\textrm{gap}$ by performing a binary search in $E$ for the energy at which the propagating modes start to appear.~\cite{nijholt2015orbital}
 Additionally, in Fig.~\ref{fig:phasediagrams}(c) we plot the phase boundaries that we find by solving a generalized eigenvalue problem as described in Ref.~\onlinecite{nijholt2015orbital}.
 Due to the large size of the zigzag supercell, we are unable to use these full spectrum methods to compute these quantities.
 Instead, we calculate $E_\textrm{gap}$ by finding the absolute minimum of the spectrum $E_\textrm{gap}=\min{|E(k)|}$.
@@ -258,7 +258,7 @@ The non-zigzag system is in the symmetry class BDI \cite{pientka2017topological}
 Using the software package Qsymm\cite{varjas2018qsymm}, we find that the symmetry class of our system to be D because we break the chiral symmetry $\mathcal{C}$ resulting from the mirror-symmetric junction.
 
 \comment{The phase diagram does not change much, except we see a cleaner spectrum as a result of the D class symmetry.}
-Similar to what is described by Pientka et. al~\cite{pientka2017topological}, we see that the ribbon topology has a diamond-like shape as a function of phase $\phi$ and Zeeman field $E_Z$.
+Similar to what is described by Pientka et. al~\cite{pientka2017topological}, we see that the ribbon topology has a diamond-like shape as a function of phase $\phi$ and magnetic field $B_x$.
 We also observe additional gap closings which are due to the BDI symmetry that is present.
 As expected for the zigzag system, the magnitude of the gap is significantly improved, while preserving the diamond-like shape in parameter space.
 Additionally, we see a cleaner and more stable topological region due to the absence of the gap closings resulting from the aforementioned chiral symmetry.
