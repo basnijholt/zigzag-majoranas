@@ -3,7 +3,7 @@ CODE_DIR = $(BASE_DIR)/code
 PAPER_DIR = $(BASE_DIR)/paper
 
 plot:
-	git ls-files *.svg | sed s/svg// | xargs -I % inkscape $$PWD/%svg --export-pdf=%pdf -D
+	git ls-files *.svg | sed s/svg// | xargs -I % inkscape $$PWD/%svg --export-pdf=%pdf -C
 	jupyter nbconvert --to notebook --execute --ExecutePreprocessor.timeout=600 ../paper-figures.ipynb
 
 pdf: bbl
