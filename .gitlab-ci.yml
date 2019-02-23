@@ -10,3 +10,4 @@ paper:
   artifacts:
     paths:
       - paper/snakemajoranas.pdf
+      - paper/figures/*pdf
