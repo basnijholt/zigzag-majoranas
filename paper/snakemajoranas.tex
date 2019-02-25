@@ -93,8 +93,8 @@ The current experimental effort ~\cite{mourik_signatures_2012,das_zero-bias_2012
 \comment{The gap is small because of long trajectories.}
 One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap~\cite{ren_topological_2018}; where the gap in the density of states significantly reduces for states with the momentum directed along the length of the strip.
 From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor.
-Additionally, these long trajectories have long flight times $\tau_f \approx L_\textrm{t} / v_F$ (see Fig.~\ref{fig:setup}), where $L_\textrm{t}$ is the trajectory length.
-Equivalently, the Thouless energies $E_{\textrm{Th}}=\hbar / \tau_f$ are small, resulting in a small gap.
+Additionally, these long trajectories have long flight times $\tau_\textrm{f} \approx L_\textrm{t} / v_F$ (see Fig.~\ref{fig:setup}), where $L_\textrm{t}$ is the trajectory length.
+Equivalently, the Thouless energies $E_{\textrm{Th}}=\hbar / \tau_\textrm{f}$ are small, resulting in a small gap.
 This problem does not appear when the Fermi surface is small and the zero point motion dominates the transverse velocity, so a low filling of the bands is a workaround\cite{nijholt2015orbital}.
 However, low filling requires precise knowledge of the system and might be more sensitive to disorder or microscopic inhomogeneities.
 On the other hand, disorder scatters these long trajectories and introduces a cut-off on the scale of the mean-free path~\cite{haim_double-edge_2018}, however, disorder is impossible to control to a required precision experimentally.
@@ -103,10 +103,12 @@ On the other hand, disorder scatters these long trajectories and introduces a cu
 \centering
 \includegraphics[width=0.75\columnwidth]{figures/zigzag.pdf}
 \caption{The straight (top) and the zigzag (bottom) SNS junction.
-The yellow areas are superconductors with a phase difference $\phi$ between the top and the bottom..
-The middle area is the semiconductor of width $W$ and has a magnetic field $B$ in the $x$-direction.
-The modulation of the zigzag is parameterized by its amplitude $z_y$ and period $z_x$.
-Inside the semiconductor we indicate the longest possible trajectory by the red curve.
+The yellow areas are superconductors with a phase difference $\phi$ between the top and the bottom.
+The middle area is the semiconductor of width $W$.
+Only the semiconductor has a magnetic field $B$ pointing in the $x$-direction.
+The zigzag pattern has a peak-to-peak amplitude $z_y$ and a period $2 z_x$.
+A trajectory traveling at a grazing angle (red curve) has a very long flight time $\tau_\textrm{f}$ and a very small induced gap $E_\textrm{gap}$.
+At the same time, the zigzag geometry limits the length of a trajectory therefore lowering $\tau_\textrm{f}$ and increasing $E_\textrm{gap}$.
 \label{fig:setup}}
 \end{figure}
 
