@@ -103,7 +103,7 @@ On the other hand, disorder scatters these long trajectories and introduces a cu
 \centering
 \includegraphics[width=0.75\columnwidth]{figures/zigzag.pdf}
 \caption{Setup of the straight (top) and the zigzag (bottom) SNS junction.
-The yellow areas are the superconductors at a phase difference $\pm \phi / 2$.
+The yellow areas are the superconductors at an opposite superconducting phase $\pm \phi / 2$.
 The middle area is the semiconductor of width $W$ and has a magnetic field $B$ in the $x$-direction.
 The modulation of the zigzag is parameterized by its amplitude $z_y$ and period $z_x$.
 Inside the semiconductor we indicate the longest possible trajectory by the red curve.
@@ -199,39 +199,39 @@ This means that for transversal modes the transparency of the NS interface incre
 \section{Localization lengths and shape effects}\label{sec:shape_effects}
 
 \begin{figure}[!htb]
-\includegraphics[width=\columnwidth]{figures/wavefunctions}
-\caption{Density of wavefunctions $\left|\psi\right|^2$ for sizes and geometries.
+\includegraphics[width=\columnwidth]{figures/wave functions}
+\caption{Density of wave functions $\left|\psi\right|^2$ for sizes and geometries.
 With (a) a straight system, (b) a saw-toothed zigzag system, (c) a system where the normal region is defined by lines parallel to a sinusoid, and (d) similar to (c) but with disordered edges.
 Inside the figure, we indicate the Majorana length (or coherence length) $\xi_\textrm{M}$, the Majorana energy $E_\textrm{M}$ (the energy of the first excited state), and the topological energy gap $E_\textrm{gap}$.
 We observe that $\xi_\textrm{M}$ for (a) is almost two orders of magnitude longer and $E_\textrm{gap}$ more than an order of magnitude smaller than for (b), (c), and (d).
 The robustness of $E_\textrm{gap}$ and $\xi_\textrm{M}$ across (b), (c), and (d) means that the details of the geometry do not matter for the improvements to occur.
-The length of the system is $3.5 z_x=\SI{4550}{\nm}$, the remaining parameters values are written at the end of Sec.~\ref{sec:setup}.\label{fig:wavefunctions}}
+The length of the system is $3.5 z_x=\SI{4550}{\nm}$, the remaining parameters values are written at the end of Sec.~\ref{sec:setup}.\label{fig:wave_functions}}
 \end{figure}
 
 \comment{We calculate the wave functions and find the Majorana lengths by fitting an exponential.}
-We model a finite system to compute the Majorana wave function density for different geometries; ribbon, saw-toothed zigzag, parallel curves, and variants of the latter with disordered edges.
-By diagonalizing the Hamiltonian, we find the Majorana energy $E_\textrm{M}$ and the energy of the first excited state $E_1$, the lowest and second lowest energies, respectively.
-Using the eigenstates, we calculate the Majorana decay length $\xi_\textrm{M}$ by fitting an exponential to the density of a single Majorana wavefunction projected on the $x$-axis.
-To determine $\xi_\textrm{M}$, we use a trick and artificially break the particle-hole symmetry on one edge by adding a potential $V \sigma_0 \tau_0$ such that one of the Majorana states is pushed into the continuum and the fit to $\exp{\frac{x}{\xi_\textrm{M}}}$ becomes easier.
-In figure~\ref{fig:wavefunctions} the wavefunctions are displayed, superimposed upon their respective geometry.
+We model a finite system to compute the Majorana wave function density for different geometries; ribbon, saw-toothed zigzag, parallel curves, and a variant of the latter with disordered edges.
+In figure~\ref{fig:wave_functions} the wave functions are displayed, superimposed upon their respective geometry.
+By diagonalizing the Hamiltonian, we find the Majorana energy $E_\textrm{M}$ and by using the corresponding eigenstate of that lowest energy, we get the wave function.
+To determine $\xi_\textrm{M}$, we use a trick and artificially break the particle-hole symmetry on one edge by adding a potential $V \sigma_0 \tau_0$ such that one of the Majorana states is pushed into the continuum, then the fit to $\exp{\frac{x}{\xi_\textrm{M}}}$ becomes better.
+Using this system, we then find the Majorana decay length $\xi_\textrm{M}$ by fitting an exponential to the density of the single Majorana wave function projected on the $x$-axis.
 All systems have identical Hamiltonian parameters in order to compare the effects of the changing geometry meaningfully.
 
 \comment{In a straight system, the Majoranas are very poorly localized.}
-For the ribbon system [Fig.~\ref{fig:wavefunctions}(a)], we see that the decay of the density is long compared to the system size.
-The wavefunction extends to the center of the system, resulting in overlapping Majoranas and a non-zero energy of the state.
-Further, the energy of the Majorana state $E_\textrm{M}$ in the straight system is badly separated from the next lowest lying eigenstate $E_1$.
+For the ribbon system [Fig.~\ref{fig:wave_functions}(a)], we see that the decay of the density is long compared to the system size.
+The wave function extends to the center of the system, resulting in overlapping Majoranas and a non-zero energy of the state.
+Further, the energy of the Majorana state $E_\textrm{M}$ in the straight system is high in comparison with the topological gap $E_\textrm{gap}$.
 Altogether, the increase in the topological gap, but also the before mentioned reduction of the group velocity, result in poorly localized Majoranas and minimal topological protection against perturbations.  % TODO: probably put the eq for coherence length here?
 
 \comment{In a zigzag geometry Majoranas are localized within one segment of zigzag.}
 We observe that for zigzag systems the Majorana properties improve.
-All of the zigzag type geometries display a reduced coherence length and the delocalized nature of the wavefunctions is improved, as is visible through the density plots.
-Quantitatively, the improvement in the localization of the Majoranas is also distinctly apparent: the energies of the Majorana states are three orders of magnitude lower than the energy of the second lowest-lying wavefunctions.
+All of the zigzag type geometries display a reduced coherence length and the delocalized nature of the wave functions is improved, as is visible through the density plots.
+Quantitatively, the improvement in the localization of the Majoranas is also distinctly apparent: the energies of the Majorana states are three orders of magnitude lower than the energy of the second lowest-lying wave functions.
 As mentioned in section \ref{sec:band_structures}, this can be attributed to the way the energy gap and velocity factor into the Majorana coherence length which scales with these parameters $\xi_\textrm{M}=\hbar\frac{v_\textrm{F}}{\Delta_\textrm{ind}}$.
 Additionally, the reduction of the Majorana decay length allows for shorter systems sizes, which is favorable because in an experimental device the coherence length of a material sets a limit for the device size.
 
 \comment{The specific geometry is not important.}
-The shape of the wavefunctions does not change significantly depending on the details of the geometry.
-The sharp corners of the sawtooth versus the smooth shape of the snakelike system do not have a significant impact on the shape of the wavefunction, and neither do the disordered edges affect the relevant parameters.
+The shape of the wave functions does not change significantly depending on the details of the geometry.
+The sharp corners of the sawtooth versus the smooth shape of the snakelike system do not have a significant impact on the shape of the wave function, and neither do the disordered edges affect the relevant parameters.
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Topological phase diagram
@@ -251,7 +251,7 @@ The remaining parameters values are written at the end of Sec.~\ref{sec:setup}, 
 
 \comment{We calculate the topological phase diagram using the gap size.}
 In Fig.~\ref{fig:phasediagrams} we plot the energy gap as a function of magnetic field, chemical potential, $E_\textrm{gap}(B_x, \mu)$; and the superconducting phase difference $E_\textrm{gap}(B_x, \phi)$ for both a straight system [(c) and (e)] and a zigzag system [(d) and (f)].
-Additionally, we plot the first $\SI{1300}{\nm}$ (one zigzag period) of the wavefunctions [(a) and (b)] at the most optimal point in parameter space for the straight system.
+Additionally, we plot the first $\SI{1300}{\nm}$ (one zigzag period) of the wave functions [(a) and (b)] at the most optimal point in parameter space for the straight system.
 For the straight system we calculate $E_\textrm{gap}$ by performing a binary search in $E$ for the energy at which the propagating modes start to appear.~\cite{nijholt2015orbital}
 Additionally, in Fig.~\ref{fig:phasediagrams}(c) we plot the phase boundaries that we find by solving a generalized eigenvalue problem as described in Ref.~\onlinecite{nijholt2015orbital}.
 Due to the large size of the zigzag supercell, we are unable to use these full spectrum methods to compute these quantities.
