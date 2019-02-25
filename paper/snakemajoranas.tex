@@ -213,8 +213,10 @@ The length of the system is $3.5 z_x=\SI{4550}{\nm}$, the remaining parameter va
 We model a finite system to compute the Majorana wave function density for different geometries; ribbon, saw-toothed zigzag, parallel curves, and a variant of the latter with disordered edges.
 In figure~\ref{fig:wave_functions} the wave functions are displayed, superimposed upon their respective geometry.
 By diagonalizing the Hamiltonian, we find the Majorana energy $E_\textrm{M}$, and by using the corresponding eigenstate of that lowest energy, we get the wave function.
-To determine $\xi_\textrm{M}$, we use a trick and artificially break the particle-hole symmetry on one edge by adding a potential $V \sigma_0 \tau_0$ such that one of the Majorana states is pushed into the continuum.
+To determine $\xi_\textrm{M}$ for the zigzag systems, we use a trick and artificially break the particle-hole symmetry on one edge by adding a potential $V \sigma_0 \tau_0$ such that one of the Majorana states is pushed into the continuum.
 Using this system, we then find the Majorana size $\xi_\textrm{M}$ by fitting an exponential to the density of the single Majorana wave function projected on the $x$-axis.
+This method is numerically not feasible for a straight system because the decay length is too long.
+Instead, we find $\xi_\textrm{M}$ through the eigenvalue decomposition of the translation operator at zero energy as described in Ref.~\onlinecite{nijholt2015orbital}.
 All systems have identical Hamiltonian parameters to compare the effects of the changing geometry meaningfully.
 
 \comment{In a straight system, the Majoranas are very poorly localized.}
