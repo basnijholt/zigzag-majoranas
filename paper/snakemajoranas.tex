@@ -86,7 +86,7 @@ In addition to the improved robustness of Majoranas, this new zigzag geometry is
 %%██████████████████████████████████████████████████████████████████████████
 \section{Introduction}
 \comment{Hybrid NS structures become topological and are useful for TQC.}
-A hybrid structure containing a semiconductor with strong spin-orbit coupling coupled to a superconductor, inside a magnetic field becomes topological within the right parameter regime ($E_z^2>\mu^2+\Delta^2$ for a simple nanowire), and Majorana bound states appear on its edges.~\cite{lutchyn_majorana_2010,oreg_helical_2010}
+A hybrid structure containing a semiconductor with strong spin-orbit coupling coupled to a superconductor, inside a magnetic field becomes topological within the right parameter regime ($E_z^2>\mu^2+\Delta^2$ for a simple nanowire), and Majorana bound states appear on its edges~\cite{lutchyn_majorana_2010,oreg_helical_2010}.
 Majorana bound states are a promising candidate to form the basis of a stable platform for topological quantum computing. ~\cite{alicea2012new,beenakker2013search}
 The current experimental effort ~\cite{mourik_signatures_2012,das_zero-bias_2012,deng_anomalous_2012,churchill_superconductor-nanowire_2013,zhang2018quantized} focuses on creating pairs of Majorana bound states in hybrid normal-superconductor (NS) nanowire structures.
 
@@ -131,7 +131,7 @@ In this paper we will focus on two-dimensional (2D) Josephson junctions; however
 
 \comment{We consider a two-dimensional system with zigzag and BdG Hamiltonian.}
 We consider a Josephson junction (Fig.~\ref{fig:setup}) consisting of a 2D strip of semiconductor, with superconductors on both sides.
-We modulate the shape of the normal region, which can be either saw-toothed zigzag as depicted [Fig.~\ref{fig:setup}(b)], or a more smooth sinusoidal-like shape.
+We modulate the shape of the normal region, which can be either zigzag as depicted [Fig.~\ref{fig:setup}(b)], or a more smooth sinusoidal-like shape.
 Similar to the conventional straight system \cite{pientka2017topological}, a magnetic field $B_x$ perpendicular to the junction is applied.
 We model the system with a Bogoliubov-de Gennes Hamiltonian (BdG):
 \begin{subequations}
@@ -154,7 +154,7 @@ Later we relax this assumption and show that the exact shape is unimportant.
 
 \comment{We discretize the Hamiltonian and simulate it with Kwant.}
 We discretize our continuum Hamiltonian [Eq.~\eqref{eq:hamiltonian}] on a square grid and implement a tight-binding model using Kwant~\cite{groth_kwant:_2014}.
-To preferentially sample important regions of parameter space, we use the Adaptive package.~\cite{adaptive}
+To preferentially sample important regions of parameter space, we use the Adaptive package~\cite{adaptive}.
 The entire source code and the resulting raw data are available in Ref.~\onlinecite{data}.  % TODO: update the bib when the data is uploaded
 
 \comment{The default parameters are ...}
@@ -203,7 +203,7 @@ This provides another mechanism of the gap enhancement.
 \begin{figure}[!htb]
 \includegraphics[width=\columnwidth]{figures/wavefunctions}
 \caption{Density of Majorana wave functions $\left| \psi_\textrm{M} \right|^2$ for sizes and geometries.
-With (a) a straight system, (b) a saw-toothed zigzag system, (c) a system where lines parallel to a sinusoid defines the normal region, and (d) similar to (c) but with disordered edges.
+With (a) a straight system, (b) a zigzag system, (c) a system where lines parallel to a sinusoid defines the normal region, and (d) similar to (c) but with disordered edges.
 Inside the figure, we indicate the Majorana length (or coherence length) $\xi_\textrm{M}$, the Majorana energy $E_\textrm{M}$ (the energy of the first excited state), and the topological energy gap $E_\textrm{gap}$.
 We observe that $\xi_\textrm{M}$ for the straight system is almost two orders of magnitude longer and $E_\textrm{gap}$ more than an order of magnitude smaller than for the zigzag systems.
 The robustness of $E_\textrm{gap}$ and $\xi_\textrm{M}$ across the zigzag geometries means that the details of the geometry do not matter for the improvements to occur.
@@ -223,7 +223,7 @@ In the straight system [Fig.~\ref{fig:wave_functions}(a)], we see that the decay
 The small topological gap combined with the high velocity result in a large Majorana size
 \begin{equation}
 \label{eq:xi_M}
-\xi_\textrm{M}=\hbar \frac{v_\textrm{F}}{\Delta_\textrm{ind}},
+\xi_\textrm{M}=\hbar \frac{v_\textrm{F}}{E_\textrm{gap}},
 \end{equation}
 and therefore a minimal topological protection against perturbations.
 The wave function extends to the center of the system, resulting in highly overlapping Majoranas and a Majorana coupling $E_\textrm{M}$ comparible to $E_\textrm{gap}$.
@@ -250,10 +250,11 @@ The remaining parameter values are written at the end of Sec.~\ref{sec:setup}, e
 \end{figure}
 
 \comment{We calculate the topological phase diagram using the gap size.}
-In Fig.~\ref{fig:phasediagrams} we plot the energy gap as a function of magnetic field, chemical potential, $E_\textrm{gap}(B_x, \mu)$; and the superconducting phase difference $E_\textrm{gap}(B_x, \phi)$ for both a straight system [(c) and (e)] and a zigzag system [(d) and (f)].
-Additionally, we plot the first $\SI{1300}{\nm}$ (one zigzag period) of the wave functions [(a) and (b)] at the most optimal point in parameter space for the straight system.
-For the straight system we calculate $E_\textrm{gap}$ by performing a binary search in $E$ for the energy at which the propagating modes start to appear.~\cite{nijholt2015orbital}
-Additionally, in Fig.~\ref{fig:phasediagrams}(c) we plot the phase boundaries that we find by solving a generalized eigenvalue problem as described in Ref.~\onlinecite{nijholt2015orbital}.
+In Fig.~\ref{fig:phasediagrams} we compare the phase diagrams of the straight and the zigzag junction.
+We plot $E_\textrm{gap}$ as a function of magnetic field, chemical potential, $E_\textrm{gap}(B_x, \mu)$; and the superconducting phase difference $E_\textrm{gap}(B_x, \phi)$ for both a straight system [(c) and (e)] and a zigzag system [(d) and (f)].
+Additionally, we plot the first $\SI{1300}{\nm}$ (one zigzag period) of the wave functions [(a) and (b)] at the optimal point in parameter space for the straight system.
+For the straight system we calculate $E_\textrm{gap}$ by performing a binary search in $E$ for the energy at which the propagating modes start to appear~\cite{nijholt2015orbital}.
+Additionally, in Fig.~\ref{fig:phasediagrams}(c) we plot the phase boundaries obtained by solving a generalized eigenvalue problem~\cite{nijholt2015orbital}.
 Due to the large size of the zigzag supercell, we are unable to use these full spectrum methods to compute these quantities.
 Instead, we calculate $E_\textrm{gap}$ by finding the absolute minimum of the spectrum $E_\textrm{gap}=\min{|E(k)|}$.
 By both observing the gap closings and knowing the topological phase for the non-zigzag system, we can infer the topology of the system with zigzag modulation.
