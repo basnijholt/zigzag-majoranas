@@ -257,43 +257,37 @@ For the straight system we calculate $E_\textrm{gap}$ by performing a binary sea
 Additionally, in Fig.~\ref{fig:phasediagrams}(c) we plot the phase boundaries obtained by solving a generalized eigenvalue problem~\cite{nijholt2015orbital}.
 Due to the large size of the zigzag supercell, we are unable to apply these methods to zigzag geometries.
 Instead, we calculate $E_\textrm{gap}$ by finding the absolute minimum of the spectrum $E_\textrm{gap}=\min{\left|E(k)\right|}$.
-By both observing the gap closings and knowing the topological phase for the straight system, we then infer the topology of the zigzag system and verify this by calculating the spectrum of the system.
+By both observing the gap closings and comparing to the topological phase diagram of the straight system, we then infer the topology of the zigzag system and verify this by calculating the Majorana wave function of a finite length zigzag.
 
 \comment{The introduction ofa the zigzag breaks a chiral symmetry, bringing the system from the BDI to the D symmetry class}
-The non-zigzag system is in the symmetry class BDI \cite{pientka2017topological}.
-Using the software package Qsymm\cite{varjas2018qsymm}, we find that the symmetry class of our system to be D because we break the chiral symmetry $\mathcal{C}$ resulting from the mirror-symmetric junction.
+The straight system is in the symmetry class BDI \cite{pientka2017topological}.
+Using the software package Qsymm~\cite{varjas2018qsymm}, we find that the zigzag shape modulation violates the chiral symmetry, leaving only the particle-hole symmetry and the reflection symmetry with respect to the $x$-axis.
 
 \comment{The phase diagram does not change much, except we see a cleaner spectrum as a result of the D class symmetry.}
-Similar to what is described by Pientka \textit{et al.}~\cite{pientka2017topological}, we see that the ribbon topology has a diamond-like shape as a function of phase $\phi$ and magnetic field $B_x$.
-We also observe additional gap closings which are due to the BDI symmetry that is present.
-As expected for the zigzag system, the magnitude of the gap is significantly improved, while preserving the diamond-like shape in parameter space.
-Additionally, we see a cleaner and more stable topological region due to the absence of the gap closings resulting from the aforementioned chiral symmetry.
+Similar to the findings of Pientka \textit{et al.}~\cite{pientka2017topological}, we see that the straight geometry has a diamond-shaped topological region.
+We also observe additional gap closings due to the BDI symmetry.
+The topological phase diagram of the zigzag system has a qualitatively similar shape but a significantly increased topological gap.
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Discussion and Conclusions
 %%██████████████████████████████████████████████████████████████████████████
 \section{Discussion and Conclusions}
 
-\comment{The zigzag geometry is a useful tool in hardening the gap and decreasing Majorana length.}
-The introduction of a zigzag geometry increases the topological gap by over an order of magnitude, as well as offering a substantial reduction of the Majorana length, which enables experimentalists to create significantly shorter devices.
-The improvements occur regardless of any particular parameter values, moreover, even when using the parameter values of the optimal gap in the straight system (Fig.~\ref{fig:phasediagrams}), the Majorana size $\xi_\textrm{M}$ and $E_\textrm{gap}$ are still more than an order of magnitude better for the zigzag system.
-Additionally, the breaking of BDI symmetry into D symmetry results in a cleaner and more stable topological region.
-Finally, the reduction of the Majorana size allows for shorter systems sizes, which is favorable because in an experimental device the coherence length of a material sets a limit for the device size.
-
-\comment{Disorder has a similar effect, but one has no control over it.}
-Recently, it has been shown~\cite{haim_double-edge_2018} that having a system with weak disorder can lead to a reduction in the Majorana size, similar to what happens with the introduction of a zigzag geometry.
-However, in contrast to introducing weak disorder into a system, changing the geometry is experimentally much easier to realize and therefore easier to control.
+\comment{The zigzag geometry is a controllable tool in hardening the gap and decreasing Majorana size.}
+The zigzag geometry increases the topological gap in the high density regime by more than an order of magnitude, as well as substantially reducing of Majorana size.
+The improvements occur in broad range of parameter values, moreover, even using $B_x$ optimal for the straight system in the high density regime (Fig.~\ref{fig:phasediagrams}), the Majorana size $\xi_\textrm{M}$ and $E_\textrm{gap}$ are still more than an order of magnitude better for the zigzag system.
+We expect that the improvement of the device performance will significantly simplify the creation of Majorana devices and the detection of Majorana states.
+The zigzag geometry offers a controllable way to remove long trajectories, unlike disorder~\cite{haim_double-edge_2018} that otherwise has a similar effect.
 
 \comment{Current fabrication techniques are compatible with the proposed geometry, and experimental verification can be near.}
 Current fabrication techniques are compatible with the proposed geometry; zigzag devices have already been fabricated~\cite{fokko_zigzag}.
-Slight modifications to the geometry, for example, to ease measurement, should not have significant implications on the physics.
+We have demonstrated that the unavoidable variation in the experimental device geometry should not have a detrimental impact on the zigzag devices.
 
-\comment{It is interesting to study what geometry creates an optimal environment for Majorana modes to exist.}
-We have studied zigzag and snake-like geometries of the semiconductor region, but perhaps a more exotic shape will be optimal.
-A study optimizing the geometry's parameters for supporting Majoranas is an exciting continuation of our research.
-
-\comment{Extensions: we omit several physical effects, disorder, electrostatics, etc.}
-Finally, we exclude several physical effects, such as disorder, electrostatics, the orbital effect, the finite thickness of the sample, and electron-electron interactions; however, we expect these to be second or higher order effects which will not alter our conclusions.
+\comment{Optimizing the geometry, a more detailed modeling, and a simple analytical estimation are open questions for further research}
+Our work is the first demonstration of the impact of the Majorana device geometry on its performance and it opens a much harder question of finding the optimal geometry.
+A promising approach to tackle this question would rely on constructing a quasiclassical model of the zigzag devices. 
+Finally, we have excluded several important physical effects, such as: disorder, electrostatics, the orbital effect of magnetic field, and the finite thickness of the sample.
+While we expect these phenomena to not influence our qualitative findings, a more detailed simulation should provide a better guidance to future experiments.
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Acknowledgments
@@ -301,6 +295,12 @@ Finally, we exclude several physical effects, such as disorder, electrostatics, 
 \section{Acknowledgments}
 We are grateful to "people" for useful discussions.
 This work was supported by the Netherlands Organization for Scientific Research (NWO/OCW), as part of the Frontiers of Nanoscience program, the Foundation for Fundamental Research on Matter (FOM), and an ERC Starting Grant STATOPINS 638760.
+
+\section{Author contributions}
+The idea of the zigzag geometry was authored by T.L.
+The code was written by B.N. and extended by T.L.
+The writing of the manuscript was performed by B.N. with input of T.L. and A.A.
+The analysis of the results and planning of the project were performed by all authors.
 
 \bibliographystyle{apsrev4-1}
 \bibliography{snakemajoranas}
