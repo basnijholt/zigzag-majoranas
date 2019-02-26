@@ -40,7 +40,7 @@
 
 \renewcommand{\comment}[2]{#2}
 % Uncomment the following line for paragraph descriptions to appear in the file.
-\renewcommand{\comment}{\paragraph}
+% \renewcommand{\comment}{\paragraph}
 
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}
@@ -68,11 +68,11 @@
 \title{Enhanced proximity effect in zigzag-shaped Majorana Josephson junctions.}
 
 \author{Tom Laeven}
-\affiliation{Kavli Institute of Nanoscience, Delft University of Technology, P.O. Box 4056, 2600 GA Delft, The Netherlands}
 \email[Electronic address: ]{tlaeven@hotmail.com}
-\author{Bas Nijholt}
 \affiliation{Kavli Institute of Nanoscience, Delft University of Technology, P.O. Box 4056, 2600 GA Delft, The Netherlands}
+\author{Bas Nijholt}
 \email[Electronic address: ]{bas@nijho.lt}
+\affiliation{Kavli Institute of Nanoscience, Delft University of Technology, P.O. Box 4056, 2600 GA Delft, The Netherlands}
 \author{Michael Wimmer}
 \email[Electronic address: ]{m.t.wimmer@tudelft.nl}
 \affiliation{Kavli Institute of Nanoscience, Delft University of Technology,
@@ -80,8 +80,8 @@
 \affiliation{QuTech, Delft University of Technology,
  P.O. Box 4056, 2600 GA Delft, The Netherlands}
 \author{Anton R. Akhmerov}
-\affiliation{Kavli Institute of Nanoscience, Delft University of Technology, P.O. Box 4056, 2600 GA Delft, The Netherlands}
 \email[Electronic address: ]{zigzag@antonakhmerov.org}
+\affiliation{Kavli Institute of Nanoscience, Delft University of Technology, P.O. Box 4056, 2600 GA Delft, The Netherlands}
 
 \date{\today}
 \begin{abstract}
@@ -119,7 +119,7 @@ On the other hand, disorder scatters these long trajectories and introduces a cu
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=0.75\columnwidth]{figures/zigzag.pdf}
+\includegraphics[width=0.9\columnwidth]{figures/zigzag.pdf}
 \caption{The straight (top) and the zigzag (bottom) SNS junction.
 The zigzag pattern has a peak-to-peak amplitude $z_y$ and a period $z_x$.
 The yellow areas are superconductors with a phase difference of $\phi$ between the top and the bottom.
@@ -183,8 +183,7 @@ Unless noted differently, the Hamiltonian parameters are $\alpha=\SI{20}{\meV \n
 \caption{Band stuctures of the system in Fig.~\ref{fig:setup}(b) with different zigzag amplitudes.
 The blue lines correspond to a trivial phase ($\phi=0$, $B=0$) and the orange lines to a topological phase ($\phi=\pi$, $B = \SI{1}{T}$).
 The three subplots are for different amplitudes of the zigzag, with (a) a straight system $z_y=0$, (b) $z_y=W/2$, and (c) $z_y=W$, where $W=\SI{200}{\nm}$ is the junction width.
-On the $x$-axis is the Bloch momentum where $z_x=\SI{1300}{\nm}$.
-Subplot (a) has a different scale on the $x$-axis for $k_x < 0$ than the other subplots and displays the unfolded band structure.
+Subplot (a) has a different $x$-scale for $k_x < 0$ from the other subplots and displays the unfolded band structure.
 For the right-hand side of (a) ($k_x > 0$), (b), and (c), the folding is the same, such that the velocity $v=dE/dk$ can be compared visually.
 We observe that once there are no more straight trajectories inside the junction (when $z_y=W$) the spectrum becomes insensitive to the momentum $k_x$ and equivalently, $v_\textrm{F}$ decreases.
 As the zigzag amplitude increases, the band gap $E_\textrm{gap}$ increases by an order of magnitude.
@@ -227,7 +226,7 @@ We model a finite system and compute the Majorana wave function in different geo
 By diagonalizing the Hamiltonian, we find the Majorana energy $E_\textrm{M}$, and by using the corresponding eigenstate of that lowest energy, we get the wave function.
 To reduce the finite size effects in determining the Majorana size $\xi_\textrm{M}$ in a zigzag system, we introduce a particle-hole symmetry breaking potential $V \sigma_0 \tau_0$ on one edge, such that one of the Majorana states is pushed away from zero energy.
 We then find $\xi_\textrm{M}$ by fitting an exponential to the density of the single Majorana wave function projected on the $x$-axis.
-In the straight system we use the eigenvalue decomposition of the translation operator at zero energy~\ref{nijholt2015orbital} for performance reasons.
+In the straight system we use the eigenvalue decomposition of the translation operator at zero energy~\cite{nijholt2015orbital} for performance reasons.
 
 \comment{In a straight system, the Majoranas are very poorly localized because of small gap and high velocity}
 We show the resulting Majorana wave function densities $\left| \psi_\textrm{M} \right|^2$ in different geometries in Fig.~\ref{fig:wave_functions} using the same Hamiltonian parameter values.
