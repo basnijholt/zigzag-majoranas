@@ -133,7 +133,7 @@ In this paper we will focus on two-dimensional (2D) Josephson junctions; however
 We consider a Josephson junction (Fig.~\ref{fig:setup}) consisting of a 2D strip of semiconductor, with superconductors on both sides.
 We modulate the shape of the normal region, which can be either saw-toothed zigzag as depicted [Fig.~\ref{fig:setup}(b)], or a more smooth sinusoidal-like shape.
 Similar to the conventional straight system \cite{pientka2017topological}, a magnetic field $B_x$ perpendicular to the junction is applied.
-We model the system with a Bogoliubov-de Gennes Hamiltonian (BdG)
+We model the system with a Bogoliubov-de Gennes Hamiltonian (BdG):
 \begin{subequations}
 \begin{align}
     H_\textrm{N} = & \left[\frac{\hbar^2\left(\kx^2 + \ky^2\right)}{2\meff} - \mu + \alpha \left( \ky \sigma_x - \kx \sigma_y \right) \right] \tau_z
@@ -143,15 +143,14 @@ We model the system with a Bogoliubov-de Gennes Hamiltonian (BdG)
 \end{align}
 \label{eq:hamiltonian}
 \end{subequations}
-Where $H_\textrm{N}$ and $H_\textrm{SC}$ are the Hamiltonians of the semiconductor and superconductors, respectively.
-Here, the normal part has a linear Rashba spin-orbit coupling term characterized by $\alpha$ and a Zeeman field with $E_z=\frac{1}{2} \mu_B g B_x$.
-The superconductor has a superconducting coupling term $\Delta$ with the pair of superconductors at an opposite superconducting phase $\exp{\pm i \phi/2}$.
+Here $H_\textrm{N}$ and $H_\textrm{SC}$ are the Hamiltonians of the semiconductor and superconductors, respectively.
+The normal part has a linear Rashba spin-orbit coupling term with strength $\alpha$ and a Zeeman field with $E_z=\frac{1}{2} \mu_B g B_x$.
+The superconductor has a coupling term $\Delta$, and the phases of the superconductors equal to $\pm\phi/2$.
 Both the normal part and the superconductors have a kinetic term and chemical potential $\mu$.
-The complete Hamiltonian has the form
-They act on the spinor wave function $\Psi={\left(\psi_{e\uparrow},\psi_{e\downarrow},\psi_{\textrm{h}\downarrow},-\psi_{\textrm{h}\uparrow}\right)}^{T}$, where $\psi_e$, $\psi_\textrm{h}$ are its electron and hole components, and $\psi_\uparrow$, $\psi_\downarrow$ are the spin-up and spin-down components.
+The BdG Hamiltonian acts on the spinor wave function $\Psi={\left(\psi_{e\uparrow},\psi_{e\downarrow},\psi_{\textrm{h}\downarrow},-\psi_{\textrm{h}\uparrow}\right)}^{T}$, where $\psi_e$, $\psi_\textrm{h}$ are its electron and hole components, and $\psi_\uparrow$, $\psi_\downarrow$ are the spin-up and spin-down components.
 The Pauli matrices $\sigma_{i}$ act on the spin degree of freedom and $\tau_{i}$ act on the electron-hole degree of freedom.
-For the zigzag geometry, we first consider a zigzag pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction [see Fig.~\ref{fig:setup}(b)].
-Later in this manuscript, we show that the exact details of the shape are unimportant and consider different zigzag geometries also parametrized by $z_x, \; z_y, \; W$.
+We consider a zigzag pattern with a period $z_x$, a peak-to-peak amplitude $z_y$, and $W$ the width of the junction [see Fig.~\ref{fig:setup}(b)].
+Later we relax this assumption and show that the exact shape is unimportant.
 
 \comment{We discretize the Hamiltonian and simulate it with Kwant.}
 We discretize our continuum Hamiltonian [Eq.~\eqref{eq:hamiltonian}] on a square grid and implement a tight-binding model using Kwant~\cite{groth_kwant:_2014}.
@@ -159,7 +158,7 @@ To preferentially sample important regions of parameter space, we use the Adapti
 The entire source code and the resulting raw data are available in Ref.~\onlinecite{data}.  % TODO: update the bib when the data is uploaded
 
 \comment{The default parameters are ...}
-Unless noted differently, the Hamiltonian parameters are $\alpha=\SI{20}{\meV \nm}$, $g=26$, $\meff=\SI{0.02}{\electronmass}$, $\mu=\SI{10}{\meV}$, $B=\SI{1}{T}$, $\phi=\pi$, and $\Delta=\SI{1}{\meV}$; and the geometry parameters are $W=\SI{200}{\nm}$, the period of the zigzag $z_x=\SI{1300}{\nm}$, the discretization contant $a=\SI{10}{\nm}$, and the lengths of the superconductors $L_\textrm{SC}=\SI{300}{\nm}$.  % TODO: Tom: L_sc and Delta not compatible?
+Unless noted differently, the Hamiltonian parameters are $\alpha=\SI{20}{\meV \nm}$, $g=26$, $\meff=\SI{0.02}{\electronmass}$, $\mu=\SI{10}{\meV}$, $B=\SI{1}{T}$, $\phi=\pi$, and $\Delta=\SI{1}{\meV}$; and the geometry parameters are $W=\SI{200}{\nm}$, the period of the zigzag $z_x=\SI{1300}{\nm}$, the discretization contant $a=\SI{10}{\nm}$, and the lengths of the superconductors $L_\textrm{SC}=\SI{300}{\nm}$.
 
 
 %%██████████████████████████████████████████████████████████████████████████
@@ -184,16 +183,17 @@ The parameter values are written at the end of Sec.~\ref{sec:setup}.\label{fig:b
 \comment{We calculate the band structure for varying amount of zigzag.}
 We apply sparse diagonalization to the supercell Hamiltonian at different momenta $k_x$ to compute the band structure.
 Because of the large periodicity of the zigzag and the resulting large supercell, the band structure is heavily folded.
-In figure~\ref{fig:band_structures} we show the resulting band structures for zigzag systems with varying amplitude.
+In Fig.~\ref{fig:band_structures} we show the resulting band structures of zigzag systems with varying $z_y$.
 The introduction of the zigzag has a striking effect: the bands flatten out and the topological gap increases by more than an order of magnitude.
 
 \comment{Zigzag improves the gap and size because of cutting of trajectories and increasing transparency.}
-This confirms our expectation that the zigzag removes trajectories propagating at grazing angles.
-In the unfolded band structure for a straight system, as seen in Fig.~\ref{fig:band_structures}(a), the gap in a straight system occurs around $k_F$, and because the zigzag cuts off long trajectories, the gap size increases.
-Besides this, the states from different segments of the zigzag pattern have a negligible overlap and therefore have a vanishing velocity.
+In the unfolded band structure of a straight system, shown in Fig.~\ref{fig:band_structures}(a), the lowest energy states occur at $k \approx k_F$.
+We interpret the increase of the gap $E_\textrm{gap}$ shown in Fig.~\ref{fig:band_structures}(b) and (c) as an effect of the zigzag geometry removing these long trajectories traveling at grazing angles.
+Besides the increased $E_\textrm{gap}$, the states from different segments of the zigzag pattern have a negligible overlap and therefore have a vanishing velocity.
 This reduction in velocity strongly reduces the Majorana size, as we discuss in section \ref{sec:shape_effects}.
-Additionally, in the presence of normal reflection, due to the presence of NS interfaces at a wide range of angles, the reflected part eventually scatters with a near perpendicular surface.
-This means that for transversal modes the transparency of the NS interface increases.
+Finally, in a zigzag geometry every trajectory encounters a superconductor close to normal incidence.
+Normal incidence has a higher transmission probability for entering the superconductor and therefore a higher Andreev reflection amplitude.
+This provides another mechanism of the gap enhancement.
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Localization lengths and shape effect
@@ -211,33 +211,27 @@ The length of the system is $3.5 z_x=\SI{4550}{\nm}$, the remaining parameter va
 \end{figure}
 
 \comment{We calculate the wave functions and find the Majorana lengths by fitting an exponential.}
-We model a finite system to compute the Majorana wave function density for different geometries; ribbon, saw-toothed zigzag, parallel curves, and a variant of the latter with disordered edges.
-In figure~\ref{fig:wave_functions} the Majorana wave function densities $\left| \psi_\textrm{M} \right|^2$ are displayed, superimposed upon their respective geometry.
+We model a finite system and compute the Majorana wave function in different geometries: ribbon, zigzag, sine-like parallel curves, and a variant of the latter with disordered edges.
 By diagonalizing the Hamiltonian, we find the Majorana energy $E_\textrm{M}$, and by using the corresponding eigenstate of that lowest energy, we get the wave function.
-To determine $\xi_\textrm{M}$ for the zigzag systems, we use a trick and artificially break the particle-hole symmetry on one edge by adding a potential $V \sigma_0 \tau_0$ such that one of the Majorana states is pushed into the continuum.
-Using this system, we then find the Majorana size $\xi_\textrm{M}$ by fitting an exponential to the density of the single Majorana wave function projected on the $x$-axis.
-This method is numerically not feasible for a straight system because the decay length is too long.
-Instead, we find $\xi_\textrm{M}$ through the eigenvalue decomposition of the translation operator at zero energy as described in Ref.~\onlinecite{nijholt2015orbital}.
-All systems have identical Hamiltonian parameters to compare the effects of the changing geometry meaningfully.
+To reduce the finite size effects in determining the Majorana size $\xi_\textrm{M}$ in a zigzag system, we introduce a particle-hole symmetry breaking potential $V \sigma_0 \tau_0$ on one edge, such that one of the Majorana states is pushed away from zero energy.
+We then find $\xi_\textrm{M}$ by fitting an exponential to the density of the single Majorana wave function projected on the $x$-axis.
+In the straight system we use the eigenvalue decomposition of the translation operator at zero energy~\ref{nijholt2015orbital} for performance reasons.
 
-\comment{In a straight system, the Majoranas are very poorly localized.}
-For the straight system [Fig.~\ref{fig:wave_functions}(a)], we see that the decay of the density is long compared to the system size.
-The wave function extends to the center of the system, resulting in highly overlapping Majoranas and a non-zero energy of the state.
-Further, the energy of the Majorana state $E_\textrm{M}$ in the straight system is high in comparison with the topological gap $E_\textrm{gap}$.
-Altogether, the small topological gap, but also the before mentioned high velocity, result in poorly localized Majoranas and minimal topological protection against perturbations because
-
+\comment{In a straight system, the Majoranas are very poorly localized because of small gap and high velocity}
+We show the resulting Majorana wave function densities $\left| \psi_\textrm{M} \right|^2$ in different geometries in Fig.~\ref{fig:wave_functions} using the same Hamiltonian parameter values.
+In the straight system [Fig.~\ref{fig:wave_functions}(a)], we see that the decay of the density is long compared to the system size.
+The small topological gap combined with the high velocity result in a large Majorana size
 \begin{equation}
 \label{eq:xi_M}
-\xi_\textrm{M}=\hbar \frac{v_\textrm{F}}{\Delta_\textrm{ind}}.
+\xi_\textrm{M}=\hbar \frac{v_\textrm{F}}{\Delta_\textrm{ind}},
 \end{equation}
+and therefore a minimal topological protection against perturbations.
+The wave function extends to the center of the system, resulting in highly overlapping Majoranas and a Majorana coupling $E_\textrm{M}$ comparible to $E_\textrm{gap}$.
 
 \comment{In a zigzag geometry Majoranas are localized within one segment of zigzag independent of details}
-We observe that for zigzag systems the Majorana properties improve independent of the details of the specific geometry.
-All of the zigzag type geometries display a significantly reduced Majorana size which improves the localization of the Majorana wave functions as is visible in the density plots.
-The Majorana size $\xi_\textrm{M}$ improves by a factor ~70 and is localized within one segment of the zigzag.
-Further, the topological gap $E_\textrm{gap}$ is an order of magnitude higher, and as mentioned in section \ref{sec:band_structures}, the velocity $v_\textrm{F}$ is an order of magnitude lower.
-Both of these parameters ensure that $\xi_\textrm{M}$ is greatly improved (Eq.~\eqref{eq:xi_M}).
-Finally, the reduction of the Majorana size allows for shorter systems sizes, which is favorable because in an experimental device the coherence length of a material sets a limit for the device size.
+We observe that in zigzag systems the Majorana properties improve independent of specific geometric details.
+All of the zigzag-type geometries have $\xi_\textrm{M}$ improved by a factor $\sim 70$ and have the Majorana wave function localized within one segment of the zigzag.
+Further, the topological gap $E_\textrm{gap}$ is an order of magnitude higher than in the straight junction, and as mentioned in section \ref{sec:band_structures}, the velocity $v_\textrm{F}$ is more than an order of magnitude lower.
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Topological phase diagram
@@ -283,6 +277,7 @@ Additionally, we see a cleaner and more stable topological region due to the abs
 The introduction of a zigzag geometry increases the topological gap by over an order of magnitude, as well as offering a substantial reduction of the Majorana length, which enables experimentalists to create significantly shorter devices.
 The improvements occur regardless of any particular parameter values, moreover, even when using the parameter values of the optimal gap in the straight system (Fig.~\ref{fig:phasediagrams}), the Majorana size $\xi_\textrm{M}$ and $E_\textrm{gap}$ are still more than an order of magnitude better for the zigzag system.
 Additionally, the breaking of BDI symmetry into D symmetry results in a cleaner and more stable topological region.
+Finally, the reduction of the Majorana size allows for shorter systems sizes, which is favorable because in an experimental device the coherence length of a material sets a limit for the device size.
 
 \comment{Disorder has a similar effect, but one has no control over it.}
 Recently, it has been shown~\cite{haim_double-edge_2018} that having a system with weak disorder can lead to a reduction in the Majorana size, similar to what happens with the introduction of a zigzag geometry.
