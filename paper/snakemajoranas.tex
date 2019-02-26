@@ -92,17 +92,18 @@ The current experimental effort ~\cite{mourik_signatures_2012,das_zero-bias_2012
 
 \comment{SNS junctions also work and require smaller field.}
 Recently, a modified setup has been proposed\cite{pientka2017topological,hell2017two} relying on a superconductor-normal-superconductor (SNS) junction to lower the critical magnetic field $B_\textrm{c}$ by introducing a superconducting phase difference $\phi$.
-Two groups~\cite{fornieri_evidence_2018,ren_topological_2018} have realized this system experimentally.
-In practice, multiple problems arise making even the observation difficult, rendering the manipulation of Majoranas in the near future, improbable.
+When both NS interfaces are transparent the SNS junction enters the topological phase at $\phi=\pi$ at any finite $B$ field.
+Two groups~\cite{fornieri_evidence_2018,ren_topological_2018} have realized this system experimentally but did not yet observe a hard induced gap.
 
 \comment{The gap is small because of long trajectories.}
-One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap~\cite{ren_topological_2018}; where the gap in the density of states significantly reduces for states with the momentum directed along the length of the strip.
-From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor.
-Additionally, these long trajectories have long flight times $\tau_\textrm{f} \approx L_\textrm{t} / v_F$ (see Fig.~\ref{fig:setup}), where $L_\textrm{t}$ is the trajectory length.
-Equivalently, the Thouless energies $E_{\textrm{Th}}=\hbar / \tau_\textrm{f}$ are small, resulting in a small gap.
+One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap; which is the supression of the vanishing of the density of states near zero energy.
+One of the mechanisms giving rise to a soft gap is the reduction of the induced gap for states with the momentum directed along the junction.
+From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor, shown in Fig.~\ref{fig:setup}(a).
+These long trajectories have long flight times $\tau_\textrm{f} \approx L_\textrm{t} / v_F$ (see Fig.~\ref{fig:setup}), where $L_\textrm{t}$ is the trajectory length.
+Equivalently, the Thouless energy of these trajectories $E_{\textrm{Th}}=\hbar / \tau_\textrm{f}$ is small, resulting in a small gap.
 This problem does not appear when the Fermi surface is small and the zero point motion dominates the transverse velocity, making a low filling of the bands a possible workaround\cite{nijholt2015orbital}.
 However, low filling requires precise knowledge of the system and is more sensitive to disorder or microscopic inhomogeneities.
-On the other hand, disorder scatters these long trajectories and introduces a cut-off on the scale of the mean-free path~\cite{haim_double-edge_2018}; however, disorder is impossible to control to a required precision experimentally.
+On the other hand, disorder scatters these long trajectories and introduces a cutoff on the scale of the mean free path~\cite{haim_double-edge_2018}; however, disorder is impossible to control to a required precision experimentally.
 
 \begin{figure}[!htb]
 \centering
@@ -254,11 +255,11 @@ We plot $E_\textrm{gap}$ as a function of magnetic field, chemical potential, $E
 Additionally, we plot the first $\SI{1300}{\nm}$ (one zigzag period) of the wave functions [(a) and (b)] at the optimal point in parameter space for the straight system.
 For the straight system we calculate $E_\textrm{gap}$ by performing a binary search in $E$ for the energy at which the propagating modes start to appear~\cite{nijholt2015orbital}.
 Additionally, in Fig.~\ref{fig:phasediagrams}(c) we plot the phase boundaries obtained by solving a generalized eigenvalue problem~\cite{nijholt2015orbital}.
-Due to the large size of the zigzag supercell, we are unable to use these full spectrum methods to compute these quantities.
+Due to the large size of the zigzag supercell, we are unable to apply these methods to zigzag geometries.
 Instead, we calculate $E_\textrm{gap}$ by finding the absolute minimum of the spectrum $E_\textrm{gap}=\min{\left|E(k)\right|}$.
-By both observing the gap closings and knowing the topological phase for the non-zigzag system, we can infer the topology of the system with zigzag modulation.
+By both observing the gap closings and knowing the topological phase for the straight system, we then infer the topology of the zigzag system and verify this by calculating the spectrum of the system.
 
-\comment{The introduction of the zigzag breaks a chiral symmetry, bringing the system from the BDI to the D symmetry class}
+\comment{The introduction ofa the zigzag breaks a chiral symmetry, bringing the system from the BDI to the D symmetry class}
 The non-zigzag system is in the symmetry class BDI \cite{pientka2017topological}.
 Using the software package Qsymm\cite{varjas2018qsymm}, we find that the symmetry class of our system to be D because we break the chiral symmetry $\mathcal{C}$ resulting from the mirror-symmetric junction.
 
@@ -284,7 +285,7 @@ Recently, it has been shown~\cite{haim_double-edge_2018} that having a system wi
 However, in contrast to introducing weak disorder into a system, changing the geometry is experimentally much easier to realize and therefore easier to control.
 
 \comment{Current fabrication techniques are compatible with the proposed geometry, and experimental verification can be near.}
-Current fabrication techniques are compatible with the proposed geometry; zigzag devices have already been fabricated. % TODO: add ref to Fokko's thesis
+Current fabrication techniques are compatible with the proposed geometry; zigzag devices have already been fabricated~\cite{fokko_zigzag}.
 Slight modifications to the geometry, for example, to ease measurement, should not have significant implications on the physics.
 
 \comment{It is interesting to study what geometry creates an optimal environment for Majorana modes to exist.}
