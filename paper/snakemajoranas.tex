@@ -119,9 +119,9 @@ At the same time, the zigzag geometry limits the length of a trajectory therefor
 \end{figure}
 
 \comment{We show that zigzag geometry solves this problem by eliminating the long trajectories.}
-We propose a new experimental setup (see Fig.~\ref{fig:setup}(b)) for the creation of Majoranas that eliminating long trajectories and therefore prevents the appearance of a soft gap, while also increasing the topological gap by several orders of magnitude, depending on the parameters.
+We propose a new experimental setup (see Fig.~\ref{fig:setup}(b)) for the creation of Majoranas that eliminates long trajectories and therefore prevents the appearance of a soft gap, while also increasing the topological gap by more than an orders of magnitude, depending on the parameters.
 The setup consists of a zigzag or snake-like geometry for the semiconductor where long trajectories are not possible due to the geometry.
-In this paper we will focus on two-dimensional (2D) Josephson junctions; however, a zigzag geometry will also work for nanowires.\footnote{We confirmed this numerically, although it is not included in this paper.}
+In this paper we will focus on two-dimensional (2D) Josephson junctions; however, a zigzag geometry will also work with only one superconductor.\footnote{We confirmed this numerically, although it is not included in this paper.}
 
 
 %%██████████████████████████████████████████████████████████████████████████
@@ -133,23 +133,24 @@ In this paper we will focus on two-dimensional (2D) Josephson junctions; however
 We consider a Josephson junction (Fig.~\ref{fig:setup}) consisting of a 2D strip of semiconductor, with superconductors on both sides.
 We modulate the shape of the normal region, which can be either saw-toothed zigzag as depicted [Fig.~\ref{fig:setup}(b)], or a more smooth sinusoidal-like shape.
 Similar to the conventional straight system \cite{pientka2017topological}, a magnetic field $B_x$ perpendicular to the junction is applied.
-We model the system with a Bogoliubov-de Gennes Hamiltonian (BdG) Eq.~\eqref{eq:hamiltonian}; the normal part has a linear Rashba spin-orbit coupling term characterized by $\alpha$ and a Zeeman field with $E_z=\frac{1}{2} \mu_B g B_x$.
-The superconductor has a superconducting coupling term $\Delta$ with the pair of superconductors at an opposite superconducting phase $\exp{\pm i \phi/2}$.
-Both the normal part and the superconductors have a kinetic term and chemical potential $\mu$.
-The complete Hamiltonian has the form
+We model the system with a Bogoliubov-de Gennes Hamiltonian (BdG)
 \begin{subequations}
 \begin{align}
     H_\textrm{N} = & \left[\frac{\hbar^2\left(\kx^2 + \ky^2\right)}{2\meff} - \mu + \alpha \left( \ky \sigma_x - \kx \sigma_y \right) \right] \tau_z
-        + E_\text{z} \sigma_x \\
+        + E_\text{z} \sigma_x, \\
     H_\textrm{SC} = & \left[\frac{\hbar^2\left(\kx^2 + \ky^2\right)}{2\meff} - \mu\right] \tau_z
         + \Delta \cos{\frac{\phi}{2}} \tau_x + \Delta \sin{\frac{\phi}{2}} \tau_y.
 \end{align}
 \label{eq:hamiltonian}
 \end{subequations}
 Where $H_\textrm{N}$ and $H_\textrm{SC}$ are the Hamiltonians of the semiconductor and superconductors, respectively.
+Here, the normal part has a linear Rashba spin-orbit coupling term characterized by $\alpha$ and a Zeeman field with $E_z=\frac{1}{2} \mu_B g B_x$.
+The superconductor has a superconducting coupling term $\Delta$ with the pair of superconductors at an opposite superconducting phase $\exp{\pm i \phi/2}$.
+Both the normal part and the superconductors have a kinetic term and chemical potential $\mu$.
+The complete Hamiltonian has the form
 They act on the spinor wave function $\Psi={\left(\psi_{e\uparrow},\psi_{e\downarrow},\psi_{\textrm{h}\downarrow},-\psi_{\textrm{h}\uparrow}\right)}^{T}$, where $\psi_e$, $\psi_\textrm{h}$ are its electron and hole components, and $\psi_\uparrow$, $\psi_\downarrow$ are the spin-up and spin-down components.
 The Pauli matrices $\sigma_{i}$ act on the spin degree of freedom and $\tau_{i}$ act on the electron-hole degree of freedom.
-For the zigzag geometry, we first consider a sawtooth-like pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction [see Fig.~\ref{fig:setup}(b)].
+For the zigzag geometry, we first consider a zigzag pattern where $z_x$ is periodicity, $z_y$ the amplitude and $W$ the width of the junction [see Fig.~\ref{fig:setup}(b)].
 Later in this manuscript, we show that the exact details of the shape are unimportant and consider different zigzag geometries also parametrized by $z_x, \; z_y, \; W$.
 
 \comment{We discretize the Hamiltonian and simulate it with Kwant.}
@@ -292,7 +293,7 @@ Current fabrication techniques are compatible with the proposed geometry; zigzag
 Slight modifications to the geometry, for example, to ease measurement, should not have significant implications on the physics.
 
 \comment{It is interesting to study what geometry creates an optimal environment for Majorana modes to exist.}
-We have studied sawtooth and snake-like geometries of the semiconductor region, but perhaps a more exotic shape will be optimal.
+We have studied zigzag and snake-like geometries of the semiconductor region, but perhaps a more exotic shape will be optimal.
 A study optimizing the geometry's parameters for supporting Majoranas is an exciting continuation of our research.
 
 \comment{Extensions: we omit several physical effects, disorder, electrostatics, etc.}
