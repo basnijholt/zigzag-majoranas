@@ -301,6 +301,7 @@ def system(
     syst = kwant.Builder(kwant.TranslationalSymmetry([L_x, 0]) if infinite else None)
 
     for y in np.arange(-W - L_sc_down, W + L_sc_up, a):
+        # Not sure why this loop is needed.
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore")
             syst.fill(template['barrier'], shapes['edge'], (0, y))
