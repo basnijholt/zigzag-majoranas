@@ -330,7 +330,7 @@ def gap_minimizer(lead, params, energy):
     return np.min(np.abs(norm - 1))
 
 
-def gap(lead, params, tol=1e-6):
+def gap_from_modes(lead, params, tol=1e-6):
     """Finds the gapsize by peforming a binary search of the modes with a
     tolarance of tol.
 
