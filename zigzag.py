@@ -11,7 +11,7 @@ from kwant.continuum import discretize
 import numpy as np
 import scipy.constants
 import scipy.interpolate
-from scipy.optimize import fsolve
+import scipy.optimize
 import scipy.sparse as sp
 import scipy.sparse.linalg as sla
 
@@ -109,7 +109,7 @@ def create_parallel_sine(distance, z_x, z_y, rough_edge=None):
         def y(t):
             return g(t) + distance / np.sqrt(1 + g_prime(t)**2)
 
-        t = fsolve(_x, x)
+        t = scipy.optimize.fsolve(_x, x)
         return y(t)
 
     xs = np.linspace(0, z_x, 1000)
@@ -368,6 +368,15 @@ def gap(lead, params, tol=1e-6):
     return gap
 
 
+def gap_from_band_structure(lead, params, Ns=31, full_output=False):
+    def energies(k_x):
+        Es = spectrum(lead, dict(params, k_x=float(k_x)), k=4)[0]
+        return np.abs(Es).min()
+
+    return scipy.optimize.brute(energies, ranges=((0, np.pi),),
+        Ns=Ns, full_output=full_output)
+
+
 def phase_bounds_operator(lead, params, k_x=0):
     h_k = lead.hamiltonian_submatrix(params=dict(params, mu=0, k_x=k_x),
                                      sparse=True)
@@ -455,3 +464,26 @@ def majorana_state(syst, params):
     rho = kwant.operator.Density(syst)
     wf = rho(wfs[:, i_min])
     return energies[i_min], wf
+
+
+def fitted_majorana_size(syst, params):
+    wf = majorana_state(syst, params)[1]
+
+    # Project onto the x-axis.
+    xs, ys = np.array([s.pos for s in syst.sites]).T
+    ncols = len(np.where(xs == 0)[0])
+    wf_proj = wf.reshape((-1, ncols)).sum(axis=1)
+    xs = xs.reshape((-1, ncols))[:, 0]
+
+    # Only fit the middle part of the wf.
+    N = len(xs) // 4
+    xs_fit = xs[N:2*N]
+    wf_proj_fit = wf_proj[N:2*N]
+
+    # Do the fit.
+    def flog(x, a, b, x0):
+        return np.log(a) - b * x - x0
+
+    popt, pcov = scipy.optimize.curve_fit(flog, xs_fit, np.log(wf_proj_fit))
+
+    return 1 / popt[1]
