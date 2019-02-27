@@ -299,10 +299,13 @@ def system(
     syst = kwant.Builder(kwant.TranslationalSymmetry([L_x, 0]) if infinite else None)
 
     for y in np.arange(-W - L_sc_down, W + L_sc_up, a):
-        # Not sure why this loop is needed.
+        # We're unsure about the location of the barrier
+        # so we loop until we add the sites.
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore")
-            syst.fill(template['barrier'], shapes['edge'], (0, y))
+            sites = syst.fill(template['barrier'], shapes['edge'], (0, y))
+        if sites:
+            break
 
     syst.fill(template['normal'], *shapes['normal'])
 
