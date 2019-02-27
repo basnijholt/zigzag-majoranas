@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 
 import cmath
-import copy
 import functools
 import math
 import operator
 import re
-from types import SimpleNamespace
 import warnings
 
 import kwant
