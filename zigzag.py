@@ -1,7 +1,9 @@
 
 import cmath
-from functools import lru_cache
+import copy
+import functools
 import math
+import operator
 import re
 from types import SimpleNamespace
 import warnings
@@ -14,8 +16,6 @@ import scipy.interpolate
 import scipy.optimize
 import scipy.sparse as sp
 import scipy.sparse.linalg as sla
-
-from shape import *
 
 
 sigma_0 = np.eye(2)
@@ -38,7 +38,7 @@ def remove_phs(H):
     return re.sub(r'kron\((sigma_[xyz0]), sigma_[xzy0]\)', r'\1', H)
 
 
-@lru_cache()
+@functools.lru_cache()
 def get_template_strings(
         transverse_soi, mu_from_bottom_of_spin_orbit_bands=True,
         k_x_in_sc=False, with_k_z=False, no_phs=False,
@@ -94,6 +94,102 @@ def get_template_strings(
 
     return template_strings
 
+# from shape import Shape
+class Shape:
+    def __init__(self, shape=None):
+        self.shape = shape if shape is not None else lambda site: True
+
+        self._directions = [
+            ('wsite', [-1, 0]), ('esite', [1, 0]),
+            ('nsite', [0, 1]), ('ssite', [0, -1]),
+            ('nwsite', [-1, 1]), ('nesite', [1, 1]),
+            ('swsite', [-1, -1]), ('sesite', [1, -1])
+        ]
+        
+    def __call__(self, site):
+        return self.shape(site)
+
+    def __add__(self, other_shape):
+        shapes = (self.shape, other_shape.shape)
+        union = lambda site: any(shape(site) for shape in shapes)
+        return Shape(union)
+    
+    def __sub__(self, other_shape):
+        shape_A, shape_B = (self.shape, other_shape.shape)
+        difference = lambda site: shape_A(site) and not shape_B(site)
+        return Shape(difference)
+    
+    def __mul__(self, other_shape):
+        shapes = (self.shape, other_shape.shape)
+        intersection = lambda site: all(shape(site) for shape in shapes)
+        return Shape(intersection)
+
+    @staticmethod
+    def slice_func(_slice):
+        def _func(x):
+            y = True
+            if _slice.start is not None:
+                y &= _slice.start <= x
+            if _slice.stop is not None:
+                y &= x < _slice.stop
+            return y
+        return _func
+
+# I don't understand why the following code doesn't work:
+    # def __getitem__(self, item):
+    #     if not isinstance(item, tuple):
+    #         # Make sure that item is iterable
+    #         item = (item,)
+    #     shapes = [Shape(lambda site: self.slice_func(x)(site.pos[i]))
+    #               for i, x in enumerate(item)]
+    #     return functools.reduce(operator.mul, [self] + shapes)
+
+    def __getitem__(self, item):
+        if len(item) != 2:
+            raise NotImplementedError(
+                'Can only be used for 2-dimensional slicing.')
+        return (self
+                * Shape(lambda site: self.slice_func(item[0])(site.pos[0]))
+                * Shape(lambda site: self.slice_func(item[1])(site.pos[1])))
+
+    def inverse(self):
+        return Shape(lambda site: not self.shape(site))
+        
+    def edge(self, which='inner'):
+        def edge_shape(site):
+            in_shape = lambda x: self.shape(kwant.builder.Site(site.family, site.tag + x))
+            sites = [in_shape(x) for k, x in self._directions]
+            if which == 'inner':
+                return self.shape(site) and not all(sites)
+            elif which == 'outer':
+                return self.shape(site) and any(sites)
+        return Shape(edge_shape)
+    
+    def interior(self):
+        return Shape(self - self.edge('inner'))
+
+    @classmethod
+    def below_curve(cls, curve):
+        def _shape(site):
+            x, y = site.pos
+            return y < curve(x)
+        return Shape(_shape)
+
+    @classmethod
+    def above_curve(cls, curve):
+        return Shape.below_curve(curve).inverse()
+
+    @classmethod
+    def left_of_curve(cls, curve):
+        def _shape(site):
+            x, y = site.pos
+            return x < curve(y)
+        return Shape(_shape)
+
+    @classmethod
+    def right_of_curve(cls, curve):
+        return Shape.left_of_curve(curve).inverse()
+
 
 def create_parallel_sine(distance, z_x, z_y, rough_edge=None):
     def _parallel_sine(x, distance, z_x, z_y):
@@ -148,14 +244,14 @@ def get_shapes(shape, a, z_x, z_y, W, L_x, L_sc_down, L_sc_up, rough_edge=None):
         curve = create_parallel_sine(0, z_x, z_y, rough_edge=None)
 
         _curve_top = create_parallel_sine(W // 2, z_x, z_y, rough_edge=rough_edge)
-        _below_shape = below_curve(_curve_top)
+        _below_shape = Shape.below_curve(_curve_top)
 
         if rough_edge is not None:  # Change salt for the order boundary
             X, Y, salt = rough_edge
             rough_edge = (X, Y, -salt)
 
         _curve_bottom = create_parallel_sine(-W // 2, z_x, z_y, rough_edge=rough_edge)
-        _above_shape = above_curve(_curve_bottom)
+        _above_shape = Shape.above_curve(_curve_bottom)
 
         _middle_shape = (_below_shape * _above_shape)[0:L_x, :]
         sc_top_initial_site = (z_x // 4, W // 2 + z_y + L_sc_up // 2)
@@ -172,8 +268,8 @@ def get_shapes(shape, a, z_x, z_y, W, L_x, L_sc_down, L_sc_up, rough_edge=None):
 
         y_offset = W / np.cos(np.arctan(4 * z_y / z_x)) if z_y != 0 else W
 
-        _below_shape = below_curve(lambda x: curve(x) + y_offset // 2)
-        _above_shape = above_curve(lambda x: curve(x) - y_offset // 2)
+        _below_shape = Shape.below_curve(lambda x: curve(x) + y_offset // 2)
+        _above_shape = Shape.above_curve(lambda x: curve(x) - y_offset // 2)
 
         _middle_shape = (_below_shape * _above_shape)[0:L_x, :]
         sc_top_initial_site = (0, y_offset // 2 + a)
@@ -182,8 +278,8 @@ def get_shapes(shape, a, z_x, z_y, W, L_x, L_sc_down, L_sc_up, rough_edge=None):
         sc_bot_shape = _middle_shape.inverse()[0:L_x, -L_sc_down - y_offset // 2 - z_y:]
     else:
         raise ValueError('Only "parallel_curve" and "sawtooth" are implemented.')
-
-    edge_shape = _middle_shape.edge() * sc_bot_shape.outer_edge() * sc_top_shape.outer_edge()
+    
+    edge_shape = _middle_shape.edge('inner') * sc_bot_shape.edge('outer') * sc_top_shape.edge('outer')
 
     interior_shape = _middle_shape - edge_shape
     interior_initial_site = (a, a)
@@ -194,7 +290,7 @@ def get_shapes(shape, a, z_x, z_y, W, L_x, L_sc_down, L_sc_up, rough_edge=None):
             'edge': edge_shape}
 
 
-@lru_cache()
+@functools.lru_cache()
 def system(
         W, L_x, L_sc_up, L_sc_down, z_x, z_y, a, shape, transverse_soi,
         mu_from_bottom_of_spin_orbit_bands, k_x_in_sc, wraparound, infinite,
@@ -374,8 +470,8 @@ def gap_from_band_structure(lead, params, Ns=31, full_output=False):
         Es = spectrum(lead, dict(params, k_x=float(k_x)), k=4)[0]
         return np.abs(Es).min()
 
-    return scipy.optimize.brute(energies, ranges=((0, np.pi),),
-        Ns=Ns, full_output=full_output)
+    return float(scipy.optimize.brute(energies, ranges=((0, np.pi),),
+                 Ns=Ns, full_output=full_output))
 
 
 def phase_bounds_operator(lead, params, k_x=0):
