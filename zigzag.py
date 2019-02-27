@@ -10,6 +10,7 @@ from types import SimpleNamespace
 import warnings
 
 import kwant
+from kwant.builder import Site
 from kwant.continuum import discretize
 import numpy as np
 import scipy.constants
@@ -90,7 +91,7 @@ def get_template_strings(
 
     return template_strings
 
-# from shape import Shape
+
 class Shape:
     def __init__(self, shape=None):
         self.shape = shape if shape is not None else lambda site: True
@@ -131,29 +132,20 @@ class Shape:
             return y
         return _func
 
-# I don't understand why the following code doesn't work:
-    # def __getitem__(self, item):
-    #     if not isinstance(item, tuple):
-    #         # Make sure that item is iterable
-    #         item = (item,)
-    #     shapes = [Shape(lambda site: self.slice_func(x)(site.pos[i]))
-    #               for i, x in enumerate(item)]
-    #     return functools.reduce(operator.mul, [self] + shapes)
-
     def __getitem__(self, item):
-        if len(item) != 2:
-            raise NotImplementedError(
-                'Can only be used for 2-dimensional slicing.')
-        return (self
-                * Shape(lambda site: self.slice_func(item[0])(site.pos[0]))
-                * Shape(lambda site: self.slice_func(item[1])(site.pos[1])))
+        if not isinstance(item, tuple):
+            # Make sure that item is iterable
+            item = (item,)
+        shapes = [Shape(lambda s, i=i, x=x: self.slice_func(x)(s.pos[i]))
+                  for i, x in enumerate(item)]
+        return functools.reduce(operator.mul, [self] + shapes)
 
     def inverse(self):
         return Shape(lambda site: not self.shape(site))
         
     def edge(self, which='inner'):
         def edge_shape(site):
-            in_shape = lambda x: self.shape(kwant.builder.Site(site.family, site.tag + x))
+            in_shape = lambda x: self.shape(Site(site.family, site.tag + x))
             sites = [in_shape(x) for k, x in self._directions]
             if which == 'inner':
                 return self.shape(site) and not all(sites)
@@ -216,8 +208,8 @@ def create_parallel_sine(distance, z_x, z_y, rough_edge=None):
         unit_vectors = 1 / (1 + dydx**2) * np.array([-dydx, np.ones_like(dydx)])
 
         # Generate a disordered boundary parameterized by (X, Y, salt)
-        def rand(i): return X * kwant.digest.uniform(str(i), salt=str(salt))
-        rands = [rand(i) for i in range(int(z_x / Y) - 2)]
+        rands = [X * kwant.digest.uniform(str(i), salt=str(salt))
+                 for i in range(int(z_x / Y) - 2)]
         rands = [0, *rands, 0]  # make sure that it starts and ends with 0 (for periodicity)
         ys_disorder = scipy.interpolate.interp1d(
             np.linspace(0, z_x, len(rands)), rands, kind='quadratic')(xs)
@@ -519,7 +511,7 @@ def lat_from_syst(syst):
     return list(lats)[0]
 
 
-def majorana_size(lead, params):
+def majorana_size_from_modes(lead, params):
     """Find the slowest decaying (evanescent) mode and returns the
     Majorana size.
 
@@ -559,7 +551,7 @@ def majorana_state(syst, params):
     return energies[i_min], wf
 
 
-def fitted_majorana_size(syst, params):
+def majorana_size_from_fit(syst, params):
     wf = majorana_state(syst, params)[1]
 
     # Project onto the x-axis.
