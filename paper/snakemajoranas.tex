@@ -167,7 +167,7 @@ Later we relax this assumption and show that the exact shape is unimportant.
 \comment{We discretize the Hamiltonian and simulate it with Kwant.}
 We discretize our continuum Hamiltonian [Eq.~\eqref{eq:hamiltonian}] on a square grid and implement a tight-binding model using Kwant~\cite{groth_kwant:_2014}.
 To preferentially sample important regions of parameter space, we use the Adaptive package~\cite{adaptive}.
-The entire source code and the resulting raw data are available in Ref.~\onlinecite{data}.  % TODO: update the bib when the data is uploaded
+The entire source code and the resulting raw data are available in Ref.~\onlinecite{data}.
 
 \comment{The default parameters are ...}
 Unless noted differently, the Hamiltonian parameters are $\alpha=\SI{20}{\meV \nm}$, $g=26$, $\meff=\SI{0.02}{\electronmass}$, $\mu=\SI{10}{\meV}$, $B=\SI{1}{T}$, $\phi=\pi$, and $\Delta=\SI{1}{\meV}$; and the geometry parameters are $W=\SI{200}{\nm}$, the period of the zigzag $z_x=\SI{1300}{\nm}$, the discretization contant $a=\SI{10}{\nm}$, and the lengths of the superconductors $L_\textrm{SC}=\SI{300}{\nm}$.
@@ -202,7 +202,7 @@ In the unfolded band structure of a straight system, shown in Fig.~\ref{fig:band
 We interpret the increase of the gap $E_\textrm{gap}$ shown in Fig.~\ref{fig:band_structures}(b) and (c) as an effect of the zigzag geometry removing these long trajectories traveling at grazing angles.
 Besides the increased $E_\textrm{gap}$, the states from different segments of the zigzag pattern have a negligible overlap and therefore have a vanishing velocity.
 This reduction in velocity strongly reduces the Majorana size, as we discuss in section \ref{sec:shape_effects}.
-Finally, in a zigzag geometry every trajectory encounters a superconductor close to normal incidence.
+Finally, in a zigzag geometry, every trajectory encounters a superconductor close to normal incidence.
 Normal incidence has a higher transmission probability for entering the superconductor and therefore a higher Andreev reflection amplitude.
 This provides another mechanism of the gap enhancement.
 
@@ -237,7 +237,7 @@ The small topological gap combined with the high velocity result in a large Majo
 \xi_\textrm{M}=\hbar \frac{v_\textrm{F}}{E_\textrm{gap}},
 \end{equation}
 and therefore a minimal topological protection against perturbations.
-The wave function extends to the center of the system, resulting in highly overlapping Majoranas and a Majorana coupling $E_\textrm{M}$ comparible to $E_\textrm{gap}$.
+The wave function extends to the center of the system, resulting in highly overlapping Majoranas and a Majorana coupling $E_\textrm{M}$ comparable to $E_\textrm{gap}$.
 
 \comment{In a zigzag geometry Majoranas are localized within one segment of zigzag independent of details}
 We observe that in zigzag systems the Majorana properties improve independent of specific geometric details.
@@ -264,13 +264,13 @@ The remaining parameter values are written at the end of Sec.~\ref{sec:setup}, e
 In Fig.~\ref{fig:phasediagrams} we compare the phase diagrams of the straight and the zigzag junction.
 We plot $E_\textrm{gap}$ as a function of magnetic field, chemical potential, $E_\textrm{gap}(B_x, \mu)$; and the superconducting phase difference $E_\textrm{gap}(B_x, \phi)$ for both a straight system [(c) and (e)] and a zigzag system [(d) and (f)].
 Additionally, we plot the first $\SI{1300}{\nm}$ (one zigzag period) of the wave functions [(a) and (b)] at the optimal point in parameter space for the straight system.
-For the straight system we calculate $E_\textrm{gap}$ by performing a binary search in $E$ for the energy at which the propagating modes start to appear~\cite{nijholt2015orbital}.
+For the straight system, we calculate $E_\textrm{gap}$ by performing a binary search in $E$ for the energy at which the propagating modes start to appear~\cite{nijholt2015orbital}.
 Additionally, in Fig.~\ref{fig:phasediagrams}(c) we plot the phase boundaries obtained by solving a generalized eigenvalue problem~\cite{nijholt2015orbital}.
 Due to the large size of the zigzag supercell, we are unable to apply these methods to zigzag geometries.
 Instead, we calculate $E_\textrm{gap}$ by finding the absolute minimum of the spectrum $E_\textrm{gap}=\min{\left|E(k)\right|}$.
 By both observing the gap closings and comparing to the topological phase diagram of the straight system, we then infer the topology of the zigzag system and verify this by calculating the Majorana wave function of a finite length zigzag.
 
-\comment{The introduction ofa the zigzag breaks a chiral symmetry, bringing the system from the BDI to the D symmetry class}
+\comment{The introduction of a the zigzag breaks a chiral symmetry, bringing the system from the BDI to the D symmetry class}
 The straight system is in the symmetry class BDI \cite{pientka2017topological}.
 Using the software package Qsymm~\cite{varjas2018qsymm}, we find that the zigzag shape modulation violates the chiral symmetry, leaving only the particle-hole symmetry and the reflection symmetry with respect to the $x$-axis.
 
@@ -286,7 +286,7 @@ The topological phase diagram of the zigzag system has a qualitatively similar s
 
 \comment{The zigzag geometry is a controllable tool in hardening the gap and decreasing Majorana size.}
 The zigzag geometry increases the topological gap in the high density regime by more than an order of magnitude, as well as substantially reducing of Majorana size.
-The improvements occur in broad range of parameter values, moreover, even using $B_x$ optimal for the straight system in the high density regime (Fig.~\ref{fig:phasediagrams}), the Majorana size $\xi_\textrm{M}$ and $E_\textrm{gap}$ are still more than an order of magnitude better for the zigzag system.
+The improvements occur in a broad range of parameter values, moreover, even using $B_x$ optimal for the straight system in the high density regime (Fig.~\ref{fig:phasediagrams}), the Majorana size $\xi_\textrm{M}$ and $E_\textrm{gap}$ are still more than an order of magnitude better for the zigzag system.
 We expect that the improvement of the device performance will significantly simplify the creation of Majorana devices and the detection of Majorana states.
 The zigzag geometry offers a controllable way to remove long trajectories, unlike disorder~\cite{haim_double-edge_2018} that otherwise has a similar effect.
 
@@ -294,11 +294,11 @@ The zigzag geometry offers a controllable way to remove long trajectories, unlik
 Current fabrication techniques are compatible with the proposed geometry; zigzag devices have already been fabricated~\cite{fokko_zigzag}.
 We have demonstrated that the unavoidable variation in the experimental device geometry should not have a detrimental impact on the zigzag devices.
 
-\comment{Optimizing the geometry, a more detailed modeling, and a simple analytical estimation are open questions for further research}
-Our work is the first demonstration of the impact of the Majorana device geometry on its performance and it opens a much harder question of finding the optimal geometry.
+\comment{Optimizing the geometry, more detailed modeling, and a simple analytical estimation are open questions for further research}
+Our work is the first demonstration of the impact of the Majorana device geometry on its performance, and it opens a much harder question of finding the optimal geometry.
 A promising approach to tackle this question would rely on constructing a quasiclassical model of the zigzag devices. 
 Finally, we have excluded several important physical effects, such as: disorder, electrostatics, the orbital effect of magnetic field, and the finite thickness of the sample.
-While we expect these phenomena to not influence our qualitative findings, a more detailed simulation should provide a better guidance to future experiments.
+While we expect these phenomena not to influence our qualitative findings, a more detailed simulation should provide better guidance to future experiments.
 
 %%██████████████████████████████████████████████████████████████████████████
 %%██ Acknowledgments
