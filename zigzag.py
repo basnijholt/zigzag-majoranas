@@ -143,24 +143,24 @@ def create_parallel_sine(distance, z_x, z_y, rough_edge=None):
     return lambda x: parallel_sine(x % z_x)
 
 
-def get_shapes(shape, a, z_x, z_y, L_m, L_x, L_sc_down, L_sc_up, rough_edge=None):
+def get_shapes(shape, a, z_x, z_y, W, L_x, L_sc_down, L_sc_up, rough_edge=None):
     if shape == 'parallel_curve':
         if rough_edge is not None:
             X, Y, salt = rough_edge
 
         curve = create_parallel_sine(0, z_x, z_y, rough_edge=None)
 
-        _curve_top = create_parallel_sine(L_m // 2, z_x, z_y, rough_edge=(X, Y, salt) if rough_edge else None)
+        _curve_top = create_parallel_sine(W // 2, z_x, z_y, rough_edge=(X, Y, salt) if rough_edge else None)
         _below_shape = below_curve(_curve_top)
 
-        _curve_bottom = create_parallel_sine(-L_m // 2, z_x, z_y, rough_edge=(X, Y, -salt) if rough_edge else None)
+        _curve_bottom = create_parallel_sine(-W // 2, z_x, z_y, rough_edge=(X, Y, -salt) if rough_edge else None)
         _above_shape = above_curve(_curve_bottom)
 
         _middle_shape = (_below_shape * _above_shape)[0:L_x, :]
-        sc_top_initial_site = (z_x // 4, L_m // 2 + z_y + L_sc_up // 2)
-        sc_top_shape = _middle_shape.inverse()[0:L_x, :L_sc_up + L_m // 2 + z_y]
-        sc_bot_initial_site = (z_x // 4, -L_m // 2 - z_y - L_sc_down // 2)
-        sc_bot_shape = _middle_shape.inverse()[0:L_x, -L_sc_down - L_m // 2 - z_y:]
+        sc_top_initial_site = (z_x // 4, W // 2 + z_y + L_sc_up // 2)
+        sc_top_shape = _middle_shape.inverse()[0:L_x, :L_sc_up + W // 2 + z_y]
+        sc_bot_initial_site = (z_x // 4, -W // 2 - z_y - L_sc_down // 2)
+        sc_bot_shape = _middle_shape.inverse()[0:L_x, -L_sc_down - W // 2 - z_y:]
     elif shape == 'sawtooth':
         def curve(x):
             x += z_x / 4
@@ -169,7 +169,7 @@ def get_shapes(shape, a, z_x, z_y, L_m, L_x, L_sc_down, L_sc_up, rough_edge=None
             else:
                 return -4 * z_y / z_x * (x % (z_x / 2)) + z_y
 
-        y_offset = L_m / np.cos(np.arctan(4 * z_y / z_x)) if z_y != 0 else L_m
+        y_offset = W / np.cos(np.arctan(4 * z_y / z_x)) if z_y != 0 else W
 
         _below_shape = below_curve(lambda x: curve(x) + y_offset // 2)
         _above_shape = above_curve(lambda x: curve(x) - y_offset // 2)
@@ -195,7 +195,7 @@ def get_shapes(shape, a, z_x, z_y, L_m, L_x, L_sc_down, L_sc_up, rough_edge=None
 
 @lru_cache()
 def system(
-        L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a, shape, transverse_soi,
+        W, L_x, L_sc_up, L_sc_down, z_x, z_y, a, shape, transverse_soi,
         mu_from_bottom_of_spin_orbit_bands, k_x_in_sc, wraparound, infinite,
         current, ns_junction, sc_leads=False, no_phs=False, rough_edge=None,
         phs_breaking_potential=False):
@@ -211,11 +211,11 @@ def system(
     template = {k: discretize(v, coords=('x', 'y'), grid_spacing=a)
                 for k, v in template_strings.items()}
 
-    shapes = get_shapes(shape, a, z_x, z_y, L_m, L_x, L_sc_down, L_sc_up, rough_edge)
+    shapes = get_shapes(shape, a, z_x, z_y, W, L_x, L_sc_down, L_sc_up, rough_edge)
 
     syst = kwant.Builder(kwant.TranslationalSymmetry([L_x, 0]) if infinite else None)
 
-    for y in np.arange(-L_m - L_sc_down, L_m + L_sc_up, a):
+    for y in np.arange(-W - L_sc_down, W + L_sc_up, a):
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore")
             syst.fill(template['barrier'], shapes['edge'], (0, y))
