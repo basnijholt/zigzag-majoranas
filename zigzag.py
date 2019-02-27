@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 import cmath
 import copy
@@ -16,11 +17,6 @@ import scipy.interpolate
 import scipy.optimize
 import scipy.sparse as sp
 import scipy.sparse.linalg as sla
-
-
-sigma_0 = np.eye(2)
-sigma_z = np.array([[1, 0], [0, -1]])
-s0sz = np.kron(sigma_0, sigma_z)
 
 
 constants = dict(
