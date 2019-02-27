@@ -282,7 +282,7 @@ def get_shapes(shape, a, z_x, z_y, W, L_x, L_sc_down, L_sc_up, rough_edge=None):
 def system(
         W, L_x, L_sc_up, L_sc_down, z_x, z_y, a, shape, transverse_soi,
         mu_from_bottom_of_spin_orbit_bands, k_x_in_sc, wraparound, infinite,
-        current, ns_junction, sc_leads=False, no_phs=False, rough_edge=None,
+        sc_leads=False, no_phs=False, rough_edge=None,
         phs_breaking_potential=False):
     if wraparound and not infinite:
         raise ValueError('If you want to use wraparound, infinite must be True.')
