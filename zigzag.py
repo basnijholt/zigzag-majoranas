@@ -379,8 +379,8 @@ def gap_from_band_structure(lead, params, Ns=31, full_output=False):
 
 
 def phase_bounds_operator(lead, params, k_x=0):
-    h_k = lead.hamiltonian_submatrix(params=dict(params, mu=0, k_x=k_x),
-                                     sparse=True)
+    h_k = lead.hamiltonian_submatrix(
+        params=dict(params, mu=0, k_x=k_x), sparse=True)
     sigma_z = sp.csc_matrix(np.array([[1, 0], [0, -1]]))
     _operator = sp.kron(sp.eye(h_k.shape[0] // 2), sigma_z) @ h_k
     return _operator

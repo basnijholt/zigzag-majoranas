@@ -106,7 +106,6 @@ def TRANSLATE(shape, vector):
         return shape(translated_site)
     return _shape
 
-
 def below_curve(curve):
     def _shape(site):
         x, y = site.pos
