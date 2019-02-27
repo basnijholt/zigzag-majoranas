@@ -1,8 +1,10 @@
+
 import cmath
 from functools import lru_cache
 import math
 import re
 from types import SimpleNamespace
+import warnings
 
 import kwant
 from kwant.continuum import discretize
@@ -13,14 +15,13 @@ from scipy.optimize import fsolve
 import scipy.sparse as sp
 import scipy.sparse.linalg as sla
 
-import peierls
-import supercurrent
-import supercurrent_matsubara
 from shape import *
+
 
 sigma_0 = np.eye(2)
 sigma_z = np.array([[1, 0], [0, -1]])
 s0sz = np.kron(sigma_0, sigma_z)
+
 
 constants = dict(
     # effective mass in kg,
@@ -31,50 +32,6 @@ constants = dict(
     exp=cmath.exp,
     cos=cmath.cos,
     sin=cmath.sin)
-
-
-def create_parallel_sine(distance, z_x, z_y, rough_edge=None):
-    def _parallel_sine(x, distance, z_x, z_y):
-        g = lambda t: z_y * math.sin(2*np.pi/z_x*t)
-        g_prime = lambda t: z_y * 2*np.pi/z_x*math.cos(2*np.pi/z_x*t)
-        def _x(t):
-            return t - distance*g_prime(t)/np.sqrt(1 + g_prime(t)**2) - x
-
-        def y(t):
-            return g(t) + distance/np.sqrt(1 + g_prime(t)**2)
-
-        t = fsolve(_x, x)
-        return y(t)
-
-    xs = np.linspace(0, z_x, 1000)
-    ys = [_parallel_sine(x, distance, z_x, z_y) for x in xs]
-
-    if rough_edge is not None:
-        X, Y, salt = rough_edge
-
-        # Calculate the unit vector to the sine
-        tck = scipy.interpolate.splrep(xs, ys)
-        dydx = scipy.interpolate.splev(xs, tck, der=1)
-        unit_vectors = 1 / (1 + dydx**2) * np.array([-dydx, np.ones_like(dydx)])
-
-        # Generate a disordered boundary parameterized by (X, Y, salt)
-        rand = lambda i: X * kwant.digest.uniform(str(i), salt=str(salt))
-        rands = [rand(i) for i in range(int(z_x / Y) - 2)]
-        rands = [0, *rands, 0]  # make sure that it starts and ends with 0 (for periodicity)
-        ys_disorder = scipy.interpolate.interp1d(
-            np.linspace(0, z_x, len(rands)), rands, kind='quadratic')(xs)
-        ys_disorder -= ys_disorder.mean()
-
-        # Disorder in the direction normal to the sine
-        dxys = ys_disorder * unit_vectors
-
-        # Modify xs and ys to include the disorder
-        xs[1:-1] += dxys[0, 1:-1]
-        ys[1:-1] += dxys[1, 1:-1]
-
-    parallel_sine = scipy.interpolate.interp1d(xs, ys)
-
-    return lambda x: parallel_sine(x%z_x)
 
 
 def remove_phs(H):
@@ -127,89 +84,144 @@ def get_template_strings(
     if phs_breaking_potential:
         ham_normal += "+ V_breaking(x) * kron(sigma_0, sigma_0)"
 
-    template_strings = (('barrier', ham_barrier),
-                        ('normal', ham_normal),
-                        ('sc_top', ham_sc_top).
-                        ('sc_bot', ham_sc_bot))
+    template_strings = {'barrier': ham_barrier,
+                        'normal': ham_normal,
+                        'sc_top': ham_sc_top,
+                        'sc_bot': ham_sc_bot}
 
     if no_phs:
-        template_strings = [(k, remove_phs(v)) for k, v in template_strings]
+        template_strings = {k: remove_phs(v) for k, v in template_strings.items()}
 
     return template_strings
 
 
-def get_shapes(shape, z_x, z_y, L_m, L_x, rough_edge=None):
+def create_parallel_sine(distance, z_x, z_y, rough_edge=None):
+    def _parallel_sine(x, distance, z_x, z_y):
+        def g(t):
+            return z_y * math.sin(2 * np.pi / z_x * t)
+
+        def g_prime(t):
+            return z_y * 2 * np.pi / z_x * math.cos(2 * np.pi / z_x * t)
+
+        def _x(t):
+            return t - distance * g_prime(t) / np.sqrt(1 + g_prime(t)**2) - x
+
+        def y(t):
+            return g(t) + distance / np.sqrt(1 + g_prime(t)**2)
+
+        t = fsolve(_x, x)
+        return y(t)
+
+    xs = np.linspace(0, z_x, 1000)
+    ys = [_parallel_sine(x, distance, z_x, z_y) for x in xs]
+
+    if rough_edge is not None:
+        X, Y, salt = rough_edge
+
+        # Calculate the unit vector to the sine
+        tck = scipy.interpolate.splrep(xs, ys)
+        dydx = scipy.interpolate.splev(xs, tck, der=1)
+        unit_vectors = 1 / (1 + dydx**2) * np.array([-dydx, np.ones_like(dydx)])
+
+        # Generate a disordered boundary parameterized by (X, Y, salt)
+        def rand(i): return X * kwant.digest.uniform(str(i), salt=str(salt))
+        rands = [rand(i) for i in range(int(z_x / Y) - 2)]
+        rands = [0, *rands, 0]  # make sure that it starts and ends with 0 (for periodicity)
+        ys_disorder = scipy.interpolate.interp1d(
+            np.linspace(0, z_x, len(rands)), rands, kind='quadratic')(xs)
+        ys_disorder -= ys_disorder.mean()
+
+        # Disorder in the direction normal to the sine
+        dxys = ys_disorder * unit_vectors
+
+        # Modify xs and ys to include the disorder
+        xs[1:-1] += dxys[0, 1:-1]
+        ys[1:-1] += dxys[1, 1:-1]
+
+    parallel_sine = scipy.interpolate.interp1d(xs, ys)
+
+    return lambda x: parallel_sine(x % z_x)
+
+
+def get_shapes(shape, a, z_x, z_y, L_m, L_x, L_sc_down, L_sc_up, rough_edge=None):
     if shape == 'parallel_curve':
         if rough_edge is not None:
             X, Y, salt = rough_edge
 
         curve = create_parallel_sine(0, z_x, z_y, rough_edge=None)
 
-        _curve_top = create_parallel_sine(L_m//2, z_x, z_y, rough_edge=(X, Y, salt) if rough_edge else None)
+        _curve_top = create_parallel_sine(L_m // 2, z_x, z_y, rough_edge=(X, Y, salt) if rough_edge else None)
         _below_shape = below_curve(_curve_top)
 
-        _curve_bottom = create_parallel_sine(-L_m//2, z_x, z_y, rough_edge=(X, Y, -salt) if rough_edge else None)
+        _curve_bottom = create_parallel_sine(-L_m // 2, z_x, z_y, rough_edge=(X, Y, -salt) if rough_edge else None)
         _above_shape = above_curve(_curve_bottom)
 
         _middle_shape = (_below_shape * _above_shape)[0:L_x, :]
-        top_sc_initial_site = (z_x//4, L_m//2+z_y+L_sc_up//2)
-        top_sc_shape = _middle_shape.inverse()[0:L_x, :L_sc_up + L_m//2 + z_y]
-        bottom_sc_initial_site = (z_x//4, -L_m//2-z_y-L_sc_down//2)
-        bottom_sc_shape = _middle_shape.inverse()[0:L_x, -L_sc_down - L_m//2 - z_y:]
-
+        sc_top_initial_site = (z_x // 4, L_m // 2 + z_y + L_sc_up // 2)
+        sc_top_shape = _middle_shape.inverse()[0:L_x, :L_sc_up + L_m // 2 + z_y]
+        sc_bot_initial_site = (z_x // 4, -L_m // 2 - z_y - L_sc_down // 2)
+        sc_bot_shape = _middle_shape.inverse()[0:L_x, -L_sc_down - L_m // 2 - z_y:]
     elif shape == 'sawtooth':
-        _curve = lambda x: 4*z_y/z_x*(x%(z_x/2)) - z_y if x%z_x < z_x/2 else -4*z_y/z_x*(x%(z_x/2)) + z_y
-        curve = lambda x: _curve(x+z_x/4)
+        def curve(x):
+            x += z_x / 4
+            if x % z_x < z_x / 2:
+                return 4 * z_y / z_x * (x % (z_x / 2)) - z_y
+            else:
+                return -4 * z_y / z_x * (x % (z_x / 2)) + z_y
+
         y_offset = L_m / np.cos(np.arctan(4 * z_y / z_x)) if z_y != 0 else L_m
 
-        _below_shape = below_curve(lambda x: curve(x) + y_offset//2)
-        _above_shape = above_curve(lambda x: curve(x) - y_offset//2)
+        _below_shape = below_curve(lambda x: curve(x) + y_offset // 2)
+        _above_shape = above_curve(lambda x: curve(x) - y_offset // 2)
 
         _middle_shape = (_below_shape * _above_shape)[0:L_x, :]
-        top_sc_initial_site = (0, y_offset//2+a)
-        top_sc_shape = _middle_shape.inverse()[0:L_x, :L_sc_up + y_offset//2 + z_y]
-        bottom_sc_initial_site = (0, -y_offset//2-a)
-        bottom_sc_shape = _middle_shape.inverse()[0:L_x, -L_sc_down - y_offset//2 - z_y:]
-
-    #------------
+        sc_top_initial_site = (0, y_offset // 2 + a)
+        sc_top_shape = _middle_shape.inverse()[0:L_x, :L_sc_up + y_offset // 2 + z_y]
+        sc_bot_initial_site = (0, -y_offset // 2 - a)
+        sc_bot_shape = _middle_shape.inverse()[0:L_x, -L_sc_down - y_offset // 2 - z_y:]
+    else:
+        raise ValueError('Only "parallel_curve" and "sawtooth" are implemented.')
+    # ------------
     # Define edge
-    edge_shape = _middle_shape.edge() * bottom_sc_shape.outer_edge() * top_sc_shape.outer_edge()
+    edge_shape = _middle_shape.edge() * sc_bot_shape.outer_edge() * sc_top_shape.outer_edge()
 
-    #------------------------
+    # ------------------------
     # Remove edge from middle
     interior_shape = _middle_shape - edge_shape
     interior_initial_site = (a, a)
 
-    return {'sc_top': (top_sc_shape, top_sc_initial_site),
-            'sc_bot': (bottom_sc_shape, bottom_sc_initial_site),
+    return {'sc_top': (sc_top_shape, sc_top_initial_site),
+            'sc_bot': (sc_bot_shape, sc_bot_initial_site),
             'normal': (interior_shape, interior_initial_site),
             'edge': edge_shape}
 
 
 @lru_cache()
-def make_system(
-    L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a, shape, transverse_soi,
-    mu_from_bottom_of_spin_orbit_bands, k_x_in_sc, wraparound, infinite,
-    current, ns_junction, sc_leads=False, no_phs=False, rough_edge=None,
-    phs_breaking_potential=False):
+def system(
+        L_m, L_x, L_sc_up, L_sc_down, z_x, z_y, a, shape, transverse_soi,
+        mu_from_bottom_of_spin_orbit_bands, k_x_in_sc, wraparound, infinite,
+        current, ns_junction, sc_leads=False, no_phs=False, rough_edge=None,
+        phs_breaking_potential=False):
     if wraparound and not infinite:
         raise ValueError('If you want to use wraparound, infinite must be True.')
     if sc_leads and not infinite or sc_leads and not wraparound:
         raise ValueError('If you want to use sc_leads, infinite and wraparound must be True.')
 
     template_strings = get_template_strings(
-        transverse_soi, mu_from_bottom_of_spin_orbit_bands, 
+        transverse_soi, mu_from_bottom_of_spin_orbit_bands,
         k_x_in_sc, False, no_phs, phs_breaking_potential)
 
     template = {k: discretize(v, coords=('x', 'y'), grid_spacing=a)
-        for k, v in template_strings}
+                for k, v in template_strings.items()}
 
-    shapes = get_shapes(shape, z_x, z_y, L_m, L_x, rough_edge)
+    shapes = get_shapes(shape, a, z_x, z_y, L_m, L_x, L_sc_down, L_sc_up, rough_edge)
 
     syst = kwant.Builder(kwant.TranslationalSymmetry([L_x, 0]) if infinite else None)
 
     for y in np.arange(-L_m - L_sc_down, L_m + L_sc_up, a):
-        syst.fill(template['edge'], shapes['edge'], (0, y))
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore")
+            syst.fill(template['barrier'], shapes['edge'], (0, y))
 
     syst.fill(template['normal'], *shapes['normal'])
 
@@ -218,10 +230,6 @@ def make_system(
 
     if L_sc_down > 0:
         syst.fill(template['sc_bot'], *shapes['sc_bot'])
-        
-    #####################
-    ## Finalize system ##
-    #####################
 
     if infinite and wraparound:
         syst = kwant.wraparound.wraparound(syst)
@@ -230,8 +238,8 @@ def make_system(
             lead_down = kwant.Builder(kwant.TranslationalSymmetry([L_x, 0], [0, -a]))
             lead_up = kwant.wraparound.wraparound(lead_up, keep=1)
             lead_down = kwant.wraparound.wraparound(lead_down, keep=1)
-            lead_up.fill(template_top_sc, lambda s: 0 <= s.pos[0] < L_x, (0, 0))
-            lead_down.fill(template_bottom_sc, lambda s: 0 <= s.pos[0] < L_x, (0, 0))
+            lead_up.fill(template_sc_top, lambda s: 0 <= s.pos[0] < L_x, (0, 0))
+            lead_down.fill(template_sc_bot, lambda s: 0 <= s.pos[0] < L_x, (0, 0))
             syst.attach_lead(lead_up)
             syst.attach_lead(lead_down)
 
@@ -259,10 +267,10 @@ def mumps_eigsh(matrix, k, sigma, **kwargs):
     return sla.eigsh(matrix, k, sigma=sigma, OPinv=opinv, **kwargs)
 
 
-def calc_spectrum(syst, params, k=20):
+def spectrum(syst, params, k=20):
     ham = syst.hamiltonian_submatrix(params=params, sparse=True)
     (energies, wfs) = mumps_eigsh(ham, k=k, sigma=0)
-    return (energies, wfs)
+    return energies, wfs
 
 
 def translation_ev(h, t, tol=1e6):
@@ -324,7 +332,7 @@ def gap_minimizer(lead, params, energy):
     return np.min(np.abs(norm - 1))
 
 
-def find_gap_of_lead(lead, params, tol=1e-6):
+def gap(lead, params, tol=1e-6):
     """Finds the gapsize by peforming a binary search of the modes with a
     tolarance of tol.
 
@@ -365,13 +373,13 @@ def find_gap_of_lead(lead, params, tol=1e-6):
 
 def phase_bounds_operator(lead, params, k_x=0):
     h_k = lead.hamiltonian_submatrix(params=dict(params, mu=0, k_x=k_x),
-        sparse=True)
+                                     sparse=True)
     sigma_z = sp.csc_matrix(np.array([[1, 0], [0, -1]]))
     _operator = sp.kron(sp.eye(h_k.shape[0] // 2), sigma_z) @ h_k
     return _operator
 
 
-def find_phase_bounds(lead, params, k_x=0, num_bands=20, sigma=0):
+def phase_bounds(lead, params, k_x=0, num_bands=20, sigma=0):
     """Find the phase boundaries.
     Solve an eigenproblem that finds values of chemical potential at which the
     gap closes at momentum k=0. We are looking for all real solutions of the
@@ -396,11 +404,12 @@ def find_phase_bounds(lead, params, k_x=0, num_bands=20, sigma=0):
     if num_bands is None:
         mus = np.linalg.eigvals(chemical_potentials.todense())
     else:
+        # This is not Hermitian, so we can't use mumps.
         mus = sla.eigs(chemical_potentials, k=num_bands, sigma=sigma, which='LM')[0]
 
     real_solutions = abs(np.angle(mus)) < 1e-10
 
-    mus[~real_solutions] = np.nan # To ensure it returns the same shape vector
+    mus[~real_solutions] = np.nan  # To ensure it returns the same shape vector
     return np.sort(mus.real)
 
 
@@ -411,8 +420,9 @@ def lat_from_syst(syst):
     return list(lats)[0]
 
 
-def slowest_evan_mode(lead, params):
-    """Find the slowest decaying (evanescent) mode.
+def majorana_size(lead, params):
+    """Find the slowest decaying (evanescent) mode and returns the
+    Majorana size.
 
     It uses an adapted version of the function kwant.physics.leads.modes,
     in such a way that it returns the eigenvalues of the translation operator
@@ -438,4 +448,3 @@ def slowest_evan_mode(lead, params):
     a = lat_from_syst(lead).prim_vecs[0, 0]
     majorana_length = np.abs(a / np.log(ev[idx]).real)
     return majorana_length
-
