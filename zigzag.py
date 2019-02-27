@@ -181,12 +181,9 @@ def get_shapes(shape, a, z_x, z_y, L_m, L_x, L_sc_down, L_sc_up, rough_edge=None
         sc_bot_shape = _middle_shape.inverse()[0:L_x, -L_sc_down - y_offset // 2 - z_y:]
     else:
         raise ValueError('Only "parallel_curve" and "sawtooth" are implemented.')
-    # ------------
-    # Define edge
+
     edge_shape = _middle_shape.edge() * sc_bot_shape.outer_edge() * sc_top_shape.outer_edge()
 
-    # ------------------------
-    # Remove edge from middle
     interior_shape = _middle_shape - edge_shape
     interior_initial_site = (a, a)
 
@@ -448,3 +445,13 @@ def majorana_size(lead, params):
     a = lat_from_syst(lead).prim_vecs[0, 0]
     majorana_length = np.abs(a / np.log(ev[idx]).real)
     return majorana_length
+
+
+def majorana_state(syst, params):
+    energies, wfs = zigzag.spectrum(syst, params, k=2)
+    wfs = wfs[:, energies > 0]
+    energies = energies[energies > 0]
+    i_min = np.argmin(energies)
+    rho = kwant.operator.Density(syst)
+    wf = rho(wfs[:, i_min])
+    return energies[i_min], wf
