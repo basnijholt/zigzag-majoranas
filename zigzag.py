@@ -145,15 +145,16 @@ def create_parallel_sine(distance, z_x, z_y, rough_edge=None):
 
 def get_shapes(shape, a, z_x, z_y, W, L_x, L_sc_down, L_sc_up, rough_edge=None):
     if shape == 'parallel_curve':
-        if rough_edge is not None:
-            X, Y, salt = rough_edge
-
         curve = create_parallel_sine(0, z_x, z_y, rough_edge=None)
 
-        _curve_top = create_parallel_sine(W // 2, z_x, z_y, rough_edge=(X, Y, salt) if rough_edge else None)
+        _curve_top = create_parallel_sine(W // 2, z_x, z_y, rough_edge=rough_edge)
         _below_shape = below_curve(_curve_top)
 
-        _curve_bottom = create_parallel_sine(-W // 2, z_x, z_y, rough_edge=(X, Y, -salt) if rough_edge else None)
+        if rough_edge is not None:  # Change salt for the order boundary
+            X, Y, salt = rough_edge
+            rough_edge = (X, Y, -salt)
+
+        _curve_bottom = create_parallel_sine(-W // 2, z_x, z_y, rough_edge=rough_edge)
         _above_shape = above_curve(_curve_bottom)
 
         _middle_shape = (_below_shape * _above_shape)[0:L_x, :]
@@ -457,7 +458,7 @@ def majorana_size(lead, params):
 
 
 def majorana_state(syst, params):
-    energies, wfs = zigzag.spectrum(syst, params, k=2)
+    energies, wfs = spectrum(syst, params, k=2)
     wfs = wfs[:, energies > 0]
     energies = energies[energies > 0]
     i_min = np.argmin(energies)
