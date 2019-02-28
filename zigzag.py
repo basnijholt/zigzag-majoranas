@@ -366,7 +366,6 @@ def system(
     kwant.builder.FiniteSystem or kwant.builder.InfiniteSystem
 
     """
-
     if wraparound and not infinite:
         raise ValueError('If you want to use wraparound, infinite must be True.')
     if sc_leads and not infinite or sc_leads and not wraparound:
@@ -437,6 +436,24 @@ def mumps_eigsh(matrix, k, sigma, **kwargs):
 
 
 def spectrum(syst, params, k=20):
+    """Compute the k smallest magnitude eigenvalues and corresponding eigenvectors of a system
+
+    Parameters
+    ----------
+    syst : kwant.FiniteSystem or kwant.InfiniteSystem
+        System of which the spectrum will be computed
+    params: dict
+        Dictionary containing the parameters
+    k : int
+        Number of eigenvalues to calculate
+
+    Returns
+    -------
+    energies : numpy array
+        Array containing smallest magnitude eigenvalues
+    wfs : numpy array
+        Array containing eigenvectors corresponding to eigenvalues
+    """
     ham = syst.hamiltonian_submatrix(params=params, sparse=True)
     (energies, wfs) = mumps_eigsh(ham, k=k, sigma=0)
     return energies, wfs
