@@ -340,12 +340,12 @@ def system(
 
     for y in np.arange(-W - L_sc_down, W + L_sc_up, a):
         # We're unsure about the location of the barrier
-        # so we loop until we add the sites.
+        # so we loop over all possible sites.
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore")
             sites = syst.fill(template['barrier'], shapes['edge'], (0, y))
-        if sites:
-            break
+        # if sites:
+        #     break
 
     syst.fill(template['normal'], *shapes['normal'])
 
