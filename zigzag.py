@@ -2,6 +2,7 @@
 
 import cmath
 import functools
+import itertools
 import math
 import operator
 import re
@@ -118,13 +119,8 @@ class Shape:
 
     def __init__(self, shape=None):
         self.shape = shape if shape is not None else lambda site: True
-
-        self._directions = [
-            ('wsite', [-1, 0]), ('esite', [1, 0]),
-            ('nsite', [0, 1]), ('ssite', [0, -1]),
-            ('nwsite', [-1, 1]), ('nesite', [1, 1]),
-            ('swsite', [-1, -1]), ('sesite', [1, -1])
-        ]
+        prod = itertools.product([-1, 0, 1], repeat=2)
+        self._directions = [tup for tup in prod if tup != (0, 0)]
         
     def __call__(self, site):
         return self.shape(site)
@@ -175,10 +171,9 @@ class Shape:
         is returned, meaning the familiy of sites which lie inside (outside)
         the shape, but have at least one neighbor outside (inside) of the shape.
         """
-
         def edge_shape(site):
             in_shape = lambda x: self.shape(Site(site.family, site.tag + x))
-            sites = [in_shape(x) for k, x in self._directions]
+            sites = [in_shape(x) for x in self._directions]
             if which == 'inner':
                 return self.shape(site) and not all(sites)
             elif which == 'outer':
