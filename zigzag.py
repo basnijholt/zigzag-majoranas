@@ -91,6 +91,24 @@ def get_template_strings(
 
 
 class Shape:
+    """Creates callable object serving as a 'shape' function to be used with kwant.Builder
+    
+    The Shape class supports multiple set operations. Let s1 and s2 be instances of the Shape object, then:
+    s3 = s1*s2 is the intersection of the two shapes, meaning that s3(x) returns True if and only if both s1(x) and s2(x) return True.
+    s3 = s1+s2 is the union of the two shapes, meaning that s3(x) returns True if and only if s1(x) and/or s2(x) returns True.
+    s3 = s1-s2 is the difference of the two shapes, meaning that s3(x) returns True if and only if s1(x) returns True and s2(x) returns False.
+
+    The Shape class also contains some other useful methods to obtain the inverse, the edge, and interior of the shape.
+
+    Using slice indexing one creates rectangular bounds, i.e.:
+    if s = Shape()[:0, :],
+    then s(x, y) returns True if and only if x<=0
+
+    Keyword arguments:
+    shape -- shape function: shape(kwant.Site) -> bool (default always returns True)
+
+    """
+
     def __init__(self, shape=None):
         self.shape = shape if shape is not None else lambda site: True
 
@@ -139,34 +157,47 @@ class Shape:
         return functools.reduce(operator.mul, [self] + shapes)
 
     def inverse(self):
+        """Returns inverse of shape."""
+
         return Shape(lambda site: not self.shape(site))
         
     def edge(self, which='inner'):
+        """Returns edge of a 2D shape.
+        If which is 'inner', the inner edge of the shape is returned, meaning the familiy of sites which lie within the shape, but have at least one neighbor outside of the shape.
+        If which is 'outer', the outer edge of the shape is returned, meaning the familiy of sites which lie outside the shape, but have at least one neighbor inside of the shape.
+        
+        """
+
         def edge_shape(site):
             in_shape = lambda x: self.shape(Site(site.family, site.tag + x))
             sites = [in_shape(x) for k, x in self._directions]
             if which == 'inner':
                 return self.shape(site) and not all(sites)
             elif which == 'outer':
-                return self.shape(site) and any(sites)
+                return not self.shape(site) and any(sites)
         return Shape(edge_shape)
     
     def interior(self):
+        """Returns shape minus its edge."""
+
         return Shape(self - self.edge('inner'))
 
     @classmethod
     def below_curve(cls, curve):
+        """Returns instance of Shape which returns True if a site (x, y) is such that y < curve(x)."""
         def _shape(site):
             x, y = site.pos
             return y < curve(x)
         return Shape(_shape)
 
     @classmethod
+        """Returns instance of Shape which returns True if a site (x, y) is such that y >= curve(x)."""
     def above_curve(cls, curve):
         return Shape.below_curve(curve).inverse()
 
     @classmethod
     def left_of_curve(cls, curve):
+        """Returns instance of Shape which returns True if a site (x, y) is such that x < curve(y)."""
         def _shape(site):
             x, y = site.pos
             return x < curve(y)
@@ -174,6 +205,7 @@ class Shape:
 
     @classmethod
     def right_of_curve(cls, curve):
+        """Returns instance of Shape which returns True if a site (x, y) is such that x >= curve(y)."""
         return Shape.left_of_curve(curve).inverse()
 
 
