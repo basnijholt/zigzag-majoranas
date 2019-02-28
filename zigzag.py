@@ -322,6 +322,51 @@ def system(
         mu_from_bottom_of_spin_orbit_bands, k_x_in_sc, wraparound, infinite,
         sc_leads=False, no_phs=False, rough_edge=None,
         phs_breaking_potential=False):
+    """Create zigzag system
+    
+    Parameters
+    ----------
+    W : float
+        Width of the semiconductor (i.e. contact seperation of the junction)
+    L_x : float
+        Length of the system (x-dimension)
+    L_sc_up : float
+        Minimum width of the top superconductor
+    L_sc_down : float
+        Minimum width of the bottom superconductor
+    z_x : float
+        Period of zigzag
+    z_y : float
+        Amplitude of zigzag
+    a : float
+        Lattice spacing
+    shape : string
+        Can be either 'sawtooth' for zigzag shape, or 'parallel_curve' for a shape formed by curve parallel to a sine curve
+    transverse_soi : bool
+        Toggle Rashba spin-orbit in the y-direction
+    mu_from_bottom_of_spin_orbit_bands : bool
+        Toggle counting chemical potential from bottom of spin orbit band
+    k_x_in_sc : bool
+        Toggle whether superconductor have hopping in the x-directin
+    wraparound : bool
+        Toggle a wraparound system, such that the translational invariance is transformed into the momentum parameter k_x
+    infinite : bool
+        Toggle whether the system contains a z_x periodic translational invariance
+    sc_leads : bool, optional
+        Toggle superconducting leads in y-direction 
+    no_phs : bool, optional
+        Remove particle-hole symmetry by removing electron-hole orbital
+    roug_edge : bool, optional
+        Toggle roughened edges to shape
+    phs_breaking_potential : bool, optional
+        Add particle-hole symmetry breaking potential to allow for a computationally cheaper way to calculate the Majorana decay length.
+
+    Returns
+    -------
+    kwant.builder.FiniteSystem or kwant.builder.InfiniteSystem
+
+    """
+
     if wraparound and not infinite:
         raise ValueError('If you want to use wraparound, infinite must be True.')
     if sc_leads and not infinite or sc_leads and not wraparound:
