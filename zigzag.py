@@ -91,22 +91,29 @@ def get_template_strings(
 
 
 class Shape:
-    """Creates callable object serving as a 'shape' function to be used with kwant.Builder
+    """Creates callable object serving as a 'shape' function
+    to be used with `kwant.Builder`.
     
-    The Shape class supports multiple set operations. Let s1 and s2 be instances of the Shape object, then:
-    s3 = s1*s2 is the intersection of the two shapes, meaning that s3(x) returns True if and only if both s1(x) and s2(x) return True.
-    s3 = s1+s2 is the union of the two shapes, meaning that s3(x) returns True if and only if s1(x) and/or s2(x) returns True.
-    s3 = s1-s2 is the difference of the two shapes, meaning that s3(x) returns True if and only if s1(x) returns True and s2(x) returns False.
+    This class supports multiple set operations. Let `s1` and `s2` be
+    instances of the `Shape` object, then:
+    s3 = s1*s2 is the intersection of the two shapes, meaning that s3(x)
+        returns True if and only if both s1(x) and s2(x) return True.
+    s3 = s1+s2 is the union of the two shapes, meaning that s3(x) returns
+        True if and only if s1(x) and/or s2(x) returns True.
+    s3 = s1-s2 is the difference of the two shapes, meaning that s3(x) returns
+        True if and only if s1(x) returns True and s2(x) returns False.
 
-    The Shape class also contains some other useful methods to obtain the inverse, the edge, and interior of the shape.
+    The Shape class also contains some other useful methods to obtain the
+    inverse, the edge, and interior of the shape.
 
     Using slice indexing one creates rectangular bounds, i.e.:
     if s = Shape()[:0, :],
-    then s(x, y) returns True if and only if x<=0
+    then s(x, y) returns True if and only if x<=0.
 
-    Keyword arguments:
-    shape -- shape function: shape(kwant.Site) -> bool (default always returns True)
-
+    Arguments
+    ---------
+    shape : callable, optional
+        shape(kwant.Site) -> bool (default always returns True).
     """
 
     def __init__(self, shape=None):
