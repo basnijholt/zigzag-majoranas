@@ -22,9 +22,9 @@ code:
 	-mkdir -p $(CODE_DIR)
 	cp ../README.md $(CODE_DIR)/README.txt
 	cp ../LICENSE.txt $(CODE_DIR)/
-	cp ../environment.yaml $(CODE_DIR)/
-	cp ../YOUR_NOTEBOOK.ipynb $(CODE_DIR)/
-	cp ../THE_FUNCTIONS.py $(CODE_DIR)/
+	cp ../environment.yml $(CODE_DIR)/
+	cp ../paper-figures.ipynb $(CODE_DIR)/
+	cp ../zigzag.py $(CODE_DIR)/
 
 paper:
 	-mkdir -p $(BASE_DIR)
@@ -39,7 +39,7 @@ data: code
 	$(eval TARGET_DIR := $(BASE_DIR)/data_sub)
 	-mkdir -p $(TARGET_DIR)
 	-mkdir -p $(TARGET_DIR)/data
-	cp ../data/*.h5 $(TARGET_DIR)/data
+	cp ../data/* $(TARGET_DIR)/data
 	-mv $(CODE_DIR)/LICENSE.txt $(TARGET_DIR)
 	-mv $(CODE_DIR)/README.txt $(TARGET_DIR)
 	-mv $(CODE_DIR) $(TARGET_DIR)
