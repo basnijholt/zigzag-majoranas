@@ -170,9 +170,10 @@ class Shape:
         
     def edge(self, which='inner'):
         """Returns edge of a 2D shape.
-        If which is 'inner', the inner edge of the shape is returned, meaning the familiy of sites which lie within the shape, but have at least one neighbor outside of the shape.
-        If which is 'outer', the outer edge of the shape is returned, meaning the familiy of sites which lie outside the shape, but have at least one neighbor inside of the shape.
-        
+
+        If which is 'inner' ('outer'), the inner (outer) edge of the shape
+        is returned, meaning the familiy of sites which lie inside (outside)
+        the shape, but have at least one neighbor outside (inside) of the shape.
         """
 
         def edge_shape(site):
@@ -191,20 +192,23 @@ class Shape:
 
     @classmethod
     def below_curve(cls, curve):
-        """Returns instance of Shape which returns True if a site (x, y) is such that y < curve(x)."""
+        """Returns instance of Shape which returns True if a site (x, y)
+        is such that y < curve(x)."""
         def _shape(site):
             x, y = site.pos
             return y < curve(x)
         return Shape(_shape)
 
     @classmethod
-        """Returns instance of Shape which returns True if a site (x, y) is such that y >= curve(x)."""
+        """Returns instance of Shape which returns True if a
+        site (x, y) is such that y >= curve(x)."""
     def above_curve(cls, curve):
         return Shape.below_curve(curve).inverse()
 
     @classmethod
     def left_of_curve(cls, curve):
-        """Returns instance of Shape which returns True if a site (x, y) is such that x < curve(y)."""
+        """Returns instance of Shape which returns True if a
+        site (x, y) is such that x < curve(y)."""
         def _shape(site):
             x, y = site.pos
             return x < curve(y)
@@ -212,7 +216,8 @@ class Shape:
 
     @classmethod
     def right_of_curve(cls, curve):
-        """Returns instance of Shape which returns True if a site (x, y) is such that x >= curve(y)."""
+        """Returns instance of Shape which returns True if a site (x, y)
+        is such that x >= curve(y)."""
         return Shape.left_of_curve(curve).inverse()
 
 
@@ -304,7 +309,9 @@ def get_shapes(shape, a, z_x, z_y, W, L_x, L_sc_down, L_sc_up, rough_edge=None):
     else:
         raise ValueError('Only "parallel_curve" and "sawtooth" are implemented.')
     
-    edge_shape = _middle_shape.edge('inner') * sc_bot_shape.edge('outer') * sc_top_shape.edge('outer')
+    edge_shape = (_middle_shape.edge('inner')
+                  * sc_bot_shape.edge('outer')
+                  * sc_top_shape.edge('outer'))
 
     interior_shape = _middle_shape - edge_shape
     interior_initial_site = (a, a)
