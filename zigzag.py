@@ -356,7 +356,7 @@ def system(
         Toggle superconducting leads in y-direction 
     no_phs : bool, optional
         Remove particle-hole symmetry by removing electron-hole orbital
-    roug_edge : bool, optional
+    rough_edge : bool, optional
         Toggle roughened edges to shape
     phs_breaking_potential : bool, optional
         Add particle-hole symmetry breaking potential to allow for a computationally cheaper way to calculate the Majorana decay length.
