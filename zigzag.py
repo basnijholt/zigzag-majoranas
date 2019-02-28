@@ -187,7 +187,6 @@ class Shape:
     
     def interior(self):
         """Returns shape minus its edge."""
-
         return Shape(self - self.edge('inner'))
 
     @classmethod
@@ -200,9 +199,9 @@ class Shape:
         return Shape(_shape)
 
     @classmethod
+    def above_curve(cls, curve):
         """Returns instance of Shape which returns True if a
         site (x, y) is such that y >= curve(x)."""
-    def above_curve(cls, curve):
         return Shape.below_curve(curve).inverse()
 
     @classmethod
