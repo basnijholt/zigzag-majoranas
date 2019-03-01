@@ -11,7 +11,7 @@ All of the paper's plots are generated with `paper-figures.ipynb` using function
 The notebook contains instructions of how it can be used.
 
 # Data
-Download the data used in `paper-figures.ipynb` at http://dx.doi.org/10.5281/zenodo.2578027 and place it in a directory called `data/`. If the data is missing, use the code in the notebook to generate it.
+Download the data used in `paper-figures.ipynb` at http://dx.doi.org/10.5281/zenodo.2578027 and place it in a directory called `data/`. If the data are missing, use the code in the notebook to generate it.
 
 # Installation
 Install [miniconda](http://conda.pydata.org/miniconda.html) and then the Python 
