@@ -442,12 +442,12 @@ def spectrum(syst, params, k=20):
 
     Parameters
     ----------
-    syst : kwant.FiniteSystem or kwant.InfiniteSystem
-        System of which the spectrum will be computed
-    params: dict
-        Dictionary containing the parameters
+    syst : `kwant.FiniteSystem` or `kwant.InfiniteSystem`
+        System of which the spectrum will be computed.
+    params : dict
+        Dictionary containing the parameters.
     k : int
-        Number of eigenvalues to calculate
+        Number of eigenvalues to calculate.
 
     Returns
     -------
