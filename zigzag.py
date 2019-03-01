@@ -327,39 +327,43 @@ def system(
     Parameters
     ----------
     W : float
-        Width of the semiconductor (i.e. contact seperation of the junction)
+        Width of the semiconductor (or contact seperation of the junction.)
     L_x : float
-        Length of the system (x-dimension)
+        Length of the system (x-dimension).
     L_sc_up : float
-        Minimum width of the top superconductor
+        Minimum width of the top superconductor.
     L_sc_down : float
-        Minimum width of the bottom superconductor
+        Minimum width of the bottom superconductor.
     z_x : float
-        Period of zigzag
+        Period of zigzag.
     z_y : float
-        Amplitude of zigzag
+        Amplitude of zigzag.
     a : float
-        Lattice spacing
+        Lattice spacing.
     shape : string
-        Can be either 'sawtooth' for zigzag shape, or 'parallel_curve' for a shape formed by curve parallel to a sine curve
+        Can be either 'sawtooth' for zigzag shape, or 'parallel_curve'
+        for a shape formed by curve parallel to a sine curve.
     transverse_soi : bool
-        Toggle Rashba spin-orbit in the y-direction
+        Toggle Rashba spin-orbit in the y-direction.
     mu_from_bottom_of_spin_orbit_bands : bool
-        Toggle counting chemical potential from bottom of spin orbit band
+        Toggle counting chemical potential from bottom of spin orbit band.
     k_x_in_sc : bool
-        Toggle whether superconductor have hopping in the x-directin
+        Toggle whether superconductor have hopping in the x-direction.
     wraparound : bool
-        Toggle a wraparound system, such that the translational invariance is transformed into the momentum parameter k_x
+        Toggle a wraparound system, such that the translational invariance
+        is transformed into the momentum parameter k_x.
     infinite : bool
-        Toggle whether the system contains a z_x periodic translational invariance
+        Toggle whether the system contains a z_x periodic
+        translational invariance.
     sc_leads : bool, optional
-        Toggle superconducting leads in y-direction 
+        Toggle superconducting leads in y-direction.
     no_phs : bool, optional
-        Remove particle-hole symmetry by removing electron-hole orbital
+        Remove particle-hole symmetry by removing the electron-hole orbital.
     rough_edge : bool, optional
-        Toggle roughened edges to shape
+        Toggle roughened edges to shape.
     phs_breaking_potential : bool, optional
-        Add particle-hole symmetry breaking potential to allow for a computationally cheaper way to calculate the Majorana decay length.
+        Add particle-hole symmetry breaking potential to allow for a
+        computationally cheaper way to calculate the Majorana decay length.
 
     Returns
     -------
