@@ -39,7 +39,7 @@ data: code
 	$(eval TARGET_DIR := $(BASE_DIR)/data_sub)
 	-mkdir -p $(TARGET_DIR)
 	-mkdir -p $(TARGET_DIR)/data
-	cp ../data/* $(TARGET_DIR)/data
+	cp -R ../data/* $(TARGET_DIR)/data
 	-mv $(CODE_DIR)/LICENSE.txt $(TARGET_DIR)
 	-mv $(CODE_DIR)/README.txt $(TARGET_DIR)
 	-mv $(CODE_DIR) $(TARGET_DIR)
