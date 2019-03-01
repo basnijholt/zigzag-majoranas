@@ -94,7 +94,7 @@ def get_template_strings(
 class Shape:
     """Creates callable object serving as a 'shape' function
     to be used with `kwant.Builder`.
-    
+
     This class supports multiple set operations. Let `s1` and `s2` be
     instances of the `Shape` object, then:
     s3 = s1*s2 is the intersection of the two shapes, meaning that s3(x)
@@ -121,7 +121,7 @@ class Shape:
         self.shape = shape if shape is not None else lambda site: True
         prod = itertools.product([-1, 0, 1], repeat=2)
         self._directions = [tup for tup in prod if tup != (0, 0)]
-        
+
     def __call__(self, site):
         return self.shape(site)
 
@@ -129,12 +129,12 @@ class Shape:
         shapes = (self.shape, other_shape.shape)
         union = lambda site: any(shape(site) for shape in shapes)
         return Shape(union)
-    
+
     def __sub__(self, other_shape):
         shape_A, shape_B = (self.shape, other_shape.shape)
         difference = lambda site: shape_A(site) and not shape_B(site)
         return Shape(difference)
-    
+
     def __mul__(self, other_shape):
         shapes = (self.shape, other_shape.shape)
         intersection = lambda site: all(shape(site) for shape in shapes)
@@ -163,7 +163,7 @@ class Shape:
         """Returns inverse of shape."""
 
         return Shape(lambda site: not self.shape(site))
-        
+
     def edge(self, which='inner'):
         """Returns edge of a 2D shape.
 
@@ -179,7 +179,7 @@ class Shape:
             elif which == 'outer':
                 return not self.shape(site) and any(sites)
         return Shape(edge_shape)
-    
+
     def interior(self):
         """Returns shape minus its edge."""
         return Shape(self - self.edge('inner'))
@@ -302,7 +302,7 @@ def get_shapes(shape, a, z_x, z_y, W, L_x, L_sc_down, L_sc_up, rough_edge=None):
         sc_bot_shape = _middle_shape.inverse()[0:L_x, -L_sc_down - y_offset // 2 - z_y:]
     else:
         raise ValueError('Only "parallel_curve" and "sawtooth" are implemented.')
-    
+
     edge_shape = (_middle_shape.edge('inner')
                   * sc_bot_shape.edge('outer')
                   * sc_top_shape.edge('outer'))
@@ -323,7 +323,7 @@ def system(
         sc_leads=False, no_phs=False, rough_edge=None,
         phs_breaking_potential=False):
     """Create zigzag system
-    
+
     Parameters
     ----------
     W : float
@@ -438,7 +438,8 @@ def mumps_eigsh(matrix, k, sigma, **kwargs):
 
 
 def spectrum(syst, params, k=20):
-    """Compute the k smallest magnitude eigenvalues and corresponding eigenvectors of a system
+    """Compute the k smallest magnitude eigenvalues and
+    corresponding eigenvectors of a system.
 
     Parameters
     ----------
