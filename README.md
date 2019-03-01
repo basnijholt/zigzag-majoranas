@@ -1,2 +1,24 @@
-# Majoranas in a two dimensional system
-The current goal is to be able to reproduce the results obtained in the [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.7.021032) by Pientka
+# Project on Enhanced proximity effect in zigzag-shaped Majorana Josephson junctions
+By Tom Laeven, Bas Nijholt, Michael Wimmer, Anton R. Akhmerov
+
+# Files
+This folder contains one Jupyter notebooks and one Python files:
+* `paper-figures.ipynb`
+* `zigzag.py`
+
+All of the paper's plots are generated with `paper-figures.ipynb` using functions defined in `zigzag.py`.
+
+The notebook contains instructions of how it can be used.
+
+# Data
+Download the data used in `paper-figures.ipynb` at http://dx.doi.org/10.5281/zenodo.2578027 and place it in a directory called `data/`. If the data is missing, use the code in the notebook to generate it.
+
+# Installation
+Install [miniconda](http://conda.pydata.org/miniconda.html) and then the Python 
+environment that contains all dependencies with:
+
+```
+conda env create -f environment.yml
+```
+
+Run a `jupyter-notebook` to open `paper-figures.ipynb`.
