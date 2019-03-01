@@ -392,8 +392,6 @@ def system(
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore")
             sites = syst.fill(template['barrier'], shapes['edge'], (0, y))
-        # if sites:
-        #     break
 
     syst.fill(template['normal'], *shapes['normal'])
 
