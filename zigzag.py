@@ -453,9 +453,9 @@ def spectrum(syst, params, k=20):
     Returns
     -------
     energies : numpy array
-        Array containing smallest magnitude eigenvalues
+        Array containing smallest magnitude eigenvalues.
     wfs : numpy array
-        Array containing eigenvectors corresponding to eigenvalues
+        Array containing eigenvectors corresponding to eigenvalues.
     """
     ham = syst.hamiltonian_submatrix(params=params, sparse=True)
     (energies, wfs) = mumps_eigsh(ham, k=k, sigma=0)
