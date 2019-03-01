@@ -21,4 +21,9 @@ environment that contains all dependencies with:
 conda env create -f environment.yml
 ```
 
-Run a `jupyter-notebook` to open `paper-figures.ipynb`.
+then activate it with
+```
+source activate zigzag
+```
+
+Finally, open a `jupyter-notebook` to open `paper-figures.ipynb`.

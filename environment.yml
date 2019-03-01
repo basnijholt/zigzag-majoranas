@@ -1,0 +1,8 @@
+name: zigzag
+channels:
+  - conda-forge
+dependencies:
+  - python=3.6
+  - adaptive=0.7.4
+  - kwant=1.3.3
+  - sympy=1.1  # remove when https://github.com/conda-forge/kwant-feedstock/pull/65 is merged
