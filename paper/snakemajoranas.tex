@@ -98,14 +98,14 @@ In addition to the improved robustness of Majoranas, this new zigzag geometry is
 %%██████████████████████████████████████████████████████████████████████████
 \section{Introduction}
 \comment{Hybrid NS structures become topological and are useful for TQC.}
-A hybrid structure containing a semiconductor with strong spin-orbit coupling coupled to a superconductor, inside a magnetic field becomes topological within the right parameter regime ($E_z^2>\mu^2+\Delta^2$ for a simple nanowire), and Majorana bound states appear on its edges~\cite{lutchyn_majorana_2010,oreg_helical_2010}.
-Majorana bound states are a promising candidate to form the basis of a stable platform for topological quantum computing. ~\cite{alicea2012new,beenakker2013search}
-The current experimental effort ~\cite{mourik_signatures_2012,das_zero-bias_2012,deng_anomalous_2012,churchill_superconductor-nanowire_2013,zhang2018quantized} focuses on creating pairs of Majorana bound states in hybrid normal-superconductor (NS) nanowire structures.
+A hybrid structure containing a semiconductor with strong spin-orbit coupling coupled to a superconductor, inside a magnetic field becomes topological within the right parameter regime ($E_z^2>\mu^2+\Delta^2$ for a simple nanowire), and Majorana bound states appear on its edges~\cite{Lutchyn2010,Oreg2010}.
+Majorana bound states are a promising candidate to form the basis of a stable platform for topological quantum computing. ~\cite{Alicea2012,Beenakker2013,Beenakker2016,Leijnse2012}
+The current experimental effort ~\cite{Mourik2012,Das2012,Deng2012,Churchill2013,Zhang2018} focuses on creating pairs of Majorana bound states in hybrid normal-superconductor (NS) nanowire structures.
 
 \comment{SNS junctions also work and require smaller field.}
-Recently, a modified setup has been proposed\cite{pientka2017topological,hell2017two} relying on a superconductor-normal-superconductor (SNS) junction to lower the critical magnetic field $B_\textrm{c}$ by introducing a superconducting phase difference $\phi$.
+Recently, a modified setup has been proposed\cite{Pientka2017,Hell2017} relying on a superconductor-normal-superconductor (SNS) junction to lower the critical magnetic field $B_\textrm{c}$ by introducing a superconducting phase difference $\phi$.
 When both NS interfaces are transparent the SNS junction enters the topological phase at $\phi=\pi$ at any finite $B$ field.
-Two groups~\cite{fornieri_evidence_2018,ren_topological_2018} have realized this system experimentally but did not yet observe a hard induced gap.
+Two groups~\cite{Fornieri2018,Ren2018} have realized this system experimentally but did not yet observe a hard induced gap.
 
 \comment{The gap is small because of long trajectories.}
 One of the biggest challenges in creating stable Majoranas is the appearance of a soft gap---the power law instead of the exponential suppression of the density of states near zero energy.
@@ -113,9 +113,9 @@ One of the mechanisms giving rise to a soft gap is the reduction of the induced 
 From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor, shown in Fig.~\ref{fig:setup}(a).
 These long trajectories have long flight times $\tau_\textrm{f} \approx L_\textrm{t} / v_F$ (see Fig.~\ref{fig:setup}), where $L_\textrm{t}$ is the trajectory length.
 Equivalently, the Thouless energy of these trajectories $E_{\textrm{Th}}=\hbar / \tau_\textrm{f}$ is small, resulting in a small gap $E_\textrm{gap} \ll \Delta$.
-This problem does not appear when the Fermi surface is small and the zero point motion dominates the transverse velocity, making a low filling of the bands a possible workaround\cite{nijholt2015orbital}.
+This problem does not appear when the Fermi surface is small and the zero point motion dominates the transverse velocity, making a low filling of the bands a possible workaround\cite{Nijholt2015}.
 However, low filling requires precise knowledge of the system and is more sensitive to disorder or microscopic inhomogeneities.
-On the other hand, disorder scatters these long trajectories and introduces a cutoff on the scale of the mean free path~\cite{haim_double-edge_2018}; however, disorder is impossible to control to a required precision experimentally.
+On the other hand, disorder scatters these long trajectories and introduces a cutoff on the scale of the mean free path~\cite{Haim2018}; however, disorder is impossible to control to a required precision experimentally.
 
 \begin{figure}[!htb]
 \centering
@@ -144,7 +144,7 @@ In this paper we will focus on two-dimensional (2D) Josephson junctions; however
 \comment{We consider a two-dimensional system with zigzag and BdG Hamiltonian.}
 We consider a Josephson junction (Fig.~\ref{fig:setup}) consisting of a 2D strip of semiconductor, with superconductors on both sides.
 We modulate the shape of the normal region, which can be either zigzag as depicted [Fig.~\ref{fig:setup}(b)], or a more smooth sinusoidal-like shape.
-Similar to the conventional straight system \cite{pientka2017topological}, a magnetic field $B_x$ perpendicular to the junction is applied.
+Similar to the conventional straight system \cite{Pientka2017}, a magnetic field $B_x$ perpendicular to the junction is applied.
 We model the system with a Bogoliubov-de Gennes Hamiltonian (BdG):
 \begin{subequations}
 \begin{align}
@@ -165,9 +165,9 @@ We consider a zigzag pattern with a period $z_x$, a peak-to-peak amplitude $z_y$
 Later we relax this assumption and show that the exact shape is unimportant.
 
 \comment{We discretize the Hamiltonian and simulate it with Kwant.}
-We discretize our continuum Hamiltonian [Eq.~\eqref{eq:hamiltonian}] on a square grid and implement a tight-binding model using Kwant~\cite{groth_kwant:_2014}.
-To preferentially sample important regions of parameter space, we use the Adaptive package~\cite{adaptive}.
-The entire source code and the resulting raw data are available in Ref.~\onlinecite{data}.
+We discretize our continuum Hamiltonian [Eq.~\eqref{eq:hamiltonian}] on a square grid and implement a tight-binding model using Kwant~\cite{Groth2014}.
+To preferentially sample important regions of parameter space, we use the Adaptive package~\cite{Nijholt2019a}.
+The entire source code and the resulting raw data are available in Ref.~\onlinecite{Nijholt2019}.
 
 \comment{The default parameters are ...}
 Unless noted differently, the Hamiltonian parameters are $\alpha=\SI{20}{\meV \nm}$, $g=26$, $\meff=\SI{0.02}{\electronmass}$, $\mu=\SI{10}{\meV}$, $B_x=\SI{1}{T}$, $\phi=\pi$, and $\Delta=\SI{1}{\meV}$; and the geometry parameters are $W=\SI{200}{\nm}$, the period of the zigzag $z_x=\SI{1300}{\nm}$, the discretization contant $a=\SI{10}{\nm}$, and the lengths of the superconductors $L_\textrm{SC}=\SI{300}{\nm}$.
@@ -226,7 +226,7 @@ We model a finite system and compute the Majorana wave function in different geo
 By diagonalizing the Hamiltonian, we find the Majorana energy $E_\textrm{M}$, and by using the corresponding eigenstate of that lowest energy, we get the wave function.
 To reduce the finite size effects in determining the Majorana size $\xi_\textrm{M}$ in a zigzag system, we introduce a particle-hole symmetry breaking potential $V \sigma_0 \tau_0$ on one edge, such that one of the Majorana states is pushed away from zero energy.
 We then find $\xi_\textrm{M}$ by fitting an exponential to the density of the single Majorana wave function projected on the $x$-axis.
-In the straight system we use the eigenvalue decomposition of the translation operator at zero energy~\cite{nijholt2015orbital} for performance reasons.
+In the straight system we use the eigenvalue decomposition of the translation operator at zero energy~\cite{Nijholt2015} for performance reasons.
 
 \comment{In a straight system, the Majoranas are very poorly localized because of small gap and high velocity}
 We show the resulting Majorana wave function densities $\left| \psi_\textrm{M} \right|^2$ in different geometries in Fig.~\ref{fig:wave_functions} using the same Hamiltonian parameter values.
@@ -264,18 +264,18 @@ The remaining parameter values are written at the end of Sec.~\ref{sec:setup}, e
 In Fig.~\ref{fig:phasediagrams} we compare the phase diagrams of the straight and the zigzag junction.
 We plot $E_\textrm{gap}$ as a function of magnetic field, chemical potential, $E_\textrm{gap}(B_x, \mu)$; and the superconducting phase difference $E_\textrm{gap}(B_x, \phi)$ for both a straight system [(c) and (e)] and a zigzag system [(d) and (f)].
 Additionally, we plot the first $\SI{1300}{\nm}$ (one zigzag period) of the wave functions [(a) and (b)] at the optimal point in parameter space for the straight system.
-For the straight system, we calculate $E_\textrm{gap}$ by performing a binary search in $E$ for the energy at which the propagating modes start to appear~\cite{nijholt2015orbital}.
-Additionally, in Fig.~\ref{fig:phasediagrams}(c) we plot the phase boundaries obtained by solving a generalized eigenvalue problem~\cite{nijholt2015orbital}.
+For the straight system, we calculate $E_\textrm{gap}$ by performing a binary search in $E$ for the energy at which the propagating modes start to appear~\cite{Nijholt2015}.
+Additionally, in Fig.~\ref{fig:phasediagrams}(c) we plot the phase boundaries obtained by solving a generalized eigenvalue problem~\cite{Nijholt2015}.
 Due to the large size of the zigzag supercell, we are unable to apply these methods to zigzag geometries.
 Instead, we calculate $E_\textrm{gap}$ by finding the absolute minimum of the spectrum $E_\textrm{gap}=\min{\left|E(k)\right|}$.
 By both observing the gap closings and comparing to the topological phase diagram of the straight system, we then infer the topology of the zigzag system and verify this by calculating the Majorana wave function of a finite length zigzag.
 
 \comment{The introduction of a the zigzag breaks a chiral symmetry, bringing the system from the BDI to the D symmetry class}
-The straight system is in the symmetry class BDI \cite{pientka2017topological}.
-Using the software package Qsymm~\cite{varjas2018qsymm}, we find that the zigzag shape modulation violates the chiral symmetry~\cite{1902.11300}, leaving only the particle-hole symmetry and the reflection symmetry with respect to the $x$-axis.
+The straight system is in the symmetry class BDI \cite{Pientka2017}.
+Using the software package Qsymm~\cite{Varjas2018}, we find that the zigzag shape modulation violates the chiral symmetry~\cite{Setiawan2019}, leaving only the particle-hole symmetry and the reflection symmetry with respect to the $x$-axis.
 
 \comment{The phase diagram does not change much, except we see a cleaner spectrum as a result of the D class symmetry.}
-Similar to the findings of Pientka \textit{et al.}~\cite{pientka2017topological}, we see that the straight geometry has a diamond-shaped topological region.
+Similar to the findings of Pientka \textit{et al.}~\cite{Pientka2017}, we see that the straight geometry has a diamond-shaped topological region.
 We also observe additional gap closings due to the BDI symmetry.
 The topological phase diagram of the zigzag system has a qualitatively similar shape but a significantly increased topological gap.
 The asymmetry of the phase diagram upon replacing $\phi \rightarrow -\phi$ is consistent with the symmetry of the Hamiltonian, because both inversion and time-reversal change both $\phi \rightarrow -\phi$ and $B_x \rightarrow -B_x$.
@@ -289,10 +289,10 @@ The asymmetry of the phase diagram upon replacing $\phi \rightarrow -\phi$ is co
 The zigzag geometry increases the topological gap in the high density regime by more than an order of magnitude, as well as substantially reducing of Majorana size.
 The improvements occur in a broad range of parameter values, moreover, even using $B_x$ optimal for the straight system in the high density regime (Fig.~\ref{fig:phasediagrams}), the Majorana size $\xi_\textrm{M}$ and $E_\textrm{gap}$ are still more than an order of magnitude better for the zigzag system.
 We expect that the improvement of the device performance will significantly simplify the creation of Majorana devices and the detection of Majorana states.
-The zigzag geometry offers a controllable way to remove long trajectories, unlike disorder~\cite{haim_double-edge_2018} that otherwise has a similar effect.
+The zigzag geometry offers a controllable way to remove long trajectories, unlike disorder~\cite{Haim2018} that otherwise has a similar effect.
 
 \comment{Current fabrication techniques are compatible with the proposed geometry, and experimental verification can be near.}
-Current fabrication techniques are compatible with the proposed geometry; zigzag devices have already been fabricated~\cite{fokko_zigzag}.
+Current fabrication techniques are compatible with the proposed geometry; zigzag devices have already been fabricated~\cite{Vries}.
 We have demonstrated that the unavoidable variation in the experimental device geometry should not have a detrimental impact on the zigzag devices.
 
 \comment{Optimizing the geometry, more detailed modeling, and a simple analytical estimation are open questions for further research}
