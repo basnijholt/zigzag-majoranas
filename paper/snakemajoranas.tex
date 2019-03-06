@@ -98,7 +98,7 @@ In addition to the improved robustness of Majoranas, this new zigzag geometry is
 %%██████████████████████████████████████████████████████████████████████████
 \section{Introduction}
 \comment{Hybrid NS structures become topological and are useful for TQC.}
-A hybrid structure containing a semiconductor with strong spin-orbit coupling coupled to a superconductor, inside a magnetic field becomes topological within the right parameter regime ($E_z^2>\mu^2+\Delta^2$ for a simple nanowire), and Majorana bound states appear on its edges~\cite{Lutchyn2010,Oreg2010}.
+A hybrid structure containing a semiconductor with strong spin-orbit coupling coupled to a superconductor, inside a magnetic field becomes topological within the right parameter regime ($E_\text{Z}^2>\mu^2+\Delta^2$ for a simple nanowire), and Majorana bound states appear on its edges~\cite{Lutchyn2010,Oreg2010}.
 Majorana bound states are a promising candidate to form the basis of a stable platform for topological quantum computing. ~\cite{Alicea2012,Beenakker2013,Beenakker2016,Leijnse2012}
 The current experimental effort ~\cite{Mourik2012,Das2012,Deng2012,Churchill2013,Zhang2018} focuses on creating pairs of Majorana bound states in hybrid normal-superconductor (NS) nanowire structures.
 
@@ -149,14 +149,14 @@ We model the system with a Bogoliubov-de Gennes Hamiltonian (BdG):
 \begin{subequations}
 \begin{align}
     H_\textrm{N} = & \left[\frac{\hbar^2\left(\kx^2 + \ky^2\right)}{2\meff} - \mu + \alpha \left( \ky \sigma_x - \kx \sigma_y \right) \right] \tau_z
-        + E_\text{z} \sigma_x, \\
+        + E_\text{Z} \sigma_x, \\
     H_\textrm{SC} = & \left[\frac{\hbar^2\left(\kx^2 + \ky^2\right)}{2\meff} - \mu\right] \tau_z
         + \Delta \cos{\frac{\phi}{2}} \tau_x + \Delta \sin{\frac{\phi}{2}} \tau_y.
 \end{align}
 \label{eq:hamiltonian}
 \end{subequations}
 Here $H_\textrm{N}$ and $H_\textrm{SC}$ are the Hamiltonians of the semiconductor and superconductors, respectively.
-The normal part has a linear Rashba spin-orbit coupling term with strength $\alpha$ and a Zeeman field with $E_z=\frac{1}{2} \mu_B g B_x$.
+The normal part has a linear Rashba spin-orbit coupling term with strength $\alpha$ and a Zeeman field with $E_\text{Z}=\frac{1}{2} \mu_B g B_x$.
 The superconductor has a coupling term $\Delta$, and the phases of the superconductors equal to $\pm\phi/2$.
 Both the normal part and the superconductors have a kinetic term and chemical potential $\mu$.
 The BdG Hamiltonian acts on the spinor wave function $\Psi={\left(\psi_{e\uparrow},\psi_{e\downarrow},\psi_{\textrm{h}\downarrow},-\psi_{\textrm{h}\uparrow}\right)}^{T}$, where $\psi_e$, $\psi_\textrm{h}$ are its electron and hole components, and $\psi_\uparrow$, $\psi_\downarrow$ are the spin-up and spin-down components.
