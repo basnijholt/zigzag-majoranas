@@ -46,11 +46,9 @@ data: code
 	cp ../DATA_README.md $(TARGET_DIR)/DATA_README.txt
 	cd $(TARGET_DIR) && zip -Zstore -r ../snakemajoranas_data.zip *
 
-arxiv: paper bbl code
+arxiv: paper bbl
 	$(eval TARGET_DIR := $(BASE_DIR)/arxiv)
 	-mkdir -p $(TARGET_DIR)
-	-mkdir -p $(TARGET_DIR)/anc/
-	-mv $(CODE_DIR)/* $(TARGET_DIR)/anc/
 	cp snakemajoranas.bbl $(TARGET_DIR)
 	-mv $(PAPER_DIR)/* $(TARGET_DIR)
 	rm $(TARGET_DIR)/snakemajoranas.bib
