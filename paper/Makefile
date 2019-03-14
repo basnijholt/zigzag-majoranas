@@ -33,7 +33,8 @@ paper:
 	cp snakemajoranas.tex $(PAPER_DIR)
 	export DATE=`date +%Y-%m-%d`
 	sed -i '' -e "s/\\\today/`date +%Y-%m-%d`/g" $(PAPER_DIR)/snakemajoranas.tex
-	cp -r figures $(PAPER_DIR)
+	-mkdir -p $(PAPER_DIR)/figures
+	cp -r figures/*pdf $(PAPER_DIR)/figures/
 
 data: code
 	$(eval TARGET_DIR := $(BASE_DIR)/data_sub)
