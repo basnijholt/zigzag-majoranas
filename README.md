@@ -2,7 +2,7 @@
 By Tom Laeven, Bas Nijholt, Michael Wimmer, Anton R. Akhmerov
 
 # Files
-This folder contains one Jupyter notebooks and one Python files:
+This folder contains one Jupyter notebook and one Python files:
 * `paper-figures.ipynb`
 * `zigzag.py`
 
