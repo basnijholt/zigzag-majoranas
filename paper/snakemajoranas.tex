@@ -109,10 +109,7 @@ Two groups~\cite{Fornieri2018,Ren2018} have realized this system experimentally,
 
 \comment{The gap is small because of long trajectories.}
 An important challenge in creating stable Majoranas is the appearance of a soft gap---a power law decay instead of an exponential decay of the density of states near zero energy.
-
-In clean systems, one mechanism giving rise to a soft gap is the reduction of the
-induced gap for states with the momentum directed along the
-junction~\cite{Gennes1963,Beenakker2005}.
+In clean systems soft gap arises due to the reduction of the induced gap for states with the momentum directed along the junction~\cite{Gennes1963,Beenakker2005}.
 From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor, shown in Fig.~\ref{fig:setup}(a).
 These long trajectories have long flight times $\tau_\textrm{f} \approx L_\textrm{t} / v_F$ (see Fig.~\ref{fig:setup}), where $L_\textrm{t}$ is the trajectory length.
 Equivalently, the Thouless energy of these trajectories $E_{\textrm{Th}}=\hbar / \tau_\textrm{f}$ is small, resulting in a small gap $E_\textrm{gap} \ll \Delta$.
@@ -292,9 +289,12 @@ The asymmetry of the phase diagram upon replacing $\phi \rightarrow -\phi$ is co
 The zigzag geometry increases the topological gap in the high density regime by more than an order of magnitude, as well as substantially reducing of Majorana size.
 The improvements occur in a broad range of parameter values, moreover, even using $B_x$ optimal for the straight system in the high density regime (Fig.~\ref{fig:phasediagrams}), the Majorana size $\xi_\textrm{M}$ and $E_\textrm{gap}$ are still more than an order of magnitude better for the zigzag system.
 We expect that the improvement of the device performance will significantly simplify the creation of Majorana devices and the detection of Majorana states.
-The zigzag geometry offers a controllable way to remove long trajectories, unlike disorder~\cite{Haim2018} that otherwise has a similar effect.
+The zigzag geometry offers a controllable way to remove long trajectories, making it easier to rely on than disorder~\cite{Haim2018}, that otherwise has a similar effect.
 
-Previously it had been shown that various mechanisms can give rise to a soft gap: interface disorder and pairbreaking,\cite{Takei2013}, a multi-mode tunnel barrier,\cite{Stanescu2014} or temperature and dissipation.\cite{Liu2017} Even in the absence of these effects, long trajectories will lead to a soft gap in the high density limit. The zigzag geometry addresses this intrinsic problem.
+\comment{Zigzag doesn't do anything against other mechanisms, and therefore it doesn't help to use it ignorantly}
+Soft gap may arise due to other mechanisms that do not involve ballistic trajectories: both interface disorder and pair breaking~\cite{Takei2013} or temperature and dissipation~\cite{Liu2017} may create a soft gap.
+Further in a multimode junction the mode dependence of transmission~\cite{Stanescu2014} may produce subgap conductance similar to that in a device with a soft gap.
+The zigzag geometry has no impact on these alternative phenomena, and it may therefore serve as a tool in distinguishing different mechanisms.
 
 \comment{Current fabrication techniques are compatible with the proposed geometry, and experimental verification can be near.}
 Current fabrication techniques are compatible with the proposed geometry; zigzag devices have already been fabricated~\cite{Vries}.
