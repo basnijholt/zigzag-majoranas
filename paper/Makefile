@@ -41,10 +41,7 @@ data: code
 	-mkdir -p $(TARGET_DIR)
 	-mkdir -p $(TARGET_DIR)/data
 	cp -R ../data/* $(TARGET_DIR)/data
-	-mv $(CODE_DIR)/LICENSE.txt $(TARGET_DIR)
-	-mv $(CODE_DIR)/README.txt $(TARGET_DIR)
-	-mv $(CODE_DIR) $(TARGET_DIR)
-	cp ../DATA_README.md $(TARGET_DIR)/DATA_README.txt
+	-mv $(CODE_DIR)/* $(TARGET_DIR)
 	cd $(TARGET_DIR) && zip -Zstore -r ../snakemajoranas_data.zip *
 
 arxiv: paper bbl
