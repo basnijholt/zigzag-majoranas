@@ -1,4 +1,4 @@
-Copyright 2019 Bas Nijholt and Tom Laeven
+Copyright 2019 Bas Nijholt, Tom Laeven, Michael Wimmer, and Anton R. Akhmerov
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
