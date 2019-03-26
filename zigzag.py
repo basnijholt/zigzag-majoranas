@@ -560,13 +560,13 @@ def gap_from_modes(lead, params, tol=1e-6):
     return gap
 
 
-def gap_from_band_structure(lead, params, Ns=31, full_output=False):
+def gap_from_band_structure(lead, params, Ns=31):
     def energies(k_x):
         Es = spectrum(lead, dict(params, k_x=float(k_x)), k=4)[0]
         return np.abs(Es).min()
 
     return float(scipy.optimize.brute(energies, ranges=((0, np.pi),),
-                 Ns=Ns, full_output=full_output))
+                 Ns=Ns, full_output=True)[1])
 
 
 def phase_bounds_operator(lead, params, k_x=0):
