@@ -408,8 +408,8 @@ def system(
             lead_down = kwant.Builder(kwant.TranslationalSymmetry([L_x, 0], [0, -a]))
             lead_up = kwant.wraparound.wraparound(lead_up, keep=1)
             lead_down = kwant.wraparound.wraparound(lead_down, keep=1)
-            lead_up.fill(template_sc_top, lambda s: 0 <= s.pos[0] < L_x, (0, 0))
-            lead_down.fill(template_sc_bot, lambda s: 0 <= s.pos[0] < L_x, (0, 0))
+            lead_up.fill(template['sc_top'], lambda s: 0 <= s.pos[0] < L_x, (0, 0))
+            lead_down.fill(template['sc_bot'], lambda s: 0 <= s.pos[0] < L_x, (0, 0))
             syst.attach_lead(lead_up)
             syst.attach_lead(lead_down)
 
