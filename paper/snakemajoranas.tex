@@ -114,7 +114,7 @@ From a semiclassical perspective, these momenta correspond to long paths through
 These long trajectories have long flight times $\tau_\textrm{f} \approx L_\textrm{t} / v_F$ (see Fig.~\ref{fig:setup}), where $L_\textrm{t}$ is the trajectory length.
 Equivalently, the Thouless energy of these trajectories $E_{\textrm{Th}}=\hbar / \tau_\textrm{f}$ is small, resulting in a small gap $E_\textrm{gap} \ll \Delta$.
 This problem does not appear when the Fermi surface is small and the zero point motion dominates the transverse velocity, making a low filling of the bands a possible workaround\cite{Beenakker2005,Nijholt2015}.
-However, low filling requires precise knowledge of the system and is more sensitive to disorder or microscopic inhomogeneities.
+However, tuning the system to a low chemical potential requires a precise knowledge of the band positions and makes the device more sensitive to disorder or microscopic inhomogeneities.
 On the other hand, disorder scatters these long trajectories and introduces a cutoff on the scale of the mean free path~\cite{Golubov1988,Belzig1996,Pilgram2000} which Ref.~\onlinecite{Haim2018} proposes to use to improve Majorana properties; however, disorder is impossible to control to a required precision experimentally.
 
 \begin{figure}[!htb]
@@ -235,10 +235,10 @@ In the straight system [Fig.~\ref{fig:wave_functions}(a)], we see that the decay
 The small topological gap combined with the high velocity result in a large Majorana size
 \begin{equation}
 \label{eq:xi_M}
-\xi_\textrm{M}=\hbar \frac{v_\textrm{F}}{E_\textrm{gap}},
+\xi_\textrm{M}=\hbar \frac{v_\textrm{F}}{E_\textrm{gap}}.
 \end{equation}
-and therefore a minimal topological protection against perturbations.
-The wave function extends to the center of the system, resulting in highly overlapping Majoranas and a Majorana coupling $E_\textrm{M}$ comparable to $E_\textrm{gap}$.
+This result follows from an avoided crossing shape of the dispersion relation near the Fermi momentum.
+Therefore, in straight junctions the wave function extends to the center of the system, resulting in highly overlapping Majoranas and a Majorana coupling $E_\textrm{M}$ comparable to $E_\textrm{gap}$.
 
 \comment{In a zigzag geometry Majoranas are localized within one segment of zigzag independent of details}
 We observe that in zigzag systems the Majorana properties improve independent of specific geometric details.
@@ -325,4 +325,53 @@ All authors performed the analysis of the results and planning of the project.
 
 \bibliographystyle{apsrev4-1}
 \bibliography{snakemajoranas}
+
+\appendix
+
+\section{Zigzag device with a single superconductor}
+
+\comment{The same principle applies to devices with only one superconductor.}
+
+\comment{We run the simulation and observe that the phase diagrams are the same but the zigzag device is still better.}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.9\columnwidth]{figures/ns_junction.pdf}
+\caption{Same as Fig.~\ref{fig:phasediagrams} but with one superconductor instead of two.
+\label{fig:ns_junction}}
+\end{figure}
+
+\section{Direction of the magnetic field}
+
+\comment{Short trajectories are less sensitive to the alignment of magnetic field.}
+
+\comment{Zigzag geometry removes the need for precise field alignment.}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.9\columnwidth]{figures/tilted_angle_phase_diagram.pdf}
+\caption{A comparison of a straight device (left panels) and a zigzag one (right panels) where the magnetic is rotated.
+% E_gap(B, angle, \phi=\pi)
+\label{fig:tilted_angle_phase_diagram}}
+\end{figure}
+
+\comment{In a realistic device the magnetic field might not be inhomogeneous, but zigzag doesn't care.}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.9\columnwidth]{figures/snaking_magnetic_field.pdf}
+\caption{
+% Fig 4. (d) and (f) with snaking B
+\label{fig:snaking_magnetic_field}}
+\end{figure}
+
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.9\columnwidth]{figures/bandstructure_of_small_period_zigzag.pdf}
+\caption{The effect of increased transparency.
+% Like Fig 2. (b) plus horizontal dashed lines indicating the gap of zigzag and straight junctions
+\label{fig:bandstructure_of_small_period_zigzag}}
+\end{figure}
+
 \end{document}
