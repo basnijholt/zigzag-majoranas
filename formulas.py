@@ -21,4 +21,4 @@ def fermi_velocity(mu, m_eff):
 
 
 def density_to_mu(density, m_eff):
-    return HBAR_MEV**2 * PI * density / (m_eff * M_EV_NM)
+    return HBAR_MEV ** 2 * PI * density / (m_eff * M_EV_NM)

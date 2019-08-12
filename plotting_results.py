@@ -9,40 +9,60 @@ import numpy as np
 import holoviews as hv
 
 
-def plot_syst(syst_pars=None, params=None, a_new=None,
-              num_lead_cells=4, syst=None, site_colors=None, **args):
+def plot_syst(
+    syst_pars=None,
+    params=None,
+    a_new=None,
+    num_lead_cells=4,
+    syst=None,
+    site_colors=None,
+    **args,
+):
     if syst is None:
-        a = syst_pars['a'] if a_new is None else a_new
-        L_down = syst_pars['L_down']
-        L_m = syst_pars['L_m']
-        L_up = syst_pars['L_up']
-        L_x = syst_pars['L_x']
+        a = syst_pars["a"] if a_new is None else a_new
+        L_down = syst_pars["L_down"]
+        L_m = syst_pars["L_m"]
+        L_up = syst_pars["L_up"]
+        L_x = syst_pars["L_x"]
 
         syst, _ = sns_system.make_sns_system(
-            a=a, L_down=L_down, L_m=L_m, L_up=L_up, L_x=L_x)
-    
+            a=a, L_down=L_down, L_m=L_m, L_up=L_up, L_x=L_x
+        )
+
     if site_colors is None:
         site_colors = {}
-        
+
     def delta(sites):
         colors = []
         for i, site in enumerate(sites):
             site_color = site_colors.get(site)
-            if site_color is None:            
-                site_color = (np.sum(np.abs(syst.hamiltonian(i, i, params=params)) + np.real(syst.hamiltonian(i, i, params=params))
-                       * np.imag(syst.hamiltonian(i, i, params=params))) for i, site in enumerate(sites))
+            if site_color is None:
+                site_color = (
+                    np.sum(
+                        np.abs(syst.hamiltonian(i, i, params=params))
+                        + np.real(syst.hamiltonian(i, i, params=params))
+                        * np.imag(syst.hamiltonian(i, i, params=params))
+                    )
+                    for i, site in enumerate(sites)
+                )
             colors.append(site_color)
         return colors
 
-    return kwant.plot(syst, num_lead_cells=num_lead_cells,
-                      site_color=delta(syst.sites),
-                      fig_size=(5, 5),
-                      show=False, **args)
+    return kwant.plot(
+        syst,
+        num_lead_cells=num_lead_cells,
+        site_color=delta(syst.sites),
+        fig_size=(5, 5),
+        show=False,
+        **args,
+    )
 
 
 def plot_pfaffian(params, results, figsize=(5, 5)):
     # Plots pfaffian for range of parameters, for a list of parameters
-    (iterable_keys, param_list) = distributed_sns.get_list_of_parameter_dictionaries(params)
+    (iterable_keys, param_list) = distributed_sns.get_list_of_parameter_dictionaries(
+        params
+    )
     dimLength = []
     for k in iterable_keys:
         dimLength.append(len(params[k]))
@@ -60,19 +80,23 @@ def plot_pfaffian(params, results, figsize=(5, 5)):
         plt.xlabel(iterable_keys[0])
         plt.ylabel(iterable_keys[1])
 
-        if(iterable_keys[1] == 'phase'):
-            plt.yticks([0, 2 * np.pi], ['$0$', '$2 \\pi$'])
+        if iterable_keys[1] == "phase":
+            plt.yticks([0, 2 * np.pi], ["$0$", "$2 \\pi$"])
 
         im = plt.imshow(
             M,
-            extent=[params[iterable_keys[0]][0],
-                    params[iterable_keys[0]][-1],
-                    params[iterable_keys[1]][0],
-                    params[iterable_keys[1]][-1]],
-            aspect=(len(params[iterable_keys[1]]) /
-                    len(params[iterable_keys[0]]) *
-                    (params[iterable_keys[0]][-1] /
-                     params[iterable_keys[1]][-1])))
+            extent=[
+                params[iterable_keys[0]][0],
+                params[iterable_keys[0]][-1],
+                params[iterable_keys[1]][0],
+                params[iterable_keys[1]][-1],
+            ],
+            aspect=(
+                len(params[iterable_keys[1]])
+                / len(params[iterable_keys[0]])
+                * (params[iterable_keys[0]][-1] / params[iterable_keys[1]][-1])
+            ),
+        )
         # plt.colorbar(im)
         plt.show()
 
@@ -80,11 +104,11 @@ def plot_pfaffian(params, results, figsize=(5, 5)):
 def print_blearner_status(bl):
     learners = bl.learners
     for learner in bl.learners:
-        print('pars:', end="")
+        print("pars:", end="")
         for par in learner.pars:
-            print(f'\t{par:.2f}', end="")
+            print(f"\t{par:.2f}", end="")
 
-        print(f'\tnpoints: {learner.npoints}\tloss: {learner.loss():.2f}')
+        print(f"\tnpoints: {learner.npoints}\tloss: {learner.loss():.2f}")
 
 
 def plot_band_result(momenta, energies, **opts):
@@ -94,22 +118,25 @@ def plot_band_result(momenta, energies, **opts):
     nbands = len(energies[0])
     band_struct = [
         (momenta, [energies[k][band] for k in range(len(momenta))])
-        for band in range(nbands)]
+        for band in range(nbands)
+    ]
     plot_dict = {band: hv.Curve(band_struct[band]) for band in range(nbands)}
     return hv.NdOverlay(plot_dict, **opts)
 
 
-def get_linked_plots(updatable_plot_function, clickable_plot,
-                     clickable_data, default_xy=None, **params):
+def get_linked_plots(
+    updatable_plot_function, clickable_plot, clickable_data, default_xy=None, **params
+):
     if default_xy is None:
         click = hv.streams.Tap(source=clickable_plot)
     else:
         (x, y) = default_xy
         click = hv.streams.Tap(source=clickable_plot, x=x, y=y)
 
-    def plot_func(x, y): return updatable_plot_function(
-        find_closest_key_in_dict((x, y), clickable_data.keys()),
-        **params)
+    def plot_func(x, y):
+        return updatable_plot_function(
+            find_closest_key_in_dict((x, y), clickable_data.keys()), **params
+        )
 
     return hv.DynamicMap(plot_func, streams=[click])
 
@@ -132,13 +159,12 @@ def find_closest_key_in_dict(point, xdata):
         xmin = min(xmin, x)
         ymin = min(ymin, y)
 
-    xscale = (xmax - xmin)**2
-    yscale = (ymax - ymin)**2
+    xscale = (xmax - xmin) ** 2
+    yscale = (ymax - ymin) ** 2
 
     # Get closest point
     for xy in xdata:
-        cur_err = (xy[1] - point[1]
-                   )**2 / yscale + (xy[0] - point[0])**2 / xscale
+        cur_err = (xy[1] - point[1]) ** 2 / yscale + (xy[0] - point[0]) ** 2 / xscale
         if cur_err < min_err:
             min_err = cur_err
             min_i = xy

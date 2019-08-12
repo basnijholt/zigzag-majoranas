@@ -33,7 +33,7 @@ import numpy as np
 import scipy.optimize
 
 
-def get_cuts(syst, ind=0, direction='x'):
+def get_cuts(syst, ind=0, direction="x"):
     """Get the sites at two postions of the specified cut coordinates.
 
     Parameters
@@ -45,18 +45,18 @@ def get_cuts(syst, ind=0, direction='x'):
     direction : str
         Cut direction, 'x', 'y', or 'z'.
     """
-    direction = 'xyz'.index(direction)
+    direction = "xyz".index(direction)
     l_cut = [site for site in syst.sites() if site.tag[direction] == ind]
     r_cut = [site for site in syst.sites() if site.tag[direction] == ind + 1]
-    assert len(l_cut) == len(
-        r_cut), "x_left and x_right use site.tag not site.pos!"
+    assert len(l_cut) == len(r_cut), "x_left and x_right use site.tag not site.pos!"
     return l_cut, r_cut
 
 
 def add_vlead(syst, norbs, l_cut, r_cut):
     dim = norbs * (len(l_cut) + len(r_cut))
     vlead = kwant.builder.SelfEnergyLead(
-        lambda energy, args: np.zeros((dim, dim)), l_cut + r_cut)
+        lambda energy, args: np.zeros((dim, dim)), l_cut + r_cut
+    )
     syst.leads.append(vlead)
     return syst
 
@@ -66,10 +66,11 @@ def hopping_between_cuts(syst, r_cut, l_cut, electron_blocks):
     l_cut_sites = [syst.sites.index(site) for site in l_cut]
 
     def hopping(syst, params):
-        H = syst.hamiltonian_submatrix(params=params,
-                                       to_sites=l_cut_sites,
-                                       from_sites=r_cut_sites)
+        H = syst.hamiltonian_submatrix(
+            params=params, to_sites=l_cut_sites, from_sites=r_cut_sites
+        )
         return electron_blocks(H)
+
     return hopping
 
 
@@ -86,7 +87,7 @@ def matsubara_frequency(n, params):
     float
         Imaginary energy.
     """
-    return (2 * n + 1) * np.pi * params['k'] * params['T'] * 1j
+    return (2 * n + 1) * np.pi * params["k"] * params["T"] * 1j
 
 
 def null_H(syst, params, n, electron_blocks):
@@ -111,8 +112,9 @@ def null_H(syst, params, n, electron_blocks):
     """
     assert isinstance(syst.leads[0], kwant.builder.SelfEnergyLead)
     en = matsubara_frequency(n, params)
-    gf = kwant.greens_function(syst, en, out_leads=[0], in_leads=[0],
-                               check_hermiticity=False, params=params)
+    gf = kwant.greens_function(
+        syst, en, out_leads=[0], in_leads=[0], check_hermiticity=False, params=params
+    )
     return np.linalg.inv(electron_blocks(gf.data))
 
 
@@ -148,20 +150,20 @@ def current_from_H_0(H_0_cache, H12, phase, params):
     float
         Total current of all terms in `H_0_list`.
     """
-    I = sum(current_contrib_from_H_0(H_0, H12, phase, params)
-            for H_0 in H_0_cache)
+    I = sum(current_contrib_from_H_0(H_0, H12, phase, params) for H_0 in H_0_cache)
     return I
 
 
-def I_c_fixed_n(syst, hopping, params, electron_blocks,
-                matsfreqs=500, N_brute=30):
-    H_0_cache = [null_H(syst, params, n, electron_blocks)
-                 for n in range(matsfreqs)]
+def I_c_fixed_n(syst, hopping, params, electron_blocks, matsfreqs=500, N_brute=30):
+    H_0_cache = [null_H(syst, params, n, electron_blocks) for n in range(matsfreqs)]
     H12 = hopping(syst, params)
 
-    def fun(phase): return -current_from_H_0(H_0_cache, H12, phase, params)
+    def fun(phase):
+        return -current_from_H_0(H_0_cache, H12, phase, params)
+
     opt = scipy.optimize.brute(
-        fun, ranges=[(-np.pi, np.pi)], Ns=N_brute, full_output=True)
+        fun, ranges=[(-np.pi, np.pi)], Ns=N_brute, full_output=True
+    )
     x0, fval, grid, Jout = opt
     return dict(phase_c=x0[0], current_c=-fval, phases=grid, currents=-Jout)
 
@@ -191,12 +193,24 @@ def current_contrib_from_H_0(H_0, H12, phase, params):
     dim = t.shape[0]
     H12G21 = t.T.conj() @ gf[dim:, :dim]
     H21G12 = t @ gf[:dim, dim:]
-    return -4 * params['T'] * params['current_unit'] * (
-        np.trace(H21G12) - np.trace(H12G21)).imag
+    return (
+        -4
+        * params["T"]
+        * params["current_unit"]
+        * (np.trace(H21G12) - np.trace(H12G21)).imag
+    )
 
 
-def current_at_phase(syst, hopping, params, H_0_cache, phase,
-                     electron_blocks, tol=1e-2, max_frequencies=100):
+def current_at_phase(
+    syst,
+    hopping,
+    params,
+    H_0_cache,
+    phase,
+    electron_blocks,
+    tol=1e-2,
+    max_frequencies=100,
+):
     """Find the supercurrent at a phase using a list of Hamiltonians at
     different imaginary energies (Matsubara frequencies). If this list
     does not contain enough Hamiltonians to converge, it automatically
@@ -228,8 +242,8 @@ def current_at_phase(syst, hopping, params, H_0_cache, phase,
     dict
         Dictionary with the critical phase, critical current, and `currents`
         evaluated at `phases`."""
-    if params.get('phase', 0) != 0:
-        raise Exception('Set the phase in params to 0!')
+    if params.get("phase", 0) != 0:
+        raise Exception("Set the phase in params to 0!")
     H12 = hopping(syst, params)
     I = 0
     for n in range(max_frequencies):
@@ -247,8 +261,9 @@ def current_at_phase(syst, hopping, params, H_0_cache, phase,
         return I
 
 
-def I_c(syst, hopping, params, electron_blocks, tol=1e-2,
-        max_frequencies=500, N_brute=31):
+def I_c(
+    syst, hopping, params, electron_blocks, tol=1e-2, max_frequencies=500, N_brute=31
+):
     """Find the critical current by optimizing the current-phase
     relation.
 
@@ -278,10 +293,26 @@ def I_c(syst, hopping, params, electron_blocks, tol=1e-2,
         evaluated at `phases`."""
     H_0_cache = []
 
-    def func(phase): return -current_at_phase(syst, hopping, params,
-                                              H_0_cache, phase, electron_blocks, tol, max_frequencies)
+    def func(phase):
+        return -current_at_phase(
+            syst,
+            hopping,
+            params,
+            H_0_cache,
+            phase,
+            electron_blocks,
+            tol,
+            max_frequencies,
+        )
+
     opt = scipy.optimize.brute(
-        func, ranges=((-np.pi, np.pi),), Ns=N_brute, full_output=True)
+        func, ranges=((-np.pi, np.pi),), Ns=N_brute, full_output=True
+    )
     x0, fval, grid, Jout = opt
-    return dict(phase_c=x0[0], current_c=-fval, phases=grid,
-                currents=-Jout, N_freqs=len(H_0_cache))
+    return dict(
+        phase_c=x0[0],
+        current_c=-fval,
+        phases=grid,
+        currents=-Jout,
+        N_freqs=len(H_0_cache),
+    )

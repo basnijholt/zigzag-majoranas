@@ -10,10 +10,15 @@ import sns_system
 
 def dispersion(k_x, k_y, params):
     p = SimpleNamespace(**params)
-    Ekin = (p.hbar**2 / (2 * p.m_eff) * (k_x**2 + k_y**2)
-            - p.mu + p.m_eff * p.alpha_middle**2 / (2 * p.hbar**2))
-    Erest = np.sqrt(p.alpha_middle ** 2 * k_x ** 2 +
-        (p.alpha_middle * k_y - p.g_factor_middle * p.mu_B * p.B) ** 2)
+    Ekin = (
+        p.hbar ** 2 / (2 * p.m_eff) * (k_x ** 2 + k_y ** 2)
+        - p.mu
+        + p.m_eff * p.alpha_middle ** 2 / (2 * p.hbar ** 2)
+    )
+    Erest = np.sqrt(
+        p.alpha_middle ** 2 * k_x ** 2
+        + (p.alpha_middle * k_y - p.g_factor_middle * p.mu_B * p.B) ** 2
+    )
     return Ekin + Erest, Ekin - Erest
 
 
@@ -32,11 +37,11 @@ def mumps_eigsh(matrix, k, sigma, **kwargs):
 
     Please see scipy.sparse.linalg.eigsh for documentation.
     """
-    class LuInv(sla.LinearOperator):
 
+    class LuInv(sla.LinearOperator):
         def __init__(self, matrix):
             instance = kwant.linalg.mumps.MUMPSContext()
-            instance.analyze(matrix, ordering='pord')
+            instance.analyze(matrix, ordering="pord")
             instance.factor(matrix)
             self.solve = instance.solve
             sla.LinearOperator.__init__(self, matrix.dtype, matrix.shape)
@@ -78,7 +83,7 @@ def calc_dos_lowest_state(syst, params, syst_pars):
     energies, wfs = calc_spectrum(syst, params, k=6)
     energy_gap = abs(energies[2]) - abs(energies[0])
     wf = sns_system.to_site_ph_spin(syst_pars, wfs[:, 0])
-    return abs(energies[0]), energy_gap, np.sum(np.abs(wf)**2, axis=2)
+    return abs(energies[0]), energy_gap, np.sum(np.abs(wf) ** 2, axis=2)
 
 
 def translation_ev(h, t, tol=1e6):
@@ -191,8 +196,7 @@ def find_gap_of_lead(lead, params, tol=1e-6):
 
 
 def phase_bounds_operator(lead, params, k_x=0):
-    h_k = lead.hamiltonian_submatrix(params=dict(params, mu=0, k_x=k_x),
-        sparse=True)
+    h_k = lead.hamiltonian_submatrix(params=dict(params, mu=0, k_x=k_x), sparse=True)
     sigma_z = sp.csc_matrix(np.array([[1, 0], [0, -1]]))
     _operator = sp.kron(sp.eye(h_k.shape[0] // 2), sigma_z) @ h_k
     return _operator
@@ -223,11 +227,11 @@ def find_phase_bounds(lead, params, k_x=0, num_bands=20, sigma=0):
     if num_bands is None:
         mus = np.linalg.eigvals(chemical_potentials.todense())
     else:
-        mus = sla.eigs(chemical_potentials, k=num_bands, sigma=sigma, which='LM')[0]
+        mus = sla.eigs(chemical_potentials, k=num_bands, sigma=sigma, which="LM")[0]
 
     real_solutions = abs(np.angle(mus)) < 1e-10
 
-    mus[~real_solutions] = np.nan # To ensure it returns the same shape vector
+    mus[~real_solutions] = np.nan  # To ensure it returns the same shape vector
     return np.sort(mus.real)
 
 
@@ -247,7 +251,7 @@ def get_h_k(lead, params):
 def lat_from_syst(syst):
     lats = set(s.family for s in syst.sites)
     if len(lats) > 1:
-        raise Exception('No unique lattice in the system.')
+        raise Exception("No unique lattice in the system.")
     return list(lats)[0]
 
 

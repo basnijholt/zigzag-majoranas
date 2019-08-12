@@ -24,7 +24,7 @@ def householder_real(x):
     if sigma == 0:
         return (np.zeros(x.shape[0]), 0, x[0])
     else:
-        norm_x = math.sqrt(x[0]**2 + sigma)
+        norm_x = math.sqrt(x[0] ** 2 + sigma)
 
         v = x.copy()
 
@@ -111,22 +111,22 @@ def skew_tridiagonalize(A, overwrite_a=False, calc_q=True):
 
     for i in range(A.shape[0] - 2):
         # Find a Householder vector to eliminate the i-th column
-        v, tau, alpha = householder(A[i + 1:, i])
+        v, tau, alpha = householder(A[i + 1 :, i])
         A[i + 1, i] = alpha
         A[i, i + 1] = -alpha
-        A[i + 2:, i] = 0
-        A[i, i + 2:] = 0
+        A[i + 2 :, i] = 0
+        A[i, i + 2 :] = 0
 
         # Update the matrix block A(i+1:N,i+1:N)
-        w = tau * A[i + 1:, i + 1:] @ v.conj()
-        A[i + 1:, i + 1:] += np.outer(v, w) - np.outer(w, v)
+        w = tau * A[i + 1 :, i + 1 :] @ v.conj()
+        A[i + 1 :, i + 1 :] += np.outer(v, w) - np.outer(w, v)
 
         if calc_q:
             # Accumulate the individual Householder reflections
             # Accumulate them in the form P_1*P_2*..., which is
             # (..*P_2*P_1)^dagger
-            y = tau * Q[:, i + 1:] @ v
-            Q[:, i + 1:] -= np.outer(y, v.conj())
+            y = tau * Q[:, i + 1 :] @ v
+            Q[:, i + 1 :] -= np.outer(y, v.conj())
 
     if calc_q:
         return (np.asmatrix(A), np.asmatrix(Q))
@@ -167,7 +167,7 @@ def skew_LTL(A, overwrite_a=False, calc_L=True, calc_P=True):
     for k in range(n - 2):
         # First, find the largest entry in A[k+1:,k] and
         # permute it to A[k+1,k]
-        kp = k + 1 + np.abs(A[k + 1:, k]).argmax()
+        kp = k + 1 + np.abs(A[k + 1 :, k]).argmax()
 
         # Check if we need to pivot
         if kp != k + 1:
@@ -183,9 +183,9 @@ def skew_LTL(A, overwrite_a=False, calc_L=True, calc_P=True):
 
             if calc_L:
                 # permute L accordingly
-                temp = L[k + 1, 1:k + 1].copy()
-                L[k + 1, 1:k + 1] = L[kp, 1:k + 1]
-                L[kp, 1:k + 1] = temp
+                temp = L[k + 1, 1 : k + 1].copy()
+                L[k + 1, 1 : k + 1] = L[kp, 1 : k + 1]
+                L[kp, 1 : k + 1] = temp
 
             if calc_P:
                 # accumulate the permutation matrix
@@ -195,19 +195,19 @@ def skew_LTL(A, overwrite_a=False, calc_L=True, calc_P=True):
 
         # Now form the Gauss vector
         if A[k + 1, k] != 0.0:
-            tau = A[k + 2:, k].copy()
+            tau = A[k + 2 :, k].copy()
             tau /= A[k + 1, k]
 
             # clear eliminated row and column
-            A[k + 2:, k] = 0.0
-            A[k, k + 2:] = 0.0
+            A[k + 2 :, k] = 0.0
+            A[k, k + 2 :] = 0.0
 
             # Update the matrix block A(k+2:,k+2)
-            A[k + 2:, k + 2:] += np.outer(tau, A[k + 2:, k + 1])
-            A[k + 2:, k + 2:] -= np.outer(A[k + 2:, k + 1], tau)
+            A[k + 2 :, k + 2 :] += np.outer(tau, A[k + 2 :, k + 1])
+            A[k + 2 :, k + 2 :] -= np.outer(A[k + 2 :, k + 1], tau)
 
             if calc_L:
-                L[k + 2:, k + 1] = tau
+                L[k + 2 :, k + 1] = tau
 
     if calc_P:
         # form the permutation matrix as a sparse matrix
@@ -225,7 +225,7 @@ def skew_LTL(A, overwrite_a=False, calc_L=True, calc_P=True):
             return np.asmatrix(A)
 
 
-def pfaffian(A, overwrite_a=False, method='P', sign_only=False):
+def pfaffian(A, overwrite_a=False, method="P", sign_only=False):
     """ pfaffian(A, overwrite_a=False, method='P')
 
     Compute the Pfaffian of a real or complex skew-symmetric
@@ -239,10 +239,10 @@ def pfaffian(A, overwrite_a=False, method='P', sign_only=False):
     # Check if it's skew-symmetric
     assert abs((A + A.T).max()) < 1e-14, abs((A + A.T).max())
     # Check that the method variable is appropriately set
-    assert method == 'P' or method == 'H'
-    if method == 'H' and sign_only:
+    assert method == "P" or method == "H"
+    if method == "H" and sign_only:
         raise Exception("Use `method='P'` when using `sign_only=True`")
-    if method == 'P':
+    if method == "P":
         return pfaffian_LTL(A, overwrite_a, sign_only)
     else:
         return pfaffian_householder(A, overwrite_a)
@@ -276,7 +276,7 @@ def pfaffian_LTL(A, overwrite_a=False, sign_only=False):
     for k in range(0, n - 1, 2):
         # First, find the largest entry in A[k+1:,k] and
         # permute it to A[k+1,k]
-        kp = k + 1 + np.abs(A[k + 1:, k]).argmax()
+        kp = k + 1 + np.abs(A[k + 1 :, k]).argmax()
 
         # Check if we need to pivot
         if kp != k + 1:
@@ -295,7 +295,7 @@ def pfaffian_LTL(A, overwrite_a=False, sign_only=False):
 
         # Now form the Gauss vector
         if A[k + 1, k] != 0.0:
-            tau = A[k, k + 2:].copy()
+            tau = A[k, k + 2 :].copy()
             tau /= A[k, k + 1]
 
             if sign_only:
@@ -305,8 +305,8 @@ def pfaffian_LTL(A, overwrite_a=False, sign_only=False):
 
             if k + 2 < n:
                 # Update the matrix block A(k+2:,k+2)
-                A[k + 2:, k + 2:] += np.outer(tau, A[k + 2:, k + 1])
-                A[k + 2:, k + 2:] -= np.outer(A[k + 2:, k + 1], tau)
+                A[k + 2 :, k + 2 :] += np.outer(tau, A[k + 2 :, k + 1])
+                A[k + 2 :, k + 2 :] -= np.outer(A[k + 2 :, k + 1], tau)
         else:
             # if we encounter a zero on the super/subdiagonal, the
             # Pfaffian is 0
@@ -352,19 +352,19 @@ def pfaffian_householder(A, overwrite_a=False):
     if not overwrite_a:
         A = A.copy()
 
-    pfaffian_val = 1.
+    pfaffian_val = 1.0
 
     for i in range(A.shape[0] - 2):
         # Find a Householder vector to eliminate the i-th column
-        v, tau, alpha = householder(A[i + 1:, i])
+        v, tau, alpha = householder(A[i + 1 :, i])
         A[i + 1, i] = alpha
         A[i, i + 1] = -alpha
-        A[i + 2:, i] = 0
-        A[i, i + 2:] = 0
+        A[i + 2 :, i] = 0
+        A[i, i + 2 :] = 0
 
         # Update the matrix block A(i+1:N,i+1:N)
-        w = tau * A[i + 1:, i + 1:] @ v.conj()
-        A[i + 1:, i + 1:] += np.outer(v, w) - np.outer(w, v)
+        w = tau * A[i + 1 :, i + 1 :] @ v.conj()
+        A[i + 1 :, i + 1 :] += np.outer(v, w) - np.outer(w, v)
 
         if tau != 0:
             pfaffian_val *= 1 - tau
@@ -388,7 +388,8 @@ def pfaffian_schur(A, overwrite_a=False):
     """
 
     assert np.issubdtype(A.dtype, np.number) and not np.issubdtype(
-        A.dtype, np.complexfloating)
+        A.dtype, np.complexfloating
+    )
 
     assert A.shape[0] == A.shape[1] > 0
 
@@ -398,7 +399,7 @@ def pfaffian_schur(A, overwrite_a=False):
     if A.shape[0] % 2 == 1:
         return 0
 
-    (t, z) = la.schur(A, output='real', overwrite_a=overwrite_a)
+    (t, z) = la.schur(A, output="real", overwrite_a=overwrite_a)
     l = np.diag(t, 1)
     return np.prod(l[::2]) * la.det(z)
 
@@ -448,7 +449,7 @@ def pfaffian_LTL_sign(A, overwrite_a=False):
     for k in range(0, n - 1, 2):
         # First, find the largest entry in A[k+1:,k] and
         # permute it to A[k+1,k]
-        kp = k + 1 + np.abs(A[k + 1:, k]).argmax()
+        kp = k + 1 + np.abs(A[k + 1 :, k]).argmax()
 
         # Check if we need to pivot
         if kp != k + 1:
@@ -467,15 +468,15 @@ def pfaffian_LTL_sign(A, overwrite_a=False):
 
         # Now form the Gauss vector
         if A[k + 1, k] != 0.0:
-            tau = A[k, k + 2:].copy()
+            tau = A[k, k + 2 :].copy()
             tau /= A[k, k + 1]
 
             pfaffian_val *= A[k, k + 1]
 
             if k + 2 < n:
                 # Update the matrix block A(k+2:,k+2)
-                A[k + 2:, k + 2:] += np.outer(tau, A[k + 2:, k + 1])
-                A[k + 2:, k + 2:] -= np.outer(A[k + 2:, k + 1], tau)
+                A[k + 2 :, k + 2 :] += np.outer(tau, A[k + 2 :, k + 1])
+                A[k + 2 :, k + 2 :] -= np.outer(A[k + 2 :, k + 1], tau)
         else:
             # if we encounter a zero on the super/subdiagonal, the
             # Pfaffian is 0

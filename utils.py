@@ -45,8 +45,8 @@ def hash_float(obj):
 
 def hash_str(obj):
     m = hashlib.md5()
-    m.update(bytes(obj, 'utf32'))
-    _hash = int.from_bytes(m.digest(), byteorder='little', signed=True)
+    m.update(bytes(obj, "utf32"))
+    _hash = int.from_bytes(m.digest(), byteorder="little", signed=True)
     return _hash
 
 
@@ -73,6 +73,6 @@ def consistent_hash(obj):
         types.FunctionType: hash_function,
         types.BuiltinFunctionType: hash_builtin_function,
         bool: hash_int,
-        functools.partial: hash_partial_function
+        functools.partial: hash_partial_function,
     }
     return hash_funcs[type(obj)](obj)
