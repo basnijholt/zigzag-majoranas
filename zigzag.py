@@ -431,7 +431,7 @@ def system(
     )
 
     template = {
-        k: discretize(v, coords=("x", "y"), grid_spacing=a)
+        k: discretize(v, coords=("x", "y"), grid=a)
         for k, v in template_strings.items()
     }
 
