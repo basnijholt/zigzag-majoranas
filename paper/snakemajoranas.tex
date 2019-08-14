@@ -330,6 +330,7 @@ All authors performed the analysis of the results and planning of the project.
 
 \section{Zigzag device with a single superconductor}
 
+
 \comment{The same principle applies to devices with only one superconductor.}
 In this letter we have focused on SNS junctions and showed that $E_\textrm{gap}$ is significantly increased when going from a straight device to a zigzag device, however, with a single superconductor the same principles still apply, although the effect is less significant.
 
@@ -349,14 +350,18 @@ Here we see that the order of magnitude increase of $E_\textrm{gap}$ also occurs
 \section{Direction of the magnetic field}
 
 \comment{Short trajectories are less sensitive to the alignment of magnetic field.}
+Besides short trajectories having a larger $E_\textrm{gap}$, we also find that they are less sensitive to the alignment of the magnetic field.
 
 \comment{Zigzag geometry removes the need for precise field alignment.}
+Because the zigzag geometry cuts off long trajectories---leaving only short trajectories---this device will require a less precise alignment of the magnetic field.
+To show this, we have performed a simulation of a straight and zigzag device where we rotate the field, and the results are in Fig.~\ref{fig:tilted_angle_phase_diagram}.
+We observe that at a $10\circ$ misaligned magnetic field, the zigzag device still has a sizeable gap, wherein the staight device a $1\circ$ misalignment would be detrimental.
 
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.9\columnwidth]{figures/tilted_angle_phase_diagram.pdf}
 \caption{A comparison of a straight device (a) and a zigzag one (b) where the magnetic field is rotated.
-On the x-axis is the the magnetic field $B$ and on the y-axis is the angle $\theta=\arctan{B_y/B_x}$ in degrees.
+On the x-axis is the magnetic field $B$ and on the y-axis is the angle $\theta=\arctan{B_y/B_x}$ in degrees.
 The colormaps and the y-axis have a different scale for both panels.
 We see that the device with the zigzag geometry is much more resilient against a misaligned magnetic field.
 \label{fig:tilted_angle_phase_diagram}}
