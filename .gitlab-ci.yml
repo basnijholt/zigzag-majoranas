@@ -1,5 +1,6 @@
 paper:
   script:
+    - pip install 'fsspec>=0.3.3'
     - cd paper
     - mkdir -p figures
     - make plot pdf
