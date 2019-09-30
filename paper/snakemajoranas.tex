@@ -105,7 +105,7 @@ Much of the experimental effort~\cite{Mourik2012,Das2012,Deng2012,Churchill2013,
 \comment{SNS junctions also work and require smaller field.}
 Recently, a modified setup has been proposed\cite{Pientka2017,Hell2017} relying on a superconductor-normal-superconductor (SNS) junction to lower the critical magnetic field $B_\textrm{c}$ by introducing a superconducting phase difference $\phi$.
 When both NS interfaces are transparent the SNS junction enters the topological phase at $\phi=\pi$ at any finite $B$ field.
-Two groups~\cite{Fornieri2018,Ren2018} have realized this system experimentally, but did not yet observe a hard induced superconducting gap.
+Two groups~\cite{Fornieri2019,Ren2019} have realized this system experimentally, but did not yet observe a hard induced superconducting gap.
 
 \comment{The gap is small because of long trajectories.}
 An important challenge in creating stable Majoranas is the appearance of a soft gap---a power law decay instead of an exponential decay of the density of states near zero energy.
@@ -113,9 +113,9 @@ In clean systems soft gap arises due to the reduction of the induced gap for sta
 From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor, shown in Fig.~\ref{fig:setup}(a).
 These long trajectories have long flight times $\tau_\textrm{f} \approx L_\textrm{t} / v_F$ (see Fig.~\ref{fig:setup}), where $L_\textrm{t}$ is the trajectory length.
 Equivalently, the Thouless energy of these trajectories $E_{\textrm{Th}}=\hbar / \tau_\textrm{f}$ is small, resulting in a small gap $E_\textrm{gap} \ll \Delta$.
-This problem does not appear when the Fermi surface is small and the zero point motion dominates the transverse velocity, making a low filling of the bands a possible workaround\cite{Beenakker2005,Nijholt2015}.
+This problem does not appear when the Fermi surface is small and the zero point motion dominates the transverse velocity, making a low filling of the bands a possible workaround\cite{Beenakker2005,Nijholt2016}.
 However, tuning the system to a low chemical potential requires a precise knowledge of the band positions and makes the device more sensitive to disorder or microscopic inhomogeneities.
-On the other hand, disorder scatters these long trajectories and introduces a cutoff on the scale of the mean free path~\cite{Golubov1988,Belzig1996,Pilgram2000} which Ref.~\onlinecite{Haim2018} proposes to use to improve Majorana properties; however, disorder is impossible to control to a required precision experimentally.
+On the other hand, disorder scatters these long trajectories and introduces a cutoff on the scale of the mean free path~\cite{Golubov1988,Belzig1996,Pilgram2000} which Ref.~\onlinecite{Haim2019} proposes to use to improve Majorana properties; however, disorder is impossible to control to a required precision experimentally.
 
 \begin{figure}[!htb]
 \centering
@@ -166,8 +166,8 @@ Later we relax this assumption and show that the exact shape is unimportant.
 
 \comment{We discretize the Hamiltonian and simulate it with Kwant.}
 We discretize our continuum Hamiltonian [Eq.~\eqref{eq:hamiltonian}] on a square grid and implement a tight-binding model using Kwant~\cite{Groth2014}.
-To preferentially sample important regions of parameter space, we use the Adaptive package~\cite{Nijholt2019a}.
-The entire source code and the resulting raw data are available in Ref.~\onlinecite{Nijholt2019}.
+To preferentially sample important regions of parameter space, we use the Adaptive package~\cite{Nijholt2019}.
+The entire source code and the resulting raw data are available in Ref.~\onlinecite{Laeven2019}.
 
 \comment{The default parameters are ...}
 Unless noted differently, the Hamiltonian parameters are $\alpha=\SI{20}{\meV \nm}$, $g=26$, $\meff=\SI{0.02}{\electronmass}$, $\mu=\SI{10}{\meV}$, $B_x=\SI{1}{T}$, $\phi=\pi$, and $\Delta=\SI{1}{\meV}$; and the geometry parameters are $W=\SI{200}{\nm}$, the period of the zigzag $z_x=\SI{1300}{\nm}$, the discretization contant $a=\SI{10}{\nm}$, and the lengths of the superconductors $L_\textrm{SC}=\SI{300}{\nm}$.
@@ -227,7 +227,7 @@ We model a finite system and compute the Majorana wave function in different geo
 By diagonalizing the Hamiltonian, we find the Majorana energy $E_\textrm{M}$, and by using the corresponding eigenstate of that lowest energy, we get the wave function.
 To reduce the finite size effects in determining the Majorana size $\xi_\textrm{M}$ in a zigzag system, we introduce a particle-hole symmetry breaking potential $V \sigma_0 \tau_0$ on one edge, such that one of the Majorana states is pushed away from zero energy.
 We then find $\xi_\textrm{M}$ by fitting an exponential to the density of the single Majorana wave function projected on the $x$-axis.
-In the straight system we use the eigenvalue decomposition of the translation operator at zero energy~\cite{Nijholt2015} for performance reasons.
+In the straight system we use the eigenvalue decomposition of the translation operator at zero energy~\cite{Nijholt2016} for performance reasons.
 
 \comment{In a straight system, the Majoranas are very poorly localized because of small gap and high velocity}
 We show the resulting Majorana wave function densities $\left| \psi_\textrm{M} \right|^2$ in different geometries in Fig.~\ref{fig:wave_functions} using the same Hamiltonian parameter values.
@@ -266,8 +266,8 @@ The remaining parameter values are written at the end of Sec.~\ref{sec:setup}, e
 In Fig.~\ref{fig:phasediagrams} we compare the phase diagrams of the straight and the zigzag junction.
 We plot $E_\textrm{gap}$ as a function of magnetic field, chemical potential, $E_\textrm{gap}(B_x, \mu)$; and the superconducting phase difference $E_\textrm{gap}(B_x, \phi)$ for both a straight system [(c) and (e)] and a zigzag system [(d) and (f)].
 Additionally, we plot the first $\SI{1300}{\nm}$ (one zigzag period) of the wave functions [(a) and (b)] at the optimal point in parameter space for the straight system.
-For the straight system, we calculate $E_\textrm{gap}$ by performing a binary search in $E$ for the energy at which the propagating modes start to appear~\cite{Nijholt2015}.
-Additionally, in Fig.~\ref{fig:phasediagrams}(c) we plot the phase boundaries obtained by solving a generalized eigenvalue problem~\cite{Nijholt2015}.
+For the straight system, we calculate $E_\textrm{gap}$ by performing a binary search in $E$ for the energy at which the propagating modes start to appear~\cite{Nijholt2016}.
+Additionally, in Fig.~\ref{fig:phasediagrams}(c) we plot the phase boundaries obtained by solving a generalized eigenvalue problem~\cite{Nijholt2016}.
 Due to the large size of the zigzag supercell, we are unable to apply these methods to zigzag geometries.
 Instead, we calculate $E_\textrm{gap}$ by finding the absolute minimum of the spectrum $E_\textrm{gap}=\min{\left|E(k)\right|}$.
 By both observing the gap closings and comparing to the topological phase diagram of the straight system, we then infer the topology of the zigzag system and verify this by calculating the Majorana wave function of a finite length zigzag.
@@ -292,7 +292,7 @@ The asymmetry of the phase diagram upon replacing $\phi \rightarrow -\phi$ is co
 The zigzag geometry increases the topological gap in the high density regime by more than an order of magnitude, as well as substantially reducing of Majorana size.
 The improvements occur in a broad range of parameter values, moreover, even using $B_x$ optimal for the straight system in the high density regime (Fig.~\ref{fig:phasediagrams}), the Majorana size $\xi_\textrm{M}$ and $E_\textrm{gap}$ are still more than an order of magnitude better for the zigzag system.
 We expect that the improvement of the device performance will significantly simplify the creation of Majorana devices and the detection of Majorana states.
-The zigzag geometry offers a controllable way to remove long trajectories, making it easier to rely on than disorder~\cite{Haim2018}, that otherwise has a similar effect.
+The zigzag geometry offers a controllable way to remove long trajectories, making it easier to rely on than disorder~\cite{Haim2019}, that otherwise has a similar effect.
 
 \comment{Zigzag doesn't do anything against other mechanisms, and therefore it doesn't help to use it ignorantly}
 Soft gap may arise due to other mechanisms that do not involve ballistic trajectories: both interface disorder and pair breaking~\cite{Takei2013} or temperature and dissipation~\cite{Liu2017} may create a soft gap.
