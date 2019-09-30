@@ -6,5 +6,5 @@ paper:
     - make plot pdf
   artifacts:
     paths:
-      - paper/snakemajoranas.pdf
+      - paper/zigzag.pdf
       - paper/figures/*pdf
