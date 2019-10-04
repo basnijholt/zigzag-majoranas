@@ -96,9 +96,9 @@ def get_template_strings(
     if no_phs:
         template_strings = {k: remove_phs(v) for k, v in template_strings.items()}
 
-    substitutions = substitutions or {}
-    for old, new in substitutions.items():
-        for where in template_strings.key():
+    substitutions = substitutions or ()
+    for old, new in substitutions:
+        for where in template_strings.keys():
             template_strings[where] = template_strings[where].replace(old, new)
 
     return template_strings
@@ -415,7 +415,7 @@ def system(
     phs_breaking_potential : bool, optional
         Add particle-hole symmetry breaking potential to allow for a
         computationally cheaper way to calculate the Majorana decay length.
-    substitutions : dict, optional
+    substitutions : tuple of tuples, optional
         Substitutions in the Hamiltonian string.
 
     Returns
