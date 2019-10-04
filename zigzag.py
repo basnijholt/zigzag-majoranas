@@ -43,6 +43,7 @@ def get_template_strings(
     with_k_z=False,
     no_phs=False,
     phs_breaking_potential=False,
+    substitutions=None,
 ):
     kinetic = "(hbar^2 / (2*m_eff) * (k_y^2 + k_x^2 + k_z^2) - mu {}) * kron(sigma_0, sigma_z)"
     if mu_from_bottom_of_spin_orbit_bands:
@@ -94,6 +95,11 @@ def get_template_strings(
 
     if no_phs:
         template_strings = {k: remove_phs(v) for k, v in template_strings.items()}
+
+    substitutions = substitutions or {}
+    for old, new in substitutions.items():
+        for where in template_strings.key():
+            template_strings[where] = template_strings[where].replace(old, new)
 
     return template_strings
 
@@ -365,6 +371,7 @@ def system(
     no_phs=False,
     rough_edge=None,
     phs_breaking_potential=False,
+    substitutions=None,
 ):
     """Create zigzag system
 
@@ -408,6 +415,8 @@ def system(
     phs_breaking_potential : bool, optional
         Add particle-hole symmetry breaking potential to allow for a
         computationally cheaper way to calculate the Majorana decay length.
+    substitutions : dict, optional
+        Substitutions in the Hamiltonian string.
 
     Returns
     -------
@@ -428,11 +437,11 @@ def system(
         False,
         no_phs,
         phs_breaking_potential,
+        substitutions,
     )
 
     template = {
-        k: discretize(v, coords=("x", "y"), grid=a)
-        for k, v in template_strings.items()
+        k: discretize(v, coords=("x", "y"), grid=a) for k, v in template_strings.items()
     }
 
     shapes = get_shapes(shape, a, z_x, z_y, W, L_x, L_sc_down, L_sc_up, rough_edge)
@@ -732,3 +741,38 @@ def majorana_size_from_fit(syst, params):
     popt, pcov = scipy.optimize.curve_fit(flog, xs_fit, np.log(wf_proj_fit))
 
     return 1 / popt[1]
+
+
+def get_zigzag_direction_vector_function(z_x, z_y, shape, **kwargs):
+    if shape == "parallel_curve":
+
+        def g_prime(t):
+            slope = z_y * 2 * np.pi / z_x * math.cos(2 * np.pi / z_x * t)
+            hyp = np.sqrt(1 + slope ** 2)
+            return (1 / hyp, slope / hyp, 0)
+
+    if shape == "sawtooth":
+
+        def g_prime(t):
+
+            sign = 2 * ((((t + z_x / 4) % z_x) < (z_x / 2)) - 1 / 2)
+            hyp = np.sqrt((z_x / 4) ** 2 + z_y ** 2)
+            return ((z_x / 4) / hyp, sign * z_y / hyp, 0)
+
+    return g_prime
+
+
+def quiver_plot_B(syst, params, step=1):
+    ham = syst.hamiltonian_submatrix(params=dict(params, k_x=0), sparse=True).tocsr()
+    ham_b0 = syst.hamiltonian_submatrix(
+        params=dict(params, k_x=0, B=0), sparse=True
+    ).tocsr()
+
+    bs = [
+        (ham[4 * idx + 0, 4 * idx + 2] - ham_b0[4 * idx + 0, 4 * idx + 2])
+        for idx, site in enumerate(syst.sites)
+    ]
+    xs = [site.pos[0] for site in syst.sites]
+    ys = [site.pos[1] for site in syst.sites]
+
+    return plt.quiver(xs[::step], ys[::step], np.real(bs)[::step], -np.imag(bs)[::step])
