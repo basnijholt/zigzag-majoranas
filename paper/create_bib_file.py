@@ -121,10 +121,10 @@ entries = [edit_raw_bibtex_entry(key, bib) for key, bib in zip(dois.keys(), bibs
 with open(fname_bib, "w") as out_file:
     fname = "not_on_crossref.bib"
     out_file.write("@preamble{ {\\providecommand{\\BIBYu}{Yu} } }\n\n")
-    out_file.write(fr"\n% Below is from `{fname}`.\n\n")
+    out_file.write(f"\n% Below is from `{fname}`.\n\n")
     with open(fname) as in_file:
         out_file.write(in_file.read())
-    out_file.write(fr"\n% Below is from `{fname_yaml}`.\n\n")
+    out_file.write(f"\n% Below is from `{fname_yaml}`.\n\n")
     for e in entries:
         for line in e.split("\n"):
             # Remove the url line
