@@ -1,18 +1,15 @@
-# Adapted from https://gitlab.kwant-project.org/qt/basnijholt/thesis-bas-nijholt/blob/master/create_bib_file.py
-
 import functools
 import glob
 import os
 from concurrent.futures import ThreadPoolExecutor
 
+import diskcache
 import requests
 import yaml
-
-fname_yaml = "zigzag.yaml"
-fname_bib = "zigzag.bib"
+import tqdm
 
 
-def edit_raw_bibtex_entry(key, bib_entry):
+def replace_key(key, bib_entry):
     bib_type, *_ = bib_entry.split("{")
     _, *rest = bib_entry.split(",")
     rest = ",".join(rest)
@@ -41,8 +38,18 @@ def edit_raw_bibtex_entry(key, bib_entry):
             r"Land{\'{e}}{gFactors}",
             r"Land{\'{e}} {$g$} Factors",
         ),  # fix for PhysRevLett.96.026804
+        (
+            r"apx$\mathplus$ipysuperconductor",
+            r"a $p_x + i p_y$ superconductor",
+        ),  # fix for 10.1103/physrevb.73.220502
+        (
+            r"apx$\mathplus${ipySuperfluid}",
+            r"$p_x + i p_y$ superfluid",
+        ),  # fix for 10.1103/physrevlett.98.010506
     ]
 
+    # I got these by using JabRef and converting to abbr journals
+    # and parsing the git diff.
     journals = [
         ("Advanced Materials", "Adv. Mater."),
         ("Annals of Physics", "Ann. Phys."),
@@ -74,6 +81,10 @@ def edit_raw_bibtex_entry(key, bib_entry):
         ("Science Advances", "Sci. Adv."),
         ("Scientific Reports", "Sci. Rep."),
         ("Semiconductor Science and Technology", "Semicond. Sci. Technol."),
+    ]
+
+    # Manually added
+    journals += [
         (
             "Annual Review of Condensed Matter Physics",
             "Annu. Rev. Condens. Matter Phys.",
@@ -90,14 +101,25 @@ def edit_raw_bibtex_entry(key, bib_entry):
         rest = rest.replace(old, new)
 
     result = bib_type + "{" + key + "," + rest
-
-    print(result, "\n")
     return result
 
 
-@functools.lru_cache()
+def cached_doi2bib(doi):
+    """Look up if this has previously been called."""
+    with diskcache.Cache("bibs.pickle") as cache:
+        text = cache.get(doi)
+        if text is not None:
+            return text
+        text = doi2bib(doi)
+        if text is not "" and "<html>" not in text:
+            print(f"Succesfully got {doi}!create_bib_file.py")
+            cache[doi] = text
+        return text
+
+
 def doi2bib(doi):
     """Return a bibTeX string of metadata for a given DOI."""
+    print(f"Requesting {doi}")
     url = "http://dx.doi.org/" + doi
     headers = {"accept": "application/x-bibtex"}
     r = requests.get(url, headers=headers)
@@ -105,29 +127,35 @@ def doi2bib(doi):
     return r.text
 
 
-with open(fname_yaml) as f:
-    dois = yaml.safe_load(f)
-dois = dict(sorted(dois.items()))
+bibs = ['zigzag.yaml']
+print("Reading: ", bibs)
+
+mapping = {}
+for fname in bibs:
+    with open(fname) as f:
+        mapping = {**mapping, **yaml.safe_load(f)}
+dois = dict(sorted(mapping.items()))
+
+# Doing it in parallel doesn't seem to work since ~13 Oct
+# with ThreadPoolExecutor() as ex:
+#     futs = ex.map(cached_doi2bib, list(dois.values()))
+#     bibs = list(futs)
+
+bibs = [cached_doi2bib(doi) for doi in tqdm.tqdm(dois.values())]
+entries = [replace_key(key, bib) for key, bib in zip(dois.keys(), bibs)]
 
 
-with ThreadPoolExecutor() as ex:
-    futs = ex.map(doi2bib, list(dois.values()))
-    bibs = list(futs)
-
-
-entries = [edit_raw_bibtex_entry(key, bib) for key, bib in zip(dois.keys(), bibs)]
-
-
-with open(fname_bib, "w") as out_file:
-    fname = "not_on_crossref.bib"
-    out_file.write("@preamble{ {\\providecommand{\\BIBYu}{Yu} } }\n\n")
-    out_file.write(f"\n% Below is from `{fname}`.\n\n")
-    with open(fname) as in_file:
-        out_file.write(in_file.read())
-    out_file.write(f"\n% Below is from `{fname_yaml}`.\n\n")
+bib_files = ["not_on_crossref.bib"]
+with open("zigzag.bib", "w") as outfile:
+    outfile.write("@preamble{ {\\providecommand{\\BIBYu}{Yu} } }\n\n")
+    for fname in bib_files:
+        outfile.write(f"\n% Below is from `{fname}`.\n\n")
+        with open(fname) as infile:
+            outfile.write(infile.read())
+    outfile.write("\n% Below is from all `yaml` files.\n\n")
     for e in entries:
         for line in e.split("\n"):
             # Remove the url line
             if "url = {" not in line:
-                out_file.write(f"{line}\n")
-        out_file.write("\n")
+                outfile.write(f"{line}\n")
+        outfile.write("\n")
