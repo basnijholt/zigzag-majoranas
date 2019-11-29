@@ -26,6 +26,14 @@ code:
 	cp ../paper-figures.ipynb $(CODE_DIR)/
 	cp ../zigzag.py $(CODE_DIR)/
 
+yaml2bib:
+	yaml2bib \
+	  --bib_fname "zigzag.bib" \
+	  --dois_yaml "zigzag.yaml" \
+	  --replacements_yaml "replacements.yaml" \
+	  --email "bas@nijho.lt" \
+	  --static_bib "not_on_crossref.bib"
+
 paper:
 	-mkdir -p $(BASE_DIR)
 	-mkdir -p $(PAPER_DIR)
