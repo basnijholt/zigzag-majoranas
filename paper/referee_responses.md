@@ -1,3 +1,14 @@
+Dear Daniel Ucko,
+
+We would like to resubmit the manuscript where we have made revisions to answer both of referee's questions.
+
+We have attached a LaTeX-diff that shows the changes we made to the manuscript.
+Additionally, we have attached a pdf with responses to the referees.
+
+Sincerely,
+
+The authors
+
 > # Report of Referee A -- LD17005/Laeven
 > The manuscript discusses numerical calculations related to how to improve the energy gap in 2D planar Josephson junctions.
 > The manuscript considers 2D SNS junctions within clean-limit BdG tight-binding model, used also in previous studies of the same system. Specific N region geometry is considered, and found to improve the energy gap. The argument why this occurs appears clear, and the results valid. Improving energy gaps likely is useful, but it's less clear this is the main/only problem faced in the experiments.
