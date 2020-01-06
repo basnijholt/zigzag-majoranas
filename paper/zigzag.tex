@@ -108,7 +108,7 @@ Two groups~\cite{Fornieri2019,Ren2019} have realized this system experimentally,
 An important challenge in creating stable Majoranas is the appearance of a soft gap---a power law decay instead of an exponential decay of the density of states near zero energy.
 In clean systems a soft gap arises due to the reduction of the induced gap for states with the momentum directed along the junction~\cite{Gennes1963,Beenakker2005}.
 From a semiclassical perspective, these momenta correspond to long paths through the semiconductor without interruption by the superconductor, shown in Fig.~\ref{fig:setup}(a).
-These long trajectories have long flight times $\tau_\textrm{f} \approx L_\textrm{t} / v_\textrm{F}$ (see Fig.~\ref{fig:setup}), where $L_\textrm{t}$ is the trajectory length and $v_\textrm{F}$ the Fermi velocity.
+These long trajectories have long flight times $\tau_\textrm{f} \approx L_\textrm{t} / v_\textrm{F}$ (see Fig.~\ref{fig:setup}), where $L_\textrm{t}$ is the trajectory length and $v_\textrm{F}$ the electron Fermi velocity.
 Equivalently, the Thouless energy of these trajectories $E_{\textrm{Th}}=\hbar / \tau_\textrm{f}$ is small, resulting in a small gap $E_\textrm{gap} \ll \Delta$.
 This problem does not appear when the Fermi surface is small and the zero point motion dominates the transverse velocity, making a low filling of the bands a possible workaround\cite{Beenakker2005,Nijholt2016}.
 However, tuning the system to a low chemical potential requires a precise knowledge of the band positions and makes the device more sensitive to disorder or microscopic inhomogeneities.
@@ -181,10 +181,10 @@ The blue lines correspond to a trivial phase ($\phi=0$, $B_x = 0$) and the orang
 The three subplots are for different amplitudes of the zigzag, with (a) a straight system $z_y=0$, (b) $z_y=W/2$, and (c) $z_y=W$, where $W=\SI{200}{\nm}$ is the junction width.
 Subplot (a) has a different $x$-scale for $k_x < 0$ from the other subplots and displays the unfolded band structure.
 For the right-hand side of (a) ($k_x > 0$), (b), and (c), the folding is the same, such that the velocity $v=dE/dk$ can be compared visually.
-We observe that once there are no more straight trajectories inside the junction (when $z_y=W$) the spectrum becomes insensitive to the momentum $k_x$ and equivalently, $v_\textrm{F}$ decreases.
-As the zigzag amplitude increases, the band gap $E_\textrm{gap}$ increases by an order of magnitude.
-The combination of these ensures a significant decrease of the Majorana size because $\xi_M \propto v_\textrm{F}/E_\textrm{gap}$
-The parameter values are written at the end of Sec.~\ref{sec:setup}.\label{fig:band_structures}}
+Once there are no more straight trajectories inside the junction (when $z_y=W$) the spectrum becomes insensitive to the momentum $k_x$ and equivalently, the quasiparticle velocity $v$ decreases.
+When the zigzag amplitude increases, the band gap $E_\textrm{gap}$ increases by an order of magnitude.
+The combination of these ensures a significant decrease of the Majorana size $\xi_\textrm{M} \propto v/E_\textrm{gap}$.
+The parameter values are listed at the end of Sec.~\ref{sec:setup}.\label{fig:band_structures}}
 \end{figure}
 
 \comment{We calculate the band structure for varying amount of zigzag.}
@@ -196,7 +196,7 @@ The introduction of the zigzag has a striking effect: the bands flatten out and 
 \comment{Zigzag improves the gap and size because of cutting of trajectories and increasing transparency.}
 In the unfolded band structure of a straight system, shown in Fig.~\ref{fig:band_structures}(a), the lowest energy states occur at $k \approx k_F$.
 We interpret the increase of the gap $E_\textrm{gap}$ shown in Fig.~\ref{fig:band_structures}(b) and (c) as an effect of the zigzag geometry removing these long trajectories traveling at grazing angles.
-Besides the increased $E_\textrm{gap}$, the states from different segments of the zigzag pattern have a negligible overlap and therefore have a vanishing velocity.
+Besides the increased $E_\textrm{gap}$, the states from different segments of the zigzag pattern have a negligible overlap and therefore have a vanishing quasiparticle velocity $v$.
 This reduction in velocity strongly reduces the Majorana size, as we discuss in section \ref{sec:shape_effects}.
 Finally, in a zigzag geometry, every trajectory encounters a superconductor close to normal incidence.
 Normal incidence has a higher transmission probability for entering the superconductor and therefore a higher Andreev reflection amplitude.
@@ -215,7 +215,7 @@ With (a) a straight system, (b) a zigzag system, (c) a system where lines parall
 Inside the figure, we indicate the Majorana length (or coherence length) $\xi_\textrm{M}$, the Majorana energy $E_\textrm{M}$ (the energy of the first excited state), and the topological energy gap $E_\textrm{gap}$.
 We observe that $\xi_\textrm{M}$ for the straight system is almost two orders of magnitude longer and $E_\textrm{gap}$ more than an order of magnitude smaller than for the zigzag systems.
 The robustness of $E_\textrm{gap}$ and $\xi_\textrm{M}$ across the zigzag geometries means that the details of the geometry do not matter for the improvements to occur.
-The length of the system is $3.5 z_x=\SI{4550}{\nm}$, the remaining parameter values are written at the end of Sec.~\ref{sec:setup}.\label{fig:wave_functions}}
+The length of the system is $3.5 z_x=\SI{4550}{\nm}$, the remaining parameter values are listed at the end of Sec.~\ref{sec:setup}.\label{fig:wave_functions}}
 \end{figure}
 
 \comment{We calculate the wave functions and find the Majorana lengths by fitting an exponential.}
@@ -228,10 +228,10 @@ In the straight system we use the eigenvalue decomposition of the translation op
 \comment{In a straight system, the Majoranas are very poorly localized because of small gap and high velocity}
 We show the resulting Majorana wave function densities $\left| \psi_\textrm{M} \right|^2$ in different geometries in Fig.~\ref{fig:wave_functions} using the same Hamiltonian parameter values.
 In the straight system [Fig.~\ref{fig:wave_functions}(a)], we see that the decay of the density is long compared to the system size.
-The small topological gap combined with the high velocity result in a large Majorana size
+This is a result of the small topological gap combined with the quasiparticle velocity $v \approx v_\textrm{F}$ yielding a large Majorana size
 \begin{equation}
 \label{eq:xi_M}
-\xi_\textrm{M}=\hbar \frac{v_\textrm{F}}{E_\textrm{gap}}.
+\xi_\textrm{M}=\hbar \frac{v}{E_\textrm{gap}}.
 \end{equation}
 This result follows from an avoided crossing shape of the dispersion relation near the Fermi momentum.
 Therefore, in straight junctions the wave function extends to the center of the system, resulting in highly overlapping Majoranas and a Majorana coupling $E_\textrm{M}$ comparable to $E_\textrm{gap}$.
@@ -239,7 +239,7 @@ Therefore, in straight junctions the wave function extends to the center of the 
 \comment{In a zigzag geometry Majoranas are localized within one segment of zigzag independent of details}
 We observe that in zigzag systems the Majorana properties improve independent of specific geometric details.
 All of the zigzag-type geometries have $\xi_\textrm{M}$ improved by a factor $\sim 70$ and have the Majorana wave function localized within one segment of the zigzag.
-Further, the topological gap $E_\textrm{gap}$ is an order of magnitude higher than in the straight junction, and as mentioned in section \ref{sec:band_structures}, the velocity $v_\textrm{F}$ is more than an order of magnitude lower.
+Further, the topological gap $E_\textrm{gap}$ is an order of magnitude higher than in the straight junction, and as mentioned in section \ref{sec:band_structures}, the quasiparticle velocity $v$ is more than an order of magnitude lower.
 
 
 %%██████████████████████████████████████████████████████████████████████████
@@ -254,7 +254,7 @@ The top panels show the Majorana wave functions, near the left edge of the syste
 The other panels show gap as a function of $\mu$ and $B_x$ at $\phi=\pi$ (middle panels) and as a function of $\phi$ and $B_x$ at $\mu=\SI{10}{\meV}$ (bottom panels).
 The dashed lines and the dot indicate the parameters used in the other panels.
 Additionally, in subplot (c) we overlay the phase boundaries.
-The remaining parameter values are written at the end of Sec.~\ref{sec:setup}, except with $a=\SI{5}{\nm}$ and $L_\textrm{SC}=\SI{800}{\nm}$.
+The remaining parameter values are listed at the end of Sec.~\ref{sec:setup}, except with $a=\SI{5}{\nm}$ and $L_\textrm{SC}=\SI{800}{\nm}$.
 \label{fig:phasediagrams}}
 \end{figure}
 
@@ -376,12 +376,12 @@ Comparison of the zigzag device's band structures with the magnetic field follow
 \label{fig:snaking_magnetic_field}}
 \end{figure}
 
-\section{Interface transparency vs. path length cut-off}
+\section{Interface transparency vs.~path length cut-off}
 
-The zigzag geometry both increases the interface transparency (as particles typically hit the superconductoer
+The zigzag geometry both increases the interface transparency (because particles typically hit the superconductor
 closer to normal incidence) as well as sets an upper limit to the trajectory length.
-Here we show that the change in the interface transparency alone is not sufficient to explain the increase of the topological gap.
-To verify this, we compute the dispersion of a system with $z_x = z_y = \SI{80}{\nm} \approx v_\textrm{F}$ and $W=\SI{400}{\nm}$, so that the angle of the boundaries is sufficiently large, but the boundary modulation is much smaller than the width.
+The change in the interface transparency alone is not sufficient to explain the increase of the topological gap.
+To verify this, we compute the dispersion of a system with $z_x = z_y = \SI{80}{\nm}$ comparable to the Fermi wavelength $\lambda_\textrm{F}$ and $W=\SI{400}{\nm}$, so that the angle of the boundaries is sufficiently large, but the boundary modulation is much smaller than the width.
 We observe that $E_\textrm{gap}$ becomes $\SI{6.1}{\mu \eV}$, a two-fold increase compared to the straight system, not the order of magnitude increase resulting from the cutting off of long trajectories.
 
 \end{document}
