@@ -6,6 +6,7 @@ replacements:
   Kitaev: '{K}itaev'
   Kramers: '{K}ramers'
   Majorana: '{M}ajorana'
+  "{JornHoofwijk}": Hoofwijk, Jorn
 
 journals:
   Physics Letters: Phys. Lett.

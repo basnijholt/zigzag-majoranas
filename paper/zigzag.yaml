@@ -1,12 +1,12 @@
 # Create the bib file with:
-# 
+#
 # yaml2bib \
 #   --bib_fname "zigzag.bib" \
 #   --dois_yaml "zigzag.yaml" \
 #   --replacements_yaml "replacements.yaml" \
 #   --email "bas@nijho.lt" \
 #   --static_bib "not_on_crossref.bib"
-# 
+#
 ---
 Alicea2012: 10.1088/0034-4885/75/7/076501
 Beenakker2005: 10.1007/11358817_4
