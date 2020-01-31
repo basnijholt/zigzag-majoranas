@@ -15,7 +15,7 @@ The authors
 > The effect of long trajectories in ballistic systems is itself not surprising or new, but optimizing the geometry for this in the specific context of Majorana realizations with planar SNS was apparently not considered before. The closer study of this is the main new contribution here.
 
 We thank the referee for the positive evaluation, however, we would like to emphasize that geometry optimization was not considered as a method of gap engineering in Josephson junctions in any context, not just in the Majorana devices.
-
+TODO: Can we add that multiple experimental efforts are underway? 
 > However, the manuscript appears better suited for publication in PRB. Although optimizing parameters in a previously discussed model is interesting and probably useful for future experiments of this type, it does not appear a significant advance of wide interest to a broad audience.
 
 Our work reports an idea of adjusting the geometry as a way of influencing a phenomenon that is known for decades.
