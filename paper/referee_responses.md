@@ -1,29 +1,30 @@
 Dear Daniel Ucko,
 
-We would like to resubmit the manuscript where we have made revisions to answer both of referee's questions.
+We would like to resubmit our revised manuscript where we address the referees' remarks.
+We also address the referees' questions, point by point, below.
+Finally, we also list the changes we have made to the manuscript.
 
-We have attached a LaTeX-diff that shows the changes we made to the manuscript.
-Additionally, we have attached a pdf with responses to the referees.
-
-Sincerely,
-
+Sincerely,  
 The authors
 
-> # Report of Referee A -- LD17005/Laeven
+## Report of Referee A -- LD17005/Laeven
 > The manuscript discusses numerical calculations related to how to improve the energy gap in 2D planar Josephson junctions.
 > The manuscript considers 2D SNS junctions within clean-limit BdG tight-binding model, used also in previous studies of the same system. Specific N region geometry is considered, and found to improve the energy gap. The argument why this occurs appears clear, and the results valid. Improving energy gaps likely is useful, but it's less clear this is the main/only problem faced in the experiments.
 > The effect of long trajectories in ballistic systems is itself not surprising or new, but optimizing the geometry for this in the specific context of Majorana realizations with planar SNS was apparently not considered before. The closer study of this is the main new contribution here.
 
-We thank the referee for the positive evaluation, however, we would like to emphasize that geometry optimization was not considered as a method of gap engineering in Josephson junctions in any context, not just in the Majorana devices.
-TODO: Can we add that multiple experimental efforts are underway? 
+We thank the referee for the overall positive evaluation.
+However, the referee's description seems to imply that the idea of optimizing the geometry of Josephson junction was known in other contexts.
+To the best of our knowledge this is not the case, and this method was not considered in any context, not just in the Majorana devices.
+
 > However, the manuscript appears better suited for publication in PRB. Although optimizing parameters in a previously discussed model is interesting and probably useful for future experiments of this type, it does not appear a significant advance of wide interest to a broad audience.
 
 Our work reports an idea of adjusting the geometry as a way of influencing a phenomenon that is known for decades.
 That this was overlooked for so long, in a very mature field, is in our opinion what makes it exciting and interesting.
 Further, we predict a change in the device properties by more than an order of magnitude.
-This is a substantial advancement in the field of Majorana devices and therefore, makes our work satisfy the PRL criterion of importance.
+This is a substantial advance in the field of Majorana devices and therefore, makes our work satisfy the PRL criterion of importance.
+The high degree of interest within the community is indicated by the ongoing experimental efforts of four independent experimental research groups, for example see [this March Meeting abstract](http://meetings.aps.org/Meeting/MAR20/Session/L60.6).
 
-> # Report of Referee B -- LD17005/Laeven
+## Report of Referee B -- LD17005/Laeven
 > The authors consider a planar Josephson junction in a zigzag geometry and propose it as an improved realization of a one-dimensional topological superconductor. As they show using numerical simulations, the zigzag geometry increases the induced superconducting gap and thereby decreases the spatial size of the Majorana wave functions, making them more protected.
 > To the best of my knowledge the idea presented in the paper is novel. In my opinion, this work will influence future experiments, and can help solve the problem of a small topological gap in the planar Josephson junction. Moreover, the paper is well written. Assuming the authors can address the questions and comments listed below, I therefore recommend the publication of the paper in Physical Review Letters.
 
@@ -59,3 +60,7 @@ We have changed it to "However, tuning the system to a low chemical potential re
 The reference 28 considers a variation in the coupling strength between a semiconductor and a superconductor that has a correlation length longer than the induced coherence length.
 This scenario is therefore, very different from the short length scale roughness that we considered in Fig. 3(d).
 Reference 30 describes a multimode mechanism and is about how the conductance looks rather than about the actual gap.
+
+
+## List of changes
+* 
