@@ -63,4 +63,16 @@ Reference 30 describes a multimode mechanism and is about how the conductance lo
 
 
 ## List of changes
-* 
+Apart from some minor grammatical and spelling errors, the amendments we made are:
+* Rephrased section II.
+* In section IV, we reformulated the following sentences:
+  * >~~To reduce the finite size effects in determining the Majorana size $\xi_\textrm{M}$ in a zigzag system, we introduce a particle-hole symmetry breaking potential $V \sigma_0 \tau_0$ on one edge, such that one of the Majorana states is pushed away from zero energy.~~ When determining the Majorana size $\xi_\textrm{M}$ in a zigzag system, we reduce the finite size effects by introducing a particle-hole symmetry breaking potential $V \sigma_0 \tau_0$ on one edge, such that one of the Majorana states is pushed away from zero energy.
+  * >~~The small topological gap combined with the high velocity result in a large Majorana size~~ This is a result of the small topological gap combined with the quasiparticle velocity $v \approx v_\textrm{F}$ yielding a large Majorana size
+  * >~~The wave function extends to the center of the system, resulting in highly overlapping Majoranas and a Majorana coupling $E_\textrm{M}$ comparable to $E_\textrm{gap}$.~~ This result follows from an avoided crossing shape of the dispersion relation near the Fermi momentum. Therefore, in straight junctions the wave function extends to the center of the system, resulting in highly overlapping Majoranas and a Majorana coupling $E_\textrm{M}$ comparable to $E_\textrm{gap}$.
+* In section V we refer to Appendix B where we compare the effects of magnetic field misalignment between a zigzag and a straight geometry.
+* In section V we removed the sentence "We also observe additional gap closings due to the BDI symmetry."
+* In section VI we moved the paragraph regarding experimental verification to the end.
+* We added the following Appendices:
+  * Appendix A, which details the implementation of a zigzag geometry in a device with a single superconductor.
+  * Appendix B, which outlines the robustness of the topological gap in a zigzag device under misaligned magnetic field.
+  * Appendix C, which demonstrates that the increased transparency of the NS interface alone does not explain the order of magnitude increase in topological gap.
