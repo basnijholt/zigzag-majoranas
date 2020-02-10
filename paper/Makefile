@@ -15,7 +15,7 @@ bbl:
 	bibtex zigzag.aux
 
 referee_responses:
-	cd ${PAPER_DIR} && pandoc -s --mathml -o referee_responses.pdf referee_responses.md
+	cd paper && pandoc -s --mathml -o referee_responses.pdf referee_responses.md
 
 clean:
 	-rm -rf $(BASE_DIR)
