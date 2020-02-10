@@ -1,4 +1,4 @@
-Dear Daniel Ucko,
+Dear Dr. Ucko,
 
 We would like to resubmit our revised manuscript where we address the referees' remarks.
 We also address the referees' questions, point by point, below.
