@@ -74,5 +74,5 @@ Apart from some minor changes regarding grammar and spelling, the following chan
 * In section VI we moved the paragraph regarding experimental verification to the end of the section.
 * We added the following Appendices:
   * Appendix A, detailing the implementation of a zigzag geometry in a device with a single superconductor.
-  * Appendix B, outlining the robustness of the topological gap in a zigzag device under misaligned magnetic field.
-  * Appendix C, deminstrating that the increased transparency of the NS interface alone does not explain the order of magnitude increase in topological gap.
+  * Appendix B, outlining the robustness of the topological gap in a zigzag device under a misaligned magnetic field.
+  * Appendix C, demonstrating that the increased transparency of the NS interface alone does not explain the order of magnitude increase in the topological gap.
