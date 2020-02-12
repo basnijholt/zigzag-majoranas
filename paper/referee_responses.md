@@ -1,3 +1,8 @@
+---
+urlcolor: blue
+geometry:
+  margin=1in
+---
 Dear Daniel Ucko,
 
 We would like to resubmit our revised manuscript where we address the referees' remarks.
@@ -22,7 +27,10 @@ Our work reports an idea of adjusting the geometry as a way of influencing a phe
 That this was overlooked for so long, in a very mature field, is in our opinion what makes it exciting and interesting.
 Further, we predict a change in the device properties by more than an order of magnitude.
 This is a substantial advance in the field of Majorana devices and therefore, makes our work satisfy the PRL criterion of importance.
-The high degree of interest within the community is indicated by the ongoing experimental efforts of four independent experimental research groups, for example see [this March Meeting abstract](http://meetings.aps.org/Meeting/MAR20/Session/L60.6).
+The high degree of interest within the community is indicated by the ongoing experimental efforts of four independent experimental research groups, for example see [this March Meeting abstract](http://meetings.aps.org/Meeting/MAR20/Session/L60.6)[^1].
+
+[^1]: http://meetings.aps.org/Meeting/MAR20/Session/L60.6
+
 
 ## Report of Referee B -- LD17005/Laeven
 > The authors consider a planar Josephson junction in a zigzag geometry and propose it as an improved realization of a one-dimensional topological superconductor. As they show using numerical simulations, the zigzag geometry increases the induced superconducting gap and thereby decreases the spatial size of the Majorana wave functions, making them more protected.

@@ -15,7 +15,7 @@ bbl:
 	bibtex zigzag.aux
 
 referee_responses:
-	pandoc -s --mathml -V geometry:margin=1in -o referee_responses.pdf referee_responses.md
+	pandoc -s --mathml -o referee_responses.pdf referee_responses.md
 
 clean:
 	-rm -rf $(BASE_DIR)
