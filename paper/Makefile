@@ -8,8 +8,10 @@ plot:
 
 pdf: bbl
 	pdflatex zigzag.tex
+	pdflatex appendix.tex
 	pdflatex zigzag.tex
 	pdflatex appendix.tex
+	pdflatex zigzag.tex
 	pdflatex appendix.tex
 
 bbl:
