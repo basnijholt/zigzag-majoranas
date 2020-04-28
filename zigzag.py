@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 import cmath
 import functools
@@ -11,6 +12,7 @@ import warnings
 import kwant
 from kwant.builder import Site
 from kwant.continuum import discretize
+from kwant.digest import uniform
 import numpy as np
 import scipy.constants
 import scipy.interpolate
@@ -19,6 +21,7 @@ import scipy.sparse as sp
 import scipy.sparse.linalg as sla
 
 
+# +
 constants = dict(
     # effective mass in kg,
     m_eff=0.023 * scipy.constants.m_e / (scipy.constants.eV * 1e-3) / 1e18,
@@ -29,6 +32,16 @@ constants = dict(
     cos=cmath.cos,
     sin=cmath.sin,
 )
+
+
+SI_constants = dict(
+    hbar=scipy.constants.hbar,
+    meV=scipy.constants.eV * 1e-3,
+    m_eff=0.023 * scipy.constants.m_e,
+)
+
+
+# -
 
 
 def remove_phs(H):
@@ -776,3 +789,53 @@ def quiver_plot_B(syst, params, step=1):
     ys = [site.pos[1] for site in syst.sites]
 
     return plt.quiver(xs[::step], ys[::step], np.real(bs)[::step], -np.imag(bs)[::step])
+
+
+# +
+def calc_k_F(mu, SI_constants=SI_constants):
+    """Argument in SI units"""
+    c = SI_constants
+    return np.sqrt(2 * mu * c["m_eff"] / c["hbar"] ** 2)
+
+
+def calc_v_F(mu, SI_constants=SI_constants):
+    """Argument in SI units"""
+    c = SI_constants
+    k_F = calc_k_F(mu, c)
+    return c["hbar"] * k_F / c["m_eff"]
+
+
+def disorder_strength_from_mfp(mfp, a, mu, dim, SI_constants=SI_constants):
+    """non-default arguments have units of meV and nm"""
+    # https://arxiv.org/pdf/1603.03780.pdf Eq. (4) in appendix
+    if math.isinf(mfp):
+        return 0
+    if dim == 3 and (mu == 0 or mu is None):
+        # In 3D µ drops out and by setting it to one, we avoid x/0 problems
+        mu = 1
+    c = SI_constants
+    m_eff = c["m_eff"]
+    mfp *= 1e-9
+    a *= 1e-9
+    mu *= c["meV"]
+    v_F = calc_v_F(mu, SI_constants)
+    if dim == 1:
+        rho = a * np.sqrt(m_eff / (2 * mu)) / (np.pi * c["hbar"])
+    elif dim == 2:
+        rho = a ** 2 * m_eff / (np.pi * c["hbar"] ** 2)
+    elif dim == 3:
+        rho = (
+            a ** 3
+            / (2 * np.pi ** 2)
+            * (2 * m_eff / c["hbar"] ** 2) ** (3 / 2)
+            * mu ** (1 / 2)
+        )
+
+    return np.sqrt((3 * c["hbar"] * v_F) / (2 * np.pi * mfp * rho)) / c["meV"]
+
+
+def disorder_potential(strength, salt):
+    def V(*args):
+        return 2 * strength * (uniform(repr(args), repr(salt)) - 0.5)
+
+    return V
