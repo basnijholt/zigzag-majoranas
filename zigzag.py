@@ -21,7 +21,6 @@ import scipy.sparse as sp
 import scipy.sparse.linalg as sla
 
 
-# +
 constants = dict(
     # effective mass in kg,
     m_eff=0.023 * scipy.constants.m_e / (scipy.constants.eV * 1e-3) / 1e18,
@@ -39,9 +38,6 @@ SI_constants = dict(
     meV=scipy.constants.eV * 1e-3,
     m_eff=0.023 * scipy.constants.m_e,
 )
-
-
-# -
 
 
 def remove_phs(H):
@@ -791,7 +787,6 @@ def quiver_plot_B(syst, params, step=1):
     return plt.quiver(xs[::step], ys[::step], np.real(bs)[::step], -np.imag(bs)[::step])
 
 
-# +
 def calc_k_F(mu, SI_constants=SI_constants):
     """Argument in SI units"""
     c = SI_constants
