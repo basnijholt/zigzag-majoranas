@@ -113,6 +113,7 @@ Equivalently, the Thouless energy of these trajectories $E_{\textrm{Th}}=\hbar /
 This problem does not appear when the Fermi surface is small and the zero point motion dominates the transverse velocity, making a low filling of the bands a possible workaround\cite{Beenakker2005,Nijholt2016}.
 However, tuning the system to a low chemical potential requires a precise knowledge of the band positions and makes the device more sensitive to disorder or microscopic inhomogeneities.
 On the other hand, disorder scatters these long trajectories and introduces a cutoff on the scale of the mean free path~\cite{Golubov1988,Belzig1996,Pilgram2000} which Ref.~\onlinecite{Haim2019} proposes to use to improve Majorana properties; however, disorder is impossible to control to a required precision experimentally.
+In App.~\ref{appendix:mfp_vs_gap} we compare the size of $E_\textrm{gap}$ as a function of the mean free path $l_e$ for zigzag and straight systems at $\phi=0$ and $\phi=\pi$; and confirm that the zigzag geometry and disorder both increase $E_\textrm{gap}$ through a similar mechanism.
 
 \begin{figure}[!htb]
 \centering
@@ -319,6 +320,21 @@ All authors performed the analysis of the results and planning of the project.
 \bibliography{zigzag}
 
 \appendix
+
+\section{Zigzag devices and disorder}\label{appendix:mfp_vs_gap}
+
+\comment{We compare $E_\textrm{gap}(l_e)$ for zigzag and straight systems at $\phi=0$ and $\phi=\pi$; and confirm that the zigzag and disorder both increase $E_\textrm{gap}$ through a similar mechanism.}
+The right amount of disorder scatters long trajectories improves the Majorana properties~\onlinecite{Haim2019}, similar to the zigzag geometry cutting off these long trajectories.
+We simulate devices with disorder---parameterized by its mean free path $l_e$---and calculate $E_\textrm{gap}(l_e)$ for straight and zigzag devices at different phases and magnetic fields, see Fig.~\ref{fig:mfp_vs_gap}.
+For the parameters we chose, at $\phi=0$ we observe that an optimal value of $l_e$ results in an enhancement that is at best equal to that of the zigzag device.
+At $\phi=\pi$ we observe that zigzag outperforms disorder.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.9\columnwidth]{figures/mfp_vs_gap.pdf}
+\caption{Comparison of the gap of zigzag devices (dashed lines) and straight devices (solid lines) as function of mean free path $l_e$.
+\label{fig:mfp_vs_gap}}
+\end{figure}
 
 \section{Zigzag device with a single superconductor}\label{appendix:NS_junction}
 
