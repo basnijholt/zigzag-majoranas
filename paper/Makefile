@@ -17,6 +17,8 @@ pdf: bbl
 bbl:
 	pdflatex zigzag.tex
 	bibtex zigzag.aux
+	pdflatex appendix.tex
+	bibtex appendix.aux
 
 referee_responses:
 	pandoc -s --mathml -o referee_responses.pdf referee_responses.md
