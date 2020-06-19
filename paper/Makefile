@@ -22,6 +22,7 @@ bbl:
 
 referee_responses:
 	pandoc -s --mathml -o referee_responses.pdf referee_responses.md
+	pandoc -s --mathml -o referee_responses_round_2.pdf referee_responses_round_2.md
 
 clean:
 	-rm -rf $(BASE_DIR)

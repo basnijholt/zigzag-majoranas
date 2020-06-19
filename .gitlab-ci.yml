@@ -9,4 +9,5 @@ paper:
       - paper/zigzag.pdf
       - paper/figures/*pdf
       - paper/referee_responses.pdf
+      - paper/referee_responses_round_2.pdf
       - paper/appendix.pdf
