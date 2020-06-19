@@ -2,6 +2,10 @@
 urlcolor: blue
 geometry:
   margin=1in
+header-includes:
+- \usepackage{tcolorbox}
+- \newtcolorbox{myquote}{colback=gray!5!white, colframe=gray!75!black}
+- \renewenvironment{quote}{\begin{myquote}}{\end{myquote}}
 ---
 
 Dear Dr. Samindranath Mitra,
@@ -22,28 +26,28 @@ We thank the referee for the recommendation.
 ## Report of Referee C -- LD17005/Laeven
 
 > I read with interest the manuscript entitled “Enhanced proximity effect in zigzag-shaped Majorana Josephson junctions” by Tom Laeven et al. together with the others referees reports. The Authors propose new geometry of Josephson – zigzag or sine-like shaped - which enhances size of induced topological gap by more than order of magnitude comparing to the standard straight geometry. This results in shorter coherence length of the “Majoranas” and in turns leads to increase of robustness against disorder which is of great interest for physical implementation. In my opinion Authors managed to fully answer the other referees questions.
-
+>
 > In order to judge if paper is appropriate for PRL let’s analyze the results in the light of PRL's acceptance criteria. The work should:
-
+>
 > 1) Open a new research area, or a new avenue within an established area.
-
+>
 > The work does not open new research area
-
+>
 > 2) Solve, or make essential steps towards solving, a critical problem.
-
+>
 > I think that proposing a new geometry (zigzag, sine type) of Josephson junction which enhances the induced topological gap of the system by more than order of magnitude can be considered as “making essential steps towards solving, a critical problem.” It is worth to mention that proposed setup has been already realized experimentally http://meetings.aps.org/Meeting/MAR20/Session/L60.6.
-
+>
 > 3) Introduce new techniques or methodologies with significant impact.
-
+>
 > The work does not really present new techniques or methodologies...
-
+>
 > 4) Be of unusual intrinsic interest to PRL's broad audience.
-
+>
 > The work touches rather specific and greatly explored field of Majorana based systems.
 > Overall I think the manuscript matches criteria 2) and this should be sufficient for publication in PRL, thus I can recommend the paper for publication if the Authors could answer and clarify the following matter:
-
+>
 > i) Is it important that in proposed setup (Figure 3) the zigzag/sine-like geometry pattern of normal region has a reflection symmetry with respect to $x=x_M$ axis, where $x_M$ denotes middle of the system in the $x$ direction? I wonder if taking zigzag pattern, for which middle of the junction in $y$ direction is different at two ends of the system (e.g. by taking scenario with zigzag endings like on Fig. 1), would affect the size of induced gap and presence of Majoranas significantly?
-
+>
 > ii) I wonder if combing the effects of zigzag geometry and weak disorder presented in ref [22] (Arbel Haim and Ady Stern Phys. Rev. Lett. 122, (2019)) could further increase the size of induced gap?
 
 We would like to thank referee C for his/her evaluation. To answer the questions, we have performed two numerical simulations.
