@@ -10,7 +10,7 @@ header-includes:
 
 Dear Dr. Samindranath Mitra,
 
-We would like to resubmit our revised manuscript where we address the referee C's remarks, for which we have done a whole set of new simulations.
+We would like to resubmit our revised manuscript where we address the referee C's remarks, for which we have done a set of new simulations.
 We have added one of these simulations' result as a paragraph to the Supplemental Material: "Zigzag devices and disorder".
 We also address the two questions below.
 
