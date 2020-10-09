@@ -1,6 +1,10 @@
 # Project on Enhanced proximity effect in zigzag-shaped Majorana Josephson junctions
 By Tom Laeven, Bas Nijholt, Michael Wimmer, Anton R. Akhmerov
 
+* [arXiv:1903.06168](https://arxiv.org/abs/1903.06168)
+* [10.1103/PhysRevLett.125.086802](https://arxiv.org/ct?url=https%3A%2F%2Fdx.doi.org%2F10.1103%2FPhysRevLett.125.086802&v=ae1cde07)
+* [Zenodo.org](https://zenodo.org/record/4075036)
+
 # Files
 This folder contains one Jupyter notebook and one Python files:
 * `paper-figures.ipynb`
